@@ -1,15 +1,12 @@
 {
-    "extends": [
-        "tslint:latest",
-        "tslint-react"
-    ],
-    "rules": {
-        "jsx-wrap-multiline": false,
-        "jsx-no-lambda": false
-    },
-    "linterOptions": {
-        "exclude": [
-            "./src/serviceWorker.ts"
-        ]
-    }
+  "extends": ["tslint:latest", "tslint-react"],
+  "rules": {
+    "jsx-wrap-multiline": false,
+    "jsx-no-lambda": false,
+    "quotemark": false,
+    "interface-name": false
+  },
+  "linterOptions": {
+    "exclude": ["./src/serviceWorker.ts"]
+  }
 }
