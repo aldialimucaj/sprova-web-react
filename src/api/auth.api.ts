@@ -24,12 +24,12 @@ function authenticate(
     axios
       // TODO: extract URL
       .post('http://localhost:8181/authenticate', {
-        username,
         password,
+        username,
       })
       .catch(
         (error: AxiosError): AxiosResponse => {
-          let { message, response } = error;
+          const { message, response } = error;
           if (!response) {
             throw message;
           }
@@ -38,9 +38,9 @@ function authenticate(
       )
       .then(
         (response: AxiosResponse): string => {
-          let { data, status, statusText } = response;
-          let { error, token } = data;
-          if (status != 200) {
+          const { data, status, statusText } = response;
+          const { error, token } = data;
+          if (status !== 200) {
             throw error || statusText;
           }
           return token;

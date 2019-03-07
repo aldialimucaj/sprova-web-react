@@ -27,7 +27,7 @@ function getProjects() {
         // TODO:
         const { data, status, statusText } = response;
         const { error, token } = data;
-        if (status != 200) {
+        if (status !== 200) {
           throw error || statusText;
         }
         return token;

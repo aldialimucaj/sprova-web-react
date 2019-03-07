@@ -42,14 +42,13 @@ const Login: React.FunctionComponent<{}> = () => {
       .then(
         (decoded: DecodedToken): void => {
           setIsLoading(false);
-          console.log('Successful login');
-          console.log(decoded);
+          // TODO: Redirect
         }
       )
       .catch(
-        (error: string): void => {
+        (err: string): void => {
           setIsLoading(false);
-          setError(error);
+          setError(err);
         }
       );
   };
