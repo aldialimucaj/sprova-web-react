@@ -1,0 +1,25 @@
+@import '../variables';
+
+.logo {
+  position: relative;
+  height: $navbar-height;
+  padding-left: 24px;
+  overflow: hidden;
+  line-height: $navbar-height;
+  background: #002140;
+  transition: all 0.3s;
+  img {
+    display: inline-block;
+    height: 32px;
+    vertical-align: middle;
+  }
+  h1 {
+    display: inline-block;
+    margin: 2px 0 0 24px;
+    color: white;
+    font-weight: 600;
+    font-size: 22px;
+    font-family: Avenir, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    vertical-align: middle;
+  }
+}

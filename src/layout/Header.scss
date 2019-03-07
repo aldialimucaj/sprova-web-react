@@ -1,0 +1,60 @@
+@import '../variables';
+
+.navbar {
+  position: relative;
+  padding: 0;
+  height: $navbar-height;
+  background-color: $navbar-background-color;
+  box-shadow: $navbar-box-shadow;
+}
+
+.right {
+  float: right;
+  height: 100%;
+  overflow: hidden;
+  .action {
+    display: inline-block;
+    height: 100%;
+    padding: 0 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+    i {
+      color: #000;
+      vertical-align: middle;
+    }
+    &:hover {
+      background: rgba(0, 0, 0, 0.025);
+    }
+  }
+}
+
+.trigger {
+  height: $navbar-height;
+  padding: 22px 24px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s, padding 0s;
+  &:hover {
+    background: rgba(0, 0, 0, 0.025);
+  }
+}
+
+.navbar-item {
+  height: 100%;
+  line-height: $navbar-height;
+  cursor: pointer;
+  padding: 0 12px;
+  transition: $generic-transition;
+  &:hover {
+    background: rgba(0, 0, 0, 0.025);
+  }
+}
+
+.navbar-icon {
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.5;
+  }
+}
