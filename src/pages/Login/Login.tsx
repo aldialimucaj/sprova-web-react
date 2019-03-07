@@ -1,9 +1,9 @@
 import { Alert, Button, Col, Input, Row, Spin } from 'antd';
 import React, { useState } from 'react';
-import authApi, { DecodedToken } from '../../api/auth.api';
+import { Redirect } from 'react-router-dom';
+import authApi from '../../api/auth.api';
 import logo from '../../images/sprova.png';
 import './Login.scss';
-import { Redirect } from 'react-router';
 
 const Login: React.FunctionComponent<{}> = () => {
   const [username, setUsername] = useState('');
