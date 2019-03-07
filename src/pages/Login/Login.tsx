@@ -3,11 +3,15 @@ import React, { useState } from 'react';
 import authApi, { DecodedToken } from '../../api/auth.api';
 import logo from '../../images/sprova.png';
 import './Login.scss';
+import { Redirect } from 'react-router';
 
 const Login: React.FunctionComponent<{}> = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    authApi.isAuthenticated
+  );
   const [error, setError] = useState('');
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,9 +44,9 @@ const Login: React.FunctionComponent<{}> = () => {
     authApi
       .authenticate(username, password)
       .then(
-        (decoded: DecodedToken): void => {
+        (): void => {
           setIsLoading(false);
-          // TODO: Redirect
+          setIsAuthenticated(true);
         }
       )
       .catch(
@@ -53,7 +57,9 @@ const Login: React.FunctionComponent<{}> = () => {
       );
   };
 
-  return (
+  return isAuthenticated ? (
+    <Redirect to="" />
+  ) : (
     <Row className="login-page" type="flex" justify="center">
       <Col span={6} style={{ textAlign: 'center' }}>
         <img src={logo} width="64px" style={{ margin: 36 }} />
