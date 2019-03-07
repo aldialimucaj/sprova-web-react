@@ -1,17 +1,14 @@
-import { Button } from "antd";
-import React, { Component } from "react";
-import "./App.scss";
-import { MainLayout } from "./components/navigation/MainLayout";
-import logo from "./logo.svg";
+import React from 'react';
+import './App.scss';
+import Layout from './layout';
 
-class App extends Component {
-  public render() {
-    return (
-      <div className="App">
-        <MainLayout />
-      </div>
-    );
-  }
-}
+const App = () => {
+  return (
+    <Layout>
+      App works
+      {/* <Route path="" exact component={Home} /> */}
+    </Layout>
+  );
+};
 
 export default App;
