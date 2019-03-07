@@ -10,7 +10,7 @@ const Login: React.FunctionComponent<{}> = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(
-    authApi.isAuthenticated
+    authApi.isAuthenticated()
   );
   const [error, setError] = useState('');
 
