@@ -9,6 +9,10 @@ branches:
   only:
     - master
 
+cache:
+  directories:
+    - node_modules
+
 before_script:
   - yarn install
 
