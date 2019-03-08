@@ -1,4 +1,4 @@
-import { Divider, Dropdown, Icon, Layout, Menu, Select } from 'antd';
+import { Avatar, Divider, Dropdown, Icon, Layout, Menu, Select } from 'antd';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 const { Header } = Layout;
@@ -56,9 +56,10 @@ const HeaderWrapper: React.FunctionComponent<Props> = ({
         <div className="right">
           <Dropdown overlay={menu} placement="bottomRight">
             <div className="navbar-item">
-              <Link to="/user">
-                <Icon type="user" style={{ fontSize: '24px' }} /> {username} <Icon type="down" />
-              </Link>
+              <Avatar size="small" className="avatar">
+                {username.slice(0, 1).toUpperCase()}
+              </Avatar>
+              {username}
             </div>
           </Dropdown>
         </div>

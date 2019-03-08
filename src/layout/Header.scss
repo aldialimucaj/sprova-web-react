@@ -12,6 +12,7 @@
   float: right;
   height: 100%;
   overflow: hidden;
+  padding-right: 16px;
   .action {
     display: inline-block;
     height: 100%;
@@ -25,6 +26,12 @@
     &:hover {
       background: rgba(0, 0, 0, 0.025);
     }
+  }
+  .avatar {
+    background-color: #b3daff;
+    color: #006eff;
+    font-size: 46px;
+    margin-right: 12px;
   }
 }
 
