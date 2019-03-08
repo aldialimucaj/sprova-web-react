@@ -2,5 +2,5 @@ export interface Project {
   id?: string;
   title: string;
   description: string;
-  owner: string;
+  owner?: string;
 }

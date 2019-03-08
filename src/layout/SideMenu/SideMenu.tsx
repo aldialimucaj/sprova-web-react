@@ -20,7 +20,7 @@ const SideMenu: React.FunctionComponent<Props> = ({ collapsed }) => {
   return (
     <Sider trigger={null} collapsible={true} collapsed={collapsed}>
       <div className="logo" id="logo">
-        <Link to="/">
+        <Link to="/projects">
           <img src={logo} alt="logo" />
           <h1>Sprova</h1>
         </Link>

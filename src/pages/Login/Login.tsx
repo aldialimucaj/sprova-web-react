@@ -91,7 +91,7 @@ const Login: React.FunctionComponent<{}> = () => {
             onChange={handleChange}
             onKeyDown={handleKeyPress}
           />
-          <Input
+          <Input.Password
             className="form-item"
             type="password"
             name="password"
