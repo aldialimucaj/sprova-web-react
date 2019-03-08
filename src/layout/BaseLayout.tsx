@@ -1,4 +1,4 @@
-import { Breadcrumb, Layout } from 'antd';
+import { Breadcrumb, Col, Layout, Row } from 'antd';
 import React, { useState } from 'react';
 import Header from './Header';
 import SideMenu from './SideMenu';
@@ -16,12 +16,9 @@ const LayoutWrapper: React.FunctionComponent<{}> = ({ children }) => {
           toggleSidebar={() => setCollapsed(!collapsed)}
         />
         <Content id="content" tagName="main" style={{ margin: '0 24px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>Projects</Breadcrumb.Item>
-            <Breadcrumb.Item>Cycles</Breadcrumb.Item>
-          </Breadcrumb>
-
-          {children}
+          <Row type="flex" justify="center">
+            <Col span={18}>{children}</Col>
+          </Row>
         </Content>
       </Layout>
     </Layout>

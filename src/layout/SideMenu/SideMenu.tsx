@@ -16,7 +16,6 @@ const SideMenu: React.FunctionComponent<Props> = ({ collapsed }) => {
   const { type: layoutType } = useContext(LayoutContext);
 
   const menu = layoutType === 'Base' ? <BaseMenu /> : <ProjectMenu />;
-  
 
   return (
     <Sider trigger={null} collapsible={true} collapsed={collapsed}>
