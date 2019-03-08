@@ -1,6 +1,6 @@
 import { Divider, Dropdown, Icon, Layout, Menu, Select } from 'antd';
 import React, { useContext } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 const { Header } = Layout;
 import authApi from '../api/auth.api';
 import UserContext from '../contexts/UserContext';
@@ -42,7 +42,7 @@ const HeaderWrapper: React.FunctionComponent<Props> = ({
     </Menu>
   );
 
-  return isAuthenticated ? (
+  return (
     <Header tagName="header" style={{ padding: 0 }}>
       <div className="navbar">
         <span className="trigger" onClick={toggleSidebar}>
@@ -64,8 +64,6 @@ const HeaderWrapper: React.FunctionComponent<Props> = ({
         </div>
       </div>
     </Header>
-  ) : (
-    <Redirect to="/login" />
   );
 };
 
