@@ -6,8 +6,7 @@ import LayoutContext, {
   LayoutType,
 } from './contexts/LayoutContext';
 import ProjectLayout from './layout';
-import Home from './pages/Home/Home';
-import Project from './pages/Project';
+import { Home, Project } from './pages';
 
 const App = () => {
   const [layoutType, setLayoutType] = useState('Overview' as LayoutType);
