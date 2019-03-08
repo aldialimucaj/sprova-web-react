@@ -2,7 +2,7 @@ import { Breadcrumb, Layout } from 'antd';
 import React, { useState } from 'react';
 import Header from './Header';
 import SideMenu from './SideMenu';
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 
 const LayoutWrapper: React.FunctionComponent<{}> = ({ children }) => {
   const [collapsed, setCollapsed] = useState(true);
@@ -15,14 +15,14 @@ const LayoutWrapper: React.FunctionComponent<{}> = ({ children }) => {
           sidebarCollapsed={collapsed}
           toggleSidebar={() => setCollapsed(!collapsed)}
         />
-        <Content tagName="main" style={{ margin: '0 16px' }}>
+        <Content id="content" tagName="main" style={{ margin: '0 16px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>Projects</Breadcrumb.Item>
             <Breadcrumb.Item>Cycles</Breadcrumb.Item>
           </Breadcrumb>
-          <div id="content" style={{ padding: 24, background: '#fff', minHeight: "90%" }}>
-            {children}
-          </div>
+
+          {children}
+
         </Content>
       </Layout>
     </Layout>

@@ -1,13 +1,13 @@
 import React from 'react';
+import { Route } from 'react-router-dom';
 import './App.scss';
-import UserContext from './contexts/UserContext';
 import Layout from './layout';
+import Home from "./pages/Home/Home";
 
 const App = () => {
   return (
     <Layout>
-      App works
-      {/* <Route path="" exact component={Home} /> */}
+      {<Route path="" exact={true} component={Home} />}
     </Layout>
   );
 };
