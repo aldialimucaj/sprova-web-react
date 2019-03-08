@@ -15,7 +15,7 @@ const LayoutWrapper: React.FunctionComponent<{}> = ({ children }) => {
           sidebarCollapsed={collapsed}
           toggleSidebar={() => setCollapsed(!collapsed)}
         />
-        <Content id="content" tagName="main" style={{ margin: '0 16px' }}>
+        <Content id="content" tagName="main" style={{ margin: '0 24px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>Projects</Breadcrumb.Item>
             <Breadcrumb.Item>Cycles</Breadcrumb.Item>
