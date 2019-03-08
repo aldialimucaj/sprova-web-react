@@ -1,9 +1,8 @@
 import { Avatar, Divider, Dropdown, Icon, Layout, Menu, Select } from 'antd';
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
 const { Header } = Layout;
-import authApi from '../../../api/auth.api';
-import UserContext from '../../../contexts/UserContext';
+import authApi from '../../api/auth.api';
+import UserContext from '../../contexts/UserContext';
 import './Header.scss';
 
 const { Option } = Select;

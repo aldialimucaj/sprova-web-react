@@ -1,6 +1,7 @@
 import { Breadcrumb, Layout } from 'antd';
 import React, { useState } from 'react';
-import { Header, SideMenu } from './project';
+import Header from './Header';
+import SideMenu from './SideMenu';
 const { Content } = Layout;
 
 const LayoutWrapper: React.FunctionComponent<{}> = ({ children }) => {
