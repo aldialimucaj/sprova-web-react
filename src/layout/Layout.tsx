@@ -20,13 +20,10 @@ const LayoutWrapper: React.FunctionComponent<{}> = ({ children }) => {
             <Breadcrumb.Item>Projects</Breadcrumb.Item>
             <Breadcrumb.Item>Cycles</Breadcrumb.Item>
           </Breadcrumb>
-          <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+          <div id="content" style={{ padding: 24, background: '#fff', minHeight: "90%" }}>
             {children}
           </div>
         </Content>
-        <Footer tagName="main" style={{ textAlign: 'center' }}>
-          Sprova ©2019 Licensed by MIT
-        </Footer>
       </Layout>
     </Layout>
   );

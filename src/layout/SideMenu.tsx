@@ -22,29 +22,18 @@ const SideMenu: React.FunctionComponent<Props> = ({ collapsed }) => {
       </div>
       <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
         <Menu.Item key="1">
-          <Icon type="pie-chart" />
+          <Icon type="file-text" />
           <span>Test cases</span>
         </Menu.Item>
         <Menu.Item key="2">
-          <Icon type="desktop" />
+          <Icon type="retweet" />
           <span>Cycles</span>
         </Menu.Item>
-        <SubMenu
-          key="sub1"
-          title={
-            <span>
-              <Icon type="user" />
-              <span>Executions</span>
-            </span>
-          }
-        >
-          <Menu.Item key="3">dummy</Menu.Item>
-        </SubMenu>
         <SubMenu
           key="sub2"
           title={
             <span>
-              <Icon type="team" />
+              <Icon type="snippets" />
               <span>Test sets</span>
             </span>
           }
@@ -52,7 +41,7 @@ const SideMenu: React.FunctionComponent<Props> = ({ collapsed }) => {
           <Menu.Item key="8">dummy</Menu.Item>
         </SubMenu>
         <Menu.Item key="9">
-          <Icon type="file" />
+          <Icon type="pie-chart" />
           <span>Reports</span>
         </Menu.Item>
       </Menu>

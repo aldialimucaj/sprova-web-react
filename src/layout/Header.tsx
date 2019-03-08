@@ -57,7 +57,7 @@ const HeaderWrapper: React.FunctionComponent<Props> = ({
           <Dropdown overlay={menu} placement="bottomRight">
             <div className="navbar-item">
               <Link to="/user">
-                {username} <Icon type="down" />
+                <Icon type="user" style={{ fontSize: '24px' }} /> {username} <Icon type="down" />
               </Link>
             </div>
           </Dropdown>
