@@ -1,8 +1,7 @@
 import { Icon, Layout, Menu } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../images/sprova.svg';
-import './Header.scss';
+import logo from '../../../images/sprova.svg';
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 import './SideMenu.scss';
