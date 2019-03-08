@@ -1,7 +1,6 @@
 import { Breadcrumb, Layout } from 'antd';
 import React, { useState } from 'react';
-import Header from './Header';
-import SideMenu from './SideMenu';
+import { Header, SideMenu } from './project';
 const { Content } = Layout;
 
 const LayoutWrapper: React.FunctionComponent<{}> = ({ children }) => {
@@ -22,7 +21,6 @@ const LayoutWrapper: React.FunctionComponent<{}> = ({ children }) => {
           </Breadcrumb>
 
           {children}
-
         </Content>
       </Layout>
     </Layout>

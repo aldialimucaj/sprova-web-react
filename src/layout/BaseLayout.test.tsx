@@ -1,8 +1,8 @@
 import { mount, render, shallow } from 'enzyme';
 import React from 'react';
 
-import ProjectLayout from './ProjectLayout';
+import BaseLayout from './BaseLayout';
 
 it('renders without crashing', () => {
-  shallow(<ProjectLayout />);
+  shallow(<BaseLayout />);
 });
