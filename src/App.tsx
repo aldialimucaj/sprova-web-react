@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Route } from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import './App.scss';
 import LayoutContext, {
   LayoutContextValue,
@@ -19,8 +19,8 @@ const App = () => {
   return (
     <LayoutContext.Provider value={layoutContext}>
       <ProjectLayout>
-        <Route path="" exact={true} component={Home} />
-        <Route path="/project" component={Project} />
+        <Route path="/projects" exact={true} component={Home} />
+        <Route path="/projects/:id" component={Project} />
         <Route path="/new" component={CreateProject} />
       </ProjectLayout>
     </LayoutContext.Provider>

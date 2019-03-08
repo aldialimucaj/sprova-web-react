@@ -1,4 +1,4 @@
-import { Card, Col, Icon, Row } from 'antd';
+import { Button, Card, Col, Divider, Row } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useLayout } from '../../hooks';
@@ -30,15 +30,18 @@ const Home: React.FunctionComponent<{}> = () => {
 
   return (
     <React.Fragment>
-      <h2 style={{ marginTop: 16, marginBottom: 16 }}>Projects</h2>
-      <Row gutter={16}>
-        <Col span={6}>
-          <Link to="/new">
-            <Card bordered={false} className="add-project-card clickable-card">
-              <Icon type="plus" style={{ fontSize: 24 }} />
-            </Card>
-          </Link>
+      <Row type="flex" justify="space-between" align="bottom">
+        <Col>
+          <h2 style={{ marginTop: 16, marginBottom: 0 }}>Projects</h2>
         </Col>
+        <Col>
+          <Button size="small">
+            <Link to="/new">New Project</Link>
+          </Button>
+        </Col>
+      </Row>
+      <Divider />
+      <Row gutter={16}>
         {mockProjects.map((project: Project, index: number) => (
           <Col span={6} key={index}>
             <Link to={`/projects/${project.id}`}>

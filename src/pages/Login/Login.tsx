@@ -66,7 +66,7 @@ const Login: React.FunctionComponent<{}> = () => {
   };
 
   return isAuthenticated ? (
-    <Redirect to="" />
+    <Redirect to="/projects" />
   ) : (
     <Row className="login-page" type="flex" justify="center">
       <Col span={6} style={{ textAlign: 'center' }}>
