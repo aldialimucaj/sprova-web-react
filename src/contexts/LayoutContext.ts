@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type LayoutType = 'Overview' | 'Project';
+export type LayoutType = 'Base' | 'Project';
 
 export interface LayoutContextValue {
   type: LayoutType;
@@ -9,7 +9,7 @@ export interface LayoutContextValue {
 
 const defaultValue: LayoutContextValue = {
   setLayout: () => {},
-  type: 'Overview',
+  type: 'Base',
 };
 
 const LayoutContext: React.Context<LayoutContextValue> = React.createContext(

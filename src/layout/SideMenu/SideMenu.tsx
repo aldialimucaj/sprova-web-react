@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import logo from '../../images/sprova.svg';
 const { Sider } = Layout;
 import LayoutContext from '../../contexts/LayoutContext';
-import OverviewMenu from './Overview/Menu';
+import BaseMenu from './Base/Menu';
 import ProjectMenu from './Project/Menu';
 import './SideMenu.scss';
 
@@ -15,7 +15,8 @@ interface Props {
 const SideMenu: React.FunctionComponent<Props> = ({ collapsed }) => {
   const { type: layoutType } = useContext(LayoutContext);
 
-  const menu = layoutType === 'Overview' ? <OverviewMenu /> : <ProjectMenu />;
+  const menu = layoutType === 'Base' ? <BaseMenu /> : <ProjectMenu />;
+  
 
   return (
     <Sider trigger={null} collapsible={true} collapsed={collapsed}>

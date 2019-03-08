@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useLayout } from '../../hooks';
 
 const Home: React.FunctionComponent<{}> = ({ children }) => {
-  useLayout('Overview');
+  useLayout('Base');
   return (
     <div style={{ padding: 24, background: '#fff', minHeight: '90%' }}>
       Home page

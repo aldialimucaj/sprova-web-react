@@ -1,7 +1,7 @@
 import React from 'react';
 
 const MenuWrapper: React.FunctionComponent<{}> = () => {
-  return <div>{null}</div>;
+  return null;
 };
 
 export default MenuWrapper;
