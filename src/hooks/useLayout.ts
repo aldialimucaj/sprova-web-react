@@ -1,18 +1,14 @@
 import { useContext, useEffect } from 'react';
 import LayoutContext, { LayoutType } from '../contexts/LayoutContext';
 
-const useLayout = (type: LayoutType) => {
-  const { type: layoutType, setLayout } = useContext(LayoutContext);
+const useLayout = (nextType: LayoutType) => {
+  const { type: currentType, setLayout } = useContext(LayoutContext);
 
-  if (type === layoutType) {
+  if (currentType === nextType) {
     return;
   }
 
-  useEffect(() => {
-    if (layoutType !== type) {
-      setLayout(type);
-    }
-  });
+  setLayout(nextType);
 };
 
 export default useLayout;
