@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Redirect, Route } from 'react-router-dom';
+import UserContext from '../contexts/UserContext';
 
 interface Props {
   component: any;
@@ -9,22 +10,26 @@ interface Props {
 const PrivateRoute: React.FunctionComponent<Props> = ({
   component: Component,
   ...rest
-}) => (
-  <Route
-    {...rest}
-    render={(props) =>
-      localStorage.getItem('token') ? (
-        <Component {...props} />
-      ) : (
-        <Redirect
-          to={{
-            pathname: '/login',
-            state: { from: props.location },
-          }}
-        />
-      )
-    }
-  />
-);
+}) => {
+  const userContext = useContext(UserContext);
+
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        userContext.isAuthenticated ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { from: props.location },
+            }}
+          />
+        )
+      }
+    />
+  );
+};
 
 export default PrivateRoute;

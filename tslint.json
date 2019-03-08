@@ -4,6 +4,7 @@
     "jsx-wrap-multiline": false,
     "jsx-no-multiline-js": false,
     "jsx-no-lambda": false,
+    "no-empty": false,
     "trailing-comma": false,
     "no-submodule-imports": false,
     "quotemark": false,

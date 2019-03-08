@@ -1,8 +1,9 @@
 import { Divider, Dropdown, Icon, Layout, Menu, Select } from 'antd';
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-const { Header: AntdHeader } = Layout;
+const { Header } = Layout;
 import authApi from '../api/auth.api';
+import UserContext from '../contexts/UserContext';
 import './Header.scss';
 
 const { Option } = Select;
@@ -12,15 +13,17 @@ interface Props {
   toggleSidebar(): void;
 }
 
-const Header: React.FunctionComponent<Props> = ({
+const HeaderWrapper: React.FunctionComponent<Props> = ({
   sidebarCollapsed,
   toggleSidebar,
 }) => {
-  const [loggedOut, setLoggedOut] = useState(false);
+  const { isAuthenticated, setIsAuthenticated, username } = useContext(
+    UserContext
+  );
 
   const logout = () => {
     authApi.logout();
-    setLoggedOut(true);
+    setIsAuthenticated(false);
   };
 
   const menu = (
@@ -39,10 +42,8 @@ const Header: React.FunctionComponent<Props> = ({
     </Menu>
   );
 
-  return loggedOut ? (
-    <Redirect to="/login" />
-  ) : (
-    <AntdHeader tagName="header" style={{ padding: 0 }}>
+  return isAuthenticated ? (
+    <Header tagName="header" style={{ padding: 0 }}>
       <div className="navbar">
         <span className="trigger" onClick={toggleSidebar}>
           <Icon type={sidebarCollapsed ? 'menu-unfold' : 'menu-fold'} />
@@ -56,14 +57,16 @@ const Header: React.FunctionComponent<Props> = ({
           <Dropdown overlay={menu} placement="bottomRight">
             <div className="navbar-item">
               <Link to="/user">
-                User <Icon type="down" />
+                {username} <Icon type="down" />
               </Link>
             </div>
           </Dropdown>
         </div>
       </div>
-    </AntdHeader>
+    </Header>
+  ) : (
+    <Redirect to="/login" />
   );
 };
 
-export default Header;
+export default HeaderWrapper;

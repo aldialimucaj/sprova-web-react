@@ -1,28 +1,34 @@
 import { Alert, Button, Col, Input, Row, Spin } from 'antd';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import authApi from '../../api/auth.api';
+import authApi, { DecodedToken } from '../../api/auth.api';
+import UserContext from '../../contexts/UserContext';
 import logo from '../../images/sprova.svg';
 import './Login.scss';
 
 const Login: React.FunctionComponent<{}> = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [usernameValue, setUsernameValue] = useState('');
+  const [passwordValue, setPasswordValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    authApi.isAuthenticated()
-  );
   const [error, setError] = useState('');
+
+  const userContext = useContext(UserContext);
+  const {
+    isAuthenticated,
+    setIsAuthenticated,
+    username,
+    setUsername,
+  } = userContext;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.currentTarget;
     switch (name) {
       case 'username': {
-        setUsername(value);
+        setUsernameValue(value);
         break;
       }
       case 'password': {
-        setPassword(value);
+        setPasswordValue(value);
         break;
       }
     }
@@ -42,11 +48,13 @@ const Login: React.FunctionComponent<{}> = () => {
   const login = () => {
     setIsLoading(true);
     authApi
-      .authenticate(username, password)
+      .authenticate(usernameValue, passwordValue)
       .then(
-        (): void => {
+        (decoded: DecodedToken): void => {
+          const { username: usernameNew } = decoded;
           setIsLoading(false);
           setIsAuthenticated(true);
+          setUsername(usernameNew);
         }
       )
       .catch(
@@ -78,6 +86,7 @@ const Login: React.FunctionComponent<{}> = () => {
             className="form-item"
             type="text"
             name="username"
+            value={usernameValue}
             placeholder="Username"
             onChange={handleChange}
             onKeyDown={handleKeyPress}
@@ -86,6 +95,7 @@ const Login: React.FunctionComponent<{}> = () => {
             className="form-item"
             type="password"
             name="password"
+            value={passwordValue}
             placeholder="Password"
             onChange={handleChange}
             onKeyDown={handleKeyPress}
@@ -94,7 +104,7 @@ const Login: React.FunctionComponent<{}> = () => {
             className="form-item"
             block={true}
             type="primary"
-            disabled={!(username && password)}
+            disabled={!(usernameValue && passwordValue)}
             onClick={handleSubmit}
           >
             Log in

@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.scss';
+import UserContext from './contexts/UserContext';
 import Layout from './layout';
 
 const App = () => {
