@@ -1,6 +1,6 @@
 import { Alert, Button, Divider, Input, Spin } from 'antd';
 import React, { useState } from 'react';
-import projectApi from '../../api/project.api';
+import { postProject } from '../../api/project.api';
 import { Project } from '../../models/Project';
 
 const CreateProject: React.FunctionComponent<{}> = () => {
@@ -40,8 +40,7 @@ const CreateProject: React.FunctionComponent<{}> = () => {
       description: descriptionValue,
       title: titleValue,
     };
-    projectApi
-      .postProject(project)
+    postProject(project)
       .then(
         (): void => {
           setIsLoading(false);

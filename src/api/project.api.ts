@@ -1,19 +1,15 @@
+import { message as MessageProvider } from 'antd';
 import { AxiosError, AxiosResponse } from 'axios';
 import { Project } from '../models/Project';
 import agent from './agent';
 
-export default {
-  getProject,
-  getProjects,
-  postProject,
-};
-
-function postProject(project: Project) {
+export function postProject(project: Project) {
   return agent
     .post('/projects', project)
     .catch(
       (error: AxiosError): AxiosResponse => {
         const { message, response } = error;
+        MessageProvider.error(message, 10);
         if (!response) {
           throw message;
         }
@@ -31,16 +27,17 @@ function postProject(project: Project) {
     );
 }
 
-function getProject() {
+export function getProject() {
   // TODO:
 }
 
-function getProjects() {
+export function getProjects() {
   return agent
     .get('/projects')
     .catch(
       (error: AxiosError): AxiosResponse => {
         const { message, response } = error;
+        MessageProvider.error(message, 10);
         if (!response) {
           throw message;
         }
@@ -55,6 +52,8 @@ function getProjects() {
         if (status !== 200) {
           throw error || statusText;
         }
+        console.log("projects")
+
         return token;
       }
     );
