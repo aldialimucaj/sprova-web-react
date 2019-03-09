@@ -1,9 +1,12 @@
 import { Alert, Button, Divider, Input, Spin } from 'antd';
 import React, { useState } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { postProject } from '../../api/project.api';
 import { Project } from '../../models/Project';
 
-const CreateProject: React.FunctionComponent<{}> = () => {
+const CreateProject: React.FunctionComponent<RouteComponentProps> = ({
+  history,
+}) => {
   const [titleValue, setTitleValue] = useState('');
   const [descriptionValue, setDescriptionValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -42,8 +45,9 @@ const CreateProject: React.FunctionComponent<{}> = () => {
     };
     postProject(project)
       .then(
-        (): void => {
+        ({ _id }): void => {
           setIsLoading(false);
+          history.push(`/projects/${_id}`);
         }
       )
       .catch(
@@ -97,4 +101,4 @@ const CreateProject: React.FunctionComponent<{}> = () => {
   );
 };
 
-export default CreateProject;
+export default withRouter(CreateProject);

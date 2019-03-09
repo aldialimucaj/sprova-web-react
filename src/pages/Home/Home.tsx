@@ -9,20 +9,20 @@ const Home: React.FunctionComponent<{}> = () => {
   useLayout('Base');
   const mockProjects: Project[] = [
     {
+      _id: '0',
       description: 'Description 1',
-      id: '0',
       owner: '1',
       title: 'Project 1',
     },
     {
+      _id: '1',
       description: 'Description 2',
-      id: '1',
       owner: '1',
       title: 'Project 2',
     },
     {
+      _id: '2',
       description: 'Description 3',
-      id: '2',
       owner: '1',
       title: 'Project 3',
     },
@@ -44,7 +44,7 @@ const Home: React.FunctionComponent<{}> = () => {
       <Row gutter={16}>
         {mockProjects.map((project: Project, index: number) => (
           <Col span={6} key={index}>
-            <Link to={`/projects/${project.id}`}>
+            <Link to={`/projects/${project._id}`}>
               <Card bordered={false} className="clickable-card">
                 <h3>{project.title}</h3>
                 <p style={{ marginBottom: 0 }}>{project.description}</p>

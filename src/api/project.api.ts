@@ -52,7 +52,6 @@ export function getProjects() {
         if (status !== 200) {
           throw error || statusText;
         }
-        console.log("projects")
 
         return token;
       }

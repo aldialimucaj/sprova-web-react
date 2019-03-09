@@ -20,6 +20,7 @@ const Root = () => {
     setUsername,
     username,
   };
+
   return (
     <Router>
       <UserContext.Provider value={userContext}>

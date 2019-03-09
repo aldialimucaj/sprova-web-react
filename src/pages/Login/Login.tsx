@@ -13,12 +13,7 @@ const Login: React.FunctionComponent<{}> = () => {
   const [error, setError] = useState('');
 
   const userContext = useContext(UserContext);
-  const {
-    isAuthenticated,
-    setIsAuthenticated,
-    username,
-    setUsername,
-  } = userContext;
+  const { isAuthenticated, setIsAuthenticated, setUsername } = userContext;
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.currentTarget;
