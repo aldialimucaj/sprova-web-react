@@ -1,9 +1,9 @@
 import { Button, Card, Col, Divider, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { getProjects } from "../../api/project.api";
 import { useLayout } from '../../hooks';
 import { Project } from '../../models/Project';
-import { getProjects } from "../../api/project.api";
 import './Home.scss';
 
 const Home: React.FunctionComponent<{}> = () => {
@@ -16,11 +16,10 @@ const Home: React.FunctionComponent<{}> = () => {
     } catch (e) {
       // TODO: take care of no data error
     }
-  }
+  };
   useEffect(() => {
     fetchData();
   }, []);
-
 
   return (
     <React.Fragment>

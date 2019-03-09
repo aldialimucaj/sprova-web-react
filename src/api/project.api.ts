@@ -28,7 +28,7 @@ export function postProject(project: Project) {
 }
 
 export async function getProject(projectId: string): Promise<Project> {
-  return await agent
+  return agent
     .get('/projects/' + projectId)
     .then(
       (response: AxiosResponse) => {
@@ -45,7 +45,7 @@ export async function getProject(projectId: string): Promise<Project> {
 }
 
 export async function getProjects(limit?: number, skip?: number, sort?: any): Promise<Project[]> {
-  return await agent
+  return agent
     .get('/projects', {
       params: { limit, skip, sort }
     })
@@ -64,7 +64,7 @@ export async function getProjects(limit?: number, skip?: number, sort?: any): Pr
 }
 
 export async function filterProjects(query: any, options?: any): Promise<Project[]> {
-  return await agent
+  return agent
     .post('/search/projects', { query, options }
     )
     .then(

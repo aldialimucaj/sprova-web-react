@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
 import { Avatar, Divider, Dropdown, Icon, Layout, Menu, Select } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import authApi from '../../api/auth.api';
-import { Project } from "../../models/Project";
 import { getProjects } from "../../api/project.api";
+import { Project } from "../../models/Project";
 import './Header.scss';
 
 const { Header } = Layout;
@@ -44,11 +44,10 @@ const HeaderWrapper: React.FunctionComponent<Props> = ({
     } catch (e) {
       // TODO: take care of no data error
     }
-  }
+  };
   useEffect(() => {
     fetchData();
   }, []);
-
 
   const menu = (
     <Menu>

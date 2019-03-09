@@ -1,14 +1,15 @@
 import { Breadcrumb } from 'antd';
 import React, { useEffect, useState } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import { getProject } from "../../api/project.api";
 import { useLayout } from '../../hooks';
-import { RouteComponentProps } from 'react-router-dom';
 import { Project } from "../../models/Project";
 
 const ProjectDetails: React.FunctionComponent<{} & RouteComponentProps<{}>> = ({ match }: { match: any }) => {
   useLayout('Project');
+  const defaultProject: Project = { title: '', description: '' };
 
-  const [project, setProject] = useState<Project>({} as Project);
+  const [project, setProject] = useState<Project>(defaultProject);
   const fetchData = async () => {
     try {
       const data = await getProject(match.params.id);
@@ -16,12 +17,11 @@ const ProjectDetails: React.FunctionComponent<{} & RouteComponentProps<{}>> = ({
     } catch (e) {
       // TODO: take care of no data error
     }
-  }
+  };
 
   useEffect(() => {
     fetchData();
   }, []);
-
 
   return (
     <React.Fragment>
@@ -31,7 +31,7 @@ const ProjectDetails: React.FunctionComponent<{} & RouteComponentProps<{}>> = ({
       </Breadcrumb>
       <div style={{ padding: 24, background: '#fff', minHeight: '90%' }}>
         {project.title}
-        <br></br>
+        <br />
         {project.description}
       </div>
     </React.Fragment>
