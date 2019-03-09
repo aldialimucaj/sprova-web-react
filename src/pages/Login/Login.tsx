@@ -1,29 +1,27 @@
 import { Alert, Button, Col, Input, Row, Spin } from 'antd';
-import React, { useContext, useState } from 'react';
-import { Redirect } from 'react-router-dom';
-import authApi, { DecodedToken } from '../../api/auth.api';
-import UserContext from '../../contexts/UserContext';
+import React, { useState } from 'react';
+import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
+import authApi from '../../api/auth.api';
 import logo from '../../images/sprova.svg';
 import './Login.scss';
 
-const Login: React.FunctionComponent<{}> = () => {
-  const [usernameValue, setUsernameValue] = useState('');
-  const [passwordValue, setPasswordValue] = useState('');
+const Login: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const userContext = useContext(UserContext);
-  const { isAuthenticated, setIsAuthenticated, setUsername } = userContext;
+  const isAuthenticated = authApi.isAuthenticated();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.currentTarget;
     switch (name) {
       case 'username': {
-        setUsernameValue(value);
+        setUsername(value);
         break;
       }
       case 'password': {
-        setPasswordValue(value);
+        setPassword(value);
         break;
       }
     }
@@ -43,13 +41,11 @@ const Login: React.FunctionComponent<{}> = () => {
   const login = () => {
     setIsLoading(true);
     authApi
-      .authenticate(usernameValue, passwordValue)
+      .authenticate(username, password)
       .then(
-        (decoded: DecodedToken): void => {
-          const { username: usernameNew } = decoded;
+        (): void => {
           setIsLoading(false);
-          setIsAuthenticated(true);
-          setUsername(usernameNew);
+          history.push('/projects');
         }
       )
       .catch(
@@ -60,9 +56,7 @@ const Login: React.FunctionComponent<{}> = () => {
       );
   };
 
-  return isAuthenticated ? (
-    <Redirect to="/projects" />
-  ) : (
+  return !isAuthenticated ? (
     <Row className="login-page" type="flex" justify="center">
       <Col span={6} style={{ textAlign: 'center' }}>
         <img src={logo} width="64px" style={{ margin: 36 }} />
@@ -81,7 +75,7 @@ const Login: React.FunctionComponent<{}> = () => {
             className="form-item"
             type="text"
             name="username"
-            value={usernameValue}
+            value={username}
             placeholder="Username"
             onChange={handleChange}
             onKeyDown={handleKeyPress}
@@ -90,7 +84,7 @@ const Login: React.FunctionComponent<{}> = () => {
             className="form-item"
             type="password"
             name="password"
-            value={passwordValue}
+            value={password}
             placeholder="Password"
             onChange={handleChange}
             onKeyDown={handleKeyPress}
@@ -99,7 +93,7 @@ const Login: React.FunctionComponent<{}> = () => {
             className="form-item"
             block={true}
             type="primary"
-            disabled={!(usernameValue && passwordValue)}
+            disabled={!(username && password)}
             onClick={handleSubmit}
           >
             Log in
@@ -107,7 +101,9 @@ const Login: React.FunctionComponent<{}> = () => {
         </Spin>
       </Col>
     </Row>
+  ) : (
+    <Redirect to="/projects" />
   );
 };
 
-export default Login;
+export default withRouter(Login);

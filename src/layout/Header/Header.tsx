@@ -1,28 +1,27 @@
 import { Avatar, Divider, Dropdown, Icon, Layout, Menu, Select } from 'antd';
-import React, { useContext } from 'react';
+import React from 'react';
 const { Header } = Layout;
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import authApi from '../../api/auth.api';
-import UserContext from '../../contexts/UserContext';
 import './Header.scss';
 
 const { Option } = Select;
 
-interface Props {
+interface Props extends RouteComponentProps {
   sidebarCollapsed: boolean;
   toggleSidebar(): void;
 }
 
 const HeaderWrapper: React.FunctionComponent<Props> = ({
+  history,
   sidebarCollapsed,
   toggleSidebar,
 }) => {
-  const { isAuthenticated, setIsAuthenticated, username } = useContext(
-    UserContext
-  );
+  const username = authApi.getUsername();
 
   const logout = () => {
     authApi.logout();
-    setIsAuthenticated(false);
+    history.push('/login');
   };
 
   const menu = (
@@ -67,4 +66,4 @@ const HeaderWrapper: React.FunctionComponent<Props> = ({
   );
 };
 
-export default HeaderWrapper;
+export default withRouter(HeaderWrapper);

@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import UserContext from '../contexts/UserContext';
+import authApi from '../api/auth.api';
 
 interface Props {
   component: any;
@@ -11,13 +11,13 @@ const PrivateRoute: React.FunctionComponent<Props> = ({
   component: Component,
   ...rest
 }) => {
-  const userContext = useContext(UserContext);
+  const isAuthenticated = authApi.isAuthenticated();
 
   return (
     <Route
       {...rest}
       render={(props) =>
-        userContext.isAuthenticated ? (
+        isAuthenticated ? (
           <Component {...props} />
         ) : (
           <Redirect
