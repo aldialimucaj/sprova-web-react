@@ -44,9 +44,29 @@ export async function getProject(projectId: string): Promise<Project> {
     );
 }
 
-export async function getProjects(): Promise<Project[]> {
+export async function getProjects(limit?: number, skip?: number, sort?: any): Promise<Project[]> {
   return await agent
-    .get('/projects')
+    .get('/projects', {
+      params: { limit, skip, sort }
+    })
+    .then(
+      (response: AxiosResponse) => {
+        return Promise.resolve(response.data);
+      }
+    ).catch(
+      (error: AxiosError) => {
+        const { message } = error;
+        MessageProvider.error(message, 10);
+
+        throw new Error(message);
+      }
+    );
+}
+
+export async function filterProjects(query: any, options?: any): Promise<Project[]> {
+  return await agent
+    .post('/search/projects', { query, options }
+    )
     .then(
       (response: AxiosResponse) => {
         return Promise.resolve(response.data);

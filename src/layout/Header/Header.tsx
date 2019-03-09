@@ -1,10 +1,12 @@
+import React, { useEffect, useState } from 'react';
 import { Avatar, Divider, Dropdown, Icon, Layout, Menu, Select } from 'antd';
-import React from 'react';
-const { Header } = Layout;
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import authApi from '../../api/auth.api';
+import { Project } from "../../models/Project";
+import { getProjects } from "../../api/project.api";
 import './Header.scss';
 
+const { Header } = Layout;
 const { Option } = Select;
 
 interface Props extends RouteComponentProps {
@@ -23,6 +25,30 @@ const HeaderWrapper: React.FunctionComponent<Props> = ({
     authApi.logout();
     history.push('/login');
   };
+
+  const [projects, setProjects] = useState(new Array());
+  const fetchData = async () => {
+    try {
+      const data = await getProjects(5);
+      const children = [];
+      for (let i = 0; i < data.length; i++) {
+        children.push(
+          <Option key={i}>
+            <Link to={"/projects/" + data[i]._id}>
+              {data[i].title}
+            </Link>
+          </Option>
+        );
+      }
+      setProjects(children);
+    } catch (e) {
+      // TODO: take care of no data error
+    }
+  }
+  useEffect(() => {
+    fetchData();
+  }, []);
+
 
   const menu = (
     <Menu>
@@ -48,8 +74,8 @@ const HeaderWrapper: React.FunctionComponent<Props> = ({
         </span>
         <Divider type="vertical" style={{ fontSize: 24, margin: 0 }} />
         <Select defaultValue="0" style={{ width: 120, margin: '0 24px' }}>
-          <Option value="0">My Project</Option>
-          <Option value="1">
+          {projects}
+          <Option value="new">
             <Link to="/new">Create new</Link>
           </Option>
         </Select>
