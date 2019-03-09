@@ -27,19 +27,36 @@ export function postProject(project: Project) {
     );
 }
 
-export function getProject() {
-  // TODO:
+export async function getProject(projectId: string): Promise<Project> {
+  return await agent
+    .get('/projects/' + projectId)
+    .then(
+      (response: AxiosResponse) => {
+        return Promise.resolve(response.data);
+      }
+    ).catch(
+      (error: AxiosError) => {
+        const { message } = error;
+        MessageProvider.error(message, 10);
+
+        throw new Error(message);
+      }
+    );
 }
 
 export async function getProjects(): Promise<Project[]> {
   return await agent
     .get('/projects')
-
     .then(
-      (response: AxiosResponse<Project[]>) => {
-        // TODO:
+      (response: AxiosResponse) => {
+        return Promise.resolve(response.data);
+      }
+    ).catch(
+      (error: AxiosError) => {
+        const { message } = error;
+        MessageProvider.error(message, 10);
 
-        return response.data as Project[];
+        throw new Error(message);
       }
     );
 }

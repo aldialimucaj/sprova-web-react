@@ -8,15 +8,16 @@ import './Home.scss';
 
 const Home: React.FunctionComponent<{}> = () => {
   useLayout('Base');
-  const [projects, setProjects] = useState(new Array<Project>());
-
-  useEffect(() => {
-
-    const fetchData = async () => {
+  const [projects, setProjects] = useState<Project[]>(new Array<Project>());
+  const fetchData = async () => {
+    try {
       const data = await getProjects();
       setProjects(data);
+    } catch (e) {
+      // TODO: take care of no data error
     }
-
+  }
+  useEffect(() => {
     fetchData();
   }, []);
 

@@ -6,7 +6,7 @@ import LayoutContext, {
   LayoutType,
 } from './contexts/LayoutContext';
 import ProjectLayout from './layout';
-import { CreateProject, Home, Project } from './pages';
+import { CreateProject, Home, ProjectDetails } from './pages';
 
 const App = () => {
   const [layoutType, setLayoutType] = useState('Base' as LayoutType);
@@ -20,7 +20,7 @@ const App = () => {
     <LayoutContext.Provider value={layoutContext}>
       <ProjectLayout>
         <Route path="/projects" exact={true} component={Home} />
-        <Route path="/projects/:id" component={Project} />
+        <Route path="/projects/:id" component={ProjectDetails} />
         <Route path="/new" component={CreateProject} />
       </ProjectLayout>
     </LayoutContext.Provider>
