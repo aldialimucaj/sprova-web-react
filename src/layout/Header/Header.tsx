@@ -1,7 +1,7 @@
 import { Avatar, Divider, Dropdown, Icon, Layout, Menu, Select } from 'antd';
 import React from 'react';
 const { Header } = Layout;
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import authApi from '../../api/auth.api';
 import './Header.scss';
 
@@ -47,9 +47,11 @@ const HeaderWrapper: React.FunctionComponent<Props> = ({
           <Icon type={sidebarCollapsed ? 'menu-unfold' : 'menu-fold'} />
         </span>
         <Divider type="vertical" style={{ fontSize: 24, margin: 0 }} />
-        <Select defaultValue="" style={{ width: 120, margin: '0 24px' }}>
-          <Option value="">Create new</Option>
-          <Option value="">My Project</Option>
+        <Select defaultValue="0" style={{ width: 120, margin: '0 24px' }}>
+          <Option value="0">My Project</Option>
+          <Option value="1">
+            <Link to="/new">Create new</Link>
+          </Option>
         </Select>
         <div className="right">
           <Dropdown overlay={menu} placement="bottomRight">
