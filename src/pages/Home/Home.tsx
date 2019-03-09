@@ -1,32 +1,25 @@
 import { Button, Card, Col, Divider, Row } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLayout } from '../../hooks';
 import { Project } from '../../models/Project';
+import { getProjects } from "../../api/project.api";
 import './Home.scss';
 
 const Home: React.FunctionComponent<{}> = () => {
   useLayout('Base');
-  const mockProjects: Project[] = [
-    {
-      _id: '0',
-      description: 'Description 1',
-      owner: '1',
-      title: 'Project 1',
-    },
-    {
-      _id: '1',
-      description: 'Description 2',
-      owner: '1',
-      title: 'Project 2',
-    },
-    {
-      _id: '2',
-      description: 'Description 3',
-      owner: '1',
-      title: 'Project 3',
-    },
-  ];
+  const [projects, setProjects] = useState(new Array<Project>());
+
+  useEffect(() => {
+
+    const fetchData = async () => {
+      const data = await getProjects();
+      setProjects(data);
+    }
+
+    fetchData();
+  }, []);
+
 
   return (
     <React.Fragment>
@@ -42,7 +35,7 @@ const Home: React.FunctionComponent<{}> = () => {
       </Row>
       <Divider />
       <Row gutter={16}>
-        {mockProjects.map((project: Project, index: number) => (
+        {projects.map((project: Project, index: number) => (
           <Col span={6} key={index}>
             <Link to={`/projects/${project._id}`}>
               <Card bordered={false} className="clickable-card">

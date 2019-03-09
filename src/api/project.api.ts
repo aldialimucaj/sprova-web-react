@@ -31,29 +31,15 @@ export function getProject() {
   // TODO:
 }
 
-export function getProjects() {
-  return agent
+export async function getProjects(): Promise<Project[]> {
+  return await agent
     .get('/projects')
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        MessageProvider.error(message, 10);
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
-    .then(
-      (response: AxiosResponse): string => {
-        // TODO:
-        const { data, status, statusText } = response;
-        const { error, token } = data;
-        if (status !== 200) {
-          throw error || statusText;
-        }
 
-        return token;
+    .then(
+      (response: AxiosResponse<Project[]>) => {
+        // TODO:
+
+        return response.data as Project[];
       }
     );
 }
