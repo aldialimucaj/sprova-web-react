@@ -1,9 +1,17 @@
-import { Avatar, Divider, Dropdown, Icon, Layout, Menu, Select } from 'antd';
+import {
+  Avatar,
+  Button,
+  Divider,
+  Dropdown,
+  Icon,
+  Layout,
+  Menu,
+  Select,
+} from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import authApi from '../../api/auth.api';
-import { getProjects } from "../../api/project.api";
-import { Project } from "../../models/Project";
+import { getProjects } from '../../api/project.api';
 import './Header.scss';
 
 const { Header } = Layout;
@@ -16,6 +24,7 @@ interface Props extends RouteComponentProps {
 
 const HeaderWrapper: React.FunctionComponent<Props> = ({
   history,
+  location,
   sidebarCollapsed,
   toggleSidebar,
 }) => {
@@ -34,9 +43,7 @@ const HeaderWrapper: React.FunctionComponent<Props> = ({
       for (let i = 0; i < data.length; i++) {
         children.push(
           <Option key={i}>
-            <Link to={"/projects/" + data[i]._id}>
-              {data[i].title}
-            </Link>
+            <Link to={'/projects/' + data[i]._id}>{data[i].title}</Link>
           </Option>
         );
       }
@@ -79,8 +86,18 @@ const HeaderWrapper: React.FunctionComponent<Props> = ({
           </Option>
         </Select>
         <div className="right">
+          <Button style={{ display: 'inline-block', margin: '0 24px' }}>
+            <Link to={`${location.pathname}/settings`}>
+              <Icon type="setting" style={{ marginRight: 8 }} />
+              Project Settings
+            </Link>
+          </Button>
+          <Divider
+            type="vertical"
+            style={{ fontSize: 24, margin: 0, display: 'inline-block' }}
+          />
           <Dropdown overlay={menu} placement="bottomRight">
-            <div className="navbar-item">
+            <div style={{ display: 'inline-block' }} className="navbar-item">
               <Avatar size="small" className="avatar">
                 {username.slice(0, 1).toUpperCase()}
               </Avatar>

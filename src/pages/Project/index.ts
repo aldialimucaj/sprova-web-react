@@ -1,3 +1,3 @@
-import ProjectDetails from './ProjectDetails';
+import Project from './Project';
 
-export default ProjectDetails;
+export default Project;

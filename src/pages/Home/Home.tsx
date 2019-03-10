@@ -27,7 +27,7 @@ const Home: React.FunctionComponent<{}> = () => {
         </Col>
         <Col>
           <Button size="small">
-            <Link to="/new">New Project</Link>
+            <Link to="/projects/new">New Project</Link>
           </Button>
         </Col>
       </Row>
