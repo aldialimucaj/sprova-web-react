@@ -28,23 +28,17 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
   }, []);
 
   return (
-    <React.Fragment>
-      <Breadcrumb style={{ marginBottom: 24 }}>
-        <Breadcrumb.Item>Projects</Breadcrumb.Item>
-        <Breadcrumb.Item>Cycles</Breadcrumb.Item>
-      </Breadcrumb>
-      <div
-        style={{
-          background: '#fff',
-          minHeight: '90%',
-          padding: 24,
-        }}
-      >
-        {project.title}
-        <br />
-        {project.description}
-      </div>
-    </React.Fragment>
+    <div
+      style={{
+        background: '#fff',
+        minHeight: '90%',
+        padding: 24,
+      }}
+    >
+      {project.title}
+      <br />
+      {project.description}
+    </div>
   );
 };
 
