@@ -1,53 +1,81 @@
 import { Icon, Menu } from 'antd';
 import React from 'react';
-import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
-
-const { SubMenu } = Menu;
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
 interface Params {
   id: string;
 }
 
+interface MenuItem {
+  exact?: boolean;
+  icon: string;
+  text: string;
+  path: string;
+}
+
 const ProjectMenu: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
+  location,
 }) => {
+  const menuItems: MenuItem[] = [
+    {
+      exact: true,
+      icon: 'appstore',
+      path: '',
+      text: 'Overview',
+    },
+    {
+      icon: 'file-text',
+      path: 'testcases',
+      text: 'Test Cases',
+    },
+    {
+      icon: 'retweet',
+      path: 'cycles',
+      text: 'Cycles',
+    },
+    {
+      icon: 'snippets',
+      path: 'testsets',
+      text: 'Test Sets',
+    },
+    {
+      icon: 'pie-chart',
+      path: 'reports',
+      text: 'Reports',
+    },
+  ];
+
+  const normalizedPath = location.pathname.replace(
+    `/projects/${match.params.id}`,
+    ''
+  );
+
+  const isActive = (menuItem: MenuItem): boolean => {
+    if (menuItem.exact) {
+      return normalizedPath === menuItem.path;
+    }
+    return normalizedPath.split('/').includes(menuItem.path);
+  };
+
   return (
-    <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-      <Menu.Item style={{ margin: 0 }} key="1">
-        <Link to={`/projects/${match.params.id}`}>
-          <Icon type="appstore" />
-          <span>Overview</span>
-        </Link>
-      </Menu.Item>
-      <Menu.Item style={{ margin: 0 }} key="2">
-        <Link to={`/projects/${match.params.id}/testcases`}>
-          <Icon type="file-text" />
-          <span>Test cases</span>
-        </Link>
-      </Menu.Item>
-      <Menu.Item style={{ margin: 0 }} key="3">
-        <Link to={`/projects/${match.params.id}/cycles`}>
-          <Icon type="retweet" />
-          <span>Cycles</span>
-        </Link>
-      </Menu.Item>
-      <SubMenu
-        key="sub2"
-        title={
-          <span>
-            <Icon type="snippets" />
-            <span>Test sets</span>
-          </span>
-        }
-      >
-        <Menu.Item key="4">dummy</Menu.Item>
-      </SubMenu>
-      <Menu.Item style={{ margin: 0 }} key="5">
-        <Link to={`/projects/${match.params.id}/reports`}>
-          <Icon type="pie-chart" />
-          <span>Reports</span>
-        </Link>
-      </Menu.Item>
+    <Menu theme="dark" mode="vertical" selectedKeys={[]}>
+      {menuItems.map((menuItem, index) => (
+        <Menu.Item
+          style={{ margin: 0 }}
+          key={index}
+          className={`${isActive(menuItem) ? 'ant-menu-item-selected' : ''}`}
+        >
+          <Link
+            to={`/projects/${match.params.id}${
+              menuItem.path.length > 0 ? '/' : ''
+            }${menuItem.path}`}
+          >
+            <Icon type={menuItem.icon} />
+            <span>{menuItem.text}</span>
+          </Link>
+        </Menu.Item>
+      ))}
     </Menu>
   );
 };
