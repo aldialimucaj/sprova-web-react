@@ -1,9 +1,8 @@
 import { Layout } from 'antd';
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, Route, Switch } from 'react-router-dom';
 import logo from '../../images/sprova.svg';
 const { Sider } = Layout;
-import LayoutContext from '../../contexts/LayoutContext';
 import BaseMenu from './Base/Menu';
 import ProjectMenu from './Project/Menu';
 import './SideMenu.scss';
@@ -13,10 +12,6 @@ interface Props {
 }
 
 const SideMenu: React.FunctionComponent<Props> = ({ collapsed }) => {
-  const { type: layoutType } = useContext(LayoutContext);
-
-  const menu = layoutType === 'Base' ? <BaseMenu /> : <ProjectMenu />;
-
   return (
     <Sider trigger={null} collapsible={true} collapsed={collapsed}>
       <div className="logo" id="logo">
@@ -25,7 +20,10 @@ const SideMenu: React.FunctionComponent<Props> = ({ collapsed }) => {
           <h1>Sprova</h1>
         </Link>
       </div>
-      {menu}
+      <Switch>
+        <Route path="/projects/:id" component={ProjectMenu} />
+        <Route component={BaseMenu} />
+      </Switch>
     </Sider>
   );
 };

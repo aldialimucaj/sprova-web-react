@@ -1,13 +1,11 @@
 import { Button, Card, Col, Divider, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getProjects } from "../../api/project.api";
-import { useLayout } from '../../hooks';
+import { getProjects } from '../../api/project.api';
 import { Project } from '../../models/Project';
 import './Home.scss';
 
 const Home: React.FunctionComponent<{}> = () => {
-  useLayout('Base');
   const [projects, setProjects] = useState<Project[]>(new Array<Project>());
   const fetchData = async () => {
     try {
