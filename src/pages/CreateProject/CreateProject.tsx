@@ -2,6 +2,7 @@ import { Alert, Button, Divider, Input, Spin } from 'antd';
 import React, { useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { postProject } from '../../api/project.api';
+import SectionHeader from '../../components/SectionHeader';
 import { Project } from '../../models/Project';
 
 const CreateProject: React.FunctionComponent<RouteComponentProps> = ({
@@ -65,8 +66,7 @@ const CreateProject: React.FunctionComponent<RouteComponentProps> = ({
 
   return (
     <React.Fragment>
-      <h2 style={{ marginBottom: 0 }}>Create new project</h2>
-      <Divider />
+      <SectionHeader title="Create new project" />
       <Spin spinning={isLoading}>
         {error ? (
           <Alert

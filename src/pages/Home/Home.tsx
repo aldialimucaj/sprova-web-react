@@ -2,6 +2,7 @@ import { Card, Col, Divider, Icon, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { getProjects } from '../../api/project.api';
+import SectionHeader from '../../components/SectionHeader';
 import { Project } from '../../models/Project';
 import './Home.scss';
 
@@ -25,20 +26,11 @@ const Home: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
 
   return (
     <React.Fragment>
-      <Row
-        type="flex"
-        justify="space-between"
-        align="middle"
-        style={{ marginBottom: 24 }}
-      >
-        <Col>
-          <h2 style={{ marginBottom: 0 }}>Projects</h2>
-        </Col>
-        <Col>
-          <Link to="/projects/new">New Project</Link>
-        </Col>
-      </Row>
-      <Divider />
+      <SectionHeader
+        title="Projects"
+        extra={<Link to="/projects/new">New Project</Link>}
+      />
+
       <Row gutter={16}>
         {projects.map((project: Project, index: number) => (
           <Col span={6} key={index}>
