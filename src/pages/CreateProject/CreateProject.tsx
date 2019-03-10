@@ -32,6 +32,11 @@ const CreateProject: React.FunctionComponent<RouteComponentProps> = ({
     }
   };
 
+  const handleCancel = (event: React.FormEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    history.push('/projects');
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
     createProject();
@@ -95,6 +100,14 @@ const CreateProject: React.FunctionComponent<RouteComponentProps> = ({
           onClick={handleSubmit}
         >
           Create
+        </Button>
+
+        <Button
+          className="form-item"
+          onClick={handleCancel}
+          style={{ marginLeft: 16 }}
+        >
+          Cancel
         </Button>
       </Spin>
     </React.Fragment>
