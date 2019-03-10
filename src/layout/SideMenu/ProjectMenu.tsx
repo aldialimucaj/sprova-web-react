@@ -1,22 +1,35 @@
 import { Icon, Menu } from 'antd';
 import React from 'react';
+import { Link, withRouter, RouteComponentProps } from 'react-router-dom';
 
 const { SubMenu } = Menu;
 
-const ProjectMenu: React.FunctionComponent<{}> = () => {
+interface Params {
+  id: string;
+}
+
+const ProjectMenu: React.FunctionComponent<RouteComponentProps<Params>> = ({
+  match,
+}) => {
   return (
     <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
       <Menu.Item style={{ margin: 0 }} key="1">
-        <Icon type="appstore" />
-        <span>Overview</span>
+        <Link to={`/projects/${match.params.id}`}>
+          <Icon type="appstore" />
+          <span>Overview</span>
+        </Link>
       </Menu.Item>
       <Menu.Item style={{ margin: 0 }} key="2">
-        <Icon type="file-text" />
-        <span>Test cases</span>
+        <Link to={`/projects/${match.params.id}/testcases`}>
+          <Icon type="file-text" />
+          <span>Test cases</span>
+        </Link>
       </Menu.Item>
       <Menu.Item style={{ margin: 0 }} key="3">
-        <Icon type="retweet" />
-        <span>Cycles</span>
+        <Link to={`/projects/${match.params.id}/cycles`}>
+          <Icon type="retweet" />
+          <span>Cycles</span>
+        </Link>
       </Menu.Item>
       <SubMenu
         key="sub2"
@@ -30,11 +43,13 @@ const ProjectMenu: React.FunctionComponent<{}> = () => {
         <Menu.Item key="4">dummy</Menu.Item>
       </SubMenu>
       <Menu.Item style={{ margin: 0 }} key="5">
-        <Icon type="pie-chart" />
-        <span>Reports</span>
+        <Link to={`/projects/${match.params.id}/reports`}>
+          <Icon type="pie-chart" />
+          <span>Reports</span>
+        </Link>
       </Menu.Item>
     </Menu>
   );
 };
 
-export default ProjectMenu;
+export default withRouter(ProjectMenu);
