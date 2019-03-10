@@ -17,16 +17,9 @@ import './Header.scss';
 const { Header } = Layout;
 const { Option } = Select;
 
-interface Props extends RouteComponentProps {
-  sidebarCollapsed: boolean;
-  toggleSidebar(): void;
-}
-
-const HeaderWrapper: React.FunctionComponent<Props> = ({
+const HeaderWrapper: React.FunctionComponent<RouteComponentProps> = ({
   history,
   location,
-  sidebarCollapsed,
-  toggleSidebar,
 }) => {
   const username = authApi.getUsername();
 
@@ -75,10 +68,6 @@ const HeaderWrapper: React.FunctionComponent<Props> = ({
   return (
     <Header tagName="header" style={{ padding: 0 }}>
       <div className="navbar">
-        <span className="trigger" onClick={toggleSidebar}>
-          <Icon type={sidebarCollapsed ? 'menu-unfold' : 'menu-fold'} />
-        </span>
-        <Divider type="vertical" style={{ fontSize: 24, margin: 0 }} />
         <Select defaultValue="0" style={{ width: 120, margin: '0 24px' }}>
           {projects}
           <Option value="new">

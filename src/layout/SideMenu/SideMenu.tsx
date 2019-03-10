@@ -7,13 +7,9 @@ import BaseMenu from './Base/Menu';
 import ProjectMenu from './Project/Menu';
 import './SideMenu.scss';
 
-interface Props {
-  collapsed: boolean;
-}
-
-const SideMenu: React.FunctionComponent<Props> = ({ collapsed }) => {
+const SideMenu: React.FunctionComponent<{}> = () => {
   return (
-    <Sider trigger={null} collapsible={true} collapsed={collapsed}>
+    <Sider trigger={null} collapsible={false} collapsed={true}>
       <div className="logo" id="logo">
         <Link to="/projects">
           <img src={logo} alt="logo" />
