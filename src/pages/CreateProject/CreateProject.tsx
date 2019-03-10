@@ -60,7 +60,7 @@ const CreateProject: React.FunctionComponent<RouteComponentProps> = ({
 
   return (
     <React.Fragment>
-      <h2 style={{ marginTop: 16, marginBottom: 0 }}>Create new project</h2>
+      <h2 style={{ marginBottom: 0 }}>Create new project</h2>
       <Divider />
       <Spin spinning={isLoading}>
         {error ? (

@@ -9,7 +9,17 @@ import './SideMenu.scss';
 
 const SideMenu: React.FunctionComponent<{}> = () => {
   return (
-    <Sider trigger={null} collapsible={false} collapsed={true}>
+    <Sider
+      trigger={null}
+      collapsible={false}
+      collapsed={true}
+      style={{
+        height: '100vh',
+        left: 0,
+        overflow: 'auto',
+        position: 'fixed',
+      }}
+    >
       <div className="logo" id="logo">
         <Link to="/projects">
           <img src={logo} alt="logo" />

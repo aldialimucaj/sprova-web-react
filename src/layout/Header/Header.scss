@@ -1,18 +1,25 @@
 @import '../../variables';
 
 .navbar {
-  position: relative;
+  z-index: 1;
+  width: 100%;
   padding: 0;
   height: $navbar-height;
   background-color: $navbar-background-color;
   box-shadow: $navbar-box-shadow;
 }
 
+.left-content {
+  display: block;
+  flex-basis: 0;
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
 .right {
   float: right;
   height: 100%;
   overflow: hidden;
-  padding-right: 24px;
   .action {
     display: inline-block;
     height: 100%;
@@ -27,12 +34,13 @@
       background: rgba(0, 0, 0, 0.025);
     }
   }
-  .avatar {
-    background-color: #b3daff;
-    color: #006eff;
-    font-size: 46px;
-    margin-right: 12px;
-  }
+}
+
+.avatar {
+  background-color: #b3daff;
+  color: #006eff;
+  font-size: 46px;
+  margin-right: 12px;
 }
 
 .trigger {

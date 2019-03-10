@@ -1,46 +1,21 @@
-import {
-  Avatar,
-  Button,
-  Divider,
-  Dropdown,
-  Icon,
-  Layout,
-  Menu,
-  Select,
-} from 'antd';
+import { Col, Layout, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import authApi from '../../api/auth.api';
+import { Route, Switch } from 'react-router-dom';
 import { getProjects } from '../../api/project.api';
+import { Project } from '../../models/Project';
+import BaseHeader from './BaseHeader';
 import './Header.scss';
+import ProjectHeader from './ProjectHeader';
+import RightContent from './RightContent';
 
 const { Header } = Layout;
-const { Option } = Select;
 
-const HeaderWrapper: React.FunctionComponent<RouteComponentProps> = ({
-  history,
-  location,
-}) => {
-  const username = authApi.getUsername();
-
-  const logout = () => {
-    authApi.logout();
-    history.push('/login');
-  };
-
-  const [projects, setProjects] = useState(new Array());
+const HeaderWrapper: React.FunctionComponent<{}> = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
   const fetchData = async () => {
     try {
-      const data = await getProjects(5);
-      const children = [];
-      for (let i = 0; i < data.length; i++) {
-        children.push(
-          <Option key={i}>
-            <Link to={'/projects/' + data[i]._id}>{data[i].title}</Link>
-          </Option>
-        );
-      }
-      setProjects(children);
+      const fetchedProjects = await getProjects(5);
+      setProjects(fetchedProjects);
     } catch (e) {
       // TODO: take care of no data error
     }
@@ -49,54 +24,28 @@ const HeaderWrapper: React.FunctionComponent<RouteComponentProps> = ({
     fetchData();
   }, []);
 
-  const menu = (
-    <Menu>
-      <Menu.Item>
-        <a>
-          <Icon type="user" style={{ marginRight: 8 }} /> Account Settings
-        </a>
-      </Menu.Item>
-      <Menu.Divider />
-      <Menu.Item>
-        <a onClick={logout}>
-          <Icon type="logout" style={{ marginRight: 8 }} /> Logout
-        </a>
-      </Menu.Item>
-    </Menu>
-  );
-
   return (
     <Header tagName="header" style={{ padding: 0 }}>
-      <div className="navbar">
-        <Select defaultValue="0" style={{ width: 120, margin: '0 24px' }}>
-          {projects}
-          <Option value="new">
-            <Link to="/new">Create new</Link>
-          </Option>
-        </Select>
-        <div className="right">
-          <Button style={{ display: 'inline-block', margin: '0 24px' }}>
-            <Link to={`${location.pathname}/settings`}>
-              <Icon type="setting" style={{ marginRight: 8 }} />
-              Project Settings
-            </Link>
-          </Button>
-          <Divider
-            type="vertical"
-            style={{ fontSize: 24, margin: 0, display: 'inline-block' }}
-          />
-          <Dropdown overlay={menu} placement="bottomRight">
-            <div style={{ display: 'inline-block' }} className="navbar-item">
-              <Avatar size="small" className="avatar">
-                {username.slice(0, 1).toUpperCase()}
-              </Avatar>
-              {username}
-            </div>
-          </Dropdown>
-        </div>
-      </div>
+      <Row type="flex" justify="center" className="navbar">
+        <Col span={18}>
+          <Row type="flex" justify="end">
+            <Col className="left-content">
+              <Switch>
+                <Route
+                  path="/projects/:id"
+                  render={() => <ProjectHeader projects={projects} />}
+                />
+                <Route component={BaseHeader} />
+              </Switch>
+            </Col>
+            <Col>
+              <RightContent />
+            </Col>
+          </Row>
+        </Col>
+      </Row>
     </Header>
   );
 };
 
-export default withRouter(HeaderWrapper);
+export default HeaderWrapper;

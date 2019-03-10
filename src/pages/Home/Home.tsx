@@ -23,7 +23,7 @@ const Home: React.FunctionComponent<{}> = () => {
     <React.Fragment>
       <Row type="flex" justify="space-between" align="bottom">
         <Col>
-          <h2 style={{ marginTop: 16, marginBottom: 0 }}>Projects</h2>
+          <h2 style={{ marginBottom: 0 }}>Projects</h2>
         </Col>
         <Col>
           <Button size="small">
