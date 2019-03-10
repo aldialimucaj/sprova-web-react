@@ -27,6 +27,7 @@ const SideMenu: React.FunctionComponent<{}> = () => {
         </Link>
       </div>
       <Switch>
+        <Route path="/projects/new" componetn={BaseMenu} />
         <Route path="/projects/:id" component={ProjectMenu} />
         <Route component={BaseMenu} />
       </Switch>
