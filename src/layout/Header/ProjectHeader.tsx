@@ -1,14 +1,18 @@
 import { Button, Col, Divider, Icon, Row, Select } from 'antd';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { Project } from '../../models/Project';
 const { Option } = Select;
 
-interface Props {
+interface Params {
+  id: string;
+}
+
+interface Props extends RouteComponentProps<Params> {
   projects: Project[];
 }
 
-const ProjectHeader: React.FunctionComponent<Props> = ({ projects }) => {
+const ProjectHeader: React.FunctionComponent<Props> = ({ match, projects }) => {
   return (
     <React.Fragment>
       <Row type="flex" justify="space-between">
@@ -27,7 +31,7 @@ const ProjectHeader: React.FunctionComponent<Props> = ({ projects }) => {
         <Col>
           <div className="right">
             <Button style={{ display: 'inline-block', margin: '0 24px' }}>
-              <Link to={`${location.pathname}/settings`}>
+              <Link to={`/projects/${match.params.id}/settings`}>
                 <Icon type="setting" style={{ marginRight: 8 }} />
                 Project Settings
               </Link>
@@ -43,4 +47,4 @@ const ProjectHeader: React.FunctionComponent<Props> = ({ projects }) => {
   );
 };
 
-export default ProjectHeader;
+export default withRouter(ProjectHeader);
