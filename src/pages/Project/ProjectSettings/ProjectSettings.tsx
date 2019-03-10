@@ -1,12 +1,25 @@
+import { Col, Divider, Row } from 'antd';
 import React from 'react';
-import { RouteComponentProps } from 'react-router-dom';
 
-const ProjectDetails: React.FunctionComponent<RouteComponentProps> = () => {
+const ProjectSettings: React.FunctionComponent<{}> = () => {
   return (
-    <div style={{ padding: 24, background: '#fff', minHeight: '90%' }}>
-      Settings
-    </div>
+    <React.Fragment>
+      <Row
+        type="flex"
+        justify="space-between"
+        align="middle"
+        style={{ marginBottom: 24 }}
+      >
+        <Col>
+          <h2 style={{ marginBottom: 0 }}>Project Settings</h2>
+        </Col>
+      </Row>
+      <Divider />
+      <div style={{ padding: 24, background: '#fff', minHeight: '90%' }}>
+        Settings
+      </div>
+    </React.Fragment>
   );
 };
 
-export default ProjectDetails;
+export default ProjectSettings;
