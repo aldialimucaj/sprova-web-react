@@ -1,8 +1,8 @@
 import { Col, Layout, Row } from 'antd';
 import React from 'react';
+import Content from './Content';
 import Header from './Header';
 import SideMenu from './SideMenu';
-const { Content } = Layout;
 
 const LayoutWrapper: React.FunctionComponent<{}> = ({ children }) => {
   return (
@@ -10,11 +10,7 @@ const LayoutWrapper: React.FunctionComponent<{}> = ({ children }) => {
       <SideMenu />
       <Layout tagName="main">
         <Header />
-        <Content id="content" tagName="main" style={{ margin: '0 24px' }}>
-          <Row type="flex" justify="center">
-            <Col span={18}>{children}</Col>
-          </Row>
-        </Content>
+        <Content>{children}</Content>
       </Layout>
     </Layout>
   );
