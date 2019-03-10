@@ -20,31 +20,16 @@ const Home: React.FunctionComponent<{}> = () => {
   }, []);
 
   return (
-    <React.Fragment>
-      <Row type="flex" justify="space-between" align="bottom">
-        <Col>
-          <h2 style={{ marginBottom: 0 }}>Projects</h2>
-        </Col>
-        <Col>
-          <Button size="small">
-            <Link to="/projects/new">New Project</Link>
-          </Button>
-        </Col>
-      </Row>
-      <Divider />
-      <Row gutter={16}>
-        {projects.map((project: Project, index: number) => (
-          <Col span={6} key={index}>
-            <Link to={`/projects/${project._id}`}>
-              <Card bordered={false} className="clickable-card">
-                <h3>{project.title}</h3>
-                <p style={{ marginBottom: 0 }}>{project.description}</p>
-              </Card>
-            </Link>
-          </Col>
-        ))}
-      </Row>
-    </React.Fragment>
+    <Card title="Projects" extra={<Link to="/projects/new">New Project</Link>}>
+      {projects.map((project: Project, index: number) => (
+        <Card.Grid>
+          <Link to={`/projects/${project._id}`}>
+            <h3>{project.title}</h3>
+            <p style={{ marginBottom: 0 }}>{project.description}</p>
+          </Link>
+        </Card.Grid>
+      ))}
+    </Card>
   );
 };
 
