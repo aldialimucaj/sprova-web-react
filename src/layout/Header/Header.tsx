@@ -31,6 +31,7 @@ const HeaderWrapper: React.FunctionComponent<{}> = () => {
           <Row type="flex" justify="end">
             <Col className="left-content">
               <Switch>
+                <Route path="/projects/new" component={BaseHeader} />
                 <Route
                   path="/projects/:id"
                   render={() => <ProjectHeader projects={projects} />}
