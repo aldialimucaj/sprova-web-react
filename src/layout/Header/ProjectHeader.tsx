@@ -31,7 +31,10 @@ const ProjectHeader: React.FunctionComponent<Props> = ({ match, projects }) => {
         <Col>
           <div className="right">
             <Button style={{ display: 'inline-block', margin: '0 24px' }}>
-              <Link to={`/projects/${match.params.id}/settings`}>
+              <Link
+                to={`/projects/${match.params.id}/settings`}
+                style={{ textDecoration: 'none' }}
+              >
                 <Icon type="setting" style={{ marginRight: 8 }} />
                 Project Settings
               </Link>
