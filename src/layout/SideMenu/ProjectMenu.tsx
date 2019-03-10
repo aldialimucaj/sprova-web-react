@@ -1,21 +1,20 @@
 import { Icon, Menu } from 'antd';
 import React from 'react';
-import './Menu.scss';
 
 const { SubMenu } = Menu;
 
-const MenuWrapper: React.FunctionComponent<{}> = () => {
+const ProjectMenu: React.FunctionComponent<{}> = () => {
   return (
     <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-      <Menu.Item className="menu-item" key="1">
+      <Menu.Item style={{ margin: 0 }} key="1">
         <Icon type="appstore" />
         <span>Overview</span>
       </Menu.Item>
-      <Menu.Item className="menu-item" key="2">
+      <Menu.Item style={{ margin: 0 }} key="2">
         <Icon type="file-text" />
         <span>Test cases</span>
       </Menu.Item>
-      <Menu.Item className="menu-item" key="3">
+      <Menu.Item style={{ margin: 0 }} key="3">
         <Icon type="retweet" />
         <span>Cycles</span>
       </Menu.Item>
@@ -30,7 +29,7 @@ const MenuWrapper: React.FunctionComponent<{}> = () => {
       >
         <Menu.Item key="4">dummy</Menu.Item>
       </SubMenu>
-      <Menu.Item className="menu-item" key="5">
+      <Menu.Item style={{ margin: 0 }} key="5">
         <Icon type="pie-chart" />
         <span>Reports</span>
       </Menu.Item>
@@ -38,4 +37,4 @@ const MenuWrapper: React.FunctionComponent<{}> = () => {
   );
 };
 
-export default MenuWrapper;
+export default ProjectMenu;

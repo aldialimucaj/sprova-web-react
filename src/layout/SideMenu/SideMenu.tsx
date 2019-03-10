@@ -3,8 +3,8 @@ import React from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 import logo from '../../images/sprova.svg';
 const { Sider } = Layout;
-import BaseMenu from './Base/Menu';
-import ProjectMenu from './Project/Menu';
+import BaseMenu from './BaseMenu';
+import ProjectMenu from './ProjectMenu';
 import './SideMenu.scss';
 
 const SideMenu: React.FunctionComponent<{}> = () => {
