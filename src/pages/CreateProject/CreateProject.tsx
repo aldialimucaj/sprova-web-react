@@ -1,4 +1,4 @@
-import { Alert, Button, Divider, Input, Spin } from 'antd';
+import { Alert, Button, Input, notification, Spin } from 'antd';
 import React, { useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { postProject } from '../../api/project.api';
@@ -53,6 +53,10 @@ const CreateProject: React.FunctionComponent<RouteComponentProps> = ({
       .then(
         ({ _id }): void => {
           setIsLoading(false);
+          notification.success({
+            message: 'Project created',
+            description: `Project created with ID ${_id}`,
+          });
           history.push(`/projects/${_id}`);
         }
       )
