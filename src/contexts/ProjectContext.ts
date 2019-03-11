@@ -6,7 +6,7 @@ export interface ProjectContextValue {
   setProject: (project: Project) => void;
 }
 
-const defaultProject: Project = {
+export const defaultProject: Project = {
   description: '',
   title: '',
 };

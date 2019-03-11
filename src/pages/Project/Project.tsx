@@ -1,14 +1,8 @@
 import { Breadcrumb, Spin } from 'antd';
-import React, { useEffect, useState } from 'react';
-import {
-  Redirect,
-  Route,
-  RouteComponentProps,
-  withRouter,
-} from 'react-router-dom';
-import { getProject } from '../../api/project.api';
+import React from 'react';
+import { Route, RouteComponentProps, withRouter } from 'react-router-dom';
+import { useGetProject } from '../../api/project.api';
 import ProjectContext from '../../contexts/ProjectContext';
-import { Project } from '../../models/Project';
 import ProjectDetails from './ProjectDetails';
 import ProjectSettings from './ProjectSettings';
 
@@ -19,29 +13,15 @@ interface Params {
 const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
 }) => {
-  const [project, setProject] = useState<Project | null>(null);
-  const [error, setError] = useState<string>('');
+  const { isLoading, project, setProject } = useGetProject(match.params.id);
 
-  const fetchData = async () => {
-    try {
-      const fetchedProject = await getProject(match.params.id);
-      setProject(fetchedProject);
-    } catch (e) {
-      setError(e);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  return error === '' ? (
+  return (
     <React.Fragment>
       <Breadcrumb style={{ marginBottom: 24 }}>
         <Breadcrumb.Item>Projects</Breadcrumb.Item>
         <Breadcrumb.Item>Cycles</Breadcrumb.Item>
       </Breadcrumb>
-      {project === null ? (
+      {isLoading ? (
         <Spin />
       ) : (
         <ProjectContext.Provider value={{ project, setProject }}>
@@ -54,8 +34,6 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
         </ProjectContext.Provider>
       )}
     </React.Fragment>
-  ) : (
-    <Redirect to="/projects" />
   );
 };
 
