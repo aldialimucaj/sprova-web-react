@@ -2,11 +2,13 @@ import { Col, Divider, Row } from 'antd';
 import React from 'react';
 
 interface Params {
+  divider?: boolean;
   title: string;
   extra?: React.ReactNode;
 }
 
 const SectionHeader: React.FunctionComponent<Params> = ({
+  divider = true,
   extra = null,
   title,
 }) => {
@@ -23,7 +25,7 @@ const SectionHeader: React.FunctionComponent<Params> = ({
         </Col>
         <Col>{extra}</Col>
       </Row>
-      <Divider />
+      {divider ? <Divider /> : null}
     </React.Fragment>
   );
 };
