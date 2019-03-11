@@ -1,15 +1,16 @@
 {
   "extends": ["tslint:latest", "tslint-react"],
   "rules": {
+    "interface-name": false,
     "jsx-wrap-multiline": false,
     "jsx-curly-spacing": false,
     "jsx-no-multiline-js": false,
     "jsx-no-lambda": false,
     "no-empty": false,
-    "trailing-comma": false,
     "no-submodule-imports": false,
+    "object-literal-sort-keys": false,
     "quotemark": false,
-    "interface-name": false
+    "trailing-comma": false
   },
   "linterOptions": {
     "exclude": ["./src/serviceWorker.ts"]

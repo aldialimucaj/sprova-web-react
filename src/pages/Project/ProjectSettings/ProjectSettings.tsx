@@ -1,35 +1,26 @@
-import { Button, Icon, Input, Popconfirm } from 'antd';
-import React, { useContext, useState } from 'react';
+import { Button, Col, Form, Icon, Input, Popconfirm, Row } from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
+import TextArea from 'antd/lib/input/TextArea';
+import React, { useContext } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { deleteProject } from '../../../api/project.api';
+import { deleteProject, updateProject } from '../../../api/project.api';
 import SectionHeader from '../../../components/SectionHeader';
 import ProjectContext from '../../../contexts/ProjectContext';
+import { Project } from '../../../models/Project';
 
 interface Params {
   id: string;
 }
 
-const ProjectSettings: React.FunctionComponent<RouteComponentProps<Params>> = ({
-  match,
-  history,
-}) => {
-  const { project } = useContext(ProjectContext);
-  const [title, setTitle] = useState<string>(project.title);
-  const [description, setDescription] = useState<string>(project.description);
+interface Props extends RouteComponentProps<Params>, FormComponentProps {}
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.currentTarget;
-    switch (name) {
-      case 'title': {
-        setTitle(value);
-        break;
-      }
-      case 'description': {
-        setDescription(value);
-        break;
-      }
-    }
-  };
+const ProjectSettings: React.FunctionComponent<Props> = ({
+  form,
+  history,
+  match,
+}) => {
+  const { getFieldDecorator, getFieldsError, validateFields } = form;
+  const { project, setProject } = useContext(ProjectContext);
 
   const deleteRequest = async () => {
     try {
@@ -38,6 +29,58 @@ const ProjectSettings: React.FunctionComponent<RouteComponentProps<Params>> = ({
     } catch (e) {
       // TODO: Handle error
     }
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    validateFields(async (errors, values) => {
+      if (!errors) {
+        // TODO: Handle form validation error
+      }
+
+      const { projectTitle: title, description } = values;
+
+      const projectNew: Project = {
+        ...project,
+        title,
+        description,
+      };
+      try {
+        await updateProject(projectNew);
+        setProject(projectNew);
+      } catch (e) {
+        // TODO: Handle error
+      }
+    });
+    // TODO: Update project
+  };
+
+  const hasErrors = (fieldsError: any) => {
+    return Object.keys(fieldsError).some((field) => fieldsError[field]);
+  };
+
+  const formItemLayout = {
+    labelCol: {
+      sm: { span: 8 },
+      xs: { span: 24 },
+    },
+    wrapperCol: {
+      sm: { span: 16 },
+      xs: { span: 24 },
+    },
+  };
+
+  const tailFormItemLayout = {
+    wrapperCol: {
+      xs: {
+        span: 24,
+        offset: 0,
+      },
+      sm: {
+        span: 16,
+        offset: 8,
+      },
+    },
   };
 
   return (
@@ -57,17 +100,39 @@ const ProjectSettings: React.FunctionComponent<RouteComponentProps<Params>> = ({
           </Popconfirm>
         }
       />
-      <Input type="text" name="title" value={title} onChange={handleChange} />
-      <Input
-        type="text"
-        name="description"
-        value={description}
-        onChange={handleChange}
-      />
-      <Button type="primary">Save</Button>
-      <Button>Cancel</Button>
+      <Row>
+        <Col xs={24} lg={12}>
+          <Form {...formItemLayout} onSubmit={handleSubmit}>
+            <Form.Item label="Project Title" colon={false}>
+              {getFieldDecorator('projectTitle', {
+                initialValue: project.title,
+                rules: [
+                  {
+                    required: true,
+                    message: 'Title cannot be empty',
+                  },
+                ],
+              })(<Input type="text" name="title" />)}
+            </Form.Item>
+            <Form.Item label="Description" colon={false}>
+              {getFieldDecorator('description', {
+                initialValue: project.description,
+              })(<TextArea name="description" />)}
+            </Form.Item>
+            <Form.Item {...tailFormItemLayout}>
+              <Button
+                type="primary"
+                htmlType="submit"
+                disabled={hasErrors(getFieldsError())}
+              >
+                Save
+              </Button>
+            </Form.Item>
+          </Form>
+        </Col>
+      </Row>
     </React.Fragment>
   );
 };
 
-export default withRouter(ProjectSettings);
+export default withRouter(Form.create({})(ProjectSettings));
