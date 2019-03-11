@@ -35,13 +35,23 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
   const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
   const { project, setProject } = useContext(ProjectContext);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
   const deleteRequest = async () => {
+    setIsDeleteLoading(true);
     try {
       await deleteProject(project._id || match.params.id);
+      setIsDeleteLoading(false);
+      notification.success({
+        message: `${project.title} deleted`,
+      });
       history.push('/projects');
-    } catch (e) {
-      // TODO: Handle error
+    } catch (error) {
+      setIsDeleteLoading(false);
+      notification.error({
+        message: 'Failed to delete project',
+        description: error,
+      });
     }
   };
 
@@ -58,18 +68,18 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
 
     try {
       await updateProject(projectNew);
+      setIsLoading(false);
       setProject(projectNew);
       notification.success({
         message: 'Project updated',
       });
     } catch (error) {
+      setIsLoading(false);
       notification.error({
         message: 'Failed to update project',
         description: error,
       });
     }
-
-    setIsLoading(false);
   };
 
   const hasErrors = (fieldsError: any): boolean => {
@@ -89,7 +99,9 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
             okText="Yes"
             cancelText="Cancel"
           >
-            <Button type="danger">Delete</Button>
+            <Button type="danger" loading={isDeleteLoading}>
+              Delete
+            </Button>
           </Popconfirm>
         }
       />
