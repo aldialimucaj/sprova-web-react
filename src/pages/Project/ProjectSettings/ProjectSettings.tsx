@@ -1,4 +1,13 @@
-import { Button, Col, Form, Icon, Input, Popconfirm, Row } from 'antd';
+import {
+  Button,
+  Col,
+  Form,
+  Icon,
+  Input,
+  Popconfirm,
+  Row,
+  Typography,
+} from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import TextArea from 'antd/lib/input/TextArea';
 import React, { useContext } from 'react';
@@ -7,6 +16,8 @@ import { deleteProject, updateProject } from '../../../api/project.api';
 import SectionHeader from '../../../components/SectionHeader';
 import ProjectContext from '../../../contexts/ProjectContext';
 import { Project } from '../../../models/Project';
+
+const { Text } = Typography;
 
 interface Params {
   id: string;
@@ -103,6 +114,11 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
       <Row>
         <Col xs={24} lg={12}>
           <Form {...formItemLayout} onSubmit={handleSubmit}>
+            <Form.Item label="Project ID" colon={false}>
+              <Text copyable={true} ellipsis={false}>
+                {project._id}
+              </Text>
+            </Form.Item>
             <Form.Item label="Project Title" colon={false}>
               {getFieldDecorator('projectTitle', {
                 initialValue: project.title,
