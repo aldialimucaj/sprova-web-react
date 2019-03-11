@@ -10,7 +10,6 @@ import {
   Typography,
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import TextArea from 'antd/lib/input/TextArea';
 import React, { useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { deleteProject, updateProject } from '../../../api/project.api';
@@ -19,6 +18,7 @@ import ProjectContext from '../../../contexts/ProjectContext';
 import { Project } from '../../../models/Project';
 import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
 
+const { TextArea } = Input;
 const { Text } = Typography;
 
 interface Params {

@@ -1,121 +1,87 @@
-import { Alert, Button, Input, notification, Spin } from 'antd';
+import { Button, Col, Form, Input, notification, Row } from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
 import React, { useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { postProject } from '../../api/project.api';
 import SectionHeader from '../../components/SectionHeader';
 import { Project } from '../../models/Project';
+import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
 
-const CreateProject: React.FunctionComponent<RouteComponentProps> = ({
-  history,
-}) => {
-  const [titleValue, setTitleValue] = useState('');
-  const [descriptionValue, setDescriptionValue] = useState('');
+const { TextArea } = Input;
+
+interface Props extends RouteComponentProps, FormComponentProps {}
+
+const CreateProject: React.FunctionComponent<Props> = ({ form, history }) => {
+  const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.currentTarget;
-    switch (name) {
-      case 'title': {
-        setTitleValue(value);
-        break;
-      }
-      case 'description': {
-        setDescriptionValue(value);
-        break;
-      }
-    }
-  };
-
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.keyCode === 13) {
-      createProject();
-    }
-  };
-
-  const handleCancel = (event: React.FormEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    history.push('/projects');
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    createProject();
-  };
-
-  const createProject = () => {
-    setIsLoading(true);
-    const project: Project = {
-      description: descriptionValue,
-      title: titleValue,
+    const { projectTitle: title, description } = getFieldsValue();
+    const projectNew: Project = {
+      title,
+      description,
     };
-    postProject(project)
-      .then(
-        ({ _id }): void => {
-          setIsLoading(false);
-          notification.success({
-            message: 'Project created',
-            description: `Project created with ID ${_id}`,
-          });
-          history.push(`/projects/${_id}`);
-        }
-      )
-      .catch(
-        (err: string): void => {
-          setIsLoading(false);
-          setError(err);
-        }
-      );
+
+    setIsLoading(true);
+
+    try {
+      const { _id } = await postProject(projectNew);
+      setIsLoading(false);
+      notification.success({
+        message: `${title} created`,
+        description: `Project created with ID ${_id}`,
+      });
+      history.push(`/projects/${_id}`);
+    } catch (error) {
+      setIsLoading(false);
+      notification.error({
+        message: 'Failed to create project',
+        description: error,
+      });
+    }
+  };
+
+  const hasErrors = (fieldsError: any): boolean => {
+    return Object.keys(fieldsError).some((field) => fieldsError[field]);
   };
 
   return (
     <React.Fragment>
       <SectionHeader title="Create new project" />
-      <Spin spinning={isLoading}>
-        {error ? (
-          <Alert
-            className="form-item"
-            type="error"
-            message={error}
-            closable={true}
-            onClose={() => setError('')}
-          />
-        ) : null}
-        <Input
-          className="form-item"
-          name="title"
-          value={titleValue}
-          placeholder="Project title"
-          onChange={handleChange}
-          onKeyDown={handleKeyPress}
-        />
-        <Input
-          className="form-item"
-          name="description"
-          value={descriptionValue}
-          placeholder="Description"
-          onChange={handleChange}
-          onKeyDown={handleKeyPress}
-        />
-        <Button
-          className="form-item"
-          type="primary"
-          disabled={!(titleValue && descriptionValue)}
-          onClick={handleSubmit}
-        >
-          Create
-        </Button>
-
-        <Button
-          className="form-item"
-          onClick={handleCancel}
-          style={{ marginLeft: 16 }}
-        >
-          Cancel
-        </Button>
-      </Spin>
+      <Row>
+        <Col {...formContentLayout}>
+          <Form {...formItemLayout} onSubmit={handleSubmit}>
+            <Form.Item label="Project Title" colon={false}>
+              {getFieldDecorator('projectTitle', {
+                rules: [
+                  {
+                    required: true,
+                    message: 'Title cannot be empty',
+                  },
+                ],
+              })(<Input type="text" name="title" />)}
+            </Form.Item>
+            <Form.Item label="Description" colon={false}>
+              {getFieldDecorator('description', {})(
+                <TextArea name="description" />
+              )}
+            </Form.Item>
+            <Form.Item {...tailFormItemLayout}>
+              <Button
+                type="primary"
+                loading={isLoading}
+                htmlType="submit"
+                disabled={hasErrors(getFieldsError())}
+              >
+                Create Project
+              </Button>
+            </Form.Item>
+          </Form>
+        </Col>
+      </Row>
     </React.Fragment>
   );
 };
 
-export default withRouter(CreateProject);
+export default withRouter(Form.create({})(CreateProject));
