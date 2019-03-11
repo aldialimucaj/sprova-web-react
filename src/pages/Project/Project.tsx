@@ -1,5 +1,5 @@
 import { Breadcrumb, Spin } from 'antd';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Route, RouteComponentProps, withRouter } from 'react-router-dom';
 import { useGetProject } from '../../api/project.api';
 import ProjectContext from '../../contexts/ProjectContext';
@@ -16,7 +16,7 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
   const { isLoading, project, setProject } = useGetProject(match.params.id);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Breadcrumb style={{ marginBottom: 24 }}>
         <Breadcrumb.Item>Projects</Breadcrumb.Item>
         <Breadcrumb.Item>Cycles</Breadcrumb.Item>
@@ -33,7 +33,7 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
           />
         </ProjectContext.Provider>
       )}
-    </React.Fragment>
+    </Fragment>
   );
 };
 

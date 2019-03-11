@@ -90,20 +90,20 @@ export function updateProject(project: Project) {
     .catch(
       (error: AxiosError): AxiosResponse => {
         const { message, response } = error;
-        MessageProvider.error(message, 10);
         if (!response) {
           throw message;
         }
         return response;
       }
     )
-    .then((response: AxiosResponse) => {
-      const { data, status, statusText } = response;
-      if (status !== 200) {
-        throw statusText;
+    .then(
+      (response: AxiosResponse): void => {
+        const { data, status, statusText } = response;
+        if (status !== 200 || !data.ok) {
+          throw statusText;
+        }
       }
-      return data._id;
-    });
+    );
 }
 
 export function deleteProject(projectId: string) {

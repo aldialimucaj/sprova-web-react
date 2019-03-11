@@ -4,18 +4,20 @@ import {
   Form,
   Icon,
   Input,
+  notification,
   Popconfirm,
   Row,
   Typography,
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import TextArea from 'antd/lib/input/TextArea';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { deleteProject, updateProject } from '../../../api/project.api';
 import SectionHeader from '../../../components/SectionHeader';
 import ProjectContext from '../../../contexts/ProjectContext';
 import { Project } from '../../../models/Project';
+import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
 
 const { Text } = Typography;
 
@@ -30,8 +32,9 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
   history,
   match,
 }) => {
-  const { getFieldDecorator, getFieldsError, validateFields } = form;
+  const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
   const { project, setProject } = useContext(ProjectContext);
+  const [isLoading, setIsLoading] = useState(false);
 
   const deleteRequest = async () => {
     try {
@@ -42,56 +45,35 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
     }
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    validateFields(async (errors, values) => {
-      if (!errors) {
-        // TODO: Handle form validation error
-      }
+    const { projectTitle: title, description } = getFieldsValue();
+    const projectNew: Project = {
+      ...project,
+      title,
+      description,
+    };
 
-      const { projectTitle: title, description } = values;
+    setIsLoading(true);
 
-      const projectNew: Project = {
-        ...project,
-        title,
-        description,
-      };
-      try {
-        await updateProject(projectNew);
-        setProject(projectNew);
-      } catch (e) {
-        // TODO: Handle error
-      }
-    });
-    // TODO: Update project
+    try {
+      await updateProject(projectNew);
+      setProject(projectNew);
+      notification.success({
+        message: 'Project updated',
+      });
+    } catch (error) {
+      notification.error({
+        message: 'Failed to update project',
+        description: error,
+      });
+    }
+
+    setIsLoading(false);
   };
 
-  const hasErrors = (fieldsError: any) => {
+  const hasErrors = (fieldsError: any): boolean => {
     return Object.keys(fieldsError).some((field) => fieldsError[field]);
-  };
-
-  const formItemLayout = {
-    labelCol: {
-      sm: { span: 8 },
-      xs: { span: 24 },
-    },
-    wrapperCol: {
-      sm: { span: 16 },
-      xs: { span: 24 },
-    },
-  };
-
-  const tailFormItemLayout = {
-    wrapperCol: {
-      xs: {
-        span: 24,
-        offset: 0,
-      },
-      sm: {
-        span: 16,
-        offset: 8,
-      },
-    },
   };
 
   return (
@@ -112,7 +94,7 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
         }
       />
       <Row>
-        <Col xs={24} lg={12}>
+        <Col {...formContentLayout}>
           <Form {...formItemLayout} onSubmit={handleSubmit}>
             <Form.Item label="Project ID" colon={false}>
               <Text copyable={true} ellipsis={false}>
@@ -138,6 +120,7 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
             <Form.Item {...tailFormItemLayout}>
               <Button
                 type="primary"
+                loading={isLoading}
                 htmlType="submit"
                 disabled={hasErrors(getFieldsError())}
               >
