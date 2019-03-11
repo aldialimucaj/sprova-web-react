@@ -6,7 +6,7 @@ const ContentWrapper: React.FunctionComponent<{}> = ({ children }) => {
   return (
     <Content tagName="section">
       <Row type="flex" justify="center">
-        <Col span={18} style={{ margin: '24px 24px' }}>
+        <Col xs={24} xl={20} style={{ padding: '24px 24px' }}>
           {children}
         </Col>
       </Row>
