@@ -1,8 +1,15 @@
 import { Breadcrumb, Spin } from 'antd';
 import React, { Fragment } from 'react';
-import { Route, RouteComponentProps, withRouter } from 'react-router-dom';
+import {
+  Route,
+  RouteComponentProps,
+  Switch,
+  withRouter,
+} from 'react-router-dom';
 import { useGetProject } from '../../api/project.api';
 import ProjectContext from '../../contexts/ProjectContext';
+import CreateTestCase from '../CreateTestCase';
+import TestCases from '../TestCases';
 import ProjectDetails from './ProjectDetails';
 import ProjectSettings from './ProjectSettings';
 
@@ -31,6 +38,14 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
             exact={true}
             component={ProjectSettings}
           />
+          <Switch>
+            <Route
+              path="/projects/:id/testcases/new"
+              exact={true}
+              component={CreateTestCase}
+            />
+            <Route path="/projects/:id/testcases" component={TestCases} />
+          </Switch>
         </ProjectContext.Provider>
       )}
     </Fragment>
