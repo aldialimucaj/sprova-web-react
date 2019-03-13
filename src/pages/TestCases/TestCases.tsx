@@ -1,8 +1,9 @@
-import { Spin } from 'antd';
+import { List, Spin } from 'antd';
 import React, { Fragment } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { useGetTestCases } from '../../api/testcase.api';
 import SectionHeader from '../../components/SectionHeader';
+import { TestCase } from '../../models/TestCase';
 
 interface Params {
   id: string;
@@ -24,9 +25,18 @@ const TestCases: React.FunctionComponent<RouteComponentProps<Params>> = ({
           </Link>
         }
       />
-      {testCases.map((testCase, index) => (
-        <h1 key={index}>{testCase.title}</h1>
-      ))}
+      <List
+        itemLayout="horizontal"
+        dataSource={testCases}
+        renderItem={(testCase: TestCase) => (
+          <List.Item>
+            <List.Item.Meta
+              title={<a href="https://ant.design">{testCase.title}</a>}
+              description={testCase.description}
+            />
+          </List.Item>
+        )}
+      />
     </Fragment>
   );
 };

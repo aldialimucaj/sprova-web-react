@@ -1,45 +1,81 @@
 import { Button, Form, Input, List } from 'antd';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { TestCase } from '../../models/TestCase';
 import { TestStep } from '../../models/TestStep';
 
 interface Props {
-  parent: TestCase | null;
+  parent: string;
+  testSteps: TestStep[];
+  setTestSteps: (testSteps: TestStep[]) => void;
 }
 
-const TestStepInput: React.FunctionComponent<Props> = () => {
-  const mockTestSteps = [
-    {
-      action: 'Click login',
-      expected: '',
-    },
-    {
-      action: 'Enter password',
-      expected: '',
-    },
-  ];
+const TestStepInput: React.FunctionComponent<Props> = ({
+  parent,
+  testSteps,
+  setTestSteps,
+}) => {
+  const [action, setAction] = useState('');
+  const [expected, setExpected] = useState('');
 
-  const [testSteps, setTestSteps] = useState<TestStep[]>(mockTestSteps);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.currentTarget;
+    switch (name) {
+      case 'action': {
+        setAction(value);
+        break;
+      }
+      case 'expected': {
+        setExpected(value);
+        break;
+      }
+    }
+  };
+
+  const addTestStep = () => {
+    const testStepNew = {
+      action,
+      expected,
+    };
+    const testStepsNew = [...testSteps, testStepNew];
+    setTestSteps(testStepsNew);
+    setAction('');
+    setExpected('');
+  };
+
+  const removeTestStep = (testStep: TestStep) => {
+    // TODO:
+  };
+
   return (
     <List
-      header={<div>Show inherited steps</div>}
+      header={parent ? <div>Show inherited steps</div> : null}
       itemLayout="horizontal"
       footer={
-        <Form layout="inline">
-          <Form.Item>
-            <Input placeholder="Step action" />
-          </Form.Item>
-          <Form.Item>
-            <Input placeholder="Expected" />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary">Add</Button>
-          </Form.Item>
-        </Form>
+        <Fragment>
+          <Input
+            onChange={handleChange}
+            placeholder="Step action"
+            name="action"
+          />
+          <Input
+            onChange={handleChange}
+            placeholder="Expected"
+            name="expected"
+          />
+          <Button type="primary" onClick={addTestStep}>
+            Add
+          </Button>
+        </Fragment>
       }
       dataSource={testSteps}
       renderItem={(testStep: TestStep) => (
-        <List.Item actions={[<a key="remove">remove</a>]}>
+        <List.Item
+          actions={[
+            <a key="remove" onClick={() => removeTestStep(testStep)}>
+              remove
+            </a>,
+          ]}
+        >
           <List.Item.Meta
             title={<a href="https://ant.design">{testStep.action}</a>}
           />

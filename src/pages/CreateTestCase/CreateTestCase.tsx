@@ -40,6 +40,7 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
   } = useContext(ProjectContext);
   const { testCases, isLoading: isTestCasesLoading } = useGetTestCases();
   const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
+  const [testSteps, setTestSteps] = useState<TestStep[]>([]);
   const [parentId, setParentId] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -54,7 +55,7 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
       title: title as string,
       project: projectId || match.params.id,
       description,
-      steps: [],
+      steps: testSteps,
     };
 
     if (parentId) {
@@ -108,6 +109,7 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
             <Form.Item label="Inherit from" colon={false}>
               <Spin spinning={isTestCasesLoading}>
                 <Select
+                  allowClear={true}
                   showSearch={true}
                   value={parentId}
                   optionFilterProp="children"
@@ -122,13 +124,17 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
                 </Select>
               </Spin>
             </Form.Item>
-            {/* <Form.Item
+            <Form.Item
               label="Test Steps"
               required={true}
               validateStatus={'success'}
             >
-              <TestStepInput parent={null} />
-            </Form.Item> */}
+              <TestStepInput
+                parent={parentId}
+                testSteps={testSteps}
+                setTestSteps={setTestSteps}
+              />
+            </Form.Item>
             <Form.Item>
               <Button
                 type="primary"
