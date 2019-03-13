@@ -1,4 +1,4 @@
-import { message as MessageProvider, notification } from 'antd';
+import { notification } from 'antd';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { defaultProject } from '../contexts/ProjectContext';
@@ -74,13 +74,41 @@ export function postTestCase(project: Project) {
       }
     )
     .then(
-      (response: AxiosResponse): void => {
+      (response: AxiosResponse): string => {
         const { data, status, statusText } = response;
         if (status !== 201 || !data.ok) {
           throw statusText;
         }
+        return data._id as string;
       }
     );
+}
+
+export function useGetTestCases() {
+  const [testCases, setTestCases] = useState<TestCase[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+
+      try {
+        const fetchedTestCases = await getTestCases();
+        setTestCases(fetchedTestCases);
+      } catch (error) {
+        notification.error({
+          message: 'Failed to fetch testcases',
+          description: error,
+        });
+      }
+
+      setIsLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  return { testCases, isLoading };
 }
 
 export async function getTestCases(): Promise<TestCase[]> {

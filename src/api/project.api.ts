@@ -8,7 +8,7 @@ import agent from './agent';
 export function useGetProject(id: string) {
   const [project, setProject] = useState<Project>(defaultProject);
   const [projectId, setProjectId] = useState<string>(id);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
