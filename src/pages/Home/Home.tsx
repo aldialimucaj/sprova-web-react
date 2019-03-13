@@ -1,4 +1,4 @@
-import { Card, Col, Divider, Icon, Row } from 'antd';
+import { Button, Card, Col, Divider, Empty, Icon, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { getProjects } from '../../api/project.api';
@@ -31,18 +31,26 @@ const Home: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
         extra={<Link to="/projects/new">New Project</Link>}
       />
 
-      <Row gutter={16}>
-        {projects.map((project: Project, index: number) => (
-          <Col span={6} key={index}>
-            <Link to={`/projects/${project._id}`}>
-              <Card className="clickable-card">
-                <h3>{project.title}</h3>
-                <p style={{ marginBottom: 0 }}>{project.description}</p>
-              </Card>
-            </Link>
-          </Col>
-        ))}
-      </Row>
+      {projects.length > 0 ? (
+        <Row gutter={16}>
+          {projects.map((project: Project, index: number) => (
+            <Col span={6} key={index}>
+              <Link to={`/projects/${project._id}`}>
+                <Card className="clickable-card">
+                  <h3>{project.title}</h3>
+                  <p style={{ marginBottom: 0 }}>{project.description}</p>
+                </Card>
+              </Link>
+            </Col>
+          ))}
+        </Row>
+      ) : (
+        <Empty description={'No Projects found'}>
+          <Link to="/projects/new">
+            <Button type="primary">Create Now</Button>
+          </Link>
+        </Empty>
+      )}
     </React.Fragment>
   );
 };
