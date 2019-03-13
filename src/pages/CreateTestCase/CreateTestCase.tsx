@@ -8,11 +8,12 @@ import {
   notification,
   Row,
   Select,
+  Spin,
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { Fragment, useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { postTestCase } from '../../api/testcase.api';
+import { postTestCase, useGetTestCases } from '../../api/testcase.api';
 import SectionHeader from '../../components/SectionHeader';
 import ProjectContext from '../../contexts/ProjectContext';
 import { TestCase } from '../../models/TestCase';
@@ -20,6 +21,7 @@ import { TestStep } from '../../models/TestStep';
 import TestStepInput from './TestStepInput';
 import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
 
+const Option = Select.Option;
 const { TextArea } = Input;
 
 interface Params {
@@ -36,18 +38,28 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
   const {
     project: { _id: projectId },
   } = useContext(ProjectContext);
+  const { testCases, isLoading: isTestCasesLoading } = useGetTestCases();
   const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
+  const [parentId, setParentId] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const handleParentSelect = (id: string) => {
+    setParentId(id);
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
     const { title, description } = getFieldsValue();
-    const testCaseNew: TestCase = {
+    let testCaseNew: TestCase = {
       title: title as string,
       project: projectId || match.params.id,
       description,
       steps: [],
     };
+
+    if (parentId) {
+      testCaseNew = { ...testCaseNew, parent: parentId };
+    }
 
     setIsLoading(true);
 
@@ -93,13 +105,23 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
                 <TextArea name="description" />
               )}
             </Form.Item>
-            {/* <Form.Item label="Inherit from" colon={false}>
-              {getFieldDecorator('inherit', {})(
-                <Select mode="tags" placeholder="None">
-                  {[]}
+            <Form.Item label="Inherit from" colon={false}>
+              <Spin spinning={isTestCasesLoading}>
+                <Select
+                  showSearch={true}
+                  value={parentId}
+                  optionFilterProp="children"
+                  placeholder="None"
+                  onChange={handleParentSelect}
+                >
+                  {testCases.map((testCase, index) => (
+                    <Option key={index} value={testCase._id}>
+                      {testCase.title}
+                    </Option>
+                  ))}
                 </Select>
-              )}
-            </Form.Item> */}
+              </Spin>
+            </Form.Item>
             {/* <Form.Item
               label="Test Steps"
               required={true}
