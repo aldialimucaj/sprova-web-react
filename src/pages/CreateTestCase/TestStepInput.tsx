@@ -53,11 +53,13 @@ const TestStepInput: React.FunctionComponent<Props> = ({
       footer={
         <Fragment>
           <Input
+            value={action}
             onChange={handleChange}
             placeholder="Step action"
             name="action"
           />
           <Input
+            value={expected}
             onChange={handleChange}
             placeholder="Expected"
             name="expected"
