@@ -35,9 +35,7 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
   history,
   match,
 }) => {
-  const {
-    project: { _id: projectId },
-  } = useContext(ProjectContext);
+  const [{ project }] = useContext(ProjectContext);
   const { testCases, isLoading: isTestCasesLoading } = useGetTestCases();
   const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
   const [testSteps, setTestSteps] = useState<TestStep[]>([]);
@@ -53,7 +51,7 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
     const { title, description } = getFieldsValue();
     let testCaseNew: TestCase = {
       title: title as string,
-      project: projectId || match.params.id,
+      project: project._id || match.params.id,
       description,
       steps: testSteps,
     };
@@ -71,7 +69,7 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
         message: `${title} created`,
         description: `Test case created with ID ${id}`,
       });
-      history.push(`/projects/${projectId || match.params.id}/testcases`);
+      history.push(`/projects/${project._id || match.params.id}/testcases`);
     } catch (error) {
       setIsLoading(false);
       notification.error({

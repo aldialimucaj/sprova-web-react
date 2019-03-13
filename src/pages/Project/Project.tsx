@@ -1,5 +1,5 @@
 import { Breadcrumb, Spin } from 'antd';
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import {
   Route,
   RouteComponentProps,
@@ -20,7 +20,8 @@ interface Params {
 const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
 }) => {
-  const { isLoading, project, setProject } = useGetProject(match.params.id);
+  const [{ project }, dispatch] = useContext(ProjectContext);
+  const isLoading = useGetProject(project._id || match.params.id, dispatch);
 
   return (
     <Fragment>
@@ -31,7 +32,7 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
       {isLoading ? (
         <Spin />
       ) : (
-        <ProjectContext.Provider value={{ project, setProject }}>
+        <Fragment>
           <Route path="/projects/:id" exact={true} component={ProjectDetails} />
           <Route
             path="/projects/:id/settings"
@@ -46,7 +47,7 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
             />
             <Route path="/projects/:id/testcases" component={TestCases} />
           </Switch>
-        </ProjectContext.Provider>
+        </Fragment>
       )}
     </Fragment>
   );

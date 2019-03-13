@@ -5,7 +5,7 @@ import SectionHeader from '../../../components/SectionHeader';
 import ProjectContext from '../../../contexts/ProjectContext';
 
 const ProjectDetails: React.FunctionComponent<{}> = () => {
-  const { project } = useContext(ProjectContext);
+  const [{ project }] = useContext(ProjectContext);
 
   const mockCycles = [
     {

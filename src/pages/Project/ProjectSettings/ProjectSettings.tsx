@@ -33,7 +33,7 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
   match,
 }) => {
   const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
-  const { project, setProject } = useContext(ProjectContext);
+  const [{ project }, dispatch] = useContext(ProjectContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
@@ -69,7 +69,7 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
     try {
       await updateProject(projectNew);
       setIsLoading(false);
-      setProject(projectNew);
+      dispatch({ type: 'SET_PROJECT', project: projectNew });
       notification.success({
         message: 'Project updated',
       });

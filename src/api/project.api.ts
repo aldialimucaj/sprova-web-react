@@ -1,13 +1,11 @@
 import { message as MessageProvider, notification } from 'antd';
 import { AxiosError, AxiosResponse } from 'axios';
-import { useEffect, useState } from 'react';
+import { Dispatch, useEffect, useState } from 'react';
 import { defaultProject } from '../contexts/ProjectContext';
 import { Project } from '../models/Project';
 import agent from './agent';
 
-export function useGetProject(id: string) {
-  const [project, setProject] = useState<Project>(defaultProject);
-  const [projectId, setProjectId] = useState<string>(id);
+export function useGetProject(id: string, dispatch: Dispatch<any>) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -15,8 +13,8 @@ export function useGetProject(id: string) {
       setIsLoading(true);
 
       try {
-        const fetchedProject = await getProject(projectId);
-        setProject(fetchedProject);
+        const fetchedProject = await getProject(id);
+        dispatch({ type: 'SET_PROJECT', project: fetchedProject });
       } catch (error) {
         notification.error({
           message: 'Failed to fetch project',
@@ -28,13 +26,9 @@ export function useGetProject(id: string) {
     };
 
     fetchData();
-  }, [projectId]);
+  }, [id]);
 
-  const doFetch = (idNew: string) => {
-    setProjectId(idNew);
-  };
-
-  return { doFetch, isLoading, project, setProject };
+  return isLoading;
 }
 
 export async function getProject(id: string): Promise<Project> {
