@@ -1,13 +1,21 @@
 import { Breadcrumb, Spin } from 'antd';
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
 import {
   Route,
   RouteComponentProps,
   Switch,
   withRouter,
 } from 'react-router-dom';
-import { useGetProject } from '../../api/project.api';
-import { ProjectContext } from '../../contexts/ProjectContext';
+import { getProject } from '../../api/project.api';
+import { getTestCases } from '../../api/testcase.api';
+import {
+  ProjectContext,
+  setProject,
+  setTestCases,
+} from '../../contexts/ProjectContext';
+import { useFetcher } from '../../hooks/useFetcher';
+import { Project } from '../../models/Project';
+import { TestCase } from '../../models/TestCase';
 import CreateTestCase from '../CreateTestCase';
 import TestCases from '../TestCases';
 import ProjectDetails from './ProjectDetails';
@@ -20,8 +28,26 @@ interface Params {
 const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
 }) => {
-  const [{ project }, dispatch] = useContext(ProjectContext);
-  const isLoading = useGetProject(project._id || match.params.id, dispatch);
+  const [_, dispatch] = useContext(ProjectContext);
+  const { data: project, isLoading: isProjectLoading } = useFetcher<Project>(
+    getProject,
+    match.params.id
+  );
+  const { data: testCases, isLoading: isTestCasesLoading } = useFetcher<
+    TestCase[]
+  >(getTestCases);
+
+  useEffect(() => {
+    if (project) {
+      dispatch(setProject(project));
+    }
+  }, [project]);
+
+  useEffect(() => {
+    if (testCases) {
+      dispatch(setTestCases(testCases));
+    }
+  }, [testCases]);
 
   return (
     <Fragment>
@@ -29,7 +55,7 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
         <Breadcrumb.Item>Projects</Breadcrumb.Item>
         <Breadcrumb.Item>Cycles</Breadcrumb.Item>
       </Breadcrumb>
-      {isLoading ? (
+      {isProjectLoading || isTestCasesLoading ? (
         <Spin />
       ) : (
         <Fragment>

@@ -1,8 +1,8 @@
 import { List, Spin } from 'antd';
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { useGetTestCases } from '../../api/testcase.api';
 import SectionHeader from '../../components/SectionHeader';
+import { ProjectContext } from '../../contexts/ProjectContext';
 import { TestCase } from '../../models/TestCase';
 
 interface Params {
@@ -12,10 +12,8 @@ interface Params {
 const TestCases: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
 }) => {
-  const { testCases, isLoading } = useGetTestCases();
-  return isLoading ? (
-    <Spin />
-  ) : (
+  const [{ testCases }] = useContext(ProjectContext);
+  return (
     <Fragment>
       <SectionHeader
         title="Test Cases"

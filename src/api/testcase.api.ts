@@ -1,6 +1,10 @@
 import { notification } from 'antd';
 import { AxiosError, AxiosResponse } from 'axios';
-import { useEffect, useState } from 'react';
+import { Dispatch, useEffect, useState } from 'react';
+import {
+  ProjectAction,
+  setTestCases,
+} from '../contexts/ProjectContext/ProjectActions';
 import { defaultProject } from '../contexts/ProjectContext/ProjectContext';
 import { Project } from '../models/Project';
 import { TestCase } from '../models/TestCase';
@@ -84,8 +88,7 @@ export function postTestCase(project: Project) {
     );
 }
 
-export function useGetTestCases() {
-  const [testCases, setTestCases] = useState<TestCase[]>([]);
+export function useGetTestCases(dispatch: Dispatch<ProjectAction>) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -94,7 +97,7 @@ export function useGetTestCases() {
 
       try {
         const fetchedTestCases = await getTestCases();
-        setTestCases(fetchedTestCases);
+        dispatch(setTestCases(fetchedTestCases));
       } catch (error) {
         notification.error({
           message: 'Failed to fetch testcases',
@@ -108,7 +111,7 @@ export function useGetTestCases() {
     fetchData();
   }, []);
 
-  return { testCases, isLoading };
+  return isLoading;
 }
 
 export async function getTestCases(): Promise<TestCase[]> {

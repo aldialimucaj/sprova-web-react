@@ -35,8 +35,7 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
   history,
   match,
 }) => {
-  const [{ project }] = useContext(ProjectContext);
-  const { testCases, isLoading: isTestCasesLoading } = useGetTestCases();
+  const [{ project, testCases }] = useContext(ProjectContext);
   const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
   const [testSteps, setTestSteps] = useState<TestStep[]>([]);
   const [parentId, setParentId] = useState<string>('');
@@ -105,22 +104,20 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
               )}
             </Form.Item>
             <Form.Item label="Inherit from" colon={false}>
-              <Spin spinning={isTestCasesLoading}>
-                <Select
-                  allowClear={true}
-                  showSearch={true}
-                  value={parentId}
-                  optionFilterProp="children"
-                  placeholder="None"
-                  onChange={handleParentSelect}
-                >
-                  {testCases.map((testCase, index) => (
-                    <Option key={index} value={testCase._id}>
-                      {testCase.title}
-                    </Option>
-                  ))}
-                </Select>
-              </Spin>
+              <Select
+                allowClear={true}
+                showSearch={true}
+                value={parentId}
+                optionFilterProp="children"
+                placeholder="None"
+                onChange={handleParentSelect}
+              >
+                {testCases.map((testCase, index) => (
+                  <Option key={index} value={testCase._id}>
+                    {testCase.title}
+                  </Option>
+                ))}
+              </Select>
             </Form.Item>
             <Form.Item
               label="Test Steps"
