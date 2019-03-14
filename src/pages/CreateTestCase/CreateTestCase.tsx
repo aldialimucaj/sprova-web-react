@@ -13,9 +13,9 @@ import {
 import { FormComponentProps } from 'antd/lib/form';
 import React, { Fragment, useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { postTestCase, useGetTestCases } from '../../api/testcase.api';
+import { postTestCase } from '../../api/testcase.api';
 import SectionHeader from '../../components/SectionHeader';
-import { ProjectContext } from '../../contexts/ProjectContext';
+import { addTestCase, ProjectContext } from '../../contexts/ProjectContext';
 import { TestCase } from '../../models/TestCase';
 import { TestStep } from '../../models/TestStep';
 import TestStepInput from './TestStepInput';
@@ -35,7 +35,7 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
   history,
   match,
 }) => {
-  const [{ project, testCases }] = useContext(ProjectContext);
+  const [{ project, testCases }, dispatch] = useContext(ProjectContext);
   const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
   const [testSteps, setTestSteps] = useState<TestStep[]>([]);
   const [parentId, setParentId] = useState<string>('');
@@ -64,6 +64,7 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
     try {
       const id = await postTestCase(testCaseNew);
       setIsLoading(false);
+      dispatch(addTestCase(testCaseNew));
       notification.success({
         message: `${title} created`,
         description: `Test case created with ID ${id}`,

@@ -1,4 +1,5 @@
 import {
+  ADD_TEST_CASE,
   ProjectAction,
   RESET_PROJECT,
   SET_PROJECT,
@@ -22,6 +23,12 @@ export const reducer = (state: ProjectState, action: ProjectAction) => {
       return {
         ...state,
         testCases: action.testCases,
+      };
+    }
+    case ADD_TEST_CASE: {
+      return {
+        ...state,
+        testCases: [...state.testCases, action.testCase],
       };
     }
 

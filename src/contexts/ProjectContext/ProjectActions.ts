@@ -5,11 +5,13 @@ import { defaultProject } from './ProjectContext';
 export const SET_PROJECT = 'SET_PROJECT';
 export const RESET_PROJECT = 'RESET_PROJECT';
 export const SET_TEST_CASES = 'SET_TEST_CASES';
+export const ADD_TEST_CASE = 'ADD_TEST_CASE';
 
 export type ProjectAction =
   | SetProjectAction
   | ResetProjectAction
-  | SetTestCasesAction;
+  | SetTestCasesAction
+  | AddTestCaseAction;
 
 export interface SetProjectAction {
   type: typeof SET_PROJECT;
@@ -24,6 +26,11 @@ export interface ResetProjectAction {
 export interface SetTestCasesAction {
   type: typeof SET_TEST_CASES;
   testCases: TestCase[];
+}
+
+export interface AddTestCaseAction {
+  type: typeof ADD_TEST_CASE;
+  testCase: TestCase;
 }
 
 export const setProject = (project: Project): SetProjectAction => {
@@ -44,5 +51,12 @@ export const setTestCases = (testCases: TestCase[]): SetTestCasesAction => {
   return {
     type: SET_TEST_CASES,
     testCases,
+  };
+};
+
+export const addTestCase = (testCase: TestCase): AddTestCaseAction => {
+  return {
+    type: ADD_TEST_CASE,
+    testCase,
   };
 };
