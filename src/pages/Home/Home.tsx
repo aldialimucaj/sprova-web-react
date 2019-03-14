@@ -7,7 +7,7 @@ import { useFetcher } from '../../hooks/useFetcher';
 import { Project } from '../../models/Project';
 import './Home.scss';
 
-const Home: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
+const Home: React.FunctionComponent = () => {
   const { data: projects, isLoading } = useFetcher(getProjects);
 
   return isLoading ? (
@@ -43,4 +43,4 @@ const Home: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
   );
 };
 
-export default withRouter(Home);
+export default Home;
