@@ -2,7 +2,7 @@ import { Card, Col, List, Row } from 'antd';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import SectionHeader from '../../../components/SectionHeader';
-import ProjectContext from '../../../contexts/ProjectContext';
+import { ProjectContext } from '../../../contexts/ProjectContext';
 
 const ProjectDetails: React.FunctionComponent<{}> = () => {
   const [{ project }] = useContext(ProjectContext);

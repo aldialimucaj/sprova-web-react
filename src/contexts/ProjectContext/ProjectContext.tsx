@@ -1,23 +1,12 @@
 import React, { Dispatch, useReducer } from 'react';
-import { Project } from '../models/Project';
-import { TestCase } from '../models/TestCase';
+import { Project } from '../../models/Project';
+import { TestCase } from '../../models/TestCase';
+import { ProjectAction } from './ProjectActions';
+import { reducer } from './ProjectReducer';
 
 export const defaultProject: Project = {
   description: '',
   title: '',
-};
-
-const reducer = (state: ProjectState, action: any) => {
-  switch (action.type) {
-    case 'changeTheme':
-      return {
-        ...state,
-        theme: action.newTheme,
-      };
-
-    default:
-      return state;
-  }
 };
 
 export interface ProjectState {
@@ -32,11 +21,14 @@ export const initialState: ProjectState = {
 
 type ProjectContextValue = [ProjectState, Dispatch<any>];
 
-const defaultContext: ProjectContextValue = [initialState, (action: any) => {}];
+const defaultContext: ProjectContextValue = [
+  initialState,
+  (action: ProjectAction) => {},
+];
 
-const ProjectContext: React.Context<ProjectContextValue> = React.createContext(
-  defaultContext
-);
+export const ProjectContext: React.Context<
+  ProjectContextValue
+> = React.createContext(defaultContext);
 
 export const ProjectProvider: React.FunctionComponent = ({ children }) => {
   return (
@@ -45,5 +37,3 @@ export const ProjectProvider: React.FunctionComponent = ({ children }) => {
     </ProjectContext.Provider>
   );
 };
-
-export default ProjectContext;

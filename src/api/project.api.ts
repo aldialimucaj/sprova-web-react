@@ -1,7 +1,8 @@
 import { message as MessageProvider, notification } from 'antd';
 import { AxiosError, AxiosResponse } from 'axios';
 import { Dispatch, useEffect, useState } from 'react';
-import { defaultProject } from '../contexts/ProjectContext';
+import { setProject } from '../contexts/ProjectContext';
+import { defaultProject } from '../contexts/ProjectContext/ProjectContext';
 import { Project } from '../models/Project';
 import agent from './agent';
 
@@ -14,7 +15,7 @@ export function useGetProject(id: string, dispatch: Dispatch<any>) {
 
       try {
         const fetchedProject = await getProject(id);
-        dispatch({ type: 'SET_PROJECT', project: fetchedProject });
+        dispatch(setProject(fetchedProject));
       } catch (error) {
         notification.error({
           message: 'Failed to fetch project',

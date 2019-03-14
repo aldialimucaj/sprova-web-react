@@ -1,7 +1,7 @@
 import { notification } from 'antd';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
-import { defaultProject } from '../contexts/ProjectContext';
+import { defaultProject } from '../contexts/ProjectContext/ProjectContext';
 import { Project } from '../models/Project';
 import { TestCase } from '../models/TestCase';
 import agent from './agent';

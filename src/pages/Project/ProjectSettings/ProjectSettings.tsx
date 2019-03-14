@@ -14,7 +14,7 @@ import React, { useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { deleteProject, updateProject } from '../../../api/project.api';
 import SectionHeader from '../../../components/SectionHeader';
-import ProjectContext from '../../../contexts/ProjectContext';
+import { ProjectContext, setProject } from '../../../contexts/ProjectContext';
 import { Project } from '../../../models/Project';
 import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
 
@@ -69,7 +69,7 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
     try {
       await updateProject(projectNew);
       setIsLoading(false);
-      dispatch({ type: 'SET_PROJECT', project: projectNew });
+      dispatch(setProject(projectNew));
       notification.success({
         message: 'Project updated',
       });

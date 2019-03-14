@@ -15,7 +15,7 @@ import React, { Fragment, useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { postTestCase, useGetTestCases } from '../../api/testcase.api';
 import SectionHeader from '../../components/SectionHeader';
-import ProjectContext from '../../contexts/ProjectContext';
+import { ProjectContext } from '../../contexts/ProjectContext';
 import { TestCase } from '../../models/TestCase';
 import { TestStep } from '../../models/TestStep';
 import TestStepInput from './TestStepInput';

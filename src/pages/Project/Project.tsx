@@ -7,7 +7,7 @@ import {
   withRouter,
 } from 'react-router-dom';
 import { useGetProject } from '../../api/project.api';
-import ProjectContext from '../../contexts/ProjectContext';
+import { ProjectContext } from '../../contexts/ProjectContext';
 import CreateTestCase from '../CreateTestCase';
 import TestCases from '../TestCases';
 import ProjectDetails from './ProjectDetails';
