@@ -38,11 +38,12 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
   const [{ project, testCases }, dispatch] = useContext(ProjectContext);
   const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
   const [testSteps, setTestSteps] = useState<TestStep[]>([]);
-  const [parentId, setParentId] = useState<string>('');
+  const [parent, setParent] = useState<TestCase | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleParentSelect = (id: string) => {
-    setParentId(id);
+  const handleParentSelect = (id: string | null) => {
+    const parentNew = testCases.find((testCase) => testCase._id === id);
+    setParent(parentNew || null);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLButtonElement>) => {
@@ -55,8 +56,8 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
       steps: testSteps,
     };
 
-    if (parentId) {
-      testCaseNew = { ...testCaseNew, parent: parentId };
+    if (parent) {
+      testCaseNew = { ...testCaseNew, parent: parent._id };
     }
 
     setIsLoading(true);
@@ -108,7 +109,7 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
               <Select
                 allowClear={true}
                 showSearch={true}
-                value={parentId}
+                value={parent && parent._id}
                 optionFilterProp="children"
                 placeholder="None"
                 onChange={handleParentSelect}
@@ -126,7 +127,7 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
               validateStatus={'success'}
             >
               <TestStepInput
-                parent={parentId}
+                parent={parent}
                 testSteps={testSteps}
                 setTestSteps={setTestSteps}
               />
