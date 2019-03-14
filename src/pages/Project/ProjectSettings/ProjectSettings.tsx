@@ -14,7 +14,11 @@ import React, { useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { deleteProject, updateProject } from '../../../api/project.api';
 import SectionHeader from '../../../components/SectionHeader';
-import { ProjectContext, setProject } from '../../../contexts/ProjectContext';
+import {
+  ProjectContext,
+  resetProject,
+  setProject,
+} from '../../../contexts/ProjectContext';
 import { Project } from '../../../models/Project';
 import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
 
@@ -45,6 +49,7 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
       notification.success({
         message: `${project.title} deleted`,
       });
+      dispatch(resetProject());
       history.push('/projects');
     } catch (error) {
       setIsDeleteLoading(false);
