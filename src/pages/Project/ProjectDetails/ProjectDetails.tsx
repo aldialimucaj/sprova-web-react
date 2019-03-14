@@ -3,9 +3,10 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import SectionHeader from '../../../components/SectionHeader';
 import { ProjectContext } from '../../../contexts/ProjectContext';
+import { TestCase } from '../../../models/TestCase';
 
 const ProjectDetails: React.FunctionComponent<{}> = () => {
-  const [{ project }] = useContext(ProjectContext);
+  const [{ project, testCases }] = useContext(ProjectContext);
 
   const mockCycles = [
     {
@@ -53,8 +54,10 @@ const ProjectDetails: React.FunctionComponent<{}> = () => {
             />
             <List
               itemLayout="horizontal"
-              dataSource={mockCycles}
-              renderItem={(item: any) => <List.Item>item.title</List.Item>}
+              dataSource={testCases.slice(0, 4)}
+              renderItem={(testCase: TestCase) => (
+                <List.Item>{testCase.title}</List.Item>
+              )}
             />
           </Card>
         </Col>
