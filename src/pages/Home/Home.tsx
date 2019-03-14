@@ -1,37 +1,25 @@
-import { Button, Card, Col, Divider, Empty, Icon, Row } from 'antd';
-import React, { useEffect, useState } from 'react';
+import { Button, Card, Col, Empty, Row, Spin } from 'antd';
+import React, { Fragment } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { getProjects } from '../../api/project.api';
 import SectionHeader from '../../components/SectionHeader';
+import { useFetcher } from '../../hooks/useFetcher';
 import { Project } from '../../models/Project';
 import './Home.scss';
 
 const Home: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
-  const [projects, setProjects] = useState<Project[]>(new Array<Project>());
-  const fetchData = async () => {
-    try {
-      const data = await getProjects();
-      setProjects(data);
-    } catch (e) {
-      // TODO: take care of no data error
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const { data: projects, isLoading } = useFetcher(getProjects);
 
-  const selectProject = (id: string) => {
-    history.push(`/projects/${id}`);
-  };
-
-  return (
-    <React.Fragment>
+  return isLoading ? (
+    <Spin />
+  ) : (
+    <Fragment>
       <SectionHeader
         title="Projects"
         extra={<Link to="/projects/new">New Project</Link>}
       />
 
-      {projects.length > 0 ? (
+      {projects && projects.length > 0 ? (
         <Row gutter={16}>
           {projects.map((project: Project, index: number) => (
             <Col span={6} key={index}>
@@ -51,7 +39,7 @@ const Home: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
           </Link>
         </Empty>
       )}
-    </React.Fragment>
+    </Fragment>
   );
 };
 
