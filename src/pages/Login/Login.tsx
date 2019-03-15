@@ -1,4 +1,15 @@
-import { Alert, Button, Card, Col, Divider, Input, Row, Spin } from 'antd';
+import {
+  Alert,
+  Button,
+  Card,
+  Col,
+  Divider,
+  Form,
+  Input,
+  Row,
+  Spin,
+} from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
 import React, { useState } from 'react';
 import {
   Link,
@@ -6,62 +17,38 @@ import {
   RouteComponentProps,
   withRouter,
 } from 'react-router-dom';
-import authApi from '../../api/auth.api';
+import { authenticate, isAuthenticated } from '../../api/auth.api';
 import logo from '../../images/sprova.svg';
 import './Login.scss';
 
-const Login: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+interface Props extends RouteComponentProps, FormComponentProps {}
+
+const Login: React.FunctionComponent<Props> = ({ form, history }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
 
-  const isAuthenticated = authApi.isAuthenticated();
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.currentTarget;
-    switch (name) {
-      case 'username': {
-        setUsername(value);
-        break;
-      }
-      case 'password': {
-        setPassword(value);
-        break;
-      }
-    }
-  };
-
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.keyCode === 13) {
-      login();
-    }
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    login();
-  };
+    const { username, password } = getFieldsValue();
 
-  const login = () => {
     setIsLoading(true);
-    authApi
-      .authenticate(username, password)
-      .then(
-        (): void => {
-          setIsLoading(false);
-          history.push('/projects');
-        }
-      )
-      .catch(
-        (err: string): void => {
-          setIsLoading(false);
-          setError(err);
-        }
-      );
+
+    try {
+      await authenticate(username, password);
+      setIsLoading(false);
+      history.push('/projects');
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+    }
   };
 
-  return !isAuthenticated ? (
+  const hasErrors = (fieldsError: any): boolean => {
+    return Object.keys(fieldsError).some((field) => fieldsError[field]);
+  };
+
+  return !isAuthenticated() ? (
     <Row className="login-page" type="flex" justify="center">
       <Col span={6} style={{ textAlign: 'center' }}>
         <Card className="login-card">
@@ -77,34 +64,51 @@ const Login: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
                 onClose={() => setError('')}
               />
             ) : null}
-            <Input
-              className="form-item"
-              type="text"
-              name="username"
-              value={username}
-              placeholder="Username"
-              onChange={handleChange}
-              onKeyDown={handleKeyPress}
-            />
-            <Input.Password
-              action="action"
-              className="form-item"
-              type="password"
-              name="password"
-              value={password}
-              placeholder="Password"
-              onChange={handleChange}
-              onKeyDown={handleKeyPress}
-            />
-            <Button
-              className="form-item"
-              block={true}
-              type="primary"
-              disabled={!(username && password)}
-              onClick={handleSubmit}
+            <Form
+              hideRequiredMark={true}
+              layout="vertical"
+              onSubmit={handleSubmit}
             >
-              Log in
-            </Button>
+              <Form.Item label="Username" colon={false}>
+                {getFieldDecorator('username', {
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Username cannot be empty',
+                    },
+                  ],
+                })(
+                  <Input type="text" name="username" placeholder="Username" />
+                )}
+              </Form.Item>
+              <Form.Item label="Password" colon={false}>
+                {getFieldDecorator('password', {
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Password cannot be empty',
+                    },
+                  ],
+                })(
+                  <Input.Password
+                    action="password"
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                  />
+                )}
+              </Form.Item>
+              <Form.Item>
+                <Button
+                  block={true}
+                  type="primary"
+                  htmlType="submit"
+                  disabled={hasErrors(getFieldsError())}
+                >
+                  Login
+                </Button>
+              </Form.Item>
+            </Form>
           </Spin>
           <Divider>or</Divider>
           <Link to="/signup">Request new account</Link>
@@ -116,4 +120,4 @@ const Login: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
   );
 };
 
-export default withRouter(Login);
+export default withRouter(Form.create({})(Login));

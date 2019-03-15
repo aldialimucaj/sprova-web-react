@@ -1,16 +1,16 @@
 import { Avatar, Badge, Dropdown, Icon, Menu } from 'antd';
 import React, { Fragment } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import authApi from '../../../api/auth.api';
+import { getUsername, logout } from '../../../api/auth.api';
 import './RightContent.scss';
 
 const RightContent: React.FunctionComponent<RouteComponentProps> = ({
   history,
 }) => {
-  const username = authApi.getUsername();
+  const username = getUsername();
 
-  const logout = () => {
-    authApi.logout();
+  const doLogout = () => {
+    logout();
     history.push('/login');
   };
 
@@ -23,7 +23,7 @@ const RightContent: React.FunctionComponent<RouteComponentProps> = ({
       </Menu.Item>
       <Menu.Divider />
       <Menu.Item>
-        <a onClick={logout}>
+        <a onClick={doLogout}>
           <Icon type="logout" style={{ marginRight: 8 }} /> Logout
         </a>
       </Menu.Item>

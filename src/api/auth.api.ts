@@ -2,13 +2,6 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import decode from 'jwt-decode';
 import { setToken } from './agent';
 
-export default {
-  authenticate,
-  getUsername,
-  isAuthenticated,
-  logout,
-};
-
 export interface DecodedToken {
   _id: string;
   exp: number;
@@ -16,7 +9,7 @@ export interface DecodedToken {
   username: string;
 }
 
-function authenticate(
+export function authenticate(
   username: string,
   password: string
 ): Promise<DecodedToken> {
@@ -57,12 +50,12 @@ function authenticate(
   );
 }
 
-function getUsername(): string {
+export function getUsername(): string {
   const token = localStorage.getItem('token');
   return token ? (decode(token) as DecodedToken).username : '';
 }
 
-function isAuthenticated(): boolean {
+export function isAuthenticated(): boolean {
   const token = localStorage.getItem('token');
 
   return !!token && !isTokenExpired(token);
@@ -73,7 +66,7 @@ function isTokenExpired(token: string): boolean {
   return false;
 }
 
-function logout(): void {
+export function logout(): void {
   localStorage.removeItem('token');
   setToken(null);
 }
