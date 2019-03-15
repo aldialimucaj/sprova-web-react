@@ -1,6 +1,11 @@
-import { Alert, Button, Col, Input, Row, Spin } from 'antd';
+import { Alert, Button, Card, Col, Divider, Input, Row, Spin } from 'antd';
 import React, { useState } from 'react';
-import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
+import {
+  Link,
+  Redirect,
+  RouteComponentProps,
+  withRouter,
+} from 'react-router-dom';
 import authApi from '../../api/auth.api';
 import logo from '../../images/sprova.svg';
 import './Login.scss';
@@ -59,46 +64,51 @@ const Login: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
   return !isAuthenticated ? (
     <Row className="login-page" type="flex" justify="center">
       <Col span={6} style={{ textAlign: 'center' }}>
-        <img src={logo} width="64px" style={{ margin: 36 }} />
-        <h3 style={{ marginBottom: 24 }}>Sign in to Sprova</h3>
-        <Spin spinning={isLoading}>
-          {error ? (
-            <Alert
+        <Card className="login-card">
+          <img src={logo} width="64px" style={{ margin: 36 }} />
+          <h3 style={{ marginBottom: 24 }}>Sign in to Sprova</h3>
+          <Spin spinning={isLoading}>
+            {error ? (
+              <Alert
+                className="form-item"
+                type="error"
+                message={error}
+                closable={true}
+                onClose={() => setError('')}
+              />
+            ) : null}
+            <Input
               className="form-item"
-              type="error"
-              message={error}
-              closable={true}
-              onClose={() => setError('')}
+              type="text"
+              name="username"
+              value={username}
+              placeholder="Username"
+              onChange={handleChange}
+              onKeyDown={handleKeyPress}
             />
-          ) : null}
-          <Input
-            className="form-item"
-            type="text"
-            name="username"
-            value={username}
-            placeholder="Username"
-            onChange={handleChange}
-            onKeyDown={handleKeyPress}
-          />
-          <Input.Password
-            className="form-item"
-            type="password"
-            name="password"
-            value={password}
-            placeholder="Password"
-            onChange={handleChange}
-            onKeyDown={handleKeyPress}
-          />
-          <Button
-            className="form-item"
-            block={true}
-            type="primary"
-            disabled={!(username && password)}
-            onClick={handleSubmit}
-          >
-            Log in
-          </Button>
-        </Spin>
+            <Input.Password
+              action="action"
+              className="form-item"
+              type="password"
+              name="password"
+              value={password}
+              placeholder="Password"
+              onChange={handleChange}
+              onKeyDown={handleKeyPress}
+            />
+            <Button
+              className="form-item"
+              block={true}
+              type="primary"
+              disabled={!(username && password)}
+              onClick={handleSubmit}
+            >
+              Log in
+            </Button>
+          </Spin>
+          <Divider>or</Divider>
+          <Link to="/signup">Request new account</Link>
+        </Card>
       </Col>
     </Row>
   ) : (

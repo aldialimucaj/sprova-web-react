@@ -14,7 +14,7 @@ const ProjectDetails: React.FunctionComponent = () => {
       <SectionHeader title="Overview" />
       <Row gutter={16}>
         <Col lg={12} style={{ marginBottom: 16 }}>
-          <Card bordered={false}>
+          <Card>
             <SectionHeader
               title="Cycles"
               divider={false}
@@ -32,7 +32,7 @@ const ProjectDetails: React.FunctionComponent = () => {
           </Card>
         </Col>
         <Col lg={12} style={{ marginBottom: 16 }}>
-          <Card bordered={false}>
+          <Card>
             <SectionHeader
               title="Test Cases"
               divider={false}
