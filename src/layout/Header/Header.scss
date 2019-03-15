@@ -56,9 +56,10 @@
 
 .navbar-item {
   height: 100%;
+  display: inline-block;
   line-height: $navbar-height;
   cursor: pointer;
-  padding: 0 24px;
+  padding: 0 16px;
   transition: $generic-transition;
   &:hover {
     background: rgba(0, 0, 0, 0.025);

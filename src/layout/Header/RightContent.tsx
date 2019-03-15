@@ -1,5 +1,5 @@
-import { Avatar, Dropdown, Icon, Menu } from 'antd';
-import React from 'react';
+import { Avatar, Badge, Dropdown, Icon, Menu } from 'antd';
+import React, { Fragment } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import authApi from '../../api/auth.api';
 import './RightContent.scss';
@@ -14,7 +14,7 @@ const RightContent: React.FunctionComponent<RouteComponentProps> = ({
     history.push('/login');
   };
 
-  const menu = (
+  const userMenu = (
     <Menu>
       <Menu.Item>
         <a>
@@ -29,15 +29,43 @@ const RightContent: React.FunctionComponent<RouteComponentProps> = ({
       </Menu.Item>
     </Menu>
   );
+
+  const notificationMenu = (
+    <Menu>
+      <Menu.Item>Not implemented yet</Menu.Item>
+    </Menu>
+  );
+
   return (
-    <Dropdown overlay={menu} placement="bottomRight">
-      <div className="navbar-item">
-        <Avatar size="small" className="avatar">
-          {username.slice(0, 1).toUpperCase()}
-        </Avatar>
-        {username}
-      </div>
-    </Dropdown>
+    <Fragment>
+      <Dropdown
+        overlay={notificationMenu}
+        placement="bottomRight"
+        trigger={['click']}
+      >
+        <div className="navbar-item">
+          <span>
+            <Badge
+              count={11}
+              style={{ backgroundColor: '#1890ff', boxShadow: 'none' }}
+            >
+              <Icon
+                type="bell"
+                style={{ fontSize: 16, padding: 4, verticalAlign: 'middle' }}
+              />
+            </Badge>
+          </span>
+        </div>
+      </Dropdown>
+      <Dropdown overlay={userMenu} placement="bottomRight">
+        <div className="navbar-item">
+          <Avatar size="small" className="avatar">
+            {username.slice(0, 1).toUpperCase()}
+          </Avatar>
+          {username}
+        </div>
+      </Dropdown>
+    </Fragment>
   );
 };
 
