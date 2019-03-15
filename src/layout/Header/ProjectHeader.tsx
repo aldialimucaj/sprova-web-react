@@ -1,8 +1,9 @@
 import { Button, Col, Divider, Icon, Row, Select } from 'antd';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { Project } from '../../models/Project';
 const { Option } = Select;
+
 
 interface Params {
   id: string;
@@ -12,15 +13,26 @@ interface Props extends RouteComponentProps<Params> {
   projects: Project[];
 }
 
-const ProjectHeader: React.FunctionComponent<Props> = ({ match, projects }) => {
+const ProjectHeader: React.FunctionComponent<Props> = ({ match, projects, history }) => {
+
+  let selectedProjectIndex = projects.findIndex((p) => p._id === match.params.id);
+  const [project, setProject] = useState((projects[selectedProjectIndex]));
+  console.log(selectedProjectIndex)
+
+  function handleChange(index: string) {
+    if (index !== 'new') {
+      history.push(`/projects/${projects[parseInt(index)]._id}`);
+    }
+  }
+
   return (
     <React.Fragment>
       <Row type="flex" justify="space-between">
         <Col>
-          <Select defaultValue="0" style={{ width: 120 }}>
+          <Select style={{ width: 120 }} onChange={handleChange}>
             {projects.map((project, index) => (
               <Option key={index}>
-                <Link to={`/projects/'${project._id}`}>{project.title}</Link>
+                {project.title}
               </Option>
             ))}
             <Option value="new">
