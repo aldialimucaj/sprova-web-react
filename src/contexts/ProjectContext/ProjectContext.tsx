@@ -1,4 +1,5 @@
 import React, { Dispatch, useReducer } from 'react';
+import { Cycle } from '../../models/Cycle';
 import { Project } from '../../models/Project';
 import { TestCase } from '../../models/TestCase';
 import { ProjectAction } from './ProjectActions';
@@ -12,11 +13,13 @@ export const defaultProject: Project = {
 export interface ProjectState {
   project: Project;
   testCases: TestCase[];
+  cycles: Cycle[];
 }
 
 export const initialState: ProjectState = {
   project: defaultProject,
   testCases: [],
+  cycles: [],
 };
 
 type ProjectContextValue = [ProjectState, Dispatch<any>];
