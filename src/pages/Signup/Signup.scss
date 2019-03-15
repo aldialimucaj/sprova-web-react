@@ -1,0 +1,17 @@
+@import '../../variables';
+
+.form-item {
+  &:not(:last-child) {
+    margin-bottom: 16px;
+  }
+}
+
+.login-card {
+  box-shadow: 0 2px 4px rgba(0, 21, 41, 0.08);
+}
+
+.login-page {
+  background-color: $background-color;
+  height: 100vh;
+  padding: 48px;
+}
