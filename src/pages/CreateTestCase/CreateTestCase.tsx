@@ -104,18 +104,21 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
                     message: 'Title cannot be empty',
                   },
                 ],
-              })(<Input type="text" name="title" />)}
+              })(<Input type="text" name="title" placeholder="Test Case" />)}
             </Form.Item>
             <Form.Item label="Description" colon={false}>
               {getFieldDecorator('description', {})(
-                <TextArea minLength={3} name="description" />
+                <TextArea
+                  minLength={3}
+                  name="description"
+                  placeholder="Description"
+                />
               )}
             </Form.Item>
             <Form.Item label="Inherit from" colon={false}>
               <Select
                 allowClear={true}
                 showSearch={true}
-                value={parent && parent._id}
                 optionFilterProp="children"
                 placeholder="None"
                 onChange={handleParentSelect}

@@ -1,6 +1,6 @@
 import { Button, Col, Input, List, Row } from 'antd';
 import _ from 'lodash';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { useFormInput } from '../../hooks/useFormInput';
 import { TestStep } from '../../models/TestStep';
 import './index.scss';
@@ -67,25 +67,28 @@ const TestStepInput: React.FunctionComponent<Props> = ({
   );
 
   return (
-    <List
-      bordered={true}
-      itemLayout="horizontal"
-      footer={footerInput}
-      dataSource={testSteps}
-      renderItem={(testStep: TestStep) => (
-        <List.Item
-          actions={[
-            <a key="remove" onClick={() => removeTestStep(testStep)}>
-              remove
-            </a>,
-          ]}
-        >
-          <List.Item.Meta
-            title={<a href="https://ant.design">{testStep.action}</a>}
-          />
-        </List.Item>
-      )}
-    />
+    <Fragment>
+      <List
+        className="steps-list"
+        bordered={true}
+        itemLayout="horizontal"
+        dataSource={testSteps}
+        renderItem={(testStep: TestStep) => (
+          <List.Item
+            actions={[
+              <a key="remove" onClick={() => removeTestStep(testStep)}>
+                remove
+              </a>,
+            ]}
+          >
+            <List.Item.Meta
+              title={<a href="https://ant.design">{testStep.action}</a>}
+            />
+          </List.Item>
+        )}
+      />
+      {footerInput}
+    </Fragment>
   );
 };
 
