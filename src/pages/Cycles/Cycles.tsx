@@ -23,7 +23,7 @@ const Cycles: React.FunctionComponent<RouteComponentProps<Params>> = ({
       />
       <List
         itemLayout="horizontal"
-        dataSource={null}
+        dataSource={[]}
         renderItem={(cycle: Cycle) => (
           <List.Item>
             <List.Item.Meta

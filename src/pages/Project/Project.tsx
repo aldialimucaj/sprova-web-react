@@ -17,6 +17,7 @@ import { useFetcher } from '../../hooks/useFetcher';
 import { Project } from '../../models/Project';
 import { TestCase } from '../../models/TestCase';
 import CreateTestCase from '../CreateTestCase';
+import Cycles from '../Cycles';
 import TestCases from '../TestCases';
 import ProjectDetails from './ProjectDetails';
 import ProjectSettings from './ProjectSettings';
@@ -73,6 +74,7 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
             />
             <Route path="/projects/:id/testcases" component={TestCases} />
           </Switch>
+          <Route path="/projects/:id/cycles" component={Cycles} />
         </Fragment>
       )}
     </Fragment>
