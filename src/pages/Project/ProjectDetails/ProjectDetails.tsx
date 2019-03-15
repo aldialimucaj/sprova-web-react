@@ -5,23 +5,8 @@ import SectionHeader from '../../../components/SectionHeader';
 import { ProjectContext } from '../../../contexts/ProjectContext';
 import { TestCase } from '../../../models/TestCase';
 
-const ProjectDetails: React.FunctionComponent<{}> = () => {
-  const [{ project, testCases }] = useContext(ProjectContext);
-
-  const mockCycles = [
-    {
-      title: 'Ant Design Title 1',
-    },
-    {
-      title: 'Ant Design Title 2',
-    },
-    {
-      title: 'Ant Design Title 3',
-    },
-    {
-      title: 'Ant Design Title 4',
-    },
-  ];
+const ProjectDetails: React.FunctionComponent = () => {
+  const [{ cycles, project, testCases }] = useContext(ProjectContext);
 
   return (
     <React.Fragment>
@@ -38,7 +23,7 @@ const ProjectDetails: React.FunctionComponent<{}> = () => {
             />
             <List
               itemLayout="horizontal"
-              dataSource={mockCycles}
+              dataSource={cycles}
               renderItem={(item: any) => <List.Item>item.title</List.Item>}
             />
           </Card>

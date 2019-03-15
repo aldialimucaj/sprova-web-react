@@ -12,7 +12,7 @@ interface Params {
 const Cycles: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
 }) => {
-  const [] = useContext(ProjectContext);
+  const [{ cycles }] = useContext(ProjectContext);
   return (
     <Fragment>
       <SectionHeader
@@ -23,7 +23,7 @@ const Cycles: React.FunctionComponent<RouteComponentProps<Params>> = ({
       />
       <List
         itemLayout="horizontal"
-        dataSource={[]}
+        dataSource={cycles}
         renderItem={(cycle: Cycle) => (
           <List.Item>
             <List.Item.Meta
