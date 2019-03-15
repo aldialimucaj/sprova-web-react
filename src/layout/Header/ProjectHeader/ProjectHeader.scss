@@ -1,1 +1,9 @@
-@import './Header';
+@import '../Header';
+
+.create-item {
+  padding: 5px 12px !important;
+  cursor: pointer !important;
+  &:hover {
+    background-color: #e6f7ff;
+  }
+}

@@ -1,9 +1,10 @@
 import { Button, Col, Divider, Icon, Row, Select } from 'antd';
-import React, { useState, useEffect } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { Project } from '../../../models/Project';
-const { Option } = Select;
+import './ProjectHeader.scss';
 
+const { Option } = Select;
 
 interface Params {
   id: string;
@@ -13,31 +14,30 @@ interface Props extends RouteComponentProps<Params> {
   projects: Project[];
 }
 
-const ProjectHeader: React.FunctionComponent<Props> = ({ match, projects, history }) => {
+const ProjectHeader: React.FunctionComponent<Props> = ({
+  match,
+  projects,
+  history,
+}) => {
+  const [id, setId] = useState(match.params.id);
 
-  let selectedProjectIndex = projects.findIndex((p) => p._id === match.params.id);
-  const [project, setProject] = useState((projects[selectedProjectIndex]));
-  console.log(selectedProjectIndex)
-
-  function handleChange(index: string) {
-    if (index !== 'new') {
-      history.push(`/projects/${projects[parseInt(index)]._id}`);
+  const handleChange = (projectId: string) => {
+    if (id !== projectId) {
+      setId(projectId);
+      history.push(`/projects/${projectId}`);
     }
-  }
+  };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Row type="flex" justify="space-between">
         <Col>
-          <Select style={{ width: 120 }} onChange={handleChange}>
+          <Select value={id} onChange={handleChange}>
             {projects.map((project, index) => (
-              <Option key={index}>
+              <Option key={index} value={project._id}>
                 {project.title}
               </Option>
             ))}
-            <Option value="new">
-              <Link to="/new">Create new</Link>
-            </Option>
           </Select>
         </Col>
         <Col>
@@ -61,7 +61,7 @@ const ProjectHeader: React.FunctionComponent<Props> = ({ match, projects, histor
           </div>
         </Col>
       </Row>
-    </React.Fragment>
+    </Fragment>
   );
 };
 
