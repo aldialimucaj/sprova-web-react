@@ -1,6 +1,6 @@
-import { List, Spin } from 'antd';
+import { List } from 'antd';
 import React, { Fragment, useContext } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import SectionHeader from '../../components/SectionHeader';
 import { ProjectContext } from '../../contexts/ProjectContext';
 import { TestCase } from '../../models/TestCase';
@@ -39,4 +39,4 @@ const TestCases: React.FunctionComponent<RouteComponentProps<Params>> = ({
   );
 };
 
-export default TestCases;
+export default withRouter(TestCases);
