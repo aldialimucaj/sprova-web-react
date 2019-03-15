@@ -16,14 +16,14 @@ import {
 import { useFetcher } from '../../hooks/useFetcher';
 import { Project } from '../../models/Project';
 import { TestCase } from '../../models/TestCase';
-import CreateTestCase from '../CreateTestCase';
+import CreateProject from '../CreateProject';
 import Cycles from '../Cycles';
-import TestCases from '../TestCases';
+import TestCasePage from '../TestCase';
 import ProjectDetails from './ProjectDetails';
 import ProjectSettings from './ProjectSettings';
 
 interface Params {
-  id: string;
+  pid: string;
 }
 
 const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
@@ -32,7 +32,7 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
   const [_, dispatch] = useContext(ProjectContext);
   const { data: project, isLoading: isProjectLoading } = useFetcher<Project>(
     getProject,
-    match.params.id
+    match.params.pid
   );
   const { data: testCases, isLoading: isTestCasesLoading } = useFetcher<
     TestCase[]
@@ -61,21 +61,17 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
         <Spin />
       ) : (
         <Fragment>
-          <Route path="/projects/:id" exact={true} component={ProjectDetails} />
-          <Route
-            path="/projects/:id/settings"
-            exact={true}
-            component={ProjectSettings}
-          />
           <Switch>
+            <Route path="/projects/new" component={CreateProject} />
             <Route
-              path="/projects/:id/testcases/new"
+              path="/projects/:pid"
               exact={true}
-              component={CreateTestCase}
+              component={ProjectDetails}
             />
-            <Route path="/projects/:id/testcases" component={TestCases} />
           </Switch>
-          <Route path="/projects/:id/cycles" component={Cycles} />
+          <Route path="/projects/:pid/settings" component={ProjectSettings} />
+          <Route path="/projects/:pid/testcases" component={TestCasePage} />
+          <Route path="/projects/:pid/cycles" component={Cycles} />
         </Fragment>
       )}
     </Fragment>

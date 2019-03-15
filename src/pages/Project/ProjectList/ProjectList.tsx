@@ -1,13 +1,13 @@
 import { Button, Card, Col, Empty, Row, Spin } from 'antd';
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { getProjects } from '../../api/project.api';
-import SectionHeader from '../../components/SectionHeader';
-import { useFetcher } from '../../hooks/useFetcher';
-import { Project } from '../../models/Project';
-import './Home.scss';
+import { getProjects } from '../../../api/project.api';
+import SectionHeader from '../../../components/SectionHeader';
+import { useFetcher } from '../../../hooks/useFetcher';
+import { Project } from '../../../models/Project';
+import './ProjectList.scss';
 
-const Home: React.FunctionComponent = () => {
+const ProjectList: React.FunctionComponent = () => {
   const { data: projects, isLoading } = useFetcher(getProjects);
 
   return isLoading ? (
@@ -43,4 +43,4 @@ const Home: React.FunctionComponent = () => {
   );
 };
 
-export default Home;
+export default ProjectList;
