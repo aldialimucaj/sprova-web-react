@@ -1,7 +1,7 @@
 import { Avatar, Badge, Dropdown, Icon, Menu } from 'antd';
 import React, { Fragment } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import authApi from '../../api/auth.api';
+import authApi from '../../../api/auth.api';
 import './RightContent.scss';
 
 const RightContent: React.FunctionComponent<RouteComponentProps> = ({

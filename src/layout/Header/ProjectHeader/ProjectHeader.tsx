@@ -1,7 +1,7 @@
 import { Button, Col, Divider, Icon, Row, Select } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import { Project } from '../../models/Project';
+import { Project } from '../../../models/Project';
 const { Option } = Select;
 
 
