@@ -1,38 +1,9 @@
-import { message as MessageProvider, notification } from 'antd';
+import { message as MessageProvider } from 'antd';
 import { AxiosError, AxiosResponse } from 'axios';
-import { Dispatch, useEffect, useState } from 'react';
-import { setProject } from '../contexts/ProjectContext';
-import { defaultProject } from '../contexts/ProjectContext/ProjectContext';
 import { Project } from '../models/Project';
 import agent from './agent';
 
-export function useGetProject(id: string, dispatch: Dispatch<any>) {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-
-      try {
-        const fetchedProject = await getProject(id);
-        dispatch(setProject(fetchedProject));
-      } catch (error) {
-        notification.error({
-          message: 'Failed to fetch project',
-          description: error,
-        });
-      }
-
-      setIsLoading(false);
-    };
-
-    fetchData();
-  }, [id]);
-
-  return isLoading;
-}
-
-export async function getProject(id: string): Promise<Project> {
+export function getProject(id: string): Promise<Project> {
   return agent
     .get(`/projects/${id}`)
     .catch(
