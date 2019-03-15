@@ -1,7 +1,9 @@
+import { TestCase } from '../../models/TestCase';
 import {
   ADD_CYCLE,
   ADD_TEST_CASE,
   ProjectAction,
+  REMOVE_TEST_CASE,
   RESET_CYCLES,
   RESET_PROJECT,
   RESET_TEST_CASES,
@@ -27,6 +29,14 @@ export const reducer = (state: ProjectState, action: ProjectAction) => {
       return {
         ...state,
         testCases: [...state.testCases, action.testCase],
+      };
+    }
+    case REMOVE_TEST_CASE: {
+      return {
+        ...state,
+        testCases: state.testCases.filter(
+          (testCase: TestCase) => testCase._id !== action.id
+        ),
       };
     }
     case RESET_TEST_CASES: {

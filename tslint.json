@@ -10,7 +10,8 @@
     "no-submodule-imports": false,
     "object-literal-sort-keys": false,
     "quotemark": false,
-    "trailing-comma": false
+    "trailing-comma": false,
+    "variable-name": false
   },
   "linterOptions": {
     "exclude": ["./src/serviceWorker.ts"]

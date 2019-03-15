@@ -1,6 +1,8 @@
 export {
   resetProject,
   addTestCase,
+  removeTestCase,
+  resetTestCases,
   setProject,
   setTestCases,
 } from './ProjectActions';

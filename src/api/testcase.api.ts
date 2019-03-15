@@ -29,6 +29,29 @@ export function postTestCase(testCase: TestCase) {
     );
 }
 
+export function deleteTestCase(id: string) {
+  return agent
+    .delete(`/testcases/${id}`)
+    .catch(
+      (error: AxiosError): AxiosResponse => {
+        const { message, response } = error;
+        if (!response) {
+          throw message;
+        }
+        return response;
+      }
+    )
+    .then(
+      (response: AxiosResponse): boolean => {
+        const { data, status, statusText } = response;
+        if (status !== 200) {
+          throw statusText;
+        }
+        return !!data.ok;
+      }
+    );
+}
+
 export function getTestCases(): Promise<TestCase[]> {
   return agent
     .get('/testcases')

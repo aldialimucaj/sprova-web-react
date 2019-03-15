@@ -10,7 +10,7 @@ import {
   Typography,
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import React, { useContext, useState } from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { deleteProject, updateProject } from '../../../api/project.api';
 import SectionHeader from '../../../components/SectionHeader';
@@ -92,7 +92,7 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <SectionHeader
         title="Project Settings"
         extra={
@@ -147,7 +147,7 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
           </Form>
         </Col>
       </Row>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

@@ -69,12 +69,12 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
     setIsLoading(true);
 
     try {
-      const id = await postTestCase(testCaseNew);
+      const _id = await postTestCase(testCaseNew);
       setIsLoading(false);
-      dispatch(addTestCase(testCaseNew));
+      dispatch(addTestCase({ ...testCaseNew, _id }));
       notification.success({
         message: `${title} created`,
-        description: `Test case created with ID ${id}`,
+        description: `Test case created with ID ${_id}`,
       });
       history.push(`/projects/${project._id || match.params.id}/testcases`);
     } catch (error) {

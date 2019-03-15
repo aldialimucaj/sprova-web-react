@@ -6,6 +6,7 @@ export const RESET_PROJECT = 'RESET_PROJECT';
 export const SET_PROJECT = 'SET_PROJECT';
 
 export const ADD_TEST_CASE = 'ADD_TEST_CASE';
+export const REMOVE_TEST_CASE = 'REMOVE_TEST_CASE';
 export const RESET_TEST_CASES = 'RESET_TEST_CASES';
 export const SET_TEST_CASES = 'SET_TEST_CASES';
 
@@ -17,6 +18,7 @@ export type ProjectAction =
   | ResetProjectAction
   | SetProjectAction
   | AddTestCaseAction
+  | RemoveTestCaseAction
   | ResetTestCasesAction
   | SetTestCasesAction
   | AddCycleAction
@@ -35,6 +37,11 @@ export interface ResetProjectAction {
 export interface AddTestCaseAction {
   type: typeof ADD_TEST_CASE;
   testCase: TestCase;
+}
+
+export interface RemoveTestCaseAction {
+  type: typeof REMOVE_TEST_CASE;
+  id: string;
 }
 
 export interface ResetTestCasesAction {
@@ -77,6 +84,13 @@ export const addTestCase = (testCase: TestCase): AddTestCaseAction => {
   return {
     type: ADD_TEST_CASE,
     testCase,
+  };
+};
+
+export const removeTestCase = (id: string): RemoveTestCaseAction => {
+  return {
+    type: REMOVE_TEST_CASE,
+    id,
   };
 };
 
