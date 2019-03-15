@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import SectionHeader from '../../../components/SectionHeader';
 import { ProjectContext } from '../../../contexts/ProjectContext';
 import { TestCase } from '../../../models/TestCase';
+import { Cycle } from '../../../models/Cycle';
 
 const ProjectDetails: React.FunctionComponent = () => {
   const [{ cycles, project, testCases }] = useContext(ProjectContext);
@@ -24,7 +25,9 @@ const ProjectDetails: React.FunctionComponent = () => {
             <List
               itemLayout="horizontal"
               dataSource={cycles.slice(0, 4)}
-              renderItem={(item: any) => <List.Item>item.title</List.Item>}
+              renderItem={(cycle: Cycle) => (
+                <List.Item>{cycle.title}</List.Item>
+              )}
             />
           </Card>
         </Col>
