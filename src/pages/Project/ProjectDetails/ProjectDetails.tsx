@@ -23,7 +23,7 @@ const ProjectDetails: React.FunctionComponent = () => {
             />
             <List
               itemLayout="horizontal"
-              dataSource={cycles}
+              dataSource={cycles.slice(0, 4)}
               renderItem={(item: any) => <List.Item>item.title</List.Item>}
             />
           </Card>
