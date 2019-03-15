@@ -3,8 +3,8 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import SectionHeader from '../../../components/SectionHeader';
 import { ProjectContext } from '../../../contexts/ProjectContext';
-import { TestCase } from '../../../models/TestCase';
 import { Cycle } from '../../../models/Cycle';
+import { TestCase } from '../../../models/TestCase';
 
 const ProjectDetails: React.FunctionComponent = () => {
   const [{ cycles, project, testCases }] = useContext(ProjectContext);
