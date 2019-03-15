@@ -18,6 +18,7 @@ import SectionHeader from '../../components/SectionHeader';
 import { addTestCase, ProjectContext } from '../../contexts/ProjectContext';
 import { TestCase } from '../../models/TestCase';
 import { TestStep } from '../../models/TestStep';
+import './index.scss';
 import TestStepInput from './TestStepInput';
 import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
 
@@ -36,14 +37,19 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
   match,
 }) => {
   const [{ project, testCases }, dispatch] = useContext(ProjectContext);
-  const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
   const [testSteps, setTestSteps] = useState<TestStep[]>([]);
   const [parent, setParent] = useState<TestCase | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [showInherited, setShowInherited] = useState(false);
+  const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
 
   const handleParentSelect = (id: string | null) => {
     const parentNew = testCases.find((testCase) => testCase._id === id);
     setParent(parentNew || null);
+  };
+
+  const toggleShowInherited = () => {
+    setShowInherited(!showInherited);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLButtonElement>) => {
@@ -102,7 +108,7 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
             </Form.Item>
             <Form.Item label="Description" colon={false}>
               {getFieldDecorator('description', {})(
-                <TextArea name="description" />
+                <TextArea minLength={3} name="description" />
               )}
             </Form.Item>
             <Form.Item label="Inherit from" colon={false}>
@@ -126,8 +132,35 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
               required={true}
               validateStatus={'success'}
             >
+              {parent ? (
+                <Button
+                  block={true}
+                  onClick={toggleShowInherited}
+                  type="dashed"
+                  style={{ marginBottom: 16 }}
+                >
+                  {`${showInherited ? 'Hide' : 'Show'} inherited steps`}
+                </Button>
+              ) : null}
+
+              {parent && showInherited ? (
+                <List
+                  className="inherited-list"
+                  itemLayout="horizontal"
+                  bordered={true}
+                  dataSource={(parent && parent.steps) || []}
+                  renderItem={(testStep: TestStep) => (
+                    <List.Item>
+                      <List.Item.Meta
+                        title={
+                          <a href="https://ant.design">{testStep.action}</a>
+                        }
+                      />
+                    </List.Item>
+                  )}
+                />
+              ) : null}
               <TestStepInput
-                parent={parent}
                 testSteps={testSteps}
                 setTestSteps={setTestSteps}
               />

@@ -1,40 +1,29 @@
-import { Button, Form, Input, List } from 'antd';
-import React, { Fragment, useState } from 'react';
-import { TestCase } from '../../models/TestCase';
+import { Button, Col, Input, List, Row } from 'antd';
+import _ from 'lodash';
+import React from 'react';
+import { useFormInput } from '../../hooks/useFormInput';
 import { TestStep } from '../../models/TestStep';
+import './index.scss';
 
 interface Props {
-  parent: TestCase | null;
   testSteps: TestStep[];
   setTestSteps: (testSteps: TestStep[]) => void;
 }
 
 const TestStepInput: React.FunctionComponent<Props> = ({
-  parent,
   testSteps,
   setTestSteps,
 }) => {
-  const [action, setAction] = useState('');
-  const [expected, setExpected] = useState('');
-  const [showInherited, setShowInherited] = useState(false);
-
-  const toggleShowInherited = () => {
-    setShowInherited(!showInherited);
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.currentTarget;
-    switch (name) {
-      case 'action': {
-        setAction(value);
-        break;
-      }
-      case 'expected': {
-        setExpected(value);
-        break;
-      }
-    }
-  };
+  const {
+    value: action,
+    setValue: setAction,
+    handleChange: handleActionChange,
+  } = useFormInput('');
+  const {
+    value: expected,
+    setValue: setExpected,
+    handleChange: handleExpectedChange,
+  } = useFormInput('');
 
   const addTestStep = () => {
     const testStepNew = {
@@ -48,69 +37,55 @@ const TestStepInput: React.FunctionComponent<Props> = ({
   };
 
   const removeTestStep = (testStep: TestStep) => {
-    // TODO:
+    setTestSteps(_.without(testSteps, testStep));
   };
 
-  return (
-    <Fragment>
-      {showInherited ? (
-        <List
-          itemLayout="horizontal"
-          bordered={true}
-          dataSource={(parent && parent.steps) || []}
-          renderItem={(testStep: TestStep) => (
-            <List.Item>
-              <List.Item.Meta
-                title={<a href="https://ant.design">{testStep.action}</a>}
-              />
-            </List.Item>
-          )}
+  const footerInput = (
+    <Row gutter={16}>
+      <Col span={10}>
+        <Input
+          value={action}
+          onChange={handleActionChange}
+          placeholder="Step action"
+          name="action"
         />
-      ) : null}
-      <List
-        header={
-          parent ? (
-            <a onClick={toggleShowInherited}>
-              {`${showInherited ? 'Hide' : 'Show'}`} inherited steps
-            </a>
-          ) : null
-        }
-        itemLayout="horizontal"
-        footer={
-          <Fragment>
-            <Input
-              value={action}
-              onChange={handleChange}
-              placeholder="Step action"
-              name="action"
-            />
-            <Input
-              value={expected}
-              onChange={handleChange}
-              placeholder="Expected"
-              name="expected"
-            />
-            <Button type="primary" onClick={addTestStep}>
-              Add
-            </Button>
-          </Fragment>
-        }
-        dataSource={testSteps}
-        renderItem={(testStep: TestStep) => (
-          <List.Item
-            actions={[
-              <a key="remove" onClick={() => removeTestStep(testStep)}>
-                remove
-              </a>,
-            ]}
-          >
-            <List.Item.Meta
-              title={<a href="https://ant.design">{testStep.action}</a>}
-            />
-          </List.Item>
-        )}
-      />
-    </Fragment>
+      </Col>
+      <Col span={10}>
+        <Input
+          value={expected}
+          onChange={handleExpectedChange}
+          placeholder="Expected"
+          name="expected"
+        />
+      </Col>
+      <Col span={4}>
+        <Button block={true} type="primary" onClick={addTestStep}>
+          Add
+        </Button>
+      </Col>
+    </Row>
+  );
+
+  return (
+    <List
+      bordered={true}
+      itemLayout="horizontal"
+      footer={footerInput}
+      dataSource={testSteps}
+      renderItem={(testStep: TestStep) => (
+        <List.Item
+          actions={[
+            <a key="remove" onClick={() => removeTestStep(testStep)}>
+              remove
+            </a>,
+          ]}
+        >
+          <List.Item.Meta
+            title={<a href="https://ant.design">{testStep.action}</a>}
+          />
+        </List.Item>
+      )}
+    />
   );
 };
 
