@@ -1,56 +1,47 @@
-import { Card, Col, List, Row } from 'antd';
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Col, Row } from 'antd';
+import React, { Fragment, useContext } from 'react';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import CardList from '../../../components/CardList';
 import SectionHeader from '../../../components/SectionHeader';
 import { ProjectContext } from '../../../contexts/ProjectContext';
 import { Cycle } from '../../../models/Cycle';
 import { TestCase } from '../../../models/TestCase';
 
-const ProjectDetails: React.FunctionComponent = () => {
+const ProjectDetails: React.FunctionComponent<RouteComponentProps> = ({
+  history,
+}) => {
   const [{ cycles, project, testCases }] = useContext(ProjectContext);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <SectionHeader title="Overview" />
       <Row gutter={16}>
         <Col lg={12} style={{ marginBottom: 16 }}>
-          <Card>
-            <SectionHeader
-              title="Cycles"
-              divider={false}
-              extra={
-                <Link to={`/projects/${project._id}/cycles`}>Show all</Link>
-              }
-            />
-            <List
-              itemLayout="horizontal"
-              dataSource={cycles.slice(0, 4)}
-              renderItem={(cycle: Cycle) => (
-                <List.Item>{cycle.title}</List.Item>
-              )}
-            />
-          </Card>
+          <CardList
+            title="Cycles"
+            dataSource={cycles.slice(0, 4)}
+            extra={<Link to={`/projects/${project._id}/cycles`}>Show all</Link>}
+            onItemClick={({ _id }: Cycle) =>
+              history.push(`/projects/${project._id}/cylces/${_id}`)
+            }
+            renderItem={(cycle: Cycle) => <div>{cycle.title}</div>}
+          />
         </Col>
         <Col lg={12} style={{ marginBottom: 16 }}>
-          <Card>
-            <SectionHeader
-              title="Test Cases"
-              divider={false}
-              extra={
-                <Link to={`/projects/${project._id}/testcases`}>Show all</Link>
-              }
-            />
-            <List
-              itemLayout="horizontal"
-              dataSource={testCases.slice(0, 4)}
-              renderItem={(testCase: TestCase) => (
-                <List.Item>{testCase.title}</List.Item>
-              )}
-            />
-          </Card>
+          <CardList
+            title="Test Cases"
+            dataSource={testCases.slice(0, 4)}
+            extra={
+              <Link to={`/projects/${project._id}/testcases`}>Show all</Link>
+            }
+            onItemClick={({ _id }: TestCase) =>
+              history.push(`/projects/${project._id}/testcases/${_id}`)
+            }
+            renderItem={(testCase: TestCase) => <div>{testCase.title}</div>}
+          />
         </Col>
       </Row>
-    </React.Fragment>
+    </Fragment>
   );
 };
 
