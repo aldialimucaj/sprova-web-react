@@ -1,4 +1,4 @@
-import { Table } from 'antd';
+import { Button, Icon, Table } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import SectionHeader from '../../../components/SectionHeader';
@@ -33,7 +33,9 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps> = ({
         title="Test Cases"
         extra={
           <Link to={`/projects/${project._id}/testcases/new`}>
-            New Test Case
+            <Button type="primary">
+              <Icon type="plus" /> New
+            </Button>
           </Link>
         }
       />
