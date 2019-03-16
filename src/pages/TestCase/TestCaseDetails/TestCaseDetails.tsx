@@ -18,6 +18,7 @@ import {
   removeTestCase,
 } from '../../../contexts/ProjectContext';
 import { TestCase } from '../../../models/TestCase';
+import { findById, findChildren } from '../../../utils';
 
 interface Params {
   tid: string;
@@ -36,10 +37,6 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
   ] = useContext(ProjectContext);
   const [testCase, setTestCase] = useState<TestCase | null>(null);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
-
-  const findById = (tcs: TestCase[], id: string): TestCase => {
-    return _.find(tcs, ({ _id }: TestCase) => _id === id)!;
-  };
 
   useEffect(() => {
     setTestCase(findById(testCases, match.params.tid));
@@ -62,10 +59,6 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
         description: error,
       });
     }
-  };
-
-  const findChildren = (tcs: TestCase[], parentId: string) => {
-    return _.filter(tcs, ({ parent }: TestCase) => parent === parentId);
   };
 
   const handleChildClick = (id: string) => {
