@@ -1,4 +1,13 @@
-import { Button, Icon, notification, Popconfirm } from 'antd';
+import {
+  Button,
+  Card,
+  Col,
+  Empty,
+  Icon,
+  notification,
+  Popconfirm,
+  Row,
+} from 'antd';
 import _ from 'lodash';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -11,7 +20,6 @@ import {
 import { TestCase } from '../../../models/TestCase';
 
 interface Params {
-  pid: string;
   tid: string;
 }
 
@@ -19,7 +27,13 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
   history,
   match,
 }) => {
-  const [{ testCases }, dispatch] = useContext(ProjectContext);
+  const [
+    {
+      project: { _id: pid },
+      testCases,
+    },
+    dispatch,
+  ] = useContext(ProjectContext);
   const [testCase, setTestCase] = useState<TestCase | null>(null);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
@@ -40,7 +54,7 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
       notification.success({
         message: `${testCase!.title} deleted`,
       });
-      history.push(`/projects/${match.params.pid}/testcases`);
+      history.push(`/projects/${pid}/testcases`);
     } catch (error) {
       setIsDeleteLoading(false);
       notification.error({
@@ -50,28 +64,55 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
     }
   };
 
-  return (
+  const findChildren = (tcs: TestCase[], parentId: string) => {
+    return _.filter(tcs, ({ parent }: TestCase) => parent === parentId);
+  };
+
+  const handleChildClick = (id: string) => {
+    history.push(`/projects/${pid}/testcases/${id}`);
+  };
+
+  return testCase ? (
     <Fragment>
-      {testCase ? (
-        <SectionHeader
-          title={testCase.title}
-          extra={
-            <Popconfirm
-              placement="bottomRight"
-              title="Delete this test case?"
-              onConfirm={deleteRequest}
-              icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
-              okText="Yes"
-              cancelText="Cancel"
-            >
-              <Button type="danger" loading={isDeleteLoading}>
-                Delete
-              </Button>
-            </Popconfirm>
-          }
-        />
-      ) : null}
+      <SectionHeader
+        title={testCase.title}
+        extra={
+          <Popconfirm
+            placement="bottomRight"
+            title="Delete this test case?"
+            onConfirm={deleteRequest}
+            icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
+            okText="Yes"
+            cancelText="Cancel"
+          >
+            <Button type="danger" loading={isDeleteLoading}>
+              Delete
+            </Button>
+          </Popconfirm>
+        }
+      />
+      <Row gutter={16}>
+        <Col lg={12} style={{ marginBottom: 16 }}>
+          Details
+        </Col>
+
+        <Col lg={12} style={{ marginBottom: 16 }}>
+          <Card title="Children">
+            {findChildren(testCases, testCase!._id!).map(
+              (tc: TestCase, index: number) => (
+                <Card.Grid style={{ cursor: 'pointer', width: '100%' }}>
+                  <div onClick={() => handleChildClick(tc._id!)}>
+                    {tc.title}
+                  </div>
+                </Card.Grid>
+              )
+            )}
+          </Card>
+        </Col>
+      </Row>
     </Fragment>
+  ) : (
+    <Empty />
   );
 };
 
