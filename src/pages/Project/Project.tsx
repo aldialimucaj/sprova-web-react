@@ -16,9 +16,9 @@ import {
 import { useFetcher } from '../../hooks/useFetcher';
 import { Project } from '../../models/Project';
 import { TestCase } from '../../models/TestCase';
-import CreateProject from '../CreateProject';
 import Cycles from '../Cycles';
 import TestCasePage from '../TestCase';
+import CreateProject from './CreateProject';
 import ProjectDetails from './ProjectDetails';
 import ProjectSettings from './ProjectSettings';
 

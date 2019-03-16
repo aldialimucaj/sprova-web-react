@@ -1,8 +1,8 @@
 import { Button, Col, Input, List, Row } from 'antd';
 import _ from 'lodash';
 import React, { Fragment } from 'react';
-import { useFormInput } from '../../hooks/useFormInput';
-import { TestStep } from '../../models/TestStep';
+import { useFormInput } from '../../../hooks/useFormInput';
+import { TestStep } from '../../../models/TestStep';
 import './index.scss';
 
 interface Props {

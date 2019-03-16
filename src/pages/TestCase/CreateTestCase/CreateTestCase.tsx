@@ -13,11 +13,11 @@ import {
 import { FormComponentProps } from 'antd/lib/form';
 import React, { Fragment, useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { postTestCase } from '../../api/testcase.api';
-import SectionHeader from '../../components/SectionHeader';
-import { addTestCase, ProjectContext } from '../../contexts/ProjectContext';
-import { TestCase } from '../../models/TestCase';
-import { TestStep } from '../../models/TestStep';
+import { postTestCase } from '../../../api/testcase.api';
+import SectionHeader from '../../../components/SectionHeader';
+import { addTestCase, ProjectContext } from '../../../contexts/ProjectContext';
+import { TestCase } from '../../../models/TestCase';
+import { TestStep } from '../../../models/TestStep';
 import './index.scss';
 import TestStepInput from './TestStepInput';
 import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';

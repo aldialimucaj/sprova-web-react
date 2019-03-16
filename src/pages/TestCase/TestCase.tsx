@@ -5,7 +5,7 @@ import {
   Switch,
   withRouter,
 } from 'react-router-dom';
-import CreateTestCase from '../CreateTestCase';
+import CreateTestCase from './CreateTestCase';
 import './TestCase.scss';
 import TestCaseDetails from './TestCaseDetails';
 import TestCaseList from './TestCaseList';

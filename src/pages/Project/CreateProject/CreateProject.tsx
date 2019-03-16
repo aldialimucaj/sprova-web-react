@@ -2,9 +2,9 @@ import { Button, Col, Form, Input, notification, Row } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { postProject } from '../../api/project.api';
-import SectionHeader from '../../components/SectionHeader';
-import { Project } from '../../models/Project';
+import { postProject } from '../../../api/project.api';
+import SectionHeader from '../../../components/SectionHeader';
+import { Project } from '../../../models/Project';
 import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
 
 const { TextArea } = Input;
