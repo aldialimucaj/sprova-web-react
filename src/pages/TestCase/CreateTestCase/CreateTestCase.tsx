@@ -2,13 +2,12 @@ import {
   Button,
   Col,
   Form,
-  Icon,
   Input,
   List,
   notification,
   Row,
   Select,
-  Spin,
+  Tag,
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { Fragment, useContext, useState } from 'react';
@@ -18,9 +17,10 @@ import SectionHeader from '../../../components/SectionHeader';
 import { addTestCase, ProjectContext } from '../../../contexts/ProjectContext';
 import { TestCase } from '../../../models/TestCase';
 import { TestStep } from '../../../models/TestStep';
+import { resolveSteps } from '../../../utils/resolveSteps';
 import './index.scss';
 import TestStepInput from './TestStepInput';
-import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
+import { formContentLayout } from './utils';
 
 const Option = Select.Option;
 const { TextArea } = Input;
@@ -151,14 +151,21 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
                   className="inherited-list"
                   itemLayout="horizontal"
                   bordered={true}
-                  dataSource={(parent && parent.steps) || []}
-                  renderItem={(testStep: TestStep) => (
-                    <List.Item>
+                  dataSource={resolveSteps(parent, testCases)}
+                  renderItem={([testStep, mappedParent]: [
+                    TestStep,
+                    TestCase
+                  ]) => (
+                    <List.Item
+                      style={{ backgroundColor: 'rgba(0, 0, 0, 0.025)' }}
+                    >
                       <List.Item.Meta
-                        title={
-                          <a href="https://ant.design">{testStep.action}</a>
-                        }
+                        title={testStep.action}
+                        description={`Expected: ${testStep.expected}`}
                       />
+                      <Tag style={{ pointerEvents: 'none' }}>
+                        {mappedParent.title}
+                      </Tag>
                     </List.Item>
                   )}
                 />
