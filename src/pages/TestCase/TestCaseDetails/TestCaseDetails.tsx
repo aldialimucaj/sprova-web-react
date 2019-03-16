@@ -1,17 +1,9 @@
-import {
-  Button,
-  Card,
-  Col,
-  Empty,
-  Icon,
-  notification,
-  Popconfirm,
-  Row,
-} from 'antd';
+import { Button, Col, Empty, Icon, notification, Popconfirm, Row } from 'antd';
 import _ from 'lodash';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { deleteTestCase } from '../../../api/testcase.api';
+import CardList from '../../../components/CardList';
 import SectionHeader from '../../../components/SectionHeader';
 import {
   ProjectContext,
@@ -61,8 +53,8 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
     }
   };
 
-  const handleChildClick = (id: string) => {
-    history.push(`/projects/${pid}/testcases/${id}`);
+  const handleChildClick = (tc: TestCase) => {
+    history.push(`/projects/${pid}/testcases/${tc._id}`);
   };
 
   return testCase ? (
@@ -90,17 +82,12 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
         </Col>
 
         <Col lg={12} style={{ marginBottom: 16 }}>
-          <Card title="Children">
-            {findChildren(testCases, testCase!._id!).map(
-              (tc: TestCase, index: number) => (
-                <Card.Grid style={{ cursor: 'pointer', width: '100%' }}>
-                  <div onClick={() => handleChildClick(tc._id!)}>
-                    {tc.title}
-                  </div>
-                </Card.Grid>
-              )
-            )}
-          </Card>
+          <CardList
+            title="Children"
+            dataSource={findChildren(testCases, match.params.tid)}
+            renderItem={(tc: TestCase) => <div>{tc.title}</div>}
+            onItemClick={handleChildClick}
+          />
         </Col>
       </Row>
     </Fragment>
