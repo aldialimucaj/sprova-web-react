@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import './App.scss';
 import { ProjectProvider } from './contexts/ProjectContext';
 import Layout from './layout';
@@ -12,6 +12,7 @@ const App = () => {
         <Switch>
           <Route path="/projects" exact={true} component={ProjectList} />
           <Route path="/projects/:pid" component={Project} />
+          <Redirect path="/" exact={true} to="/projects" />
         </Switch>
       </Layout>
     </ProjectProvider>
