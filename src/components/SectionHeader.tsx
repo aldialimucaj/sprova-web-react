@@ -3,15 +3,27 @@ import React from 'react';
 
 interface Params {
   divider?: boolean;
-  title: string;
   extra?: React.ReactNode;
+  size?: 'big' | 'medium' | 'small';
+  title: string;
 }
 
 const SectionHeader: React.FunctionComponent<Params> = ({
   divider = true,
   extra = null,
+  size = 'big',
   title,
 }) => {
+  const header = (text: string) => {
+    switch (size) {
+      case 'big':
+        return <h2 style={{ marginBottom: 0 }}>{text}</h2>;
+      case 'medium':
+        return <h3 style={{ marginBottom: 0 }}>{text}</h3>;
+      case 'small':
+        return <h4 style={{ marginBottom: 0 }}>{text}</h4>;
+    }
+  };
   return (
     <React.Fragment>
       <Row
@@ -20,9 +32,7 @@ const SectionHeader: React.FunctionComponent<Params> = ({
         align="middle"
         style={{ marginBottom: 24 }}
       >
-        <Col>
-          <h2 style={{ marginBottom: 0 }}>{title}</h2>
-        </Col>
+        <Col>{header(title)}</Col>
         <Col>{extra}</Col>
       </Row>
       {divider ? <Divider /> : null}

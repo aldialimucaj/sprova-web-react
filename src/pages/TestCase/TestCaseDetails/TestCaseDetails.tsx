@@ -53,10 +53,6 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
     }
   };
 
-  const handleChildClick = (tc: TestCase) => {
-    history.push(`/projects/${pid}/testcases/${tc._id}`);
-  };
-
   return testCase ? (
     <Fragment>
       <SectionHeader
@@ -78,7 +74,8 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
       />
       <Row gutter={16}>
         <Col lg={12} style={{ marginBottom: 16 }}>
-          Details
+          <SectionHeader size="medium" title="Description" divider={false} />
+          {testCase.description || 'No description.'}
         </Col>
 
         <Col lg={12} style={{ marginBottom: 16 }}>
@@ -86,7 +83,9 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
             title="Children"
             dataSource={findChildren(testCases, match.params.tid)}
             renderItem={(tc: TestCase) => <div>{tc.title}</div>}
-            onItemClick={handleChildClick}
+            onItemClick={(record: TestCase) =>
+              history.push(`/projects/${pid}/testcases/${record._id}`)
+            }
           />
         </Col>
       </Row>
