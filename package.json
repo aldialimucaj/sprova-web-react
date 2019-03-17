@@ -18,7 +18,6 @@
     "customize-cra": "^0.2.12",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.10.0",
-    "eslint-plugin-react-hooks": "^1.4.0",
     "immutable": "^4.0.0-rc.12",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.11",
