@@ -6,10 +6,11 @@ import { postProject } from '../../../api/project.api';
 import SectionHeader from '../../../components/SectionHeader';
 import { Project } from '../../../models/Project';
 import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
+import { RichTextEditor } from "../../../components/RichTextEditor";
 
 const { TextArea } = Input;
 
-interface Props extends RouteComponentProps, FormComponentProps {}
+interface Props extends RouteComponentProps, FormComponentProps { }
 
 const CreateProject: React.FunctionComponent<Props> = ({ form, history }) => {
   const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
@@ -64,7 +65,7 @@ const CreateProject: React.FunctionComponent<Props> = ({ form, history }) => {
             </Form.Item>
             <Form.Item label="Description" colon={false}>
               {getFieldDecorator('description', {})(
-                <TextArea name="description" />
+                <RichTextEditor value={"test"} />
               )}
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>

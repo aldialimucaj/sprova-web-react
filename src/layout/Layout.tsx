@@ -6,10 +6,9 @@ import SideMenu from './SideMenu';
 
 const LayoutWrapper: React.FunctionComponent<{}> = ({ children }) => {
   return (
-    <Layout tagName="section">
+    <Layout>
       <SideMenu />
       <Layout
-        tagName="section"
         style={{ marginLeft: 80, backgroundColor: 'white' }}
       >
         <Header />

@@ -25,7 +25,7 @@ const HeaderWrapper: React.FunctionComponent<{}> = () => {
   }, []);
 
   return (
-    <Header tagName="header" style={{ padding: 0 }}>
+    <Header style={{ padding: 0 }}>
       <Row type="flex" justify="center" className="navbar">
         <Col xs={24} xl={20} style={{ padding: '0 24px' }}>
           <Row type="flex" justify="end">
