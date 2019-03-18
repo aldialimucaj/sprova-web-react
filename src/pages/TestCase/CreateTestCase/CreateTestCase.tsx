@@ -3,7 +3,7 @@ import SectionHeader from '@/components/SectionHeader';
 import { addTestCase, ProjectContext } from '@/contexts/ProjectContext';
 import { TestCase } from '@/models/TestCase';
 import { TestStep } from '@/models/TestStep';
-import { resolveSteps } from '@/utils/resolveSteps';
+import { hasFieldErrors, resolveSteps } from '@/utils';
 import {
   Button,
   Col,
@@ -84,10 +84,6 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
         description: error,
       });
     }
-  };
-
-  const hasErrors = (fieldsError: any): boolean => {
-    return Object.keys(fieldsError).some((field) => fieldsError[field]);
   };
 
   return (
@@ -180,7 +176,7 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
                 type="primary"
                 loading={isLoading}
                 htmlType="submit"
-                disabled={hasErrors(getFieldsError())}
+                disabled={hasFieldErrors(getFieldsError())}
               >
                 Create Test Case
               </Button>

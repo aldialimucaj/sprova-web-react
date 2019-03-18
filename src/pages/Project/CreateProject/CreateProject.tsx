@@ -2,6 +2,7 @@ import { postProject } from '@/api/project.api';
 import { RichTextEditor } from '@/components/RichTextEditor';
 import SectionHeader from '@/components/SectionHeader';
 import { Project } from '@/models/Project';
+import { hasFieldErrors } from '@/utils';
 import { Button, Col, Form, Input, notification, Row } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { useState } from 'react';
@@ -43,10 +44,6 @@ const CreateProject: React.FunctionComponent<Props> = ({ form, history }) => {
     }
   };
 
-  const hasErrors = (fieldsError: any): boolean => {
-    return Object.keys(fieldsError).some((field) => fieldsError[field]);
-  };
-
   return (
     <React.Fragment>
       <SectionHeader title="Create new project" />
@@ -73,7 +70,7 @@ const CreateProject: React.FunctionComponent<Props> = ({ form, history }) => {
                 type="primary"
                 loading={isLoading}
                 htmlType="submit"
-                disabled={hasErrors(getFieldsError())}
+                disabled={hasFieldErrors(getFieldsError())}
               >
                 Create Project
               </Button>

@@ -6,6 +6,7 @@ import {
   setProject,
 } from '@/contexts/ProjectContext';
 import { Project } from '@/models/Project';
+import { hasFieldErrors } from '@/utils';
 import {
   Button,
   Col,
@@ -87,10 +88,6 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
     }
   };
 
-  const hasErrors = (fieldsError: any): boolean => {
-    return Object.keys(fieldsError).some((field) => fieldsError[field]);
-  };
-
   return (
     <Fragment>
       <SectionHeader
@@ -139,7 +136,7 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
                 type="primary"
                 loading={isLoading}
                 htmlType="submit"
-                disabled={hasErrors(getFieldsError())}
+                disabled={hasFieldErrors(getFieldsError())}
               >
                 Save
               </Button>

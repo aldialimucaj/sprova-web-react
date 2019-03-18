@@ -1,5 +1,6 @@
 import { authenticate, isAuthenticated } from '@/api/auth.api';
 import logo from '@/images/sprova.svg';
+import { hasFieldErrors } from '@/utils';
 import {
   Alert,
   Button,
@@ -42,10 +43,6 @@ const Signup: React.FunctionComponent<Props> = ({ form, history }) => {
       setIsLoading(false);
       setError(error);
     }
-  };
-
-  const hasErrors = (fieldsError: any): boolean => {
-    return Object.keys(fieldsError).some((field) => fieldsError[field]);
   };
 
   return !isAuthenticated() ? (
@@ -132,7 +129,7 @@ const Signup: React.FunctionComponent<Props> = ({ form, history }) => {
                   block={true}
                   type="primary"
                   htmlType="submit"
-                  disabled={hasErrors(getFieldsError())}
+                  disabled={hasFieldErrors(getFieldsError())}
                 >
                   Request account
                 </Button>
