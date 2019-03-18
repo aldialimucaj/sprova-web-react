@@ -1,97 +1,148 @@
+import { Button, Icon, Radio } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import Plain from 'slate-plain-serializer'
-import React, { useEffect, useState } from 'react';
-import { Value } from 'slate';
-import { Editor } from 'slate-react';
 import { isKeyHotkey } from 'is-hotkey';
 import { any } from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import { Value } from 'slate';
+import Plain from 'slate-plain-serializer';
+import { Editor } from 'slate-react';
+import "./styles.scss";
 
 interface RichTextEditorProps {
     content: any;
+    toolbar?: boolean;
 }
 interface TextEditorProps {
     value: Value;
 }
 
-export const RichTextEditor: React.FunctionComponent<RichTextEditorProps> = ({ content }) => {
-    const [jsonValue, setJsonValue] = useState(content.value ? Value.fromJSON(content.value) : Plain.deserialize('Add description'));
+interface ToolbarButtonProps {
+    icon: string;
+    type: string;
+    active: boolean;
+    onClick: any;
+}
 
-    editor: any;
-    let ref = (editor: any) => {
-        editor = editor
-    }
+export const ToolbarButton: React.FunctionComponent<ToolbarButtonProps> = ({ icon, type, active, onClick }) => {
+    const white = { color: '#aaa' };
+    const shouldStyle = active ? undefined : white;
 
-    let renderNode = (props: any, editor: any, next: any) => {
-        const { attributes, children, node } = props
+    return (
+        <Button
+            type="default"
+            style={shouldStyle}
+            icon={icon}
+            size={'small'}
+            onClick={(event: any) => onClick(event, type)}
+        />
+    );
+};
+
+export const Toolbar: React.FunctionComponent = ({ children }) => {
+
+    return (
+        <div className="toolbar">
+            {children}
+        </div>
+    );
+};
+
+export const RichTextEditor: React.FunctionComponent<RichTextEditorProps> = ({ content, toolbar = true }) => {
+    const [jsonValue, setJsonValue] = useState(content.value ?
+        Value.fromJSON(content.value) :
+        Plain.deserialize('Add description'));
+
+    let editorRef: any;
+    const ref = (editor: any) => {
+        editorRef = editor;
+    };
+
+    const renderNode = (props: any, editor: any, next: any) => {
+        const { attributes, children, node } = props;
 
         switch (node.type) {
             case 'block-quote':
-                return <blockquote {...attributes}>{children}</blockquote>
+                return <blockquote {...attributes}>{children}</blockquote>;
             case 'bulleted-list':
-                return <ul {...attributes}>{children}</ul>
+                return <ul {...attributes}>{children}</ul>;
             case 'heading-one':
-                return <h1 {...attributes}>{children}</h1>
+                return <h1 {...attributes}>{children}</h1>;
             case 'heading-two':
-                return <h2 {...attributes}>{children}</h2>
+                return <h2 {...attributes}>{children}</h2>;
             case 'list-item':
-                return <li {...attributes}>{children}</li>
+                return <li {...attributes}>{children}</li>;
             case 'numbered-list':
-                return <ol {...attributes}>{children}</ol>
+                return <ol {...attributes}>{children}</ol>;
             default:
-                return next()
+                return next();
         }
-    }
+    };
 
     const renderMark = (props: any, editor: any, next: any) => {
-        const { children, mark, attributes } = props
+        const { children, mark, attributes } = props;
 
         switch (mark.type) {
             case 'bold':
-                return <strong {...attributes}>{children}</strong>
+                return <strong {...attributes}>{children}</strong>;
             case 'code':
-                return <code {...attributes}>{children}</code>
+                return <code {...attributes}>{children}</code>;
             case 'italic':
-                return <em {...attributes}>{children}</em>
+                return <em {...attributes}>{children}</em>;
             case 'underlined':
-                return <u {...attributes}>{children}</u>
+                return <u {...attributes}>{children}</u>;
             default:
-                return next()
+                return next();
         }
-    }
+    };
 
-    let onKeyDown = (event: any, editor: any, next: any) => {
-        let mark
+    const onKeyDown = (event: any, editor: any, next: any) => {
+        let mark;
 
         if (isBoldHotkey(event)) {
-            mark = 'bold'
+            mark = 'bold';
         } else if (isItalicHotkey(event)) {
-            mark = 'italic'
+            mark = 'italic';
         } else if (isUnderlinedHotkey(event)) {
-            mark = 'underlined'
+            mark = 'underlined';
         } else if (isCodeHotkey(event)) {
-            mark = 'code'
+            mark = 'code';
         } else {
-            return next()
+            return next();
         }
 
-        event.preventDefault()
-        editor.toggleMark(mark)
-    }
+        event.preventDefault();
+        editor.toggleMark(mark);
+    };
 
-    let onChange = (v: any) => {
+    const hasMark = (type: any) => {
+        return jsonValue.activeMarks.some((mark: any) => mark.type === type);
+    };
+
+    const onClickMark = (event: any, type: any) => {
+        event.preventDefault();
+        editorRef.toggleMark(type);
+    };
+
+    const onChange = (v: any) => {
         content.value = v.value;
         setJsonValue(v.value);
-    }
+    };
 
-    const isBoldHotkey = isKeyHotkey('mod+b')
-    const isItalicHotkey = isKeyHotkey('mod+i')
-    const isUnderlinedHotkey = isKeyHotkey('mod+u')
-    const isCodeHotkey = isKeyHotkey('mod+`')
+    const isBoldHotkey = isKeyHotkey('mod+b');
+    const isItalicHotkey = isKeyHotkey('mod+i');
+    const isUnderlinedHotkey = isKeyHotkey('mod+u');
+    const isCodeHotkey = isKeyHotkey('mod+`');
 
     return (
         <div>
+            {toolbar &&
+                <Toolbar>
+                    <ToolbarButton type="bold" active={hasMark('bold')} icon="bold" onClick={onClickMark} />
+                    <ToolbarButton type="italic" active={hasMark('italic')} icon="italic" onClick={onClickMark} />
+                </Toolbar>}
             <Editor
                 readOnly={false}
+                ref={ref}
                 value={jsonValue}
                 onKeyDown={onKeyDown}
                 onChange={onChange}
@@ -100,4 +151,4 @@ export const RichTextEditor: React.FunctionComponent<RichTextEditorProps> = ({ c
             />
         </div>
     );
-}
+};

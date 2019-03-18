@@ -1,4 +1,5 @@
 import CardList from '@/components/CardList';
+import { RichTextEditor } from '@/components/RichTextEditor';
 import SectionHeader from '@/components/SectionHeader';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { Cycle } from '@/models/Cycle';
@@ -11,9 +12,15 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps> = ({
   history,
 }) => {
   const [{ cycles, project, testCases }] = useContext(ProjectContext);
+  const editor = { value: project.description };
+  const sStyle = {
+    marginTop: '16px'
+  };
 
   return (
     <Fragment>
+      <RichTextEditor content={editor} toolbar={false} />
+
       <SectionHeader title="Overview" />
       <Row gutter={16}>
         <Col lg={12} style={{ marginBottom: 16 }}>

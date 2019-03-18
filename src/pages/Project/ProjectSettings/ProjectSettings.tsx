@@ -1,4 +1,5 @@
 import { deleteProject, updateProject } from '@/api/project.api';
+import { RichTextEditor } from "@/components/RichTextEditor";
 import SectionHeader from '@/components/SectionHeader';
 import {
   ProjectContext,
@@ -18,13 +19,12 @@ import {
   Row,
   Typography,
 } from 'antd';
-import { Document, Value } from 'slate'
 import { FormComponentProps } from 'antd/lib/form';
+import { List } from "immutable";
 import React, { Fragment, useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Document, Value } from 'slate';
 import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
-import { RichTextEditor } from "@/components/RichTextEditor";
-import { List } from "immutable";
 
 const { TextArea } = Input;
 const { Text } = Typography;
@@ -68,7 +68,6 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    console.log(editor);
     const description = editor.value.toJSON();
     const { projectTitle: title } = getFieldsValue();
     const projectNew: Project = {

@@ -16,13 +16,14 @@ interface Props extends RouteComponentProps, FormComponentProps { }
 const CreateProject: React.FunctionComponent<Props> = ({ form, history }) => {
   const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
   const [isLoading, setIsLoading] = useState(false);
+  const editor = { value: {} };
 
   const handleSubmit = async (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    const { projectTitle: title, description } = getFieldsValue();
+    const { projectTitle: title } = getFieldsValue();
     const projectNew: Project = {
       title,
-      description,
+      description: editor.value,
     };
 
     setIsLoading(true);
@@ -61,9 +62,7 @@ const CreateProject: React.FunctionComponent<Props> = ({ form, history }) => {
               })(<Input type="text" name="title" />)}
             </Form.Item>
             <Form.Item label="Description" colon={false}>
-              {getFieldDecorator('description', {})(
-                <TextArea></TextArea>
-              )}
+              <RichTextEditor content={editor} />
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>
               <Button
