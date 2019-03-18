@@ -1,9 +1,11 @@
 import { postTestCase } from '@/api/testcase.api';
+import FormInput from '@/components/form/FormInput';
 import SectionHeader from '@/components/SectionHeader';
 import { addTestCase, ProjectContext } from '@/contexts/ProjectContext';
+import { useFormInput } from '@/hooks/useFormInput';
 import { TestCase } from '@/models/TestCase';
 import { TestStep } from '@/models/TestStep';
-import { hasFieldErrors, resolveSteps } from '@/utils';
+import { hasFieldErrors, resolveSteps, validateNotEmpty } from '@/utils';
 import {
   Button,
   Col,
@@ -41,6 +43,18 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
   const [parent, setParent] = useState<TestCase | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showInherited, setShowInherited] = useState(false);
+
+  const {
+    value: title,
+    setValue: setTitle,
+    handleChange: handleTitleChange,
+  } = useFormInput('');
+  const {
+    value: description,
+    setValue: setDescription,
+    handleChange: handleDescriptionChange,
+  } = useFormInput('');
+
   const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
 
   const handleParentSelect = (id: string | null) => {
@@ -54,7 +68,6 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
 
   const handleSubmit = async (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    const { title, description } = getFieldsValue();
     let testCaseNew: TestCase = {
       title: title as string,
       project: project._id || match.params.id,
@@ -92,16 +105,7 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
       <Row>
         <Col {...formContentLayout}>
           <Form layout="vertical" onSubmit={handleSubmit}>
-            <Form.Item label="Title" colon={false}>
-              {getFieldDecorator('title', {
-                rules: [
-                  {
-                    required: true,
-                    message: 'Title cannot be empty',
-                  },
-                ],
-              })(<Input type="text" name="title" placeholder="Test Case" />)}
-            </Form.Item>
+            <FormInput label="Title" placeholder="Test Case" required={true} />
             <Form.Item label="Description" colon={false}>
               {getFieldDecorator('description', {})(
                 <TextArea
