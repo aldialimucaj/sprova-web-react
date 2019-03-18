@@ -1,4 +1,5 @@
 import { FormComponentProps } from 'antd/lib/form';
+import Plain from 'slate-plain-serializer'
 import React, { useEffect, useState } from 'react';
 import { Value } from 'slate';
 import { Editor } from 'slate-react';
@@ -10,7 +11,9 @@ interface RichTextEditorProps {
 }
 
 export const RichTextEditor: React.FunctionComponent<RichTextEditorProps> = ({ value }) => {
-    const [jsonValue, setJsonValue] = useState(value);
+    const [jsonValue, setJsonValue] = useState(Value.isValue(value.value) ? Value.fromJSON(value.value) : Plain.deserialize(
+        '#Add description'
+    ));
 
     editor: any;
     let ref = (editor: any) => {
@@ -58,7 +61,8 @@ export const RichTextEditor: React.FunctionComponent<RichTextEditorProps> = ({ v
     }
 
     let onChange = (v: any) => {
-        setJsonValue(v);
+        value.value = v.value;
+        setJsonValue(v.value);
     }
 
     const isBoldHotkey = isKeyHotkey('mod+b')
@@ -66,16 +70,13 @@ export const RichTextEditor: React.FunctionComponent<RichTextEditorProps> = ({ v
     const isUnderlinedHotkey = isKeyHotkey('mod+u')
     const isCodeHotkey = isKeyHotkey('mod+`')
 
-    const formattedValue = Value.fromJSON(jsonValue);
-
     return (
         <div>
             <Editor
-                spellCheck
-                autoFocus
-                placeholder="Enter some rich text..."
-                value={formattedValue}
-
+                readOnly={false}
+                value={jsonValue}
+                onKeyDown={onKeyDown}
+                onChange={onChange}
             />
         </div>
     );

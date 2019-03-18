@@ -18,10 +18,13 @@ import {
   Row,
   Typography,
 } from 'antd';
+import { Document, Value } from 'slate'
 import { FormComponentProps } from 'antd/lib/form';
 import React, { Fragment, useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
+import { RichTextEditor } from "@/components/RichTextEditor";
+import { List } from "immutable";
 
 const { TextArea } = Input;
 const { Text } = Typography;
@@ -30,7 +33,7 @@ interface Params {
   id: string;
 }
 
-interface Props extends RouteComponentProps<Params>, FormComponentProps {}
+interface Props extends RouteComponentProps<Params>, FormComponentProps { }
 
 const ProjectSettings: React.FunctionComponent<Props> = ({
   form,
@@ -41,6 +44,8 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
   const [{ project }, dispatch] = useContext(ProjectContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
+  const jsonDescription = Value.fromJSON(project.description);
+  const editor = { value: jsonDescription };
 
   const deleteRequest = async () => {
     setIsDeleteLoading(true);
@@ -63,7 +68,10 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const { projectTitle: title, description } = getFieldsValue();
+
+    console.log(editor);
+    const description = editor.value.toJSON();
+    const { projectTitle: title } = getFieldsValue();
     const projectNew: Project = {
       ...project,
       title,
@@ -127,9 +135,7 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
               })(<Input type="text" name="title" />)}
             </Form.Item>
             <Form.Item label="Description" colon={false}>
-              {getFieldDecorator('description', {
-                initialValue: project.description,
-              })(<TextArea name="description" />)}
+              <RichTextEditor value={editor} />
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>
               <Button
