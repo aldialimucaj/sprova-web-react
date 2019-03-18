@@ -1,7 +1,7 @@
+import logo from '@/images/sprova.svg';
 import { Layout } from 'antd';
 import React from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
-import logo from '../../images/sprova.svg';
 const { Sider } = Layout;
 import BaseMenu from './BaseMenu';
 import ProjectMenu from './ProjectMenu';
