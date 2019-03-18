@@ -44,8 +44,7 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
   const [{ project }, dispatch] = useContext(ProjectContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
-  const jsonDescription = Value.fromJSON(project.description);
-  const editor = { value: jsonDescription };
+  const editor = { value: project.description };
 
   const deleteRequest = async () => {
     setIsDeleteLoading(true);
@@ -135,7 +134,7 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
               })(<Input type="text" name="title" />)}
             </Form.Item>
             <Form.Item label="Description" colon={false}>
-              <RichTextEditor value={editor} />
+              <RichTextEditor content={editor} />
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>
               <Button

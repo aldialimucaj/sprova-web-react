@@ -7,13 +7,14 @@ import { isKeyHotkey } from 'is-hotkey';
 import { any } from 'prop-types';
 
 interface RichTextEditorProps {
-    value: any;
+    content: any;
+}
+interface TextEditorProps {
+    value: Value;
 }
 
-export const RichTextEditor: React.FunctionComponent<RichTextEditorProps> = ({ value }) => {
-    const [jsonValue, setJsonValue] = useState(Value.isValue(value.value) ? Value.fromJSON(value.value) : Plain.deserialize(
-        '#Add description'
-    ));
+export const RichTextEditor: React.FunctionComponent<RichTextEditorProps> = ({ content }) => {
+    const [jsonValue, setJsonValue] = useState(content.value ? Value.fromJSON(content.value) : Plain.deserialize('Add description'));
 
     editor: any;
     let ref = (editor: any) => {
@@ -41,6 +42,23 @@ export const RichTextEditor: React.FunctionComponent<RichTextEditorProps> = ({ v
         }
     }
 
+    const renderMark = (props: any, editor: any, next: any) => {
+        const { children, mark, attributes } = props
+
+        switch (mark.type) {
+            case 'bold':
+                return <strong {...attributes}>{children}</strong>
+            case 'code':
+                return <code {...attributes}>{children}</code>
+            case 'italic':
+                return <em {...attributes}>{children}</em>
+            case 'underlined':
+                return <u {...attributes}>{children}</u>
+            default:
+                return next()
+        }
+    }
+
     let onKeyDown = (event: any, editor: any, next: any) => {
         let mark
 
@@ -61,7 +79,7 @@ export const RichTextEditor: React.FunctionComponent<RichTextEditorProps> = ({ v
     }
 
     let onChange = (v: any) => {
-        value.value = v.value;
+        content.value = v.value;
         setJsonValue(v.value);
     }
 
@@ -77,6 +95,8 @@ export const RichTextEditor: React.FunctionComponent<RichTextEditorProps> = ({ v
                 value={jsonValue}
                 onKeyDown={onKeyDown}
                 onChange={onChange}
+                renderNode={renderNode}
+                renderMark={renderMark}
             />
         </div>
     );

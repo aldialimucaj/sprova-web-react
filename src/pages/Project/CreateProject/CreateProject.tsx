@@ -11,7 +11,7 @@ import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
 
 const { TextArea } = Input;
 
-interface Props extends RouteComponentProps, FormComponentProps {}
+interface Props extends RouteComponentProps, FormComponentProps { }
 
 const CreateProject: React.FunctionComponent<Props> = ({ form, history }) => {
   const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
@@ -62,7 +62,7 @@ const CreateProject: React.FunctionComponent<Props> = ({ form, history }) => {
             </Form.Item>
             <Form.Item label="Description" colon={false}>
               {getFieldDecorator('description', {})(
-                <RichTextEditor value={'test'} />
+                <TextArea></TextArea>
               )}
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>
