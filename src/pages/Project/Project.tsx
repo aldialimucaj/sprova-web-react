@@ -51,11 +51,6 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   return (
     <Fragment>
-      <Breadcrumb style={{ marginBottom: 24 }}>
-        <Breadcrumb.Item>
-          {(project && project.title) || 'Project'}
-        </Breadcrumb.Item>
-      </Breadcrumb>
       {isProjectLoading || isTestCasesLoading ? (
         <Spin />
       ) : (

@@ -1,12 +1,14 @@
 import { deleteTestCase } from '@/api/testcase.api';
-import CardList from '@/components/CardList';
-import SectionHeader from '@/components/SectionHeader';
+import Level from '@/components/Level';
 import { ProjectContext, removeTestCase } from '@/contexts/ProjectContext';
 import { TestCase } from '@/models/TestCase';
-import { findById, findChildren } from '@/utils';
-import { Button, Col, Empty, Icon, notification, Popconfirm, Row } from 'antd';
-import React, { Fragment, useContext, useEffect, useState } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { findById } from '@/utils';
+import { Button, Empty, Icon, notification, Popconfirm, Tabs } from 'antd';
+import React, { Fragment, useContext, useState } from 'react';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import GeneralTab from './tabs/OverviewTab';
+
+const TabPane = Tabs.TabPane;
 
 interface Params {
   tid: string;
@@ -23,12 +25,9 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
     },
     dispatch,
   ] = useContext(ProjectContext);
-  const [testCase, setTestCase] = useState<TestCase | null>(null);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
-  useEffect(() => {
-    setTestCase(findById(testCases, match.params.tid));
-  }, [testCases, match.params.tid]);
+  const testCase = findById(testCases, match.params.tid);
 
   const deleteRequest = async () => {
     setIsDeleteLoading(true);
@@ -51,9 +50,14 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   return testCase ? (
     <Fragment>
-      <SectionHeader
-        title={testCase.title}
-        extra={
+      <Level
+        left={
+          <span style={{ fontSize: 18 }}>
+            <Link to={`/projects/${pid}/testcases`}>Test Cases</Link> /{' '}
+            <strong>{testCase.title}</strong>
+          </span>
+        }
+        right={
           <Popconfirm
             placement="bottomRight"
             title="Delete this test case?"
@@ -68,23 +72,20 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
           </Popconfirm>
         }
       />
-      <Row gutter={16}>
-        <Col lg={12} style={{ marginBottom: 16 }}>
-          <SectionHeader size="medium" title="Description" divider={false} />
-          {testCase.description || 'No description.'}
-        </Col>
-
-        <Col lg={12} style={{ marginBottom: 16 }}>
-          <CardList
-            title="Children"
-            dataSource={findChildren(testCases, match.params.tid)}
-            renderItem={(tc: TestCase) => <div>{tc.title}</div>}
-            onItemClick={(record: TestCase) =>
-              history.push(`/projects/${pid}/testcases/${record._id}`)
-            }
-          />
-        </Col>
-      </Row>
+      <Tabs defaultActiveKey="1" type="card">
+        <TabPane tab="Overview" key="1">
+          <GeneralTab testCase={testCase} testCases={testCases} />
+        </TabPane>
+        <TabPane tab="Test Steps" key="2">
+          Content of Tab Pane 2
+        </TabPane>
+        <TabPane tab="Executions" key="3">
+          Content of Tab Pane 2
+        </TabPane>
+        <TabPane tab="Settings" key="4">
+          Content of Tab Pane 2
+        </TabPane>
+      </Tabs>
     </Fragment>
   ) : (
     <Empty />

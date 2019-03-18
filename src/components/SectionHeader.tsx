@@ -5,7 +5,7 @@ interface Params {
   divider?: boolean;
   extra?: React.ReactNode;
   size?: 'big' | 'medium' | 'small';
-  title: string;
+  title: string | JSX.Element;
 }
 
 const SectionHeader: React.FunctionComponent<Params> = ({
@@ -32,7 +32,7 @@ const SectionHeader: React.FunctionComponent<Params> = ({
         align="middle"
         style={{ marginBottom: 24 }}
       >
-        <Col>{header(title)}</Col>
+        <Col>{typeof title === 'string' ? header(title) : title}</Col>
         <Col>{extra}</Col>
       </Row>
       {divider ? <Divider /> : null}

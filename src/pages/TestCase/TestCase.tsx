@@ -20,16 +20,13 @@ const TestCase: React.FunctionComponent<RouteComponentProps<Params>> = ({
   return (
     <Switch>
       <Route
-        path={`/projects/${match.params.pid}/testcases`}
+        path={`/projects/:pid/testcases`}
         exact={true}
         component={TestCaseList}
       />
+      <Route path={`/projects/:pid/testcases/new`} component={CreateTestCase} />
       <Route
-        path={`/projects/${match.params.pid}/testcases/new`}
-        component={CreateTestCase}
-      />
-      <Route
-        path={`/projects/${match.params.pid}/testcases/:tid`}
+        path={`/projects/:pid/testcases/:tid`}
         component={TestCaseDetails}
       />
     </Switch>
