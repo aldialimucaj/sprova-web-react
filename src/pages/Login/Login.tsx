@@ -91,7 +91,7 @@ const Login: React.FunctionComponent<Props> = ({ form, history }) => {
                   ],
                 })(
                   <Input.Password
-                    action="password"
+                    action="click"
                     type="password"
                     name="password"
                     placeholder="Password"
