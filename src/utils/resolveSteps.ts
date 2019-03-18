@@ -1,5 +1,5 @@
-import { TestCase } from '../models/TestCase';
-import { TestStep } from '../models/TestStep';
+import { TestCase } from '@/models/TestCase';
+import { TestStep } from '@/models/TestStep';
 import { findById } from './findById';
 
 export function resolveSteps(

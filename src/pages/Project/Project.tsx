@@ -1,3 +1,14 @@
+import { getProject } from '@/api/project.api';
+import { getTestCases } from '@/api/testcase.api';
+import {
+  ProjectContext,
+  setProject,
+  setTestCases,
+} from '@/contexts/ProjectContext';
+import { useFetcher } from '@/hooks/useFetcher';
+import { Project } from '@/models/Project';
+import { TestCase } from '@/models/TestCase';
+import { Cycles, TestCase as TestCasePage } from '@/pages';
 import { Breadcrumb, Spin } from 'antd';
 import React, { Fragment, useContext, useEffect } from 'react';
 import {
@@ -6,18 +17,6 @@ import {
   Switch,
   withRouter,
 } from 'react-router-dom';
-import { getProject } from '../../api/project.api';
-import { getTestCases } from '../../api/testcase.api';
-import {
-  ProjectContext,
-  setProject,
-  setTestCases,
-} from '../../contexts/ProjectContext';
-import { useFetcher } from '../../hooks/useFetcher';
-import { Project } from '../../models/Project';
-import { TestCase } from '../../models/TestCase';
-import Cycles from '../Cycles';
-import TestCasePage from '../TestCase';
 import CreateProject from './CreateProject';
 import ProjectDetails from './ProjectDetails';
 import ProjectSettings from './ProjectSettings';

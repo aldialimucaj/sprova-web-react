@@ -1,8 +1,8 @@
+import { getProjects } from '@/api/project.api';
+import { Project } from '@/models/Project';
 import { Col, Layout, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { getProjects } from '../../api/project.api';
-import { Project } from '../../models/Project';
 import BaseHeader from './BaseHeader';
 import './Header.scss';
 import ProjectHeader from './ProjectHeader';

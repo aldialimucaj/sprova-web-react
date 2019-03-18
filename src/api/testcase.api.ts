@@ -1,9 +1,9 @@
+import { TestCase } from '@/models/TestCase';
 import { AxiosError, AxiosResponse } from 'axios';
 import {
   ProjectAction,
   setTestCases,
 } from '../contexts/ProjectContext/ProjectActions';
-import { TestCase } from '../models/TestCase';
 import agent from './agent';
 
 export function postTestCase(testCase: TestCase) {

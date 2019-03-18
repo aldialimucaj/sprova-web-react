@@ -1,11 +1,11 @@
+import CardList from '@/components/CardList';
+import SectionHeader from '@/components/SectionHeader';
+import { ProjectContext } from '@/contexts/ProjectContext';
+import { Cycle } from '@/models/Cycle';
+import { TestCase } from '@/models/TestCase';
 import { Col, Row } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import CardList from '../../../components/CardList';
-import SectionHeader from '../../../components/SectionHeader';
-import { ProjectContext } from '../../../contexts/ProjectContext';
-import { Cycle } from '../../../models/Cycle';
-import { TestCase } from '../../../models/TestCase';
 
 const ProjectDetails: React.FunctionComponent<RouteComponentProps> = ({
   history,

@@ -1,9 +1,9 @@
+import SectionHeader from '@/components/SectionHeader';
+import { ProjectContext } from '@/contexts/ProjectContext';
+import { TestCase } from '@/models/TestCase';
 import { Button, Icon, Table } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import SectionHeader from '../../../components/SectionHeader';
-import { ProjectContext } from '../../../contexts/ProjectContext';
-import { TestCase } from '../../../models/TestCase';
 
 const TestCaseList: React.FunctionComponent<RouteComponentProps> = ({
   history,

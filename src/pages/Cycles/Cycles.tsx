@@ -1,9 +1,9 @@
+import SectionHeader from '@/components/SectionHeader';
+import { ProjectContext } from '@/contexts/ProjectContext';
+import { Cycle } from '@/models/Cycle';
 import { List } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import SectionHeader from '../../components/SectionHeader';
-import { ProjectContext } from '../../contexts/ProjectContext';
-import { Cycle } from '../../models/Cycle';
 
 interface Params {
   id: string;

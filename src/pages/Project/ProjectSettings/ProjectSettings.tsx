@@ -1,3 +1,11 @@
+import { deleteProject, updateProject } from '@/api/project.api';
+import SectionHeader from '@/components/SectionHeader';
+import {
+  ProjectContext,
+  resetProject,
+  setProject,
+} from '@/contexts/ProjectContext';
+import { Project } from '@/models/Project';
 import {
   Button,
   Col,
@@ -12,14 +20,6 @@ import {
 import { FormComponentProps } from 'antd/lib/form';
 import React, { Fragment, useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { deleteProject, updateProject } from '../../../api/project.api';
-import SectionHeader from '../../../components/SectionHeader';
-import {
-  ProjectContext,
-  resetProject,
-  setProject,
-} from '../../../contexts/ProjectContext';
-import { Project } from '../../../models/Project';
 import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
 
 const { TextArea } = Input;

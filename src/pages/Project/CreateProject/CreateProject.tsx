@@ -1,16 +1,16 @@
+import { postProject } from '@/api/project.api';
+import { RichTextEditor } from '@/components/RichTextEditor';
+import SectionHeader from '@/components/SectionHeader';
+import { Project } from '@/models/Project';
 import { Button, Col, Form, Input, notification, Row } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { postProject } from '../../../api/project.api';
-import SectionHeader from '../../../components/SectionHeader';
-import { Project } from '../../../models/Project';
 import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
-import { RichTextEditor } from "../../../components/RichTextEditor";
 
 const { TextArea } = Input;
 
-interface Props extends RouteComponentProps, FormComponentProps { }
+interface Props extends RouteComponentProps, FormComponentProps {}
 
 const CreateProject: React.FunctionComponent<Props> = ({ form, history }) => {
   const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
@@ -65,7 +65,7 @@ const CreateProject: React.FunctionComponent<Props> = ({ form, history }) => {
             </Form.Item>
             <Form.Item label="Description" colon={false}>
               {getFieldDecorator('description', {})(
-                <RichTextEditor value={"test"} />
+                <RichTextEditor value={'test'} />
               )}
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>

@@ -1,10 +1,10 @@
+import { getProjects } from '@/api/project.api';
+import SectionHeader from '@/components/SectionHeader';
+import { useFetcher } from '@/hooks/useFetcher';
+import { Project } from '@/models/Project';
 import { Button, Card, Col, Empty, Row, Spin } from 'antd';
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { getProjects } from '../../../api/project.api';
-import SectionHeader from '../../../components/SectionHeader';
-import { useFetcher } from '../../../hooks/useFetcher';
-import { Project } from '../../../models/Project';
 import './ProjectList.scss';
 
 const ProjectList: React.FunctionComponent = () => {

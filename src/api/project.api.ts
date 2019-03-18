@@ -1,6 +1,6 @@
+import { Project } from '@/models/Project';
 import { message as MessageProvider } from 'antd';
 import { AxiosError, AxiosResponse } from 'axios';
-import { Project } from '../models/Project';
 import agent from './agent';
 
 export function getProject(id: string): Promise<Project> {

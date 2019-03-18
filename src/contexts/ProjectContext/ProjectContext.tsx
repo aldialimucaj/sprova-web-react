@@ -1,7 +1,7 @@
+import { Cycle } from '@/models/Cycle';
+import { Project } from '@/models/Project';
+import { TestCase } from '@/models/TestCase';
 import React, { Dispatch, useReducer } from 'react';
-import { Cycle } from '../../models/Cycle';
-import { Project } from '../../models/Project';
-import { TestCase } from '../../models/TestCase';
 import { ProjectAction } from './ProjectActions';
 import { reducer } from './ProjectReducer';
 

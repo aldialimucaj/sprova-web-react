@@ -1,3 +1,5 @@
+import { authenticate, isAuthenticated } from '@/api/auth.api';
+import logo from '@/images/sprova.svg';
 import {
   Alert,
   Button,
@@ -17,8 +19,6 @@ import {
   RouteComponentProps,
   withRouter,
 } from 'react-router-dom';
-import { authenticate, isAuthenticated } from '../../api/auth.api';
-import logo from '../../images/sprova.svg';
 import './Login.scss';
 
 interface Props extends RouteComponentProps, FormComponentProps {}

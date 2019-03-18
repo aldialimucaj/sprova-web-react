@@ -1,6 +1,6 @@
-import { Cycle } from '../../models/Cycle';
-import { Project } from '../../models/Project';
-import { TestCase } from '../../models/TestCase';
+import { Cycle } from '@/models/Cycle';
+import { Project } from '@/models/Project';
+import { TestCase } from '@/models/TestCase';
 
 export const RESET_PROJECT = 'RESET_PROJECT';
 export const SET_PROJECT = 'SET_PROJECT';

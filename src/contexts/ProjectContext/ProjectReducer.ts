@@ -1,4 +1,4 @@
-import { TestCase } from '../../models/TestCase';
+import { TestCase } from '@/models/TestCase';
 import {
   ADD_CYCLE,
   ADD_TEST_CASE,

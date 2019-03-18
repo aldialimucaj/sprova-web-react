@@ -1,16 +1,12 @@
+import { deleteTestCase } from '@/api/testcase.api';
+import CardList from '@/components/CardList';
+import SectionHeader from '@/components/SectionHeader';
+import { ProjectContext, removeTestCase } from '@/contexts/ProjectContext';
+import { TestCase } from '@/models/TestCase';
+import { findById, findChildren } from '@/utils';
 import { Button, Col, Empty, Icon, notification, Popconfirm, Row } from 'antd';
-import _ from 'lodash';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { deleteTestCase } from '../../../api/testcase.api';
-import CardList from '../../../components/CardList';
-import SectionHeader from '../../../components/SectionHeader';
-import {
-  ProjectContext,
-  removeTestCase,
-} from '../../../contexts/ProjectContext';
-import { TestCase } from '../../../models/TestCase';
-import { findById, findChildren } from '../../../utils';
 
 interface Params {
   tid: string;
