@@ -1,7 +1,7 @@
-import SectionHeader from '@/components/SectionHeader';
+import Level from '@/components/Level';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { TestCase } from '@/models/TestCase';
-import { Button, Icon, Table } from 'antd';
+import { Button, Divider, Icon, Table } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
@@ -13,7 +13,7 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
   history,
   match,
 }) => {
-  const [{ testCases }] = useContext(ProjectContext);
+  const [{ project, testCases }] = useContext(ProjectContext);
 
   const handleRowClick = (record: TestCase) => {
     history.push(`/projects/${match.params.pid}/testcases/${record._id}`);
@@ -34,9 +34,14 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   return (
     <Fragment>
-      <SectionHeader
-        title="Test Cases"
-        extra={
+      <Level
+        left={
+          <span style={{ fontSize: 18 }}>
+            <Link to={`/projects/${match.params.pid}`}>{project.title}</Link> /{' '}
+            <strong>Test Cases</strong>
+          </span>
+        }
+        right={
           <Link to={`/projects/${match.params.pid}/testcases/new`}>
             <Button type="primary">
               <Icon type="plus" /> New
@@ -44,6 +49,7 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
           </Link>
         }
       />
+      <Divider />
       <Table
         className="testcases-list"
         bordered={true}
