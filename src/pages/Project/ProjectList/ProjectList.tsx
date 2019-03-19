@@ -1,8 +1,8 @@
 import { getProjects } from '@/api/project.api';
-import SectionHeader from '@/components/SectionHeader';
+import Level from '@/components/Level';
 import { useFetcher } from '@/hooks/useFetcher';
 import { Project } from '@/models/Project';
-import { Button, Card, Col, Empty, Row, Spin } from 'antd';
+import { Button, Card, Col, Divider, Empty, Icon, Row, Spin } from 'antd';
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import './ProjectList.scss';
@@ -14,11 +14,17 @@ const ProjectList: React.FunctionComponent = () => {
     <Spin />
   ) : (
     <Fragment>
-      <SectionHeader
-        title="Projects"
-        extra={<Link to="/projects/new">New Project</Link>}
+      <Level
+        left={<span style={{ fontSize: 18 }}>Projects</span>}
+        right={
+          <Link to={`/projects/new`}>
+            <Button type="primary">
+              <Icon type="plus" /> New
+            </Button>
+          </Link>
+        }
       />
-
+      <Divider />
       {projects && projects.length > 0 ? (
         <Row gutter={16}>
           {projects.map((project: Project, index: number) => (

@@ -63,6 +63,18 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
     </span>
   );
 
+  const executeButton = (
+    <Link
+      to={{
+        pathname: `/projects/${match.params.pid}/executions`,
+        search: `?type=testcase&tid=${match.params.tid}`,
+      }}
+      style={{ marginRight: 16 }}
+    >
+      <Button type="primary">Execute</Button>
+    </Link>
+  );
+
   const deleteButton = (
     <Popconfirm
       placement="bottomRight"
@@ -80,7 +92,15 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   return (
     <Fragment>
-      <Level left={header} right={deleteButton} />
+      <Level
+        left={header}
+        right={
+          <div>
+            {executeButton}
+            {deleteButton}
+          </div>
+        }
+      />
       <Tabs defaultActiveKey="1" type="card">
         <TabPane tab="Overview" key="1">
           <OverviewTab testCase={testCase} testCases={testCases} />
