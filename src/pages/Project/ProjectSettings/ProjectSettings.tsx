@@ -133,7 +133,9 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
               })(<Input type="text" name="title" />)}
             </Form.Item>
             <Form.Item label="Description" colon={false}>
-              <RichTextEditor content={editor} />
+              <div style={{ backgroundColor: '#fff', border: '1px solid #e8e8e8' }}>
+                <RichTextEditor content={editor} />
+              </div>
             </Form.Item>
             <Form.Item {...tailFormItemLayout}>
               <Button

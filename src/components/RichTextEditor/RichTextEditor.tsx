@@ -28,11 +28,8 @@ export const ToolbarButton: React.FunctionComponent<ToolbarButtonProps> = ({ ico
     const shouldStyle = active ? undefined : white;
 
     return (
-        <Button
-            type="default"
+        <Icon type={icon}
             style={shouldStyle}
-            icon={icon}
-            size={'small'}
             onClick={(event: any) => onClick(event, type)}
         />
     );
@@ -48,9 +45,9 @@ export const Toolbar: React.FunctionComponent = ({ children }) => {
 };
 
 export const RichTextEditor: React.FunctionComponent<RichTextEditorProps> = ({ content, toolbar = true }) => {
-    const [jsonValue, setJsonValue] = useState(content.value ?
+    const [jsonValue, setJsonValue] = useState(content && content.value ?
         Value.fromJSON(content.value) :
-        Plain.deserialize('Add description'));
+        Plain.deserialize(''));
 
     let editorRef: any;
     const ref = (editor: any) => {
@@ -139,9 +136,11 @@ export const RichTextEditor: React.FunctionComponent<RichTextEditorProps> = ({ c
                 <Toolbar>
                     <ToolbarButton type="bold" active={hasMark('bold')} icon="bold" onClick={onClickMark} />
                     <ToolbarButton type="italic" active={hasMark('italic')} icon="italic" onClick={onClickMark} />
+                    <ToolbarButton type="underlined" active={hasMark('underlined')} icon="underline" onClick={onClickMark} />
                 </Toolbar>}
             <Editor
-                readOnly={false}
+                readOnly={!toolbar}
+                placeholder="Rich text editor"
                 ref={ref}
                 value={jsonValue}
                 onKeyDown={onKeyDown}
