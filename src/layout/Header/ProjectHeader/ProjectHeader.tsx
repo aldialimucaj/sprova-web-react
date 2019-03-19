@@ -43,7 +43,7 @@ const ProjectHeader: React.FunctionComponent<Props> = ({
         <Col>
           <div className="right">
             <Link to={`/projects/${match.params.pid}/executions`}>
-              <Button style={{ display: 'inline-block' }}>
+              <Button type="primary" style={{ display: 'inline-block' }}>
                 <Icon type="thunderbolt" />
                 Executions
               </Button>
