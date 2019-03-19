@@ -19,7 +19,7 @@ interface TextEditorProps {
 interface ToolbarButtonProps {
     icon: string;
     action: string;
-    type: ToolbarButtonType
+    type: ToolbarButtonType;
     active: boolean;
     onClick: any;
 }
@@ -34,7 +34,8 @@ export const ToolbarButton: React.FunctionComponent<ToolbarButtonProps> = ({ ico
     const shouldStyle = active ? undefined : white;
 
     return (
-        <Icon type={icon}
+        <Icon
+            type={icon}
             style={shouldStyle}
             onClick={(event: any) => onClick(event, action)}
         />
@@ -54,7 +55,7 @@ export const RichTextEditor: React.FunctionComponent<RichTextEditorProps> = ({ c
     const [jsonValue, setJsonValue] = useState(content && content.value ?
         Value.fromJSON(content.value) :
         Plain.deserialize(''));
-    const DEFAULT_NODE = 'paragraph'
+    const DEFAULT_NODE = 'paragraph';
     let editorRef: any;
     const ref = (editor: any) => {
         editorRef = editor;
@@ -123,7 +124,7 @@ export const RichTextEditor: React.FunctionComponent<RichTextEditorProps> = ({ c
 
     const hasBlock = (type: any) => {
         return jsonValue.blocks.some((mark: any) => mark.type === type);
-    }
+    };
 
     const onClickMark = (event: any, type: any) => {
         event.preventDefault();
@@ -131,49 +132,47 @@ export const RichTextEditor: React.FunctionComponent<RichTextEditorProps> = ({ c
     };
 
     const onClickBlock = (event: any, type: any) => {
-        event.preventDefault()
+        event.preventDefault();
 
-
-        const { value } = editorRef
-        const { document } = value
+        const { value } = editorRef;
+        const { document } = value;
 
         // Handle everything but list buttons.
         if (type !== 'bulleted-list' && type !== 'numbered-list') {
-            const isActive = hasBlock(type)
-            const isList = hasBlock('list-item')
+            const isActive = hasBlock(type);
+            const isList = hasBlock('list-item');
 
             if (isList) {
                 editorRef
                     .setBlocks(isActive ? DEFAULT_NODE : type)
                     .unwrapBlock('bulleted-list')
-                    .unwrapBlock('numbered-list')
+                    .unwrapBlock('numbered-list');
             } else {
-                editorRef.setBlocks(isActive ? DEFAULT_NODE : type)
+                editorRef.setBlocks(isActive ? DEFAULT_NODE : type);
             }
         } else {
             // Handle the extra wrapping required for list buttons.
-            const isList = hasBlock('list-item')
+            const isList = hasBlock('list-item');
             const isType = value.blocks.some((block: any) => {
-                return !!document.getClosest(block.key, (parent: any) => parent.type === type)
-            })
+                return !!document.getClosest(block.key, (parent: any) => parent.type === type);
+            });
 
             if (isList && isType) {
                 editorRef
                     .setBlocks(DEFAULT_NODE)
                     .unwrapBlock('bulleted-list')
-                    .unwrapBlock('numbered-list')
+                    .unwrapBlock('numbered-list');
             } else if (isList) {
                 editorRef
                     .unwrapBlock(
                         type === 'bulleted-list' ? 'numbered-list' : 'bulleted-list'
                     )
-                    .wrapBlock(type)
+                    .wrapBlock(type);
             } else {
-                editorRef.setBlocks('list-item').wrapBlock(type)
+                editorRef.setBlocks('list-item').wrapBlock(type);
             }
         }
-    }
-
+    };
 
     const onChange = (v: any) => {
         content.value = v.value;
@@ -189,21 +188,56 @@ export const RichTextEditor: React.FunctionComponent<RichTextEditorProps> = ({ c
         <div>
             {toolbar &&
                 <Toolbar>
-                    <ToolbarButton action="bold" type={ToolbarButtonType.MARK}
-                        active={hasMark('bold')} icon="bold" onClick={onClickMark} />
-                    <ToolbarButton action="italic" type={ToolbarButtonType.MARK}
-                        active={hasMark('italic')} icon="italic" onClick={onClickMark} />
-                    <ToolbarButton action="underlined" type={ToolbarButtonType.MARK}
-                        active={hasMark('underlined')} icon="underline" onClick={onClickMark} />
-                    <ToolbarButton action="code" type={ToolbarButtonType.MARK}
-                        active={hasMark('code')} icon="code" onClick={onClickMark} />
+                    <ToolbarButton
+                        action="bold"
+                        type={ToolbarButtonType.MARK}
+                        active={hasMark('bold')}
+                        icon="bold"
+                        onClick={onClickMark}
+                    />
+                    <ToolbarButton
+                        action="italic"
+                        type={ToolbarButtonType.MARK}
+                        active={hasMark('italic')}
+                        icon="italic"
+                        onClick={onClickMark}
+                    />
+                    <ToolbarButton
+                        action="underlined"
+                        type={ToolbarButtonType.MARK}
+                        active={hasMark('underlined')}
+                        icon="underline"
+                        onClick={onClickMark}
+                    />
+                    <ToolbarButton
+                        action="code"
+                        type={ToolbarButtonType.MARK}
+                        active={hasMark('code')}
+                        icon="code"
+                        onClick={onClickMark}
+                    />
 
-                    <ToolbarButton action="numbered-list" type={ToolbarButtonType.BLOCK}
-                        active={hasBlock('numbered-list')} icon="ordered-list" onClick={onClickBlock} />
-                    <ToolbarButton action="bulleted-list" type={ToolbarButtonType.BLOCK}
-                        active={hasBlock('bulleted-list')} icon="bars" onClick={onClickBlock} />
-                    <ToolbarButton action="heading-one" type={ToolbarButtonType.BLOCK}
-                        active={hasBlock('heading-one')} icon="font-size" onClick={onClickBlock} />
+                    <ToolbarButton
+                        action="numbered-list"
+                        type={ToolbarButtonType.BLOCK}
+                        active={hasBlock('numbered-list')}
+                        icon="ordered-list"
+                        onClick={onClickBlock}
+                    />
+                    <ToolbarButton
+                        action="bulleted-list"
+                        type={ToolbarButtonType.BLOCK}
+                        active={hasBlock('bulleted-list')}
+                        icon="bars"
+                        onClick={onClickBlock}
+                    />
+                    <ToolbarButton
+                        action="heading-one"
+                        type={ToolbarButtonType.BLOCK}
+                        active={hasBlock('heading-one')}
+                        icon="font-size"
+                        onClick={onClickBlock}
+                    />
                 </Toolbar>}
             <Editor
                 readOnly={!toolbar}
