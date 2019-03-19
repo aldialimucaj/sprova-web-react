@@ -141,7 +141,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
                   className="inherited-list"
                   itemLayout="horizontal"
                   bordered={true}
-                  dataSource={resolveInheritance(parent, testCases)}
+                  dataSource={resolveInheritance(parent, testCases, true)}
                   renderItem={([testStep, mappedParent]: [
                     TestStep,
                     TestCase

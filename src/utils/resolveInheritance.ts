@@ -10,10 +10,13 @@ import { findById } from './findById';
  */
 export function resolveInheritance(
   root: TestCase,
-  testCases: TestCase[]
+  testCases: TestCase[],
+  fromParent = false
 ): Array<[TestStep, TestCase]> {
   let steps: Array<[TestStep, TestCase]> = [];
-  let parent: TestCase | undefined = findById(testCases, root.parent);
+  let parent: TestCase | undefined = fromParent
+    ? root
+    : findById(testCases, root.parent);
   while (parent) {
     const _steps = parent.steps.map(
       (step: TestStep) => [step, parent] as [TestStep, TestCase]
