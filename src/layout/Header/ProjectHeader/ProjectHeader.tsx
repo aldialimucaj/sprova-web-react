@@ -2,12 +2,12 @@ import { Project } from '@/models/Project';
 import { Button, Col, Divider, Icon, Row, Select } from 'antd';
 import React, { Fragment, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import './ProjectHeader.scss';
+import './index.scss';
 
 const { Option } = Select;
 
 interface Params {
-  id: string;
+  pid: string;
 }
 
 interface Props extends RouteComponentProps<Params> {
@@ -19,7 +19,7 @@ const ProjectHeader: React.FunctionComponent<Props> = ({
   projects,
   history,
 }) => {
-  const [id, setId] = useState(match.params.id);
+  const [id, setId] = useState(match.params.pid);
 
   const handleChange = (projectId: string) => {
     if (id !== projectId) {
@@ -42,11 +42,13 @@ const ProjectHeader: React.FunctionComponent<Props> = ({
         </Col>
         <Col>
           <div className="right">
-            <Button type="primary" style={{ display: 'inline-block' }}>
-              <Icon type="play-circle" />
-              Execute
-            </Button>
-            <Link to={`/projects/${match.params.id}/settings`}>
+            <Link to={`/projects/${match.params.pid}/executions`}>
+              <Button style={{ display: 'inline-block' }}>
+                <Icon type="thunderbolt" />
+                Executions
+              </Button>
+            </Link>
+            <Link to={`/projects/${match.params.pid}/settings`}>
               <Button
                 style={{ display: 'inline-block', margin: '0 24px 0 16px' }}
               >

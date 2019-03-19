@@ -33,7 +33,7 @@ const HeaderWrapper: React.FunctionComponent<{}> = () => {
               <Switch>
                 <Route path="/projects/new" component={BaseHeader} />
                 <Route
-                  path="/projects/:id"
+                  path="/projects/:pid"
                   render={() => <ProjectHeader projects={projects} />}
                 />
                 <Route component={BaseHeader} />
