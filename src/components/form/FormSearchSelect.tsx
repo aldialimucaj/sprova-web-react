@@ -24,7 +24,9 @@ const FormSearchSelect: React.FunctionComponent<Props> = ({
   const [error, setError] = useState('');
 
   const validate = (_value: string): [string, string] => {
-    if (!required || _value) {
+    if (!required) {
+      return ['', ''];
+    } else if (_value) {
       return ['success', ''];
     } else {
       return ['error', `${label} is required`];
