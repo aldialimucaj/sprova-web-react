@@ -5,7 +5,7 @@ import { addTestCase, ProjectContext } from '@/contexts/ProjectContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { TestCase } from '@/models/TestCase';
 import { TestStep } from '@/models/TestStep';
-import { hasFieldErrors, resolveSteps, validateNotEmpty } from '@/utils';
+import { hasFieldErrors, resolveInheritance } from '@/utils';
 import {
   Button,
   Col,
@@ -33,7 +33,7 @@ interface Params {
 
 interface Props extends RouteComponentProps<Params>, FormComponentProps {}
 
-const CreateTestCase: React.FunctionComponent<Props> = ({
+const TestCaseCreate: React.FunctionComponent<Props> = ({
   form,
   history,
   match,
@@ -151,7 +151,7 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
                   className="inherited-list"
                   itemLayout="horizontal"
                   bordered={true}
-                  dataSource={resolveSteps(parent, testCases)}
+                  dataSource={resolveInheritance(parent, testCases)}
                   renderItem={([testStep, mappedParent]: [
                     TestStep,
                     TestCase
@@ -192,4 +192,4 @@ const CreateTestCase: React.FunctionComponent<Props> = ({
   );
 };
 
-export default withRouter(Form.create({})(CreateTestCase));
+export default withRouter(Form.create({})(TestCaseCreate));

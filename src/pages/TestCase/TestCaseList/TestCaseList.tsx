@@ -5,13 +5,18 @@ import { Button, Icon, Table } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
-const TestCaseList: React.FunctionComponent<RouteComponentProps> = ({
+interface Params {
+  pid: string;
+}
+
+const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
   history,
+  match,
 }) => {
-  const [{ project, testCases }] = useContext(ProjectContext);
+  const [{ testCases }] = useContext(ProjectContext);
 
   const handleRowClick = (record: TestCase) => {
-    history.push(`/projects/${project._id}/testcases/${record._id}`);
+    history.push(`/projects/${match.params.pid}/testcases/${record._id}`);
   };
 
   const columns = [
@@ -32,7 +37,7 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps> = ({
       <SectionHeader
         title="Test Cases"
         extra={
-          <Link to={`/projects/${project._id}/testcases/new`}>
+          <Link to={`/projects/${match.params.pid}/testcases/new`}>
             <Button type="primary">
               <Icon type="plus" /> New
             </Button>

@@ -1,16 +1,21 @@
 import { deleteTestCase } from '@/api/testcase.api';
 import Level from '@/components/Level';
 import { ProjectContext, removeTestCase } from '@/contexts/ProjectContext';
-import { TestCase } from '@/models/TestCase';
 import { findById } from '@/utils';
-import { Button, Empty, Icon, notification, Popconfirm, Tabs } from 'antd';
+import { Button, Icon, notification, Popconfirm, Tabs } from 'antd';
 import React, { Fragment, useContext, useState } from 'react';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import GeneralTab from './tabs/OverviewTab';
+import {
+  Link,
+  Redirect,
+  RouteComponentProps,
+  withRouter,
+} from 'react-router-dom';
+import OverviewTab from './tabs/OverviewTab';
 
 const TabPane = Tabs.TabPane;
 
 interface Params {
+  pid: string;
   tid: string;
 }
 
@@ -18,16 +23,19 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
   history,
   match,
 }) => {
-  const [
-    {
-      project: { _id: pid },
-      testCases,
-    },
-    dispatch,
-  ] = useContext(ProjectContext);
+  const [{ testCases }, dispatch] = useContext(ProjectContext);
+
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
   const testCase = findById(testCases, match.params.tid);
+
+  if (!testCase) {
+    notification.error({
+      message: 'Oops',
+      description: `No Test Case found with ID ${match.params.tid}`,
+    });
+    return <Redirect to={`/projects/${match.params.pid}/testcases`} />;
+  }
 
   const deleteRequest = async () => {
     setIsDeleteLoading(true);
@@ -36,9 +44,9 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
       setIsDeleteLoading(false);
       dispatch(removeTestCase(match.params.tid));
       notification.success({
-        message: `${testCase!.title} deleted`,
+        message: `${testCase.title} deleted`,
       });
-      history.push(`/projects/${pid}/testcases`);
+      history.push(`/projects/${match.params.pid}/testcases`);
     } catch (error) {
       setIsDeleteLoading(false);
       notification.error({
@@ -48,33 +56,34 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
     }
   };
 
-  return testCase ? (
+  const header = (
+    <span style={{ fontSize: 18 }}>
+      <Link to={`/projects/${match.params.pid}/testcases`}>Test Cases</Link> /{' '}
+      <strong>{testCase.title}</strong>
+    </span>
+  );
+
+  const deleteButton = (
+    <Popconfirm
+      placement="bottomRight"
+      title="Delete this test case?"
+      onConfirm={deleteRequest}
+      icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
+      okText="Yes"
+      cancelText="Cancel"
+    >
+      <Button type="danger" loading={isDeleteLoading}>
+        Delete
+      </Button>
+    </Popconfirm>
+  );
+
+  return (
     <Fragment>
-      <Level
-        left={
-          <span style={{ fontSize: 18 }}>
-            <Link to={`/projects/${pid}/testcases`}>Test Cases</Link> /{' '}
-            <strong>{testCase.title}</strong>
-          </span>
-        }
-        right={
-          <Popconfirm
-            placement="bottomRight"
-            title="Delete this test case?"
-            onConfirm={deleteRequest}
-            icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
-            okText="Yes"
-            cancelText="Cancel"
-          >
-            <Button type="danger" loading={isDeleteLoading}>
-              Delete
-            </Button>
-          </Popconfirm>
-        }
-      />
+      <Level left={header} right={deleteButton} />
       <Tabs defaultActiveKey="1" type="card">
         <TabPane tab="Overview" key="1">
-          <GeneralTab testCase={testCase} testCases={testCases} />
+          <OverviewTab testCase={testCase} testCases={testCases} />
         </TabPane>
         <TabPane tab="Test Steps" key="2">
           Content of Tab Pane 2
@@ -87,8 +96,6 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
         </TabPane>
       </Tabs>
     </Fragment>
-  ) : (
-    <Empty />
   );
 };
 

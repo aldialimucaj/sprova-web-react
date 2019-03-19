@@ -5,8 +5,8 @@ import {
   Switch,
   withRouter,
 } from 'react-router-dom';
-import CreateTestCase from './CreateTestCase';
-import './TestCase.scss';
+import './index.scss';
+import CreateTestCase from './TestCaseCreate';
 import TestCaseDetails from './TestCaseDetails';
 import TestCaseList from './TestCaseList';
 
@@ -20,13 +20,13 @@ const TestCase: React.FunctionComponent<RouteComponentProps<Params>> = ({
   return (
     <Switch>
       <Route
-        path={`/projects/:pid/testcases`}
+        path={'/projects/:pid/testcases'}
         exact={true}
         component={TestCaseList}
       />
-      <Route path={`/projects/:pid/testcases/new`} component={CreateTestCase} />
+      <Route path={'/projects/:pid/testcases/new'} component={CreateTestCase} />
       <Route
-        path={`/projects/:pid/testcases/:tid`}
+        path={'/projects/:pid/testcases/:tid'}
         component={TestCaseDetails}
       />
     </Switch>
