@@ -30,6 +30,19 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
       dataIndex: 'description',
       key: 'description',
     },
+    {
+      title: 'Statistics',
+      dataIndex: 'statistics',
+      key: 'statistics',
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      width: '10%',
+      render: (text: string, record: any) => (
+        <Button size="small" type="primary" onClick={undefined}>Execute</Button>
+      )
+    }
   ];
 
   return (
