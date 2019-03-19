@@ -85,8 +85,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
   };
 
   const isFormValid = () => {
-    // TODO: Implement
-    return true;
+    return title.length > 0 && testSteps.length > 0;
   };
 
   return (
