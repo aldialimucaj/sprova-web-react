@@ -8,7 +8,7 @@ import {
 import { useFetcher } from '@/hooks/useFetcher';
 import { Project } from '@/models/Project';
 import { TestCase } from '@/models/TestCase';
-import { Cycles, TestCase as TestCasePage } from '@/pages';
+import { Cycles, Executions, TestCases } from '@/pages';
 import { Spin } from 'antd';
 import React, { Fragment, useContext, useEffect } from 'react';
 import {
@@ -63,9 +63,10 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
               component={ProjectDetails}
             />
           </Switch>
-          <Route path="/projects/:pid/settings" component={ProjectSettings} />
-          <Route path="/projects/:pid/testcases" component={TestCasePage} />
           <Route path="/projects/:pid/cycles" component={Cycles} />
+          <Route path="/projects/:pid/executions" component={Executions} />
+          <Route path="/projects/:pid/settings" component={ProjectSettings} />
+          <Route path="/projects/:pid/testcases" component={TestCases} />
         </Fragment>
       )}
     </Fragment>
