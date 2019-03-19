@@ -5,16 +5,26 @@ import {
   FormSearchSelect,
   FormTextArea,
 } from '@/components/form';
-import SectionHeader from '@/components/SectionHeader';
+import Level from '@/components/Level';
 import { addTestCase, ProjectContext } from '@/contexts/ProjectContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
 import { TestCase } from '@/models/TestCase';
 import { TestStep } from '@/models/TestStep';
 import { resolveInheritance } from '@/utils';
-import { Button, Col, Form, List, notification, Row, Select, Tag } from 'antd';
+import {
+  Button,
+  Col,
+  Divider,
+  Form,
+  List,
+  notification,
+  Row,
+  Select,
+  Tag,
+} from 'antd';
 import React, { Fragment, useContext, useState } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './index.scss';
 import TestStepInput from './TestStepInput';
 import { formContentLayout } from './utils';
@@ -90,7 +100,17 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   return (
     <Fragment>
-      <SectionHeader title="Create new test case" />
+      <Level
+        left={
+          <span style={{ fontSize: 18 }}>
+            <Link to={`/projects/${match.params.pid}/testcases`}>
+              Test Cases
+            </Link>{' '}
+            / <strong>Create Test Case</strong>
+          </span>
+        }
+      />
+      <Divider />
       <Row>
         <Col {...formContentLayout}>
           <Form layout="vertical" onSubmit={handleSubmit}>

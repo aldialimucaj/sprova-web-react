@@ -26,7 +26,6 @@ const ProjectList: React.FunctionComponent = () => {
               <Link to={`/projects/${project._id}`}>
                 <Card className="clickable-card">
                   <h3>{project.title}</h3>
-                  <p style={{ marginBottom: 0 }}>{project.description}</p>
                 </Card>
               </Link>
             </Col>
