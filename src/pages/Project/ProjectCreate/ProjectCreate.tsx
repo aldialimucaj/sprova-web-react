@@ -9,11 +9,9 @@ import React, { useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
 
-const { TextArea } = Input;
+interface Props extends RouteComponentProps, FormComponentProps {}
 
-interface Props extends RouteComponentProps, FormComponentProps { }
-
-const CreateProject: React.FunctionComponent<Props> = ({ form, history }) => {
+const ProjectCreate: React.FunctionComponent<Props> = ({ form, history }) => {
   const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
   const [isLoading, setIsLoading] = useState(false);
   const editor = { value: {} };
@@ -81,4 +79,4 @@ const CreateProject: React.FunctionComponent<Props> = ({ form, history }) => {
   );
 };
 
-export default withRouter(Form.create({})(CreateProject));
+export default withRouter(Form.create({})(ProjectCreate));

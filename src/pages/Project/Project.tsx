@@ -17,7 +17,7 @@ import {
   Switch,
   withRouter,
 } from 'react-router-dom';
-import CreateProject from './CreateProject';
+import ProjectCreate from './ProjectCreate';
 import ProjectDetails from './ProjectDetails';
 import ProjectSettings from './ProjectSettings';
 
@@ -56,7 +56,7 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
       ) : (
         <Fragment>
           <Switch>
-            <Route path="/projects/new" component={CreateProject} />
+            <Route path="/projects/new" component={ProjectCreate} />
             <Route
               path="/projects/:pid"
               exact={true}
