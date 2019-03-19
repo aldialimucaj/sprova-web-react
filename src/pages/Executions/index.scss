@@ -1,0 +1,14 @@
+.children-list {
+  overflow: hidden;
+
+  .ant-list-header {
+    background-color: rgba(0, 0, 0, 0.025);
+  }
+
+  .ant-list-item {
+    &:hover {
+      background-color: #e6f7ff;
+      cursor: pointer;
+    }
+  }
+}
