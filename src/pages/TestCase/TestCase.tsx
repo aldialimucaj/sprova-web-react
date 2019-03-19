@@ -6,7 +6,7 @@ import {
   withRouter,
 } from 'react-router-dom';
 import './index.scss';
-import CreateTestCase from './TestCaseCreate';
+import TestCaseCreate from './TestCaseCreate';
 import TestCaseDetails from './TestCaseDetails';
 import TestCaseList from './TestCaseList';
 
@@ -24,7 +24,7 @@ const TestCase: React.FunctionComponent<RouteComponentProps<Params>> = ({
         exact={true}
         component={TestCaseList}
       />
-      <Route path={'/projects/:pid/testcases/new'} component={CreateTestCase} />
+      <Route path={'/projects/:pid/testcases/new'} component={TestCaseCreate} />
       <Route
         path={'/projects/:pid/testcases/:tid'}
         component={TestCaseDetails}

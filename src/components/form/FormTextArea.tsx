@@ -1,23 +1,25 @@
 import { Form, Input } from 'antd';
 import React, { useState } from 'react';
 
+const TextArea = Input.TextArea;
+
 interface Props {
   colon?: boolean;
   label: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  minLength?: number;
+  onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder?: string;
   required?: boolean;
-  type?: string;
   value: string;
 }
 
-const FormInput: React.FunctionComponent<Props> = ({
+const FormTextArea: React.FunctionComponent<Props> = ({
   colon = false,
   label,
+  minLength = 2,
   onChange,
   placeholder = '',
   required = false,
-  type = 'text',
   value,
 }) => {
   const [status, setStatus] = useState('');
@@ -31,7 +33,7 @@ const FormInput: React.FunctionComponent<Props> = ({
     }
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value: _value } = event.currentTarget;
     const [_status, _error] = validate(_value);
     if (_status !== status) {
@@ -52,14 +54,14 @@ const FormInput: React.FunctionComponent<Props> = ({
       hasFeedback={true}
       help={error}
     >
-      <Input
+      <TextArea
         value={value}
+        minLength={minLength}
         onChange={handleChange}
-        type={type}
         placeholder={placeholder}
       />
     </Form.Item>
   );
 };
 
-export default FormInput;
+export default FormTextArea;

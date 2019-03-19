@@ -1,23 +1,18 @@
 import { postTestCase } from '@/api/testcase.api';
-import FormInput from '@/components/form/FormInput';
+import {
+  FormButton,
+  FormInput,
+  FormSearchSelect,
+  FormTextArea,
+} from '@/components/form';
 import SectionHeader from '@/components/SectionHeader';
 import { addTestCase, ProjectContext } from '@/contexts/ProjectContext';
 import { useFormInput } from '@/hooks/useFormInput';
+import { useFormTextArea } from '@/hooks/useFormTextArea';
 import { TestCase } from '@/models/TestCase';
 import { TestStep } from '@/models/TestStep';
-import { hasFieldErrors, resolveInheritance } from '@/utils';
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  List,
-  notification,
-  Row,
-  Select,
-  Tag,
-} from 'antd';
-import { FormComponentProps } from 'antd/lib/form';
+import { resolveInheritance } from '@/utils';
+import { Button, Col, Form, List, notification, Row, Select, Tag } from 'antd';
 import React, { Fragment, useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import './index.scss';
@@ -25,39 +20,29 @@ import TestStepInput from './TestStepInput';
 import { formContentLayout } from './utils';
 
 const Option = Select.Option;
-const { TextArea } = Input;
 
 interface Params {
-  id: string;
+  pid: string;
 }
 
-interface Props extends RouteComponentProps<Params>, FormComponentProps {}
-
-const TestCaseCreate: React.FunctionComponent<Props> = ({
-  form,
+const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
   history,
   match,
 }) => {
-  const [{ project, testCases }, dispatch] = useContext(ProjectContext);
-  const [testSteps, setTestSteps] = useState<TestStep[]>([]);
-  const [parent, setParent] = useState<TestCase | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showInherited, setShowInherited] = useState(false);
+  const [{ testCases }, dispatch] = useContext(ProjectContext);
 
-  const {
-    value: title,
-    setValue: setTitle,
-    handleChange: handleTitleChange,
-  } = useFormInput('');
+  const { value: title, handleChange: handleTitleChange } = useFormInput('');
   const {
     value: description,
-    setValue: setDescription,
     handleChange: handleDescriptionChange,
-  } = useFormInput('');
+  } = useFormTextArea('');
+  const [parent, setParent] = useState<TestCase | null>(null);
+  const [testSteps, setTestSteps] = useState<TestStep[]>([]);
 
-  const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showInherited, setShowInherited] = useState<boolean>(false);
 
-  const handleParentSelect = (id: string | null) => {
+  const handleParentSelect = (id: string) => {
     const parentNew = testCases.find((testCase) => testCase._id === id);
     setParent(parentNew || null);
   };
@@ -69,8 +54,8 @@ const TestCaseCreate: React.FunctionComponent<Props> = ({
   const handleSubmit = async (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
     let testCaseNew: TestCase = {
-      title: title as string,
-      project: project._id || match.params.id,
+      title,
+      project: match.params.pid,
       description,
       steps: testSteps,
     };
@@ -89,7 +74,7 @@ const TestCaseCreate: React.FunctionComponent<Props> = ({
         message: `${title} created`,
         description: `Test case created with ID ${_id}`,
       });
-      history.push(`/projects/${project._id || match.params.id}/testcases`);
+      history.push(`/projects/${match.params.pid}/testcases`);
     } catch (error) {
       setIsLoading(false);
       notification.error({
@@ -99,37 +84,43 @@ const TestCaseCreate: React.FunctionComponent<Props> = ({
     }
   };
 
+  const isFormValid = () => {
+    // TODO: Implement
+    return true;
+  };
+
   return (
     <Fragment>
       <SectionHeader title="Create new test case" />
       <Row>
         <Col {...formContentLayout}>
           <Form layout="vertical" onSubmit={handleSubmit}>
-            <FormInput label="Title" placeholder="Test Case" required={true} />
-            <Form.Item label="Description" colon={false}>
-              {getFieldDecorator('description', {})(
-                <TextArea
-                  minLength={3}
-                  name="description"
-                  placeholder="Description"
-                />
-              )}
-            </Form.Item>
-            <Form.Item label="Inherit from" colon={false}>
-              <Select
-                allowClear={true}
-                showSearch={true}
-                optionFilterProp="children"
-                placeholder="None"
-                onChange={handleParentSelect}
-              >
-                {testCases.map((testCase, index) => (
-                  <Option key={index} value={testCase._id}>
-                    {testCase.title}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
+            <FormInput
+              label="Title"
+              value={title}
+              onChange={handleTitleChange}
+              placeholder="Test Case"
+              required={true}
+            />
+            <FormTextArea
+              label="Description"
+              value={description}
+              onChange={handleDescriptionChange}
+              placeholder="Description"
+              minLength={3}
+            />
+            <FormSearchSelect
+              label="Inherit from"
+              placeholder="None"
+              value={(parent && parent._id) || ''}
+              onChange={handleParentSelect}
+            >
+              {testCases.map((testCase, index) => (
+                <Option key={index} value={testCase._id}>
+                  {testCase.title}
+                </Option>
+              ))}
+            </FormSearchSelect>
             <Form.Item
               label="Test Steps"
               required={true}
@@ -175,16 +166,13 @@ const TestCaseCreate: React.FunctionComponent<Props> = ({
                 setTestSteps={setTestSteps}
               />
             </Form.Item>
-            <Form.Item>
-              <Button
-                type="primary"
-                loading={isLoading}
-                htmlType="submit"
-                disabled={hasFieldErrors(getFieldsError())}
-              >
-                Create Test Case
-              </Button>
-            </Form.Item>
+            <FormButton
+              type="primary"
+              loading={isLoading}
+              disabled={!isFormValid()}
+            >
+              Create Test Case
+            </FormButton>
           </Form>
         </Col>
       </Row>
@@ -192,4 +180,4 @@ const TestCaseCreate: React.FunctionComponent<Props> = ({
   );
 };
 
-export default withRouter(Form.create({})(TestCaseCreate));
+export default withRouter(TestCaseCreate);

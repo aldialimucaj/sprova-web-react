@@ -1,23 +1,23 @@
-import { Form, Input } from 'antd';
+import { Form, Input, Select } from 'antd';
 import React, { useState } from 'react';
 
 interface Props {
   colon?: boolean;
   label: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (value: string) => void;
   placeholder?: string;
   required?: boolean;
   type?: string;
   value: string;
 }
 
-const FormInput: React.FunctionComponent<Props> = ({
+const FormSearchSelect: React.FunctionComponent<Props> = ({
+  children,
   colon = false,
   label,
   onChange,
   placeholder = '',
   required = false,
-  type = 'text',
   value,
 }) => {
   const [status, setStatus] = useState('');
@@ -31,8 +31,7 @@ const FormInput: React.FunctionComponent<Props> = ({
     }
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value: _value } = event.currentTarget;
+  const handleChange = (_value: string) => {
     const [_status, _error] = validate(_value);
     if (_status !== status) {
       setStatus(_status);
@@ -40,7 +39,7 @@ const FormInput: React.FunctionComponent<Props> = ({
     if (_error !== error) {
       setError(_error);
     }
-    onChange(event);
+    onChange(_value);
   };
 
   return (
@@ -52,14 +51,18 @@ const FormInput: React.FunctionComponent<Props> = ({
       hasFeedback={true}
       help={error}
     >
-      <Input
+      <Select<string>
+        allowClear={true}
+        showSearch={true}
         value={value}
-        onChange={handleChange}
-        type={type}
+        optionFilterProp="children"
         placeholder={placeholder}
-      />
+        onChange={handleChange}
+      >
+        {children}
+      </Select>
     </Form.Item>
   );
 };
 
-export default FormInput;
+export default FormSearchSelect;
