@@ -1,10 +1,10 @@
-import { TestCase } from '@/models/TestCase';
+import { Execution } from '@/models/Execution';
 import { AxiosError, AxiosResponse } from 'axios';
 import agent from './agent';
 
-export function postTestCase(testCase: TestCase) {
+export function postExecution(execution: Execution) {
   return agent
-    .post('/testcases', testCase)
+    .post('/executions', execution)
     .catch(
       (error: AxiosError): AxiosResponse => {
         const { message, response } = error;
@@ -25,9 +25,9 @@ export function postTestCase(testCase: TestCase) {
     );
 }
 
-export function deleteTestCase(id: string) {
+export function deleteExecution(id: string) {
   return agent
-    .delete(`/testcases/${id}`)
+    .delete(`/executions/${id}`)
     .catch(
       (error: AxiosError): AxiosResponse => {
         const { message, response } = error;
@@ -48,9 +48,9 @@ export function deleteTestCase(id: string) {
     );
 }
 
-export function getTestCases(): Promise<TestCase[]> {
+export function getExecutions(): Promise<Execution[]> {
   return agent
-    .get('/testcases')
+    .get('/executions')
     .catch(
       (error: AxiosError): AxiosResponse => {
         const { message, response } = error;
@@ -61,12 +61,12 @@ export function getTestCases(): Promise<TestCase[]> {
       }
     )
     .then(
-      (response: AxiosResponse): TestCase[] => {
+      (response: AxiosResponse): Execution[] => {
         const { data, status, statusText } = response;
         if (status !== 200) {
           throw statusText;
         }
-        return data as TestCase[];
+        return data as Execution[];
       }
     );
 }

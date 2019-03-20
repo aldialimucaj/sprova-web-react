@@ -1,9 +1,5 @@
 import { Cycle } from '@/models/Cycle';
 import { AxiosError, AxiosResponse } from 'axios';
-import {
-  ProjectAction,
-  setTestCases,
-} from '../contexts/ProjectContext/ProjectActions';
 import agent from './agent';
 
 export function postCycle(cycle: Cycle) {
