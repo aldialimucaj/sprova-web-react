@@ -5,7 +5,6 @@ interface Props {
   colon?: boolean;
   label: string;
   onChange: (value: string) => void;
-  placeholder?: string;
   required?: boolean;
   value: string;
 }
@@ -15,7 +14,6 @@ const FormSearchSelect: React.FunctionComponent<Props> = ({
   colon = false,
   label,
   onChange,
-  placeholder = '',
   required = false,
   value,
 }) => {
@@ -52,14 +50,7 @@ const FormSearchSelect: React.FunctionComponent<Props> = ({
       hasFeedback={true}
       help={error}
     >
-      <Select<string>
-        allowClear={true}
-        showSearch={true}
-        value={value}
-        optionFilterProp="children"
-        placeholder={placeholder}
-        onChange={handleChange}
-      >
+      <Select<string> value={value} onChange={handleChange}>
         {children}
       </Select>
     </Form.Item>

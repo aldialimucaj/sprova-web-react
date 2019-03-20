@@ -38,17 +38,6 @@ const ExecutionStages: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   return (
     <Fragment>
-      <Level
-        left={
-          <span style={{ fontSize: 18 }}>
-            <Link to={`/projects/${match.params.pid}/executions`}>
-              Executions
-            </Link>{' '}
-            / <strong>Run</strong>
-          </span>
-        }
-      />
-      <Divider />
       <Steps current={activeStageIndex()} style={{ marginBottom: 24 }}>
         <Step title="Setup" />
         <Step title="Run" />
