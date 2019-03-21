@@ -1,18 +1,12 @@
+import { User } from '@/models/User';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import decode from 'jwt-decode';
 import { setToken } from './agent';
 
-export interface DecodedToken {
-  _id: string;
-  exp: number;
-  iat: number;
-  username: string;
-}
-
 export function authenticate(
   username: string,
   password: string
-): Promise<DecodedToken> {
+): Promise<User> {
   return (
     axios
       // TODO: extract URL
@@ -40,19 +34,19 @@ export function authenticate(
         }
       )
       .then(
-        (token: string): DecodedToken => {
+        (token: string): User => {
           localStorage.setItem('token', token);
           setToken(token);
 
-          return decode(token) as DecodedToken;
+          return decode(token) as User;
         }
       )
   );
 }
 
-export function getUsername(): string {
+export function getUser(): User | null {
   const token = localStorage.getItem('token');
-  return token ? (decode(token) as DecodedToken).username : '';
+  return token ? (decode(token) as User) : null;
 }
 
 export function isAuthenticated(): boolean {

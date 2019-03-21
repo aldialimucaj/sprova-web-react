@@ -1,10 +1,10 @@
-import { Execution } from '@/models/Execution';
+import { ExecutionContext } from '@/models/ExecutionContext';
 import { AxiosError, AxiosResponse } from 'axios';
 import agent from './agent';
 
-export function postExecution(execution: Execution) {
+export function postExecutionContext(executionContext: ExecutionContext) {
   return agent
-    .post('/executions', execution)
+    .post('/execution-contexts', executionContext)
     .catch(
       (error: AxiosError): AxiosResponse => {
         const { message, response } = error;
@@ -25,9 +25,9 @@ export function postExecution(execution: Execution) {
     );
 }
 
-export function deleteExecution(id: string) {
+export function deleteExecutionContext(id: string) {
   return agent
-    .delete(`/executions/${id}`)
+    .delete(`/execution-contexts/${id}`)
     .catch(
       (error: AxiosError): AxiosResponse => {
         const { message, response } = error;
@@ -48,9 +48,9 @@ export function deleteExecution(id: string) {
     );
 }
 
-export function getExecutions(projectId: string): Promise<Execution[]> {
+export function getExecutions(projectId: string): Promise<ExecutionContext[]> {
   return agent
-    .get('/executions', {
+    .get('/execution-contexts', {
       params: {
         projectId,
       },
@@ -65,12 +65,12 @@ export function getExecutions(projectId: string): Promise<Execution[]> {
       }
     )
     .then(
-      (response: AxiosResponse): Execution[] => {
+      (response: AxiosResponse): ExecutionContext[] => {
         const { data, status, statusText } = response;
         if (status !== 200) {
           throw statusText;
         }
-        return data as Execution[];
+        return data as ExecutionContext[];
       }
     );
 }
