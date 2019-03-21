@@ -1,15 +1,11 @@
+import { getExecutionContexts } from '@/api/execution-context.api';
 import Level from '@/components/Level';
 import { ProjectContext } from '@/contexts/ProjectContext';
-import { Execution } from '@/models/Execution';
-import { Button, Divider, Icon, List } from 'antd';
+import { useFetcher } from '@/hooks/useFetcher';
+import { ExecutionContext } from '@/models/ExecutionContext';
+import { Button, Col, Divider, Icon, List, Row } from 'antd';
 import React, { Fragment, useContext } from 'react';
-import {
-  Link,
-  Route,
-  RouteComponentProps,
-  Switch,
-  withRouter,
-} from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './index.scss';
 
 interface Params {
@@ -18,12 +14,12 @@ interface Params {
 
 const ExecutionOverview: React.FunctionComponent<
   RouteComponentProps<Params>
-> = ({ match }) => {
+> = ({ history, match }) => {
   const [{ project }] = useContext(ProjectContext);
 
-  const mockActiveExecutions: Execution[] = [];
-
-  const mockExecutions: Execution[] = [];
+  const { data: contexts, isLoading: isContextsLoading } = useFetcher<
+    ExecutionContext[]
+  >(getExecutionContexts, match.params.pid);
 
   return (
     <Fragment>
@@ -44,13 +40,92 @@ const ExecutionOverview: React.FunctionComponent<
       />
       <Divider />
       <List
-        className="children-list"
+        className="children-list is-highlight"
         size="small"
-        header={<div>Active Executions</div>}
+        header={
+          <div>
+            <Icon type="loading" style={{ marginRight: 8 }} />
+            Active Executions
+          </div>
+        }
         bordered={true}
-        dataSource={mockActiveExecutions}
-        renderItem={(exec: Execution) => <List.Item>{exec._id}</List.Item>}
+        dataSource={contexts}
+        renderItem={(exec: ExecutionContext) => (
+          <List.Item
+            onClick={() =>
+              history.push(
+                `/projects/${match.params.pid}/executions/run?context=${
+                  exec._id
+                }`
+              )
+            }
+          >
+            <Level
+              style={{ marginBottom: 0, width: '100%' }}
+              left={<span>{exec._id}</span>}
+              right={<span>5/10</span>}
+            />
+          </List.Item>
+        )}
       />
+      <Row gutter={16}>
+        <Col span={12} style={{ marginBottom: 24 }}>
+          <List
+            className="children-list"
+            size="small"
+            header={
+              <Level
+                style={{ marginBottom: 0 }}
+                left={
+                  <span>
+                    <Icon type="clock-circle" style={{ marginRight: 8 }} />
+                    Scheduled Executions
+                  </span>
+                }
+                right={
+                  <Link
+                    to={`/projects/${match.params.pid}/executions/schedule`}
+                  >
+                    Show Schedule
+                  </Link>
+                }
+              />
+            }
+            bordered={true}
+            dataSource={[]}
+            renderItem={(exec: ExecutionContext) => (
+              <List.Item>{exec._id}</List.Item>
+            )}
+          />
+        </Col>
+        <Col span={12} style={{ marginBottom: 24 }}>
+          <List
+            className="children-list"
+            size="small"
+            header={
+              <Level
+                style={{ marginBottom: 0 }}
+                left={
+                  <span>
+                    <Icon type="check-circle" style={{ marginRight: 8 }} />
+                    Finished Executions
+                  </span>
+                }
+                right={
+                  <Link to={`/projects/${match.params.pid}/executions/history`}>
+                    Show History
+                  </Link>
+                }
+              />
+            }
+            bordered={true}
+            dataSource={[]}
+            renderItem={(exec: ExecutionContext) => (
+              <List.Item>{exec._id}</List.Item>
+            )}
+          />
+        </Col>
+      </Row>
     </Fragment>
   );
 };

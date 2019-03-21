@@ -1,5 +1,6 @@
 .children-list {
   overflow: hidden;
+  margin-bottom: 24px;
 
   .ant-list-header {
     background-color: rgba(0, 0, 0, 0.025);
@@ -9,6 +10,13 @@
     &:hover {
       background-color: #e6f7ff;
       cursor: pointer;
+    }
+  }
+
+  &.is-highlight {
+    border: 1px solid #c8e1ff;
+    .ant-list-header {
+      background-color: #f1f8ff;
     }
   }
 }

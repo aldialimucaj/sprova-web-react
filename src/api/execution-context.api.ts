@@ -48,7 +48,9 @@ export function deleteExecutionContext(id: string) {
     );
 }
 
-export function getExecutions(projectId: string): Promise<ExecutionContext[]> {
+export function getExecutionContexts(
+  projectId: string
+): Promise<ExecutionContext[]> {
   return agent
     .get('/execution-contexts', {
       params: {
