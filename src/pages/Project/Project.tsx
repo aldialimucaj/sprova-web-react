@@ -35,7 +35,7 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
   );
   const { data: testCases, isLoading: isTestCasesLoading } = useFetcher<
     TestCase[]
-  >(getTestCases);
+  >(getTestCases, match.params.pid);
 
   useEffect(() => {
     if (project) {

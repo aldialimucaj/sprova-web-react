@@ -65,7 +65,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
     event.preventDefault();
     let testCaseNew: TestCase = {
       title,
-      project: match.params.pid,
+      projectId: match.params.pid,
       description,
       steps: testSteps,
     };

@@ -48,9 +48,13 @@ export function deleteTestCase(id: string) {
     );
 }
 
-export function getTestCases(): Promise<TestCase[]> {
+export function getTestCases(projectId: string): Promise<TestCase[]> {
   return agent
-    .get('/testcases')
+    .get('/testcases', {
+      params: {
+        projectId,
+      },
+    })
     .catch(
       (error: AxiosError): AxiosResponse => {
         const { message, response } = error;

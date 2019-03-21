@@ -3,5 +3,5 @@ export interface Cycle {
   title: string;
   description: string;
   testCases: string[];
-  project: string;
+  projectId: string;
 }
