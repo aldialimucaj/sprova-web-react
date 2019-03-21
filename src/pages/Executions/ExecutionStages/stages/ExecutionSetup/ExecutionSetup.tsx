@@ -1,7 +1,10 @@
 import { getUser } from '@/api/auth.api';
 import { postExecutionContext } from '@/api/execution-context.api';
+import { postExecutions } from '@/api/execution.api';
 import { FormButton, FormSearchSelect, FormSelect } from '@/components/form';
+import FormCheckbox from '@/components/form/FormCheckbox';
 import { ProjectContext } from '@/contexts/ProjectContext';
+import { Execution } from '@/models/Execution';
 import { ExecutionContext } from '@/models/ExecutionContext';
 import { TestCase } from '@/models/TestCase';
 import { Col, Form, Icon, notification, Row, Select } from 'antd';
@@ -22,14 +25,15 @@ const ExecutionSetup: React.FunctionComponent<RouteComponentProps<Params>> = ({
   const [{ testCases }] = useContext(ProjectContext);
 
   const [type, setType] = useState('');
-  const [testCase, setTestCase] = useState<TestCase | null>(null);
+  const [selectedTestCases, setSelectedTestCases] = useState<TestCase[]>([]);
+  const [includeInherited, setIncludeInherited] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleTestCaseSelect = (id: string) => {
-    const testCaseNew = testCases.find(
-      (_testCase: TestCase) => _testCase._id === id
-    );
-    setTestCase(testCaseNew || null);
+    const selectedTestCase = testCases.find(
+      (_testCase) => _testCase._id === id
+    )!;
+    setSelectedTestCases([...selectedTestCases, selectedTestCase]);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLButtonElement>) => {
@@ -48,14 +52,25 @@ const ExecutionSetup: React.FunctionComponent<RouteComponentProps<Params>> = ({
     setIsLoading(true);
 
     try {
-      const _id = await postExecutionContext(executionContextNew);
+      const contextId = await postExecutionContext(executionContextNew);
+      const executionsNew: Execution[] = selectedTestCases.map(
+        (_testCase: TestCase): Execution => {
+          return {
+            testcaseId: _testCase._id!,
+            contextId,
+            result: null,
+            status: 'waiting',
+          };
+        }
+      );
+      const ok = await postExecutions(executionsNew);
       setIsLoading(false);
       notification.success({
         message: 'Execution started',
-        description: `Execution Context created with ID ${_id}`,
+        description: `Execution Context created with ID ${contextId}`,
       });
       history.push(
-        `/projects/${match.params.pid}/executions/run?context=${_id}`
+        `/projects/${match.params.pid}/executions/run?context=${contextId}`
       );
     } catch (error) {
       setIsLoading(false);
@@ -65,6 +80,8 @@ const ExecutionSetup: React.FunctionComponent<RouteComponentProps<Params>> = ({
       });
     }
   };
+
+  const handleIncludeInheritedChange = () => {};
 
   return (
     <Fragment>
@@ -84,7 +101,6 @@ const ExecutionSetup: React.FunctionComponent<RouteComponentProps<Params>> = ({
             <FormSearchSelect
               label="Test Case"
               placeholder="None"
-              value={(testCase && testCase._id) || ''}
               onChange={handleTestCaseSelect}
             >
               {testCases.map((_testCase, index) => (
@@ -93,6 +109,12 @@ const ExecutionSetup: React.FunctionComponent<RouteComponentProps<Params>> = ({
                 </Option>
               ))}
             </FormSearchSelect>
+            <FormCheckbox
+              checked={includeInherited}
+              onChange={handleIncludeInheritedChange}
+            >
+              Include inherited
+            </FormCheckbox>
             <FormButton type="primary" loading={isLoading}>
               Start
               <Icon type="right" />

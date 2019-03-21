@@ -25,6 +25,29 @@ export function postExecution(execution: Execution) {
     );
 }
 
+export function postExecutions(executions: Execution[]) {
+  return agent
+    .post('/executions', executions)
+    .catch(
+      (error: AxiosError): AxiosResponse => {
+        const { message, response } = error;
+        if (!response) {
+          throw message;
+        }
+        return response;
+      }
+    )
+    .then(
+      (response: AxiosResponse): string => {
+        const { data, status, statusText } = response;
+        if (status !== 201 || !data.ok) {
+          throw statusText;
+        }
+        return data._id as string;
+      }
+    );
+}
+
 export function deleteExecution(id: string) {
   return agent
     .delete(`/executions/${id}`)
