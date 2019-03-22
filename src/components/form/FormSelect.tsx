@@ -2,19 +2,23 @@ import { Form, Select } from 'antd';
 import React, { useState } from 'react';
 
 interface Props {
+  className?: string;
   colon?: boolean;
   label: string;
   onChange: (value: string) => void;
   required?: boolean;
+  style?: any;
   value: string;
 }
 
-const FormSearchSelect: React.FunctionComponent<Props> = ({
+const FormSelect: React.FunctionComponent<Props> = ({
+  className,
   children,
   colon = false,
   label,
   onChange,
   required = false,
+  style,
   value,
 }) => {
   const [status, setStatus] = useState('');
@@ -50,11 +54,16 @@ const FormSearchSelect: React.FunctionComponent<Props> = ({
       hasFeedback={true}
       help={error}
     >
-      <Select<string> value={value} onChange={handleChange}>
+      <Select<string>
+        {...style}
+        className={className}
+        value={value}
+        onChange={handleChange}
+      >
         {children}
       </Select>
     </Form.Item>
   );
 };
 
-export default FormSearchSelect;
+export default FormSelect;

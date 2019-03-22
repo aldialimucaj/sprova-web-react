@@ -7,7 +7,7 @@ interface Props {
   onChange: (value: string) => void;
   placeholder?: string;
   required?: boolean;
-  value?: string;
+  value?: string | undefined;
 }
 
 const FormSearchSelect: React.FunctionComponent<Props> = ({

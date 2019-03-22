@@ -5,7 +5,7 @@ interface Props {
   disabled?: boolean;
   htmlType?: 'submit' | 'button' | 'reset';
   loading?: boolean;
-  onClick?: () => void;
+  onClick?: (event: React.FormEvent<HTMLButtonElement>) => void;
   type?: 'default' | 'danger' | 'primary' | 'ghost' | 'dashed';
 }
 
