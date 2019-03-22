@@ -64,7 +64,7 @@ const ExecutionSetupTestcase: React.FunctionComponent<
         description: `Execution Context created with ID ${contextId}`,
       });
       history.push(
-        `/projects/${match.params.pid}/executions/run?context=${contextId}`
+        `/projects/${match.params.pid}/executions/run?contextId=${contextId}`
       );
     } catch (error) {
       setIsLoading(false);

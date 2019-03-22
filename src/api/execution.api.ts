@@ -71,11 +71,65 @@ export function deleteExecution(id: string) {
     );
 }
 
-export function getExecutions(projectId: string): Promise<Execution[]> {
+export function getExecutions(): Promise<Execution[]> {
+  return agent
+    .get('/executions')
+    .catch(
+      (error: AxiosError): AxiosResponse => {
+        const { message, response } = error;
+        if (!response) {
+          throw message;
+        }
+        return response;
+      }
+    )
+    .then(
+      (response: AxiosResponse): Execution[] => {
+        const { data, status, statusText } = response;
+        if (status !== 200) {
+          throw statusText;
+        }
+        return data as Execution[];
+      }
+    );
+}
+
+export function getExecutionsByContext(
+  contextId: string
+): Promise<Execution[]> {
   return agent
     .get('/executions', {
       params: {
-        projectId,
+        contextId,
+      },
+    })
+    .catch(
+      (error: AxiosError): AxiosResponse => {
+        const { message, response } = error;
+        if (!response) {
+          throw message;
+        }
+        return response;
+      }
+    )
+    .then(
+      (response: AxiosResponse): Execution[] => {
+        const { data, status, statusText } = response;
+        if (status !== 200) {
+          throw statusText;
+        }
+        return data as Execution[];
+      }
+    );
+}
+
+export function getExecutionsByTestCase(
+  testcaseId: string
+): Promise<Execution[]> {
+  return agent
+    .get('/executions', {
+      params: {
+        testcaseId,
       },
     })
     .catch(

@@ -54,7 +54,7 @@ const ExecutionOverview: React.FunctionComponent<
           <List.Item
             onClick={() =>
               history.push(
-                `/projects/${match.params.pid}/executions/run?context=${
+                `/projects/${match.params.pid}/executions/run?contextId=${
                   exec._id
                 }`
               )

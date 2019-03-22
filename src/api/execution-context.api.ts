@@ -48,6 +48,31 @@ export function deleteExecutionContext(id: string) {
     );
 }
 
+export function getExecutionContext(
+  contextId: string
+): Promise<ExecutionContext> {
+  return agent
+    .get(`/execution-contexts/${contextId}`)
+    .catch(
+      (error: AxiosError): AxiosResponse => {
+        const { message, response } = error;
+        if (!response) {
+          throw message;
+        }
+        return response;
+      }
+    )
+    .then(
+      (response: AxiosResponse): ExecutionContext => {
+        const { data, status, statusText } = response;
+        if (status !== 200) {
+          throw statusText;
+        }
+        return data as ExecutionContext;
+      }
+    );
+}
+
 export function getExecutionContexts(
   projectId: string
 ): Promise<ExecutionContext[]> {
