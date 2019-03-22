@@ -10,6 +10,7 @@ import {
   RouteComponentProps,
   withRouter,
 } from 'react-router-dom';
+import ExecutionsTab from './tabs/ExecutionsTab';
 import OverviewTab from './tabs/OverviewTab';
 
 const TabPane = Tabs.TabPane;
@@ -109,7 +110,7 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
           Content of Tab Pane 2
         </TabPane>
         <TabPane tab="Executions" key="3">
-          Content of Tab Pane 2
+          <ExecutionsTab />
         </TabPane>
         <TabPane tab="Settings" key="4">
           Content of Tab Pane 2
