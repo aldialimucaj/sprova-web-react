@@ -1,6 +1,8 @@
+import { ObjectId } from 'bson';
+
 export interface Project {
-  _id?: string;
-  title: string;
+  _id: ObjectId;
   description: any;
-  owner?: string;
+  title: string;
+  userId: ObjectId;
 }

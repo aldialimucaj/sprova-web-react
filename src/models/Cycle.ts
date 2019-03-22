@@ -1,7 +1,9 @@
+import { ObjectId } from 'bson';
+
 export interface Cycle {
-  _id?: string;
-  title: string;
+  _id: ObjectId;
   description: string;
-  testCases: string[];
-  projectId: string;
+  projectId: ObjectId;
+  testCaseIds: ObjectId[];
+  title: string;
 }
