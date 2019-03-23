@@ -1,7 +1,7 @@
 import { getProjects } from '@/api/project.api';
-import { Project } from '@/models/Project';
+import { useFetcher } from '@/hooks/useFetcher';
 import { Col, Layout, Row } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import BaseHeader from './BaseHeader';
 import './Header.scss';
@@ -11,18 +11,7 @@ import RightContent from './RightContent';
 const { Header } = Layout;
 
 const HeaderWrapper: React.FunctionComponent<{}> = () => {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const fetchData = async () => {
-    try {
-      const fetchedProjects = await getProjects(5);
-      setProjects(fetchedProjects);
-    } catch (e) {
-      // TODO: take care of no data error
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const { data: projects } = useFetcher(getProjects);
 
   return (
     <Header style={{ padding: 0 }}>
@@ -34,7 +23,7 @@ const HeaderWrapper: React.FunctionComponent<{}> = () => {
                 <Route path="/projects/new" component={BaseHeader} />
                 <Route
                   path="/projects/:pid"
-                  render={() => <ProjectHeader projects={projects} />}
+                  render={() => <ProjectHeader projects={projects || []} />}
                 />
                 <Route component={BaseHeader} />
               </Switch>

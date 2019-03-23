@@ -42,11 +42,13 @@ const ProjectHeader: React.FunctionComponent<Props> = ({
             value={currentProjectId.toHexString()}
             onChange={handleProjectChange}
           >
-            {projects.map((project, index) => (
-              <Option key={index} value={project._id.toHexString()}>
-                {project.title}
-              </Option>
-            ))}
+            {projects.map((project, index) => {
+              return (
+                <Option key={index} value={project._id.toHexString()}>
+                  {project.title}
+                </Option>
+              );
+            })}
           </Select>
         </Col>
         <Col>

@@ -1,12 +1,11 @@
-import { Project } from '@/models/Project';
-import { message as MessageProvider } from 'antd';
+import { asProject, asProjects, Project } from '@/models/Project';
 import { AxiosError, AxiosResponse } from 'axios';
-import agent from './agent';
 import { ObjectId } from 'bson';
+import agent from './agent';
 
-export function getProject(id: string): Promise<Project> {
+export function getProject(projectId: ObjectId): Promise<Project> {
   return agent
-    .get(`/projects/${id}`)
+    .get(`/projects/${projectId}`)
     .catch(
       (error: AxiosError): AxiosResponse => {
         const { message, response } = error;
@@ -22,7 +21,7 @@ export function getProject(id: string): Promise<Project> {
         if (status !== 200) {
           throw statusText;
         }
-        return data as Project;
+        return asProject(data);
       }
     );
 }
@@ -105,7 +104,11 @@ export async function getProjects(
       params: { limit, skip, sort },
     })
     .then((response: AxiosResponse) => {
-      return Promise.resolve(response.data);
+      const { data, status, statusText } = response;
+      if (status !== 200) {
+        throw statusText;
+      }
+      return asProjects(data);
     })
     .catch((error: AxiosError) => {
       const { message } = error;
@@ -121,11 +124,10 @@ export async function filterProjects(
   return agent
     .post('/search/projects', { query, options })
     .then((response: AxiosResponse) => {
-      return Promise.resolve(response.data);
+      return Promise.resolve(asProjects(response.data));
     })
     .catch((error: AxiosError) => {
       const { message } = error;
-      MessageProvider.error(message, 10);
 
       throw new Error(message);
     });

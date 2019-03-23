@@ -6,14 +6,13 @@ import SectionHeader from '@/components/SectionHeader';
 import { useFormInput } from '@/hooks/useFormInput';
 import { Project } from '@/models/Project';
 import { Col, Form, notification, Row } from 'antd';
-import { FormComponentProps } from 'antd/lib/form';
 import React, { useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { formContentLayout } from './utils';
 
-interface Props extends RouteComponentProps, FormComponentProps {}
-
-const ProjectCreate: React.FunctionComponent<Props> = ({ form, history }) => {
+const ProjectCreate: React.FunctionComponent<RouteComponentProps> = ({
+  history,
+}) => {
   const {
     value: projectTitle,
     handleChange: handleProjectTitleChange,
@@ -81,4 +80,4 @@ const ProjectCreate: React.FunctionComponent<Props> = ({ form, history }) => {
   );
 };
 
-export default withRouter(Form.create({})(ProjectCreate));
+export default withRouter(ProjectCreate);

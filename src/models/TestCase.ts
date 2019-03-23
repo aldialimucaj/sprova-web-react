@@ -1,12 +1,11 @@
-import { ObjectId } from 'bson';
 import { TestStep } from './TestStep';
 
 export interface TestCase {
-  _id: ObjectId;
+  _id: string;
   title: string;
   description: string;
-  projectId: ObjectId;
+  projectId: string;
   steps: TestStep[];
   createdAt: Date;
-  parentId?: ObjectId;
+  parentId?: string;
 }

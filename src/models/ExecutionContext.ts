@@ -1,11 +1,9 @@
-import { ObjectId } from 'bson';
-
 export interface ExecutionContext {
-  _id: ObjectId;
-  userId: ObjectId;
-  projectId: ObjectId;
+  _id: string;
+  userId: string;
+  projectId: string;
   type: ExecutionType;
-  reference?: ObjectId;
+  reference?: string;
   method: ExecutionMethod;
   status: ExecutionContextStatus;
   createdAt: Date;

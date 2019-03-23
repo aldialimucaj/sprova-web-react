@@ -10,6 +10,7 @@ import { Project } from '@/models/Project';
 import { TestCase } from '@/models/TestCase';
 import { Cycles, Executions, TestCases } from '@/pages';
 import { Spin } from 'antd';
+import { ObjectId } from 'bson';
 import React, { Fragment, useContext, useEffect } from 'react';
 import {
   Route,
@@ -31,11 +32,11 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
   const [_, dispatch] = useContext(ProjectContext);
   const { data: project, isLoading: isProjectLoading } = useFetcher<Project>(
     getProject,
-    match.params.pid
+    ObjectId.createFromHexString(match.params.pid)
   );
   const { data: testCases, isLoading: isTestCasesLoading } = useFetcher<
     TestCase[]
-  >(getTestCases, match.params.pid);
+  >(getTestCases, ObjectId.createFromHexString(match.params.pid));
 
   useEffect(() => {
     if (project) {

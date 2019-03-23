@@ -1,10 +1,9 @@
-import { ObjectId } from 'bson';
 import { ExecutionStep } from './ExecutionStep';
 
 export interface Execution {
-  _id: ObjectId;
-  contextId: ObjectId;
-  testCaseId: ObjectId;
+  _id: string;
+  contextId: string;
+  testCaseId: string;
   result: ExecutionResult;
   status: ExecutionStatus;
   steps: ExecutionStep[];
