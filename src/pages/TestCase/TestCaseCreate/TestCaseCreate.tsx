@@ -28,7 +28,6 @@ import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './index.scss';
 import TestStepInput from './TestStepInput';
 import { formContentLayout } from './utils';
-import { ObjectId } from 'bson';
 
 const Option = Select.Option;
 
@@ -57,7 +56,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
   const [showInherited, setShowInherited] = useState<boolean>(false);
 
   const handleParentSelect = (parentIdString: string) => {
-    const parentId = ObjectId.createFromHexString(parentIdString);
+    const parentId = parentIdString;
     const parentNew = testCases.find((testCase) => testCase._id === parentId);
     setParent(parentNew || null);
   };
@@ -71,7 +70,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
     const testCaseNew: Partial<TestCase> = {
       title: testCaseTitle,
       description,
-      projectId: ObjectId.createFromHexString(match.params.pid),
+      projectId: match.params.pid,
       steps: testSteps,
     };
 
@@ -132,11 +131,11 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
             <FormSearchSelect
               label="Inherit from"
               placeholder="None"
-              value={(parent && parent._id.toHexString()) || undefined}
+              value={(parent && parent._id) || undefined}
               onChange={handleParentSelect}
             >
               {testCases.map((testCase, index) => (
-                <Option key={index} value={testCase._id.toHexString()}>
+                <Option key={index} value={testCase._id}>
                   {testCase.title}
                 </Option>
               ))}

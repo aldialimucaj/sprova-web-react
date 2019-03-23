@@ -1,7 +1,7 @@
 import { getUser } from '@/api/auth.api';
 import { postExecutionContext } from '@/api/execution-context.api';
 import { postExecution } from '@/api/execution.api';
-import { FormButton, FormCheckbox, FormSearchSelect } from '@/components/form';
+import { FormButton, FormSearchSelect } from '@/components/form';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import {
   Execution,
@@ -16,11 +16,10 @@ import {
 } from '@/models/ExecutionContext';
 import { ExecutionStep, ExecutionStepResult } from '@/models/ExecutionStep';
 import { TestCase } from '@/models/TestCase';
+import { TestStep } from '@/models/TestStep';
 import { Icon, notification, Select } from 'antd';
-import { ObjectId } from 'bson';
 import React, { Fragment, useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { TestStep } from '@/models/TestStep';
 
 const Option = Select.Option;
 
@@ -32,15 +31,12 @@ const ExecutionSetupTestcase: React.FunctionComponent<
   RouteComponentProps<Params>
 > = ({ history, match }) => {
   const [{ testCases }] = useContext(ProjectContext);
-  const [currentTestCaseId, setCurrentTestCaseId] = useState<ObjectId | null>(
+  const [currentTestCaseId, setCurrentTestCaseId] = useState<string | null>(
     null
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleTestCaseIdChange = (selectedTestCaseIdString: string) => {
-    const selectedTestCaseId = ObjectId.createFromHexString(
-      selectedTestCaseIdString
-    );
+  const handleTestCaseIdChange = (selectedTestCaseId: string) => {
     if (currentTestCaseId !== selectedTestCaseId) {
       setCurrentTestCaseId(selectedTestCaseId);
     }
@@ -58,7 +54,7 @@ const ExecutionSetupTestcase: React.FunctionComponent<
 
     const executionContextNew: Partial<ExecutionContext> = {
       userId,
-      projectId: ObjectId.createFromHexString(match.params.pid),
+      projectId: match.params.pid,
       type: ExecutionType.TestCases,
       method: ExecutionMethod.Manual,
       status: ExecutionContextStatus.Scheduled,
@@ -106,13 +102,11 @@ const ExecutionSetupTestcase: React.FunctionComponent<
       <FormSearchSelect
         label="Test Case"
         placeholder="None"
-        value={
-          (currentTestCaseId && currentTestCaseId.toHexString()) || undefined
-        }
+        value={currentTestCaseId || undefined}
         onChange={handleTestCaseIdChange}
       >
         {testCases.map((_testCase, index) => (
-          <Option key={index} value={_testCase._id.toHexString()}>
+          <Option key={index} value={_testCase._id}>
             {_testCase.title}
           </Option>
         ))}

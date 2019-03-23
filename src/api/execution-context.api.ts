@@ -1,6 +1,5 @@
 import { ExecutionContext } from '@/models/ExecutionContext';
 import { AxiosError, AxiosResponse } from 'axios';
-import { ObjectId } from 'bson';
 import agent from './agent';
 
 export function postExecutionContext(
@@ -28,7 +27,7 @@ export function postExecutionContext(
     );
 }
 
-export function deleteExecutionContext(id: ObjectId) {
+export function deleteExecutionContext(id: string) {
   return agent
     .delete(`/execution-contexts/${id}`)
     .catch(
@@ -52,7 +51,7 @@ export function deleteExecutionContext(id: ObjectId) {
 }
 
 export function getExecutionContext(
-  contextId: ObjectId
+  contextId: string
 ): Promise<ExecutionContext> {
   return agent
     .get(`/execution-contexts/${contextId}`)
@@ -77,7 +76,7 @@ export function getExecutionContext(
 }
 
 export function getExecutionContexts(
-  projectId?: ObjectId
+  projectId?: string
 ): Promise<ExecutionContext[]> {
   return agent
     .get('/execution-contexts', {

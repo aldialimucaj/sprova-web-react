@@ -21,9 +21,8 @@ import {
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { Fragment, useContext, useState } from 'react';
-import { RouteComponentProps, withRouter, Redirect } from 'react-router-dom';
+import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
 import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
-import { ObjectId } from 'bson';
 
 const { Text } = Typography;
 

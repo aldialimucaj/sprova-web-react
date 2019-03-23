@@ -1,7 +1,6 @@
 import { Cycle } from '@/models/Cycle';
 import { Project } from '@/models/Project';
 import { TestCase } from '@/models/TestCase';
-import { ObjectId } from 'bson';
 
 export const RESET_PROJECT = 'RESET_PROJECT';
 export const SET_PROJECT = 'SET_PROJECT';
@@ -42,7 +41,7 @@ export interface AddTestCaseAction {
 
 export interface RemoveTestCaseAction {
   type: typeof REMOVE_TEST_CASE;
-  id: ObjectId;
+  id: string;
 }
 
 export interface ResetTestCasesAction {
@@ -88,7 +87,7 @@ export const addTestCase = (testCase: TestCase): AddTestCaseAction => {
   };
 };
 
-export const removeTestCase = (id: ObjectId): RemoveTestCaseAction => {
+export const removeTestCase = (id: string): RemoveTestCaseAction => {
   return {
     type: REMOVE_TEST_CASE,
     id,

@@ -1,9 +1,8 @@
-import { asProject, asProjects, Project } from '@/models/Project';
+import { Project } from '@/models/Project';
 import { AxiosError, AxiosResponse } from 'axios';
-import { ObjectId } from 'bson';
 import agent from './agent';
 
-export function getProject(projectId: ObjectId): Promise<Project> {
+export function getProject(projectId: string): Promise<Project> {
   return agent
     .get(`/projects/${projectId}`)
     .catch(
@@ -21,7 +20,7 @@ export function getProject(projectId: ObjectId): Promise<Project> {
         if (status !== 200) {
           throw statusText;
         }
-        return asProject(data);
+        return data as Project;
       }
     );
 }
@@ -71,7 +70,7 @@ export function updateProject(project: Project) {
     );
 }
 
-export function deleteProject(projectId: ObjectId) {
+export function deleteProject(projectId: string) {
   return agent
     .delete(`/projects/${projectId}`)
     .catch(
@@ -108,7 +107,7 @@ export async function getProjects(
       if (status !== 200) {
         throw statusText;
       }
-      return asProjects(data);
+      return data as Project[];
     })
     .catch((error: AxiosError) => {
       const { message } = error;
@@ -124,7 +123,7 @@ export async function filterProjects(
   return agent
     .post('/search/projects', { query, options })
     .then((response: AxiosResponse) => {
-      return Promise.resolve(asProjects(response.data));
+      return Promise.resolve(response.data);
     })
     .catch((error: AxiosError) => {
       const { message } = error;
