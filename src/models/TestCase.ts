@@ -7,5 +7,6 @@ export interface TestCase {
   description: string;
   projectId: ObjectId;
   steps: TestStep[];
+  createdAt: Date;
   parentId?: ObjectId;
 }

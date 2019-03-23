@@ -1,5 +1,6 @@
 import { Project } from '@/models/Project';
 import { Button, Col, Divider, Icon, Row, Select } from 'antd';
+import { ObjectId } from 'bson';
 import React, { Fragment, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './index.scss';
@@ -19,12 +20,17 @@ const ProjectHeader: React.FunctionComponent<Props> = ({
   projects,
   history,
 }) => {
-  const [id, setId] = useState(match.params.pid);
+  const [currentProjectId, setCurrentProjectId] = useState<ObjectId>(
+    ObjectId.createFromHexString(match.params.pid)
+  );
 
-  const handleChange = (projectId: string) => {
-    if (id !== projectId) {
-      setId(projectId);
-      history.push(`/projects/${projectId}`);
+  const handleProjectChange = (selectedProjectIdString: string) => {
+    const selectedProjectId = ObjectId.createFromHexString(
+      selectedProjectIdString
+    );
+    if (currentProjectId !== selectedProjectId) {
+      setCurrentProjectId(selectedProjectId);
+      history.push(`/projects/${selectedProjectId}`);
     }
   };
 
@@ -32,9 +38,12 @@ const ProjectHeader: React.FunctionComponent<Props> = ({
     <Fragment>
       <Row type="flex" justify="space-between">
         <Col>
-          <Select value={id} onChange={handleChange}>
+          <Select
+            value={currentProjectId.toHexString()}
+            onChange={handleProjectChange}
+          >
             {projects.map((project, index) => (
-              <Option key={index} value={project._id}>
+              <Option key={index} value={project._id.toHexString()}>
                 {project.title}
               </Option>
             ))}

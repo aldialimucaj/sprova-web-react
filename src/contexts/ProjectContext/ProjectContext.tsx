@@ -5,19 +5,14 @@ import React, { Dispatch, useReducer } from 'react';
 import { ProjectAction } from './ProjectActions';
 import { reducer } from './ProjectReducer';
 
-export const defaultProject: Project = {
-  description: '',
-  title: '',
-};
-
 export interface ProjectState {
-  project: Project;
+  project: Project | null;
   testCases: TestCase[];
   cycles: Cycle[];
 }
 
 export const initialState: ProjectState = {
-  project: defaultProject,
+  project: null,
   testCases: [],
   cycles: [],
 };

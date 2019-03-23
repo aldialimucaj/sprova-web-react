@@ -11,7 +11,7 @@ import {
   SET_PROJECT,
   SET_TEST_CASES,
 } from './ProjectActions';
-import { defaultProject, ProjectState } from './ProjectContext';
+import { ProjectState } from './ProjectContext';
 
 export const reducer = (state: ProjectState, action: ProjectAction) => {
   switch (action.type) {
@@ -23,7 +23,7 @@ export const reducer = (state: ProjectState, action: ProjectAction) => {
     case RESET_PROJECT:
       return {
         ...state,
-        project: defaultProject,
+        project: null,
       };
     case ADD_TEST_CASE: {
       return {

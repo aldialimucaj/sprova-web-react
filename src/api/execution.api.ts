@@ -2,7 +2,7 @@ import { Execution } from '@/models/Execution';
 import { AxiosError, AxiosResponse } from 'axios';
 import agent from './agent';
 
-export function postExecution(execution: Execution) {
+export function postExecution(execution: Partial<Execution>) {
   return agent
     .post('/executions', execution)
     .catch(
@@ -15,12 +15,12 @@ export function postExecution(execution: Execution) {
       }
     )
     .then(
-      (response: AxiosResponse): string => {
+      (response: AxiosResponse): Execution => {
         const { data, status, statusText } = response;
         if (status !== 201 || !data.ok) {
           throw statusText;
         }
-        return data._id as string;
+        return data as Execution;
       }
     );
 }

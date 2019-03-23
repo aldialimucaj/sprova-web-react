@@ -17,16 +17,17 @@ const ExecutionOverview: React.FunctionComponent<
 > = ({ history, match }) => {
   const [{ project }] = useContext(ProjectContext);
 
-  const { data: contexts, isLoading: isContextsLoading } = useFetcher<
-    ExecutionContext[]
-  >(getExecutionContexts, match.params.pid);
+  const {
+    data: executionContexts,
+    isLoading: isExecutionContextsLoading,
+  } = useFetcher<ExecutionContext[]>(getExecutionContexts, match.params.pid);
 
   return (
     <Fragment>
       <Level
         left={
           <span style={{ fontSize: 18 }}>
-            <Link to={`/projects/${match.params.pid}`}>{project.title}</Link> /{' '}
+            <Link to={`/projects/${match.params.pid}`}>{project!.title}</Link> /{' '}
             <strong>Executions</strong>
           </span>
         }
@@ -49,20 +50,20 @@ const ExecutionOverview: React.FunctionComponent<
           </div>
         }
         bordered={true}
-        dataSource={contexts}
-        renderItem={(exec: ExecutionContext) => (
+        dataSource={executionContexts}
+        renderItem={(executionContext: ExecutionContext) => (
           <List.Item
             onClick={() =>
               history.push(
                 `/projects/${match.params.pid}/executions/run?contextId=${
-                  exec._id
+                  executionContext._id
                 }`
               )
             }
           >
             <Level
               style={{ marginBottom: 0, width: '100%' }}
-              left={<span>{exec._id}</span>}
+              left={<span>{executionContext._id}</span>}
               right={<span>5/10</span>}
             />
           </List.Item>
@@ -93,8 +94,8 @@ const ExecutionOverview: React.FunctionComponent<
             }
             bordered={true}
             dataSource={[]}
-            renderItem={(exec: ExecutionContext) => (
-              <List.Item>{exec._id}</List.Item>
+            renderItem={(executionContext: ExecutionContext) => (
+              <List.Item>{executionContext._id}</List.Item>
             )}
           />
         </Col>
@@ -120,8 +121,8 @@ const ExecutionOverview: React.FunctionComponent<
             }
             bordered={true}
             dataSource={[]}
-            renderItem={(exec: ExecutionContext) => (
-              <List.Item>{exec._id}</List.Item>
+            renderItem={(executionContext: ExecutionContext) => (
+              <List.Item>{executionContext._id}</List.Item>
             )}
           />
         </Col>

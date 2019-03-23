@@ -19,13 +19,13 @@ export enum ExecutionContextStatus {
   Scheduled = 'SCHEDULED',
 }
 
-export interface ExecutionMethod {
-  Automated: 'AUTOMATED';
-  Manual: 'MANUAL';
+export enum ExecutionMethod {
+  Automated = 'AUTOMATED',
+  Manual = 'MANUAL',
 }
 
-export interface ExecutionType {
-  Cycle: 'CYCLE';
-  TestSet: 'TESTSET';
-  TestCases: 'TESTCASES';
+export enum ExecutionType {
+  Cycle = 'CYCLE',
+  TestSet = 'TESTSET',
+  TestCases = 'TESTCASES',
 }

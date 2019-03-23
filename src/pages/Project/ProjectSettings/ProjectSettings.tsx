@@ -1,5 +1,5 @@
 import { deleteProject, updateProject } from '@/api/project.api';
-import { RichTextEditor } from "@/components/RichTextEditor";
+import { RichTextEditor } from '@/components/RichTextEditor';
 import SectionHeader from '@/components/SectionHeader';
 import {
   ProjectContext,
@@ -20,20 +20,18 @@ import {
   Typography,
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { List } from "immutable";
 import React, { Fragment, useContext, useState } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { Document, Value } from 'slate';
+import { RouteComponentProps, withRouter, Redirect } from 'react-router-dom';
 import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
+import { ObjectId } from 'bson';
 
-const { TextArea } = Input;
 const { Text } = Typography;
 
 interface Params {
   id: string;
 }
 
-interface Props extends RouteComponentProps<Params>, FormComponentProps { }
+interface Props extends RouteComponentProps<Params>, FormComponentProps {}
 
 const ProjectSettings: React.FunctionComponent<Props> = ({
   form,
@@ -44,12 +42,16 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
   const [{ project }, dispatch] = useContext(ProjectContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
-  const editor = { value: project.description };
+  const editor = { value: project && project.description };
+
+  if (!project) {
+    return <Redirect to="/projects" />;
+  }
 
   const deleteRequest = async () => {
     setIsDeleteLoading(true);
     try {
-      await deleteProject(project._id || match.params.id);
+      await deleteProject(project._id);
       setIsDeleteLoading(false);
       notification.success({
         message: `${project.title} deleted`,
@@ -133,7 +135,9 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
               })(<Input type="text" name="title" />)}
             </Form.Item>
             <Form.Item label="Description" colon={false}>
-              <div style={{ backgroundColor: '#fff', border: '1px solid #e8e8e8' }}>
+              <div
+                style={{ backgroundColor: '#fff', border: '1px solid #e8e8e8' }}
+              >
                 <RichTextEditor content={editor} />
               </div>
             </Form.Item>

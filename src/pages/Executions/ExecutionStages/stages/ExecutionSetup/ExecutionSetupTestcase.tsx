@@ -1,15 +1,26 @@
 import { getUser } from '@/api/auth.api';
 import { postExecutionContext } from '@/api/execution-context.api';
 import { postExecution } from '@/api/execution.api';
-
 import { FormButton, FormCheckbox, FormSearchSelect } from '@/components/form';
 import { ProjectContext } from '@/contexts/ProjectContext';
-import { Execution } from '@/models/Execution';
-import { ExecutionContext } from '@/models/ExecutionContext';
+import {
+  Execution,
+  ExecutionResult,
+  ExecutionStatus,
+} from '@/models/Execution';
+import {
+  ExecutionContext,
+  ExecutionContextStatus,
+  ExecutionMethod,
+  ExecutionType,
+} from '@/models/ExecutionContext';
+import { ExecutionStep, ExecutionStepResult } from '@/models/ExecutionStep';
 import { TestCase } from '@/models/TestCase';
 import { Icon, notification, Select } from 'antd';
+import { ObjectId } from 'bson';
 import React, { Fragment, useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { TestStep } from '@/models/TestStep';
 
 const Option = Select.Option;
 
@@ -21,43 +32,58 @@ const ExecutionSetupTestcase: React.FunctionComponent<
   RouteComponentProps<Params>
 > = ({ history, match }) => {
   const [{ testCases }] = useContext(ProjectContext);
-  const [selectedTestCase, setSelectedTestCase] = useState<TestCase | null>(
+  const [currentTestCaseId, setCurrentTestCaseId] = useState<ObjectId | null>(
     null
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [includeInherited, setIncludeInherited] = useState<boolean>(false);
 
-  const handleTestCaseSelect = (id: string) => {
-    const _selectedTestCase = testCases.find(
-      (_testCase) => _testCase._id === id
-    )!;
-    setSelectedTestCase(_selectedTestCase);
+  const handleTestCaseIdChange = (selectedTestCaseIdString: string) => {
+    const selectedTestCaseId = ObjectId.createFromHexString(
+      selectedTestCaseIdString
+    );
+    if (currentTestCaseId !== selectedTestCaseId) {
+      setCurrentTestCaseId(selectedTestCaseId);
+    }
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLButtonElement>) => {
+  const handleStartTestCases = async (
+    event: React.FormEvent<HTMLButtonElement>
+  ) => {
     event.preventDefault();
 
     const { _id: userId } = getUser()!;
+    const testCase: TestCase = testCases.find(
+      (_testCase: TestCase) => testCase._id === currentTestCaseId
+    )!;
 
-    const executionContextNew: ExecutionContext = {
+    const executionContextNew: Partial<ExecutionContext> = {
       userId,
-      projectId: match.params.pid,
-      type: 'testcase',
-      method: 'manual',
-      status: 'active',
+      projectId: ObjectId.createFromHexString(match.params.pid),
+      type: ExecutionType.TestCases,
+      method: ExecutionMethod.Manual,
+      status: ExecutionContextStatus.Scheduled,
     };
 
     setIsLoading(true);
 
     try {
-      const contextId = await postExecutionContext(executionContextNew);
-      const executionsNew: Execution = {
-        testcaseId: selectedTestCase!._id!,
+      const { _id: contextId } = await postExecutionContext(
+        executionContextNew
+      );
+      const executionSteps: ExecutionStep[] = testCase.steps.map(
+        (testStep: TestStep) => ({
+          ...testStep,
+          result: ExecutionStepResult.Pending,
+        })
+      );
+      const executionsNew: Partial<Execution> = {
         contextId,
-        result: null,
-        status: 'waiting',
+        testCaseId: currentTestCaseId!,
+        result: ExecutionResult.Pending,
+        status: ExecutionStatus.Waiting,
+        steps: executionSteps,
       };
-      const id = await postExecution(executionsNew);
+      await postExecution(executionsNew);
       setIsLoading(false);
       notification.success({
         message: 'Execution started',
@@ -75,33 +101,27 @@ const ExecutionSetupTestcase: React.FunctionComponent<
     }
   };
 
-  const handleIncludeInheritedChange = () => {};
-
   return (
     <Fragment>
       <FormSearchSelect
         label="Test Case"
         placeholder="None"
-        value={(selectedTestCase && selectedTestCase.title) || undefined}
-        onChange={handleTestCaseSelect}
+        value={
+          (currentTestCaseId && currentTestCaseId.toHexString()) || undefined
+        }
+        onChange={handleTestCaseIdChange}
       >
         {testCases.map((_testCase, index) => (
-          <Option key={index} value={_testCase._id}>
+          <Option key={index} value={_testCase._id.toHexString()}>
             {_testCase.title}
           </Option>
         ))}
       </FormSearchSelect>
-      <FormCheckbox
-        checked={includeInherited}
-        onChange={handleIncludeInheritedChange}
-      >
-        Include inherited
-      </FormCheckbox>
       <FormButton
         type="primary"
         loading={isLoading}
-        disabled={!selectedTestCase}
-        onClick={handleSubmit}
+        disabled={!currentTestCaseId}
+        onClick={handleStartTestCases}
       >
         Start
         <Icon type="right" />

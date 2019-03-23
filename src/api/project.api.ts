@@ -2,6 +2,7 @@ import { Project } from '@/models/Project';
 import { message as MessageProvider } from 'antd';
 import { AxiosError, AxiosResponse } from 'axios';
 import agent from './agent';
+import { ObjectId } from 'bson';
 
 export function getProject(id: string): Promise<Project> {
   return agent
@@ -26,13 +27,12 @@ export function getProject(id: string): Promise<Project> {
     );
 }
 
-export function postProject(project: Project) {
+export function postProject(project: Partial<Project>) {
   return agent
     .post('/projects', project)
     .catch(
       (error: AxiosError): AxiosResponse => {
         const { message, response } = error;
-        MessageProvider.error(message, 10);
         if (!response) {
           throw message;
         }
@@ -72,13 +72,12 @@ export function updateProject(project: Project) {
     );
 }
 
-export function deleteProject(projectId: string) {
+export function deleteProject(projectId: ObjectId) {
   return agent
     .delete(`/projects/${projectId}`)
     .catch(
       (error: AxiosError): AxiosResponse => {
         const { message, response } = error;
-        MessageProvider.error(message, 10);
         if (!response) {
           throw message;
         }

@@ -28,6 +28,7 @@ import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './index.scss';
 import TestStepInput from './TestStepInput';
 import { formContentLayout } from './utils';
+import { ObjectId } from 'bson';
 
 const Option = Select.Option;
 
@@ -41,7 +42,10 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
 }) => {
   const [{ testCases }, dispatch] = useContext(ProjectContext);
 
-  const { value: title, handleChange: handleTitleChange } = useFormInput('');
+  const {
+    value: testCaseTitle,
+    handleChange: handleTestCaseTitleChange,
+  } = useFormInput('');
   const {
     value: description,
     handleChange: handleDescriptionChange,
@@ -52,8 +56,9 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showInherited, setShowInherited] = useState<boolean>(false);
 
-  const handleParentSelect = (id: string) => {
-    const parentNew = testCases.find((testCase) => testCase._id === id);
+  const handleParentSelect = (parentIdString: string) => {
+    const parentId = ObjectId.createFromHexString(parentIdString);
+    const parentNew = testCases.find((testCase) => testCase._id === parentId);
     setParent(parentNew || null);
   };
 
@@ -63,26 +68,26 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   const handleSubmit = async (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    let testCaseNew: TestCase = {
-      title,
-      projectId: match.params.pid,
+    const testCaseNew: Partial<TestCase> = {
+      title: testCaseTitle,
       description,
+      projectId: ObjectId.createFromHexString(match.params.pid),
       steps: testSteps,
     };
 
     if (parent) {
-      testCaseNew = { ...testCaseNew, parent: parent._id };
+      testCaseNew.parentId = parent._id;
     }
 
     setIsLoading(true);
 
     try {
-      const _id = await postTestCase(testCaseNew);
+      const testCase = await postTestCase(testCaseNew);
       setIsLoading(false);
-      dispatch(addTestCase({ ...testCaseNew, _id }));
+      dispatch(addTestCase(testCase));
       notification.success({
-        message: `${title} created`,
-        description: `Test case created with ID ${_id}`,
+        message: `${testCase.title} created`,
+        description: `Test case created with ID ${testCase._id}`,
       });
       history.push(`/projects/${match.params.pid}/testcases`);
     } catch (error) {
@@ -92,10 +97,6 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
         description: error,
       });
     }
-  };
-
-  const isFormValid = () => {
-    return title.length > 0 && testSteps.length > 0;
   };
 
   return (
@@ -116,8 +117,8 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
           <Form layout="vertical" onSubmit={handleSubmit}>
             <FormInput
               label="Title"
-              value={title}
-              onChange={handleTitleChange}
+              value={testCaseTitle}
+              onChange={handleTestCaseTitleChange}
               placeholder="Test Case"
               required={true}
             />
@@ -131,11 +132,11 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
             <FormSearchSelect
               label="Inherit from"
               placeholder="None"
-              value={(parent && parent._id) || ''}
+              value={(parent && parent._id.toHexString()) || undefined}
               onChange={handleParentSelect}
             >
               {testCases.map((testCase, index) => (
-                <Option key={index} value={testCase._id}>
+                <Option key={index} value={testCase._id.toHexString()}>
                   {testCase.title}
                 </Option>
               ))}
@@ -188,7 +189,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
             <FormButton
               type="primary"
               loading={isLoading}
-              disabled={!isFormValid()}
+              disabled={!testCaseTitle || testSteps.length === 0}
             >
               Create Test Case
             </FormButton>

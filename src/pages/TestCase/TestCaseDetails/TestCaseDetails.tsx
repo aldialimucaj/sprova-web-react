@@ -3,6 +3,7 @@ import Level from '@/components/Level';
 import { ProjectContext, removeTestCase } from '@/contexts/ProjectContext';
 import { findById } from '@/utils';
 import { Button, Icon, notification, Popconfirm, Tabs } from 'antd';
+import { ObjectId } from 'bson';
 import React, { Fragment, useContext, useState } from 'react';
 import {
   Link,
@@ -25,9 +26,7 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
 }) => {
   const [{ testCases }, dispatch] = useContext(ProjectContext);
-
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
-
   const testCase = findById(testCases, match.params.tid);
 
   if (!testCase) {
@@ -43,7 +42,7 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
     try {
       await deleteTestCase(match.params.tid);
       setIsDeleteLoading(false);
-      dispatch(removeTestCase(match.params.tid));
+      dispatch(removeTestCase(ObjectId.createFromHexString(match.params.tid)));
       notification.success({
         message: `${testCase.title} deleted`,
       });

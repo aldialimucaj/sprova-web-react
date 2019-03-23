@@ -1,27 +1,35 @@
+import { getUser } from '@/api/auth.api';
 import { postProject } from '@/api/project.api';
+import { FormButton, FormInput } from '@/components/form';
 import { RichTextEditor } from '@/components/RichTextEditor';
 import SectionHeader from '@/components/SectionHeader';
+import { useFormInput } from '@/hooks/useFormInput';
 import { Project } from '@/models/Project';
-import { hasFieldErrors } from '@/utils';
-import { Button, Col, Form, Input, notification, Row } from 'antd';
+import { Col, Form, notification, Row } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
+import { formContentLayout } from './utils';
 
 interface Props extends RouteComponentProps, FormComponentProps {}
 
 const ProjectCreate: React.FunctionComponent<Props> = ({ form, history }) => {
-  const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
-  const [isLoading, setIsLoading] = useState(false);
+  const {
+    value: projectTitle,
+    handleChange: handleProjectTitleChange,
+  } = useFormInput('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const editor = { value: {} };
 
   const handleSubmit = async (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    const { projectTitle: title } = getFieldsValue();
-    const projectNew: Project = {
-      title,
+
+    const { _id: userId } = getUser()!;
+
+    const projectNew: Partial<Project> = {
+      title: projectTitle,
       description: editor.value,
+      userId,
     };
 
     setIsLoading(true);
@@ -30,7 +38,7 @@ const ProjectCreate: React.FunctionComponent<Props> = ({ form, history }) => {
       const { _id } = await postProject(projectNew);
       setIsLoading(false);
       notification.success({
-        message: `${title} created`,
+        message: `${projectTitle} created`,
         description: `Project created with ID ${_id}`,
       });
       history.push(`/projects/${_id}`);
@@ -48,30 +56,24 @@ const ProjectCreate: React.FunctionComponent<Props> = ({ form, history }) => {
       <SectionHeader title="Create new project" />
       <Row>
         <Col {...formContentLayout}>
-          <Form {...formItemLayout} onSubmit={handleSubmit}>
-            <Form.Item label="Project Title" colon={false}>
-              {getFieldDecorator('projectTitle', {
-                rules: [
-                  {
-                    required: true,
-                    message: 'Title cannot be empty',
-                  },
-                ],
-              })(<Input type="text" name="title" />)}
-            </Form.Item>
+          <Form layout="vertical" onSubmit={handleSubmit}>
+            <FormInput
+              label="Project Title"
+              value={projectTitle}
+              onChange={handleProjectTitleChange}
+              placeholder="Test Case"
+              required={true}
+            />
             <Form.Item label="Description" colon={false}>
               <RichTextEditor content={editor} />
             </Form.Item>
-            <Form.Item {...tailFormItemLayout}>
-              <Button
-                type="primary"
-                loading={isLoading}
-                htmlType="submit"
-                disabled={hasFieldErrors(getFieldsError())}
-              >
-                Create Project
-              </Button>
-            </Form.Item>
+            <FormButton
+              type="primary"
+              loading={isLoading}
+              disabled={!projectTitle}
+            >
+              Create Project
+            </FormButton>
           </Form>
         </Col>
       </Row>

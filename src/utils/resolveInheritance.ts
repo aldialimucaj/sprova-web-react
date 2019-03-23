@@ -16,13 +16,13 @@ export function resolveInheritance(
   let steps: Array<[TestStep, TestCase]> = [];
   let parent: TestCase | undefined = fromParent
     ? root
-    : findById(testCases, root.parent);
+    : findById(testCases, root.parentId);
   while (parent) {
     const _steps = parent.steps.map(
       (step: TestStep) => [step, parent] as [TestStep, TestCase]
     );
     steps = [..._steps, ...steps];
-    parent = findById(testCases, parent.parent);
+    parent = findById(testCases, parent.parentId);
   }
   return steps;
 }

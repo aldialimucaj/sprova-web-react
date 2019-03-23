@@ -6,16 +6,17 @@ import { Cycle } from '@/models/Cycle';
 import { TestCase } from '@/models/TestCase';
 import { Col, Row } from 'antd';
 import React, { Fragment, useContext } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { Link, Redirect, RouteComponentProps } from 'react-router-dom';
 
 const ProjectDetails: React.FunctionComponent<RouteComponentProps> = ({
   history,
 }) => {
   const [{ cycles, project, testCases }] = useContext(ProjectContext);
-  const editor = { value: project.description };
-  const sStyle = {
-    marginTop: '16px'
-  };
+  const editor = { value: project && project.description };
+
+  if (!project) {
+    return <Redirect to="/projects" />;
+  }
 
   return (
     <Fragment>

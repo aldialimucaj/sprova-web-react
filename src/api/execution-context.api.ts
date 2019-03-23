@@ -1,8 +1,11 @@
 import { ExecutionContext } from '@/models/ExecutionContext';
 import { AxiosError, AxiosResponse } from 'axios';
+import { ObjectId } from 'bson';
 import agent from './agent';
 
-export function postExecutionContext(executionContext: ExecutionContext) {
+export function postExecutionContext(
+  executionContext: Partial<ExecutionContext>
+): Promise<ExecutionContext> {
   return agent
     .post('/execution-contexts', executionContext)
     .catch(
@@ -15,17 +18,17 @@ export function postExecutionContext(executionContext: ExecutionContext) {
       }
     )
     .then(
-      (response: AxiosResponse): string => {
+      (response: AxiosResponse): ExecutionContext => {
         const { data, status, statusText } = response;
         if (status !== 201 || !data.ok) {
           throw statusText;
         }
-        return data._id as string;
+        return data as ExecutionContext;
       }
     );
 }
 
-export function deleteExecutionContext(id: string) {
+export function deleteExecutionContext(id: ObjectId) {
   return agent
     .delete(`/execution-contexts/${id}`)
     .catch(
@@ -49,7 +52,7 @@ export function deleteExecutionContext(id: string) {
 }
 
 export function getExecutionContext(
-  contextId: string
+  contextId: ObjectId
 ): Promise<ExecutionContext> {
   return agent
     .get(`/execution-contexts/${contextId}`)
@@ -74,7 +77,7 @@ export function getExecutionContext(
 }
 
 export function getExecutionContexts(
-  projectId: string
+  projectId?: ObjectId
 ): Promise<ExecutionContext[]> {
   return agent
     .get('/execution-contexts', {

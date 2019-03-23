@@ -2,7 +2,7 @@ import { TestCase } from '@/models/TestCase';
 import { AxiosError, AxiosResponse } from 'axios';
 import agent from './agent';
 
-export function postTestCase(testCase: TestCase) {
+export function postTestCase(testCase: Partial<TestCase>): Promise<TestCase> {
   return agent
     .post('/testcases', testCase)
     .catch(
@@ -15,12 +15,12 @@ export function postTestCase(testCase: TestCase) {
       }
     )
     .then(
-      (response: AxiosResponse): string => {
+      (response: AxiosResponse): TestCase => {
         const { data, status, statusText } = response;
         if (status !== 201 || !data.ok) {
           throw statusText;
         }
-        return data._id as string;
+        return data as TestCase;
       }
     );
 }
