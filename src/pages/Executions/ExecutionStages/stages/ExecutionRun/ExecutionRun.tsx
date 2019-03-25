@@ -50,11 +50,12 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
             renderItem={(_execution: Execution) => (
               <List.Item>{_execution._id}</List.Item>
             )}
+            footer={<span>Footer</span>}
           />
         </Col>
         <Col span={18}>
           <Level
-            left={<h1>Title</h1>}
+            left={<span style={{ fontSize: 18 }}>Title</span>}
             right={
               <ButtonGroup>
                 <Button type="primary">
