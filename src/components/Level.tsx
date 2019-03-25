@@ -3,11 +3,17 @@ import React from 'react';
 
 interface Props {
   left: JSX.Element;
+  middle?: JSX.Element;
   right?: JSX.Element;
   style?: any;
 }
 
-const Level: React.FunctionComponent<Props> = ({ left, right, style }) => {
+const Level: React.FunctionComponent<Props> = ({
+  left,
+  middle,
+  right,
+  style,
+}) => {
   return (
     <Row
       align="middle"
@@ -16,6 +22,7 @@ const Level: React.FunctionComponent<Props> = ({ left, right, style }) => {
       type="flex"
     >
       <Col>{left}</Col>
+      <Col>{middle}</Col>
       <Col>{right}</Col>
     </Row>
   );

@@ -43,6 +43,7 @@ const ExecutionStages: React.FunctionComponent<RouteComponentProps<Params>> = ({
         <Step title="Run" />
         <Step title="Result" />
       </Steps>
+      <Divider />
       <Switch>
         <Route
           path={`/projects/:pid/executions/setup`}

@@ -63,8 +63,24 @@ const ExecutionOverview: React.FunctionComponent<
           >
             <Level
               style={{ marginBottom: 0, width: '100%' }}
-              left={<span>{executionContext._id}</span>}
-              right={<span>5/10</span>}
+              left={
+                <div>
+                  <div style={{ fontSize: 10, color: 'grey' }}>
+                    {executionContext.method}
+                    <Divider type="vertical" />
+                    {executionContext.type}
+                  </div>
+                  <span>{executionContext._id}</span>
+                </div>
+              }
+              right={
+                <div style={{ textAlign: 'end' }}>
+                  <div style={{ fontSize: 10, color: 'grey' }}>
+                    {new Date(executionContext.createdAt).toLocaleString()}
+                  </div>
+                  <span>5/10</span>
+                </div>
+              }
             />
           </List.Item>
         )}
