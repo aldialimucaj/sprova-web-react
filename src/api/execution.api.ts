@@ -2,75 +2,6 @@ import { Execution } from '@/models/Execution';
 import { AxiosError, AxiosResponse } from 'axios';
 import agent from './agent';
 
-export function postExecution(execution: Partial<Execution>) {
-  return agent
-    .post('/executions', execution)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
-    .then(
-      (response: AxiosResponse): Execution => {
-        const { data, status, statusText } = response;
-        if (status !== 201 || !data.ok) {
-          throw statusText;
-        }
-        return data as Execution;
-      }
-    );
-}
-
-export function postExecutions(executions: Execution[]) {
-  return agent
-    .post('/executions', executions)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
-    .then(
-      (response: AxiosResponse): string => {
-        const { data, status, statusText } = response;
-        if (status !== 201 || !data.ok) {
-          throw statusText;
-        }
-        return data._id as string;
-      }
-    );
-}
-
-export function deleteExecution(id: string) {
-  return agent
-    .delete(`/executions/${id}`)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
-    .then(
-      (response: AxiosResponse): boolean => {
-        const { data, status, statusText } = response;
-        if (status !== 200) {
-          throw statusText;
-        }
-        return !!data.ok;
-      }
-    );
-}
-
 export function getExecutions(): Promise<Execution[]> {
   return agent
     .get('/executions')
@@ -94,7 +25,30 @@ export function getExecutions(): Promise<Execution[]> {
     );
 }
 
-export function getExecutionsByContext(
+export function getExecution(id: string): Promise<Execution> {
+  return agent
+    .get(`/executions/${id}`)
+    .catch(
+      (error: AxiosError): AxiosResponse => {
+        const { message, response } = error;
+        if (!response) {
+          throw message;
+        }
+        return response;
+      }
+    )
+    .then(
+      (response: AxiosResponse): Execution => {
+        const { data, status, statusText } = response;
+        if (status !== 200) {
+          throw statusText;
+        }
+        return data as Execution;
+      }
+    );
+}
+
+export function getExecutionsOfContext(
   contextId: string
 ): Promise<Execution[]> {
   return agent
@@ -124,12 +78,12 @@ export function getExecutionsByContext(
 }
 
 export function getExecutionsByTestCase(
-  testcaseId: string
+  testCaseId: string
 ): Promise<Execution[]> {
   return agent
     .get('/executions', {
       params: {
-        testcaseId,
+        testCaseId,
       },
     })
     .catch(
@@ -148,6 +102,75 @@ export function getExecutionsByTestCase(
           throw statusText;
         }
         return data as Execution[];
+      }
+    );
+}
+
+export function postExecution(execution: Partial<Execution>) {
+  return agent
+    .post('/executions', execution)
+    .catch(
+      (error: AxiosError): AxiosResponse => {
+        const { message, response } = error;
+        if (!response) {
+          throw message;
+        }
+        return response;
+      }
+    )
+    .then(
+      (response: AxiosResponse): Execution => {
+        const { data, status, statusText } = response;
+        if (status !== 201 || !data.ok) {
+          throw statusText;
+        }
+        return data as Execution;
+      }
+    );
+}
+
+export function postExecutions(executions: Array<Partial<Execution>>) {
+  return agent
+    .post('/executions', executions)
+    .catch(
+      (error: AxiosError): AxiosResponse => {
+        const { message, response } = error;
+        if (!response) {
+          throw message;
+        }
+        return response;
+      }
+    )
+    .then(
+      (response: AxiosResponse): Execution[] => {
+        const { data, status, statusText } = response;
+        if (status !== 201 || !data.ok) {
+          throw statusText;
+        }
+        return data as Execution[];
+      }
+    );
+}
+
+export function deleteExecution(id: string) {
+  return agent
+    .delete(`/executions/${id}`)
+    .catch(
+      (error: AxiosError): AxiosResponse => {
+        const { message, response } = error;
+        if (!response) {
+          throw message;
+        }
+        return response;
+      }
+    )
+    .then(
+      (response: AxiosResponse): boolean => {
+        const { data, status, statusText } = response;
+        if (status !== 200) {
+          throw statusText;
+        }
+        return !!data.ok;
       }
     );
 }

@@ -5,9 +5,9 @@ import { Button, Divider, Icon, Table } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import {
   Link,
+  Redirect,
   RouteComponentProps,
   withRouter,
-  Redirect,
 } from 'react-router-dom';
 
 interface Params {
