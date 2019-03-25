@@ -1,5 +1,5 @@
 import { getExecutionContext } from '@/api/execution-context.api';
-import { getExecutionsByContext } from '@/api/execution.api';
+import { getExecutionsOfContext } from '@/api/execution.api';
 import { useFetcher } from '@/hooks/useFetcher';
 import { Execution } from '@/models/Execution';
 import { Spin } from 'antd';
@@ -25,7 +25,7 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   const { data: executions, isLoading: isTestCasesLoading } = useFetcher<
     Execution[]
-  >(getExecutionsByContext, contextId);
+  >(getExecutionsOfContext, contextId);
 
   return isContextLoading || isTestCasesLoading ? (
     <Spin />

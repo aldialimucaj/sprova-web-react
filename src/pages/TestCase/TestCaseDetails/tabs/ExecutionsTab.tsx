@@ -1,4 +1,5 @@
-import { getExecutionsByTestCase } from '@/api/execution.api';
+import { getExecutionsOfTestCase } from '@/api/execution.api';
+import Level from '@/components/Level';
 import { useFetcher } from '@/hooks/useFetcher';
 import { Execution } from '@/models/Execution';
 import { List, Spin } from 'antd';
@@ -15,7 +16,7 @@ const ExecutionsTab: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
 }) => {
   const { data: executions, isLoading } = useFetcher(
-    getExecutionsByTestCase,
+    getExecutionsOfTestCase,
     match.params.tid
   );
 
@@ -29,7 +30,15 @@ const ExecutionsTab: React.FunctionComponent<RouteComponentProps<Params>> = ({
         header={<div>Executions ({executions!.length})</div>}
         bordered={true}
         dataSource={executions}
-        renderItem={(exec: Execution) => <List.Item>{exec._id}</List.Item>}
+        renderItem={(exec: Execution) => (
+          <List.Item>
+            <Level
+              style={{ marginBottom: 0, width: '100%' }}
+              left={<div>{exec._id}</div>}
+              right={<div>{new Date(exec.createdAt).toUTCString()}</div>}
+            />
+          </List.Item>
+        )}
       />
     </Fragment>
   );

@@ -71,7 +71,7 @@ export function postExecutionContext(
     .then(
       (response: AxiosResponse): ExecutionContext => {
         const { data, status, statusText } = response;
-        if (status !== 201 || !data.ok) {
+        if (status !== 201) {
           throw statusText;
         }
         return data as ExecutionContext;

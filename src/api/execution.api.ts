@@ -77,7 +77,7 @@ export function getExecutionsOfContext(
     );
 }
 
-export function getExecutionsByTestCase(
+export function getExecutionsOfTestCase(
   testCaseId: string
 ): Promise<Execution[]> {
   return agent
@@ -121,7 +121,7 @@ export function postExecution(execution: Partial<Execution>) {
     .then(
       (response: AxiosResponse): Execution => {
         const { data, status, statusText } = response;
-        if (status !== 201 || !data.ok) {
+        if (status !== 201) {
           throw statusText;
         }
         return data as Execution;

@@ -49,7 +49,7 @@ const ExecutionSetupTestcase: React.FunctionComponent<
 
     const { _id: userId } = getUser()!;
     const testCase: TestCase = testCases.find(
-      (_testCase: TestCase) => testCase._id === currentTestCaseId
+      (_testCase: TestCase) => _testCase._id === currentTestCaseId
     )!;
 
     const executionContextNew: Partial<ExecutionContext> = {

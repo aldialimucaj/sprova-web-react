@@ -67,7 +67,7 @@ export function postTestCase(testCase: Partial<TestCase>): Promise<TestCase> {
     .then(
       (response: AxiosResponse): TestCase => {
         const { data, status, statusText } = response;
-        if (status !== 201 || !data.ok) {
+        if (status !== 201) {
           throw statusText;
         }
         return data as TestCase;
