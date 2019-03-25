@@ -51,7 +51,7 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   return (
     <Fragment>
-      {isProjectLoading || isTestCasesLoading || !project ? (
+      {isProjectLoading || isTestCasesLoading ? (
         <Spin />
       ) : (
         <Fragment>
