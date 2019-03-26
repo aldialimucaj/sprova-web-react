@@ -1,22 +1,35 @@
 import { getProjects } from '@/api/project.api';
 import Level from '@/components/Level';
+import PageHeader from '@/components/PageHeader';
 import { useFetcher } from '@/hooks/useFetcher';
 import { Project } from '@/models/Project';
-import { Button, Card, Col, Divider, Empty, Icon, Row, Spin } from 'antd';
+import {
+  Alert,
+  Button,
+  Card,
+  Col,
+  Divider,
+  Empty,
+  Icon,
+  Row,
+  Spin,
+} from 'antd';
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import './ProjectList.scss';
 
 const ProjectList: React.FunctionComponent = () => {
-  const { data: projects, isLoading } = useFetcher(getProjects);
+  const { data: projects, isLoading, error } = useFetcher(getProjects);
 
   return isLoading ? (
     <Spin />
+  ) : error ? (
+    <Alert message="Something went wrong" description={error} type="error" />
   ) : (
     <Fragment>
-      <Level
-        left={<span style={{ fontSize: 18 }}>Projects</span>}
-        right={
+      <PageHeader
+        title="Projects"
+        extra={
           <Link to={`/projects/new`}>
             <Button type="primary">
               <Icon type="plus" /> New
@@ -24,7 +37,6 @@ const ProjectList: React.FunctionComponent = () => {
           </Link>
         }
       />
-      <Divider />
       {projects && projects.length > 0 ? (
         <Row gutter={16}>
           {projects.map((project: Project, index: number) => (

@@ -1,6 +1,5 @@
 import CardList from '@/components/CardList';
-import { RichTextEditor } from '@/components/RichTextEditor';
-import SectionHeader from '@/components/SectionHeader';
+import PageHeader from '@/components/PageHeader';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { Cycle } from '@/models/Cycle';
 import { TestCase } from '@/models/TestCase';
@@ -20,9 +19,7 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps> = ({
 
   return (
     <Fragment>
-      <RichTextEditor content={editor} toolbar={false} />
-
-      <SectionHeader title="Overview" />
+      <PageHeader title={project.title} subTitle="Overview" />
       <Row gutter={16}>
         <Col lg={12} style={{ marginBottom: 16 }}>
           <CardList
