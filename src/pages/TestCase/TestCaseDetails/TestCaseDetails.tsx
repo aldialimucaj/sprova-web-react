@@ -30,6 +30,7 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   if (!testCase) {
     notification.error({
+      placement: 'bottomRight',
       message: 'Oops',
       description: `No Test Case found with ID ${match.params.tid}`,
     });
@@ -43,12 +44,14 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
       setIsDeleteLoading(false);
       dispatch(removeTestCase(match.params.tid));
       notification.success({
+        placement: 'bottomRight',
         message: `${testCase.title} deleted`,
       });
       history.push(`/projects/${match.params.pid}/testcases`);
     } catch (error) {
       setIsDeleteLoading(false);
       notification.error({
+        placement: 'bottomRight',
         message: 'Failed to delete test case',
         description: error,
       });

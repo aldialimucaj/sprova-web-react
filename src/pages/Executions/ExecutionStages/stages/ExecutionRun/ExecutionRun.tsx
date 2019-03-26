@@ -68,7 +68,9 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
     <Fragment>
       <Card className="card-no-padding" style={{ marginBottom: 24 }}>
         <PageHeader
-          onBack={() => null}
+          onBack={() =>
+            history.push(`/projects/${match.params.pid}/executions`)
+          }
           style={{ padding: 16 }}
           title="Execution Run"
           subTitle="#51"
@@ -77,6 +79,9 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
       </Card>
 
       <Row gutter={24}>
+        <Col span={18}>
+          <Executor execution={currentExecution!} />
+        </Col>
         <Col span={6}>
           <List
             className="children-list"
@@ -104,9 +109,6 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
           >
             Finish
           </Button>
-        </Col>
-        <Col span={18}>
-          <Executor execution={currentExecution!} />
         </Col>
       </Row>
     </Fragment>

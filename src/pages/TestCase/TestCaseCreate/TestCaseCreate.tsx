@@ -85,6 +85,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
       setIsLoading(false);
       dispatch(addTestCase(testCase));
       notification.success({
+        placement: 'bottomRight',
         message: `${testCase.title} created`,
         description: `Test case created with ID ${testCase._id}`,
       });
@@ -92,6 +93,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
     } catch (error) {
       setIsLoading(false);
       notification.error({
+        placement: 'bottomRight',
         message: 'Failed to create test case',
         description: error,
       });

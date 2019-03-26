@@ -53,6 +53,7 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
       await deleteProject(project._id);
       setIsDeleteLoading(false);
       notification.success({
+        placement: 'bottomRight',
         message: `${project.title} deleted`,
       });
       dispatch(resetProject());
@@ -60,6 +61,7 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
     } catch (error) {
       setIsDeleteLoading(false);
       notification.error({
+        placement: 'bottomRight',
         message: 'Failed to delete project',
         description: error,
       });
@@ -84,11 +86,13 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
       setIsLoading(false);
       dispatch(setProject(projectNew));
       notification.success({
+        placement: 'bottomRight',
         message: 'Project updated',
       });
     } catch (error) {
       setIsLoading(false);
       notification.error({
+        placement: 'bottomRight',
         message: 'Failed to update project',
         description: error,
       });

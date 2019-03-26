@@ -37,6 +37,7 @@ const ProjectCreate: React.FunctionComponent<RouteComponentProps> = ({
       const { _id } = await postProject(projectNew);
       setIsLoading(false);
       notification.success({
+        placement: 'bottomRight',
         message: `${projectTitle} created`,
         description: `Project created with ID ${_id}`,
       });
@@ -44,6 +45,7 @@ const ProjectCreate: React.FunctionComponent<RouteComponentProps> = ({
     } catch (error) {
       setIsLoading(false);
       notification.error({
+        placement: 'bottomRight',
         message: 'Failed to create project',
         description: error,
       });
