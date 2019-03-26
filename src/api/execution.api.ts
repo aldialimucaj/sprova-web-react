@@ -144,7 +144,7 @@ export function postExecutions(executions: Array<Partial<Execution>>) {
     .then(
       (response: AxiosResponse): Execution[] => {
         const { data, status, statusText } = response;
-        if (status !== 201 || !data.ok) {
+        if (status !== 201) {
           throw statusText;
         }
         return data as Execution[];

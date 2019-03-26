@@ -1,6 +1,6 @@
 import { getUser } from '@/api/auth.api';
 import { postExecutionContext } from '@/api/execution-context.api';
-import { postExecution } from '@/api/execution.api';
+import { postExecutions } from '@/api/execution.api';
 import { FormButton, FormSearchSelect } from '@/components/form';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import {
@@ -17,7 +17,8 @@ import {
 import { ExecutionStep, ExecutionStepResult } from '@/models/ExecutionStep';
 import { TestCase } from '@/models/TestCase';
 import { TestStep } from '@/models/TestStep';
-import { Icon, notification, Select } from 'antd';
+import { Icon, List, notification, Select } from 'antd';
+import _ from 'lodash';
 import React, { Fragment, useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
@@ -30,16 +31,26 @@ interface Params {
 const ExecutionSetupTestcase: React.FunctionComponent<
   RouteComponentProps<Params>
 > = ({ history, match }) => {
-  const [{ testCases }] = useContext(ProjectContext);
+  let [{ testCases }] = useContext(ProjectContext);
+  const [selectedTestCases, setSelectedTestCases] = useState<TestCase[]>([]);
   const [currentTestCaseId, setCurrentTestCaseId] = useState<string | null>(
     null
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleTestCaseIdChange = (selectedTestCaseId: string) => {
-    if (currentTestCaseId !== selectedTestCaseId) {
-      setCurrentTestCaseId(selectedTestCaseId);
-    }
+  const handleTestCaseSelect = (selectedTestCaseId: string) => {
+    const selectedTestCase: TestCase = _.find(
+      testCases,
+      (testCase: TestCase) => testCase._id === selectedTestCaseId
+    )!;
+    testCases = _.without(testCases, selectedTestCase);
+    setSelectedTestCases([...selectedTestCases, selectedTestCase]);
+    setCurrentTestCaseId(null);
+  };
+
+  const removeTestCase = (testCase: TestCase) => {
+    testCases.push(testCase);
+    setSelectedTestCases(_.without(selectedTestCases, testCase));
   };
 
   const handleStartTestCases = async (
@@ -48,9 +59,6 @@ const ExecutionSetupTestcase: React.FunctionComponent<
     event.preventDefault();
 
     const { _id: userId } = getUser()!;
-    const testCase: TestCase = testCases.find(
-      (_testCase: TestCase) => _testCase._id === currentTestCaseId
-    )!;
 
     const executionContextNew: Partial<ExecutionContext> = {
       userId,
@@ -66,23 +74,30 @@ const ExecutionSetupTestcase: React.FunctionComponent<
       const { _id: contextId } = await postExecutionContext(
         executionContextNew
       );
-      const executionSteps: ExecutionStep[] = testCase.steps.map(
-        (testStep: TestStep) => ({
-          ...testStep,
-          result: ExecutionStepResult.Pending,
-        })
+
+      const executions: Array<Partial<Execution>> = selectedTestCases.map(
+        (testCase: TestCase) => {
+          const executionSteps: ExecutionStep[] = testCase.steps.map(
+            (testStep: TestStep) => ({
+              ...testStep,
+              result: ExecutionStepResult.Pending,
+            })
+          );
+          return {
+            contextId,
+            testCaseId: currentTestCaseId!,
+            testCaseTitle: testCase.title,
+            result: ExecutionResult.Pending,
+            status: ExecutionStatus.Waiting,
+            steps: executionSteps,
+          };
+        }
       );
-      const executionsNew: Partial<Execution> = {
-        contextId,
-        testCaseId: currentTestCaseId!,
-        testCaseTitle: testCase.title,
-        result: ExecutionResult.Pending,
-        status: ExecutionStatus.Waiting,
-        steps: executionSteps,
-      };
-      await postExecution(executionsNew);
+
+      await postExecutions(executions);
       setIsLoading(false);
       notification.success({
+        placement: 'bottomRight',
         message: 'Execution started',
         description: `Execution Context created with ID ${contextId}`,
       });
@@ -92,6 +107,7 @@ const ExecutionSetupTestcase: React.FunctionComponent<
     } catch (error) {
       setIsLoading(false);
       notification.error({
+        placement: 'bottomRight',
         message: 'Failed to start Execution Context',
         description: error,
       });
@@ -100,11 +116,31 @@ const ExecutionSetupTestcase: React.FunctionComponent<
 
   return (
     <Fragment>
+      <List
+        className="children-list"
+        size="small"
+        header={<span>Test Cases</span>}
+        bordered={true}
+        dataSource={selectedTestCases}
+        renderItem={(testCase: TestCase) => (
+          <List.Item
+            actions={[
+              <a key="remove" onClick={() => removeTestCase(testCase)}>
+                remove
+              </a>,
+            ]}
+          >
+            <List.Item.Meta
+              title={<a href="https://ant.design">{testCase.title}</a>}
+            />
+          </List.Item>
+        )}
+      />
       <FormSearchSelect
-        label="Test Case"
+        label="Add"
         placeholder="None"
         value={currentTestCaseId || undefined}
-        onChange={handleTestCaseIdChange}
+        onChange={handleTestCaseSelect}
       >
         {testCases.map((_testCase, index) => (
           <Option key={index} value={_testCase._id}>
@@ -115,7 +151,7 @@ const ExecutionSetupTestcase: React.FunctionComponent<
       <FormButton
         type="primary"
         loading={isLoading}
-        disabled={!currentTestCaseId}
+        disabled={selectedTestCases.length === 0}
         onClick={handleStartTestCases}
       >
         Start

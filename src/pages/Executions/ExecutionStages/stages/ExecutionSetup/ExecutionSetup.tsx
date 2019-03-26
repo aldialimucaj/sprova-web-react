@@ -16,12 +16,12 @@ interface Params {
 const ExecutionSetup: React.FunctionComponent<
   RouteComponentProps<Params>
 > = () => {
-  const [type, setType] = useState('testcase');
+  const [type, setType] = useState('testcases');
 
   let form;
 
   switch (type) {
-    case 'testcase': {
+    case 'testcases': {
       form = <ExecutionSetupTestcase />;
       break;
     }
@@ -46,7 +46,7 @@ const ExecutionSetup: React.FunctionComponent<
               value={type}
               onChange={setType}
             >
-              <Option value="testcase">Test Case</Option>
+              <Option value="testcases">Test Cases</Option>
               <Option value="testset">Test Set</Option>
               <Option value="cycle">Cycle</Option>
             </FormSelect>

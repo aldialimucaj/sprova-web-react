@@ -113,9 +113,6 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
             }
           />
           {context!.method}
-          {executions!.map((execution, index) => (
-            <p key={index}>{execution._id}</p>
-          ))}
           <List
             size="default"
             bordered={true}
