@@ -38,12 +38,14 @@ const ExecutionStages: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   return (
     <Fragment>
-      <Steps current={activeStageIndex()} style={{ marginBottom: 24 }}>
+      <Steps
+        current={activeStageIndex()}
+        style={{ marginBottom: 24, padding: '0 16px' }}
+      >
         <Step title="Setup" />
         <Step title="Run" />
         <Step title="Result" />
       </Steps>
-      <Divider />
       <Switch>
         <Route
           path={`/projects/:pid/executions/setup`}

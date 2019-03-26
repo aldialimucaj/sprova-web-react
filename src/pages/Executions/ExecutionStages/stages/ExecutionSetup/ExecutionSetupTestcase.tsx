@@ -75,6 +75,7 @@ const ExecutionSetupTestcase: React.FunctionComponent<
       const executionsNew: Partial<Execution> = {
         contextId,
         testCaseId: currentTestCaseId!,
+        testCaseTitle: testCase.title,
         result: ExecutionResult.Pending,
         status: ExecutionStatus.Waiting,
         steps: executionSteps,

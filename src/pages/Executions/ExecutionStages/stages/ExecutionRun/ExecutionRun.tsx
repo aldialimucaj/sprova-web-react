@@ -2,11 +2,23 @@ import { getExecutionContext } from '@/api/execution-context.api';
 import { getExecutionsOfContext } from '@/api/execution.api';
 import Level from '@/components/Level';
 import { useFetcher } from '@/hooks/useFetcher';
-import { Execution } from '@/models/Execution';
-import { Button, Icon, Spin, Row, Col, List, Timeline } from 'antd';
-import queryString from 'querystring';
-import React, { Fragment } from 'react';
-import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
+import { Execution, ExecutionStatus } from '@/models/Execution';
+import { ExecutionStep } from '@/models/ExecutionStep';
+import { parseQuery } from '@/utils';
+import {
+  Button,
+  Card,
+  Col,
+  Icon,
+  List,
+  PageHeader,
+  Row,
+  Spin,
+  Tag,
+} from 'antd';
+import _ from 'lodash';
+import React, { Fragment, useState } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 import './index.scss';
 
 const ButtonGroup = Button.Group;
@@ -16,10 +28,15 @@ interface Params {
 }
 
 const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
+  history,
   location,
   match,
 }) => {
-  const { contextId } = queryString.parse(location.search.substring(1));
+  const { contextId } = parseQuery(location);
+
+  const [currentExecution, setCurrentExecution] = useState<Execution | null>(
+    null
+  );
 
   const { data: context, isLoading: isContextLoading } = useFetcher(
     getExecutionContext,
@@ -30,10 +47,34 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
     Execution[]
   >(getExecutionsOfContext, contextId);
 
+  if (!currentExecution && executions) {
+    const firstWaitingExecution: Execution | undefined = _.find(
+      executions,
+      (execution: Execution) => execution.status === ExecutionStatus.Waiting
+    );
+    setCurrentExecution(firstWaitingExecution || executions[0]);
+  }
+
+  const handleExecutionSelect = (selectedExecution: Execution) => {
+    if (selectedExecution._id !== currentExecution!._id) {
+      setCurrentExecution(selectedExecution);
+    }
+  };
+
   return isContextLoading || isTestCasesLoading ? (
     <Spin />
   ) : (
     <Fragment>
+      <Card className="card-no-padding" style={{ marginBottom: 24 }}>
+        <PageHeader
+          onBack={() => null}
+          style={{ padding: 16 }}
+          title="Execution Run"
+          subTitle="#51"
+          extra={[<a key="0">Abort</a>]}
+        />
+      </Card>
+
       <Row gutter={24}>
         <Col span={6}>
           <List
@@ -48,36 +89,49 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
             bordered={true}
             dataSource={executions}
             renderItem={(_execution: Execution) => (
-              <List.Item>{_execution._id}</List.Item>
+              <List.Item onClick={() => handleExecutionSelect(_execution)}>
+                {_execution.testCaseTitle}
+              </List.Item>
             )}
             footer={<span>Footer</span>}
           />
           <Button
             disabled={true}
-            style={{ marginBottom: 24 }}
+            style={{ marginBottom: 8 }}
             block={true}
             type="primary"
           >
             Finish
           </Button>
-          <Button block={true}>Abort</Button>
         </Col>
         <Col span={18}>
-          <Level left={<span style={{ fontSize: 18 }}>Title</span>} />
+          <Level
+            left={
+              <span style={{ fontSize: 18 }}>
+                {currentExecution!.testCaseTitle}
+              </span>
+            }
+          />
           {context!.method}
           {executions!.map((execution, index) => (
             <p key={index}>{execution._id}</p>
           ))}
-          <Timeline>
-            <Timeline.Item>Create a services site 2015-09-01</Timeline.Item>
-            <Timeline.Item>
-              Solve initial network problems 2015-09-01
-            </Timeline.Item>
-            <Timeline.Item>Technical testing 2015-09-01</Timeline.Item>
-            <Timeline.Item>
-              Network problems being solved 2015-09-01
-            </Timeline.Item>
-          </Timeline>
+          <List
+            size="default"
+            bordered={true}
+            dataSource={currentExecution!.steps}
+            renderItem={(executionStep: ExecutionStep) => (
+              <List.Item>
+                <List.Item.Meta
+                  title={executionStep.action}
+                  description={`Expected: ${executionStep.expected}`}
+                />
+                <Tag color="blue" style={{ pointerEvents: 'none' }}>
+                  {executionStep.result}
+                </Tag>
+              </List.Item>
+            )}
+          />
         </Col>
       </Row>
     </Fragment>
