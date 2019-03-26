@@ -19,6 +19,7 @@ import {
 import _ from 'lodash';
 import React, { Fragment, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import Executor from './Executor';
 import './index.scss';
 
 const ButtonGroup = Button.Group;
@@ -105,30 +106,7 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
           </Button>
         </Col>
         <Col span={18}>
-          <Level
-            left={
-              <span style={{ fontSize: 18 }}>
-                {currentExecution!.testCaseTitle}
-              </span>
-            }
-          />
-          {context!.method}
-          <List
-            size="default"
-            bordered={true}
-            dataSource={currentExecution!.steps}
-            renderItem={(executionStep: ExecutionStep) => (
-              <List.Item>
-                <List.Item.Meta
-                  title={executionStep.action}
-                  description={`Expected: ${executionStep.expected}`}
-                />
-                <Tag color="blue" style={{ pointerEvents: 'none' }}>
-                  {executionStep.result}
-                </Tag>
-              </List.Item>
-            )}
-          />
+          <Executor execution={currentExecution!} />
         </Col>
       </Row>
     </Fragment>
