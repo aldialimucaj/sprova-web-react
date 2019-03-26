@@ -51,6 +51,8 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
     }
   };
 
+  const handleExecutionUpdate = (executionNew: Execution) => {};
+
   const abortButton = (
     <Popconfirm
       placement="bottomRight"
