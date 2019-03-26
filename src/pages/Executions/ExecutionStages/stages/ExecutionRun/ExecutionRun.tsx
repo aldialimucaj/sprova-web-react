@@ -11,6 +11,7 @@ import React, { Fragment, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Executor from './Executor';
 import './index.scss';
+import { ExecutionStepResult } from '@/models/ExecutionStep';
 
 interface Params {
   pid: string;

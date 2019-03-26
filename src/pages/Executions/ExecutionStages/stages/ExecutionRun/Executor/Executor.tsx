@@ -3,11 +3,12 @@ import Level from '@/components/Level';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
 import { Execution } from '@/models/Execution';
 import { ExecutionStep, ExecutionStepResult } from '@/models/ExecutionStep';
-import { Button, Form, Icon, List, Tag } from 'antd';
+import { Button, Form, Icon, List, Tag, Spin, notification } from 'antd';
 import _ from 'lodash';
 import React, { Fragment, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import './index.scss';
+import { putExecutionStep } from '@/api/execution.api';
 
 const ButtonGroup = Button.Group;
 
@@ -29,14 +30,38 @@ const Executor: React.FunctionComponent<Props> = ({ execution }) => {
     firstPendingStep || execution.steps[0]
   );
 
-  const handleStepSelect = (executionStep: ExecutionStep) => {
-    setCurrentStep(executionStep);
-  };
-
   const {
     value: stepMessage,
     handleChange: handleStepMessageChange,
   } = useFormTextArea('');
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleStepSelect = (executionStep: ExecutionStep) => {
+    setCurrentStep(executionStep);
+  };
+
+  const handleStepResult = async (result: ExecutionStepResult) => {
+    const executionStepNew: ExecutionStep = {
+      ...currentStep,
+      result,
+      ...(stepMessage && { message: stepMessage }),
+    };
+
+    setIsLoading(true);
+
+    try {
+      await putExecutionStep(execution._id, executionStepNew);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      notification.error({
+        placement: 'bottomRight',
+        message: 'Failed to update Execution Step',
+        description: error,
+      });
+    }
+  };
 
   return (
     <Fragment>
@@ -69,36 +94,38 @@ const Executor: React.FunctionComponent<Props> = ({ execution }) => {
                 overflow: 'hidden',
               }}
             >
-              <Level
-                style={{ width: '100%' }}
-                left={
-                  <div>
-                    <h4>{executionStep.action}</h4>
-                    <div>{`Expected: ${executionStep.expected}`}</div>
-                  </div>
-                }
-                right={
-                  <Tag color="blue" style={{ pointerEvents: 'none' }}>
-                    {executionStep.result}
-                  </Tag>
-                }
-              />
-              <Form layout="vertical">
-                <FormTextArea
-                  label="Message (optional)"
-                  value={stepMessage}
-                  onChange={handleStepMessageChange}
+              <Spin spinning={isLoading}>
+                <Level
+                  style={{ width: '100%' }}
+                  left={
+                    <div>
+                      <h4>{executionStep.action}</h4>
+                      <div>{`Expected: ${executionStep.expected}`}</div>
+                    </div>
+                  }
+                  right={
+                    <Tag color="blue" style={{ pointerEvents: 'none' }}>
+                      {executionStep.result}
+                    </Tag>
+                  }
                 />
-              </Form>
-              <Button type="primary" style={{ marginRight: 16 }}>
-                <Icon type="check-circle" /> Success
-              </Button>
-              <Button style={{ marginRight: 16 }}>
-                <Icon type="warning" /> Warning
-              </Button>
-              <Button type="danger">
-                <Icon type="stop" /> Failure
-              </Button>
+                <Form layout="vertical">
+                  <FormTextArea
+                    label="Message (optional)"
+                    value={stepMessage}
+                    onChange={handleStepMessageChange}
+                  />
+                </Form>
+                <Button type="primary" style={{ marginRight: 16 }}>
+                  <Icon type="check-circle" /> Success
+                </Button>
+                <Button style={{ marginRight: 16 }}>
+                  <Icon type="warning" /> Warning
+                </Button>
+                <Button type="danger">
+                  <Icon type="stop" /> Failure
+                </Button>
+              </Spin>
             </List.Item>
           ) : (
             <List.Item
