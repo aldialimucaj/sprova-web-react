@@ -1,4 +1,5 @@
 import { FormSelect } from '@/components/form';
+import PageHeader from '@/components/PageHeader';
 import { Col, Form, Row, Select } from 'antd';
 import React, { Fragment, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -6,7 +7,6 @@ import ExecutionSetupCycle from './ExecutionSetupCycle';
 import ExecutionSetupTestcase from './ExecutionSetupTestcase';
 import ExecutionSetupTestset from './ExecutionSetupTestset';
 import './index.scss';
-import PageHeader from '@/components/PageHeader';
 
 const Option = Select.Option;
 
