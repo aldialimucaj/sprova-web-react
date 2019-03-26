@@ -1,9 +1,10 @@
 import CardList from '@/components/CardList';
+import Level from '@/components/Level';
 import PageHeader from '@/components/PageHeader';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { Cycle } from '@/models/Cycle';
 import { TestCase } from '@/models/TestCase';
-import { Col, Row } from 'antd';
+import { Col, Icon, List, Row } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import { Link, Redirect, RouteComponentProps } from 'react-router-dom';
 
@@ -11,7 +12,6 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps> = ({
   history,
 }) => {
   const [{ cycles, project, testCases }] = useContext(ProjectContext);
-  const editor = { value: project && project.description };
 
   if (!project) {
     return <Redirect to="/projects" />;
@@ -22,27 +22,69 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps> = ({
       <PageHeader title={project.title} subTitle="Overview" />
       <Row gutter={16}>
         <Col lg={12} style={{ marginBottom: 16 }}>
-          <CardList
-            title="Cycles"
-            dataSource={cycles.slice(0, 4)}
-            extra={<Link to={`/projects/${project._id}/cycles`}>Show all</Link>}
-            onItemClick={({ _id }: Cycle) =>
-              history.push(`/projects/${project._id}/cylces/${_id}`)
+          <List
+            className="children-list"
+            size="small"
+            header={
+              <Level
+                style={{ marginBottom: 0 }}
+                left={
+                  <span>
+                    <Icon type="clock-circle" style={{ marginRight: 8 }} />
+                    Cycles
+                  </span>
+                }
+                right={
+                  <Link to={`/projects/${project._id}/cycles`}>Show All</Link>
+                }
+              />
             }
-            renderItem={(cycle: Cycle) => <div>{cycle.title}</div>}
+            bordered={true}
+            dataSource={cycles.slice(0, 4)}
+            renderItem={(cycle: Cycle) => (
+              <List.Item
+                onClick={() =>
+                  history.push(`/projects/${project._id}/cycles/${cycle._id}`)
+                }
+              >
+                {cycle.title}
+              </List.Item>
+            )}
           />
         </Col>
         <Col lg={12} style={{ marginBottom: 16 }}>
-          <CardList
-            title="Test Cases"
+          <List
+            className="children-list"
+            size="small"
+            header={
+              <Level
+                style={{ marginBottom: 0 }}
+                left={
+                  <span>
+                    <Icon type="clock-circle" style={{ marginRight: 8 }} />
+                    Test Cases
+                  </span>
+                }
+                right={
+                  <Link to={`/projects/${project._id}/testcases`}>
+                    Show All
+                  </Link>
+                }
+              />
+            }
+            bordered={true}
             dataSource={testCases.slice(0, 4)}
-            extra={
-              <Link to={`/projects/${project._id}/testcases`}>Show all</Link>
-            }
-            onItemClick={({ _id }: TestCase) =>
-              history.push(`/projects/${project._id}/testcases/${_id}`)
-            }
-            renderItem={(testCase: TestCase) => <div>{testCase.title}</div>}
+            renderItem={(testCase: TestCase) => (
+              <List.Item
+                onClick={() =>
+                  history.push(
+                    `/projects/${project._id}/testcases/${testCase._id}`
+                  )
+                }
+              >
+                {testCase.title}
+              </List.Item>
+            )}
           />
         </Col>
       </Row>
