@@ -6,6 +6,7 @@ import ExecutionSetupCycle from './ExecutionSetupCycle';
 import ExecutionSetupTestcase from './ExecutionSetupTestcase';
 import ExecutionSetupTestset from './ExecutionSetupTestset';
 import './index.scss';
+import PageHeader from '@/components/PageHeader';
 
 const Option = Select.Option;
 
@@ -13,9 +14,9 @@ interface Params {
   pid: string;
 }
 
-const ExecutionSetup: React.FunctionComponent<
-  RouteComponentProps<Params>
-> = () => {
+const ExecutionSetup: React.FunctionComponent<RouteComponentProps<Params>> = ({
+  match,
+}) => {
   const [type, setType] = useState('testcases');
 
   let form;
@@ -37,6 +38,10 @@ const ExecutionSetup: React.FunctionComponent<
 
   return (
     <Fragment>
+      <PageHeader
+        title="Execution Setup"
+        url={`/projects/${match.params.pid}/executions`}
+      />
       <Row>
         <Col span={12}>
           <Form layout="vertical">

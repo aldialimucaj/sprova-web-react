@@ -1,21 +1,11 @@
 import { getExecutionContext } from '@/api/execution-context.api';
 import { getExecutionsOfContext } from '@/api/execution.api';
 import Level from '@/components/Level';
+import PageHeader from '@/components/PageHeader';
 import { useFetcher } from '@/hooks/useFetcher';
 import { Execution, ExecutionStatus } from '@/models/Execution';
-import { ExecutionStep } from '@/models/ExecutionStep';
 import { parseQuery } from '@/utils';
-import {
-  Button,
-  Card,
-  Col,
-  Icon,
-  List,
-  PageHeader,
-  Row,
-  Spin,
-  Tag,
-} from 'antd';
+import { Button, Card, Col, Icon, List, Row, Spin, Tag } from 'antd';
 import _ from 'lodash';
 import React, { Fragment, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -66,17 +56,12 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
     <Spin />
   ) : (
     <Fragment>
-      <Card className="card-no-padding" style={{ marginBottom: 24 }}>
-        <PageHeader
-          onBack={() =>
-            history.push(`/projects/${match.params.pid}/executions`)
-          }
-          style={{ padding: 16 }}
-          title="Execution Run"
-          subTitle="#51"
-          extra={[<a key="0">Abort</a>]}
-        />
-      </Card>
+      <PageHeader
+        title="Execution Run"
+        subTitle="#51"
+        extra={<a>Abort</a>}
+        url={`/projects/${match.params.pid}/executions`}
+      />
 
       <Row gutter={24}>
         <Col span={18}>
