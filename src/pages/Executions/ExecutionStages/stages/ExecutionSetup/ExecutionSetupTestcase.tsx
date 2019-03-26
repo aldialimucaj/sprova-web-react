@@ -85,8 +85,7 @@ const ExecutionSetupTestcase: React.FunctionComponent<
           );
           return {
             contextId,
-            testCaseId: currentTestCaseId!,
-            testCaseTitle: testCase.title,
+            testCaseId: testCase._id,
             result: ExecutionResult.Pending,
             status: ExecutionStatus.Waiting,
             steps: executionSteps,

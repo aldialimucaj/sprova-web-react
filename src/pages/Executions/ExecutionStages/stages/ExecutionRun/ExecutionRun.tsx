@@ -45,7 +45,7 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   const { data: executions, isLoading: isTestCasesLoading } = useFetcher<
     Execution[]
-  >(getExecutionsOfContext, contextId);
+  >(getExecutionsOfContext, contextId, true);
 
   if (!currentExecution && executions) {
     const firstWaitingExecution: Execution | undefined = _.find(

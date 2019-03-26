@@ -4,7 +4,7 @@ export interface Execution {
   _id: string;
   contextId: string;
   testCaseId: string;
-  testCaseTitle: string;
+  testCaseTitle?: string;
   result: ExecutionResult;
   status: ExecutionStatus;
   steps: ExecutionStep[];

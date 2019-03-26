@@ -49,12 +49,14 @@ export function getExecution(id: string): Promise<Execution> {
 }
 
 export function getExecutionsOfContext(
-  contextId: string
+  contextId: string,
+  withTitle = false
 ): Promise<Execution[]> {
   return agent
     .get('/executions', {
       params: {
         contextId,
+        withTitle,
       },
     })
     .catch(
