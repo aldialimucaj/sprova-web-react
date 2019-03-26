@@ -5,14 +5,12 @@ import PageHeader from '@/components/PageHeader';
 import { useFetcher } from '@/hooks/useFetcher';
 import { Execution, ExecutionStatus } from '@/models/Execution';
 import { parseQuery } from '@/utils';
-import { Button, Card, Col, Icon, List, Row, Spin, Tag } from 'antd';
+import { Button, Col, Icon, List, Popconfirm, Row, Spin } from 'antd';
 import _ from 'lodash';
 import React, { Fragment, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Executor from './Executor';
 import './index.scss';
-
-const ButtonGroup = Button.Group;
 
 interface Params {
   pid: string;
@@ -52,6 +50,18 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
     }
   };
 
+  const abortButton = (
+    <Popconfirm
+      placement="bottomRight"
+      title="Abort this test run?"
+      icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
+      okText="Yes"
+      cancelText="Cancel"
+    >
+      <a>Abort</a>
+    </Popconfirm>
+  );
+
   return isContextLoading || isTestCasesLoading ? (
     <Spin />
   ) : (
@@ -59,7 +69,7 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
       <PageHeader
         title="Execution Run"
         subTitle="#51"
-        extra={<a>Abort</a>}
+        extra={abortButton}
         url={`/projects/${match.params.pid}/executions`}
       />
 

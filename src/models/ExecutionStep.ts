@@ -10,4 +10,5 @@ export enum ExecutionStepResult {
   Pending = 'PENDING',
   Successful = 'SUCCESSFUL',
   Warning = 'WARNING',
+  Aborted = 'ABORTED',
 }
