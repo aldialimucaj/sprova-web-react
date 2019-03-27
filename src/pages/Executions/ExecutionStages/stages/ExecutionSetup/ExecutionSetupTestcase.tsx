@@ -31,7 +31,10 @@ interface Params {
 const ExecutionSetupTestcase: React.FunctionComponent<
   RouteComponentProps<Params>
 > = ({ history, match }) => {
-  let [{ testCases }] = useContext(ProjectContext);
+  const [{ testCases }] = useContext(ProjectContext);
+  const [selectableTestCases, setSelectableTestCases] = useState<TestCase[]>(
+    testCases
+  );
   const [selectedTestCases, setSelectedTestCases] = useState<TestCase[]>([]);
   const [currentTestCaseId, setCurrentTestCaseId] = useState<string | null>(
     null
@@ -40,16 +43,16 @@ const ExecutionSetupTestcase: React.FunctionComponent<
 
   const handleTestCaseSelect = (selectedTestCaseId: string) => {
     const selectedTestCase: TestCase = _.find(
-      testCases,
+      selectableTestCases,
       (testCase: TestCase) => testCase._id === selectedTestCaseId
     )!;
-    testCases = _.without(testCases, selectedTestCase);
+    setSelectableTestCases(_.without(selectableTestCases, selectedTestCase));
     setSelectedTestCases([...selectedTestCases, selectedTestCase]);
     setCurrentTestCaseId(null);
   };
 
   const removeTestCase = (testCase: TestCase) => {
-    testCases.push(testCase);
+    setSelectableTestCases([...selectableTestCases, testCase]);
     setSelectedTestCases(_.without(selectedTestCases, testCase));
   };
 
@@ -141,7 +144,7 @@ const ExecutionSetupTestcase: React.FunctionComponent<
         value={currentTestCaseId || undefined}
         onChange={handleTestCaseSelect}
       >
-        {testCases.map((_testCase, index) => (
+        {selectableTestCases.map((_testCase, index) => (
           <Option key={index} value={_testCase._id}>
             {_testCase.title}
           </Option>
