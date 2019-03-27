@@ -1,56 +1,41 @@
-import {
-  getExecution,
-  getExecutionSteps,
-  putExecutionStep,
-} from '@/api/execution.api';
+import { getExecutionSteps, putExecutionStep } from '@/api/execution.api';
 import { FormTextArea } from '@/components/form';
 import Level from '@/components/Level';
-import { useFetcher } from '@/hooks/useFetcher';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
 import { ExecutionStep, ExecutionStepResult } from '@/models/ExecutionStep';
 import { Alert, Button, Form, Icon, List, notification, Spin, Tag } from 'antd';
 import _ from 'lodash';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import './index.scss';
 
 const ButtonGroup = Button.Group;
 
-interface Params {
-  pid: string;
-}
-
-interface Props extends RouteComponentProps<Params> {
+interface Props extends RouteComponentProps {
   eid: string;
   executionTitle: string;
 }
 
 const Executor: React.FunctionComponent<Props> = ({ eid, executionTitle }) => {
-  const {
-    data: executionSteps,
-    setData: setExecutionSteps,
-    isLoading: isExecutionStepsLoading,
-    error,
-  } = useFetcher(getExecutionSteps, eid);
-  const [currentStep, setCurrentStep] = useState<ExecutionStep | null>(null);
-  const [isStepUpdateLoading, setIsStepUpdateLoading] = useState<boolean>(
-    false
-  );
+  const [executionSteps, setExecutionSteps] = useState<ExecutionStep[]>([]);
+  const [isExecutionStepsLoading, setIsExecutionStepsLoading] = useState(true);
+  const [error, setError] = useState<string>('');
+
+  const [currentStep, setCurrentStep] = useState<ExecutionStep>();
+
+  const [isStepUpdateLoading, setIsStepUpdateLoading] = useState(false);
   const {
     value: stepMessage,
     handleChange: handleStepMessageChange,
   } = useFormTextArea('');
 
-  if (!currentStep && executionSteps) {
-    const firstPendingStep: ExecutionStep | undefined = _.find(
-      executionSteps,
+  const findFirstPendingStep = (
+    steps: ExecutionStep[]
+  ): ExecutionStep | undefined => {
+    return _.find(
+      steps,
       (step: ExecutionStep) => step.result === ExecutionStepResult.Pending
     );
-    setCurrentStep(firstPendingStep || executionSteps[0]);
-  }
-
-  const handleStepSelect = (executionStep: ExecutionStep) => {
-    setCurrentStep(executionStep);
   };
 
   const handleStepResult = async (result: ExecutionStepResult) => {
@@ -103,6 +88,27 @@ const Executor: React.FunctionComponent<Props> = ({ eid, executionTitle }) => {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsExecutionStepsLoading(true);
+      setError('');
+
+      try {
+        const fetchedData = await getExecutionSteps(eid);
+        setExecutionSteps(fetchedData);
+
+        const firstPendingStep = findFirstPendingStep(fetchedData);
+        setCurrentStep(firstPendingStep);
+      } catch (error) {
+        setError(error);
+      }
+
+      setIsExecutionStepsLoading(false);
+    };
+
+    fetchData();
+  }, [eid]);
+
   return (
     <Fragment>
       <Level
@@ -134,7 +140,7 @@ const Executor: React.FunctionComponent<Props> = ({ eid, executionTitle }) => {
           bordered={true}
           dataSource={executionSteps}
           renderItem={(executionStep: ExecutionStep) =>
-            executionStep.action === currentStep!.action ? (
+            currentStep && executionStep.action === currentStep.action ? (
               <List.Item
                 style={{
                   display: 'block',
@@ -204,7 +210,7 @@ const Executor: React.FunctionComponent<Props> = ({ eid, executionTitle }) => {
             ) : (
               <List.Item
                 className="selectable-step"
-                onClick={() => handleStepSelect(executionStep)}
+                onClick={() => setCurrentStep(executionStep)}
               >
                 <List.Item.Meta
                   title={executionStep.action}
