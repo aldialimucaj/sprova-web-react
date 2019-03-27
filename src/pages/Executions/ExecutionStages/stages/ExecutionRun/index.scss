@@ -3,3 +3,9 @@
     padding: 0;
   }
 }
+
+.list-item {
+  &.selected {
+    font-weight: bold;
+  }
+}

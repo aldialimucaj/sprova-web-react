@@ -25,5 +25,5 @@ export function useFetcher<T>(fetcher: Fetcher<T>, ...args: any[]) {
     fetchData();
   }, [...args]);
 
-  return { data, error, isLoading };
+  return { data, setData, error, isLoading };
 }

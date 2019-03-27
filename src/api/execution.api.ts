@@ -1,7 +1,7 @@
 import { Execution } from '@/models/Execution';
+import { ExecutionStep } from '@/models/ExecutionStep';
 import { AxiosError, AxiosResponse } from 'axios';
 import agent from './agent';
-import { ExecutionStep } from '@/models/ExecutionStep';
 
 export function getExecutions(): Promise<Execution[]> {
   return agent
@@ -109,6 +109,31 @@ export function getExecutionsOfTestCase(
     );
 }
 
+export function getExecutionSteps(
+  executionId: string
+): Promise<ExecutionStep[]> {
+  return agent
+    .get(`/executions/${executionId}/steps`)
+    .catch(
+      (error: AxiosError): AxiosResponse => {
+        const { message, response } = error;
+        if (!response) {
+          throw message;
+        }
+        return response;
+      }
+    )
+    .then(
+      (response: AxiosResponse): ExecutionStep[] => {
+        const { data, status, statusText } = response;
+        if (status !== 200) {
+          throw statusText;
+        }
+        return data as ExecutionStep[];
+      }
+    );
+}
+
 export function postExecution(execution: Partial<Execution>) {
   return agent
     .post('/executions', execution)
@@ -135,7 +160,7 @@ export function postExecution(execution: Partial<Execution>) {
 export function putExecutionStep(
   executionId: string,
   executionStep: ExecutionStep
-): Promise<ExecutionStep> {
+): Promise<boolean> {
   return agent
     .put(`/executions/${executionId}/steps`, executionStep)
     .catch(
@@ -148,12 +173,12 @@ export function putExecutionStep(
       }
     )
     .then(
-      (response: AxiosResponse): ExecutionStep => {
+      (response: AxiosResponse): boolean => {
         const { data, status, statusText } = response;
         if (status !== 200) {
           throw statusText;
         }
-        return data as ExecutionStep;
+        return !!data.ok;
       }
     );
 }
@@ -161,7 +186,7 @@ export function putExecutionStep(
 export function putExecutionSteps(
   executionId: string,
   executionSteps: ExecutionStep[]
-): Promise<ExecutionStep[]> {
+): Promise<boolean> {
   return agent
     .put(`/executions/${executionId}/steps`, executionSteps)
     .catch(
@@ -174,12 +199,12 @@ export function putExecutionSteps(
       }
     )
     .then(
-      (response: AxiosResponse): ExecutionStep[] => {
+      (response: AxiosResponse): boolean => {
         const { data, status, statusText } = response;
         if (status !== 200) {
           throw statusText;
         }
-        return data as ExecutionStep[];
+        return !!data.ok;
       }
     );
 }

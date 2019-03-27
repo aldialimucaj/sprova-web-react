@@ -11,7 +11,6 @@ import React, { Fragment, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Executor from './Executor';
 import './index.scss';
-import { ExecutionStepResult } from '@/models/ExecutionStep';
 
 interface Params {
   pid: string;
@@ -78,7 +77,10 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
       <Row gutter={24}>
         <Col span={18}>
-          <Executor execution={currentExecution!} />
+          <Executor
+            executionTitle={currentExecution!.testCaseTitle!}
+            eid={currentExecution!._id}
+          />
         </Col>
         <Col span={6}>
           <List
@@ -93,8 +95,17 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
             bordered={true}
             dataSource={executions}
             renderItem={(_execution: Execution) => (
-              <List.Item onClick={() => handleExecutionSelect(_execution)}>
-                {_execution.testCaseTitle}
+              <List.Item
+                className={`list-item ${
+                  _execution._id === currentExecution!._id ? 'selected' : ''
+                }`}
+                onClick={() => handleExecutionSelect(_execution)}
+              >
+                <Level
+                  style={{ marginBottom: 0, width: '100%' }}
+                  left={<span>{_execution.testCaseTitle}</span>}
+                  right={<Icon type="check" />}
+                />
               </List.Item>
             )}
             footer={<span>Footer</span>}
