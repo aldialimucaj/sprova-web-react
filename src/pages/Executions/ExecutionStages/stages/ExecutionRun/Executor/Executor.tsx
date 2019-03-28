@@ -2,6 +2,7 @@ import { getExecutionSteps, putExecutionStep } from '@/api/execution.api';
 import { FormTextArea } from '@/components/form';
 import Level from '@/components/Level';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
+import { ExecutionStatus } from '@/models/Execution';
 import { ExecutionStep, ExecutionStepResult } from '@/models/ExecutionStep';
 import { Alert, Button, Form, Icon, List, notification, Spin, Tag } from 'antd';
 import _ from 'lodash';
@@ -14,9 +15,18 @@ const ButtonGroup = Button.Group;
 interface Props extends RouteComponentProps {
   eid: string;
   executionTitle: string;
+  onFinish: (status: ExecutionStatus) => void;
+  selectPrevious?: () => void;
+  selectNext?: () => void;
 }
 
-const Executor: React.FunctionComponent<Props> = ({ eid, executionTitle }) => {
+const Executor: React.FunctionComponent<Props> = ({
+  eid,
+  executionTitle,
+  onFinish,
+  selectPrevious,
+  selectNext,
+}) => {
   const [executionSteps, setExecutionSteps] = useState<ExecutionStep[]>([]);
   const [isExecutionStepsLoading, setIsExecutionStepsLoading] = useState(true);
   const [error, setError] = useState<string>('');
@@ -37,6 +47,25 @@ const Executor: React.FunctionComponent<Props> = ({ eid, executionTitle }) => {
       steps,
       (step: ExecutionStep) => step.result === ExecutionStepResult.Pending
     );
+  };
+
+  const hasPendingStepsLeft = (steps: ExecutionStep[]) => {
+    return !!findFirstPendingStep(steps);
+  };
+
+  const getExecutionStatus = (): ExecutionStatus => {
+    let warning = false;
+    for (const executionStep of executionSteps) {
+      switch (executionStep.result) {
+        case ExecutionStepResult.Failed: {
+          return ExecutionStatus.Failed;
+        }
+        case ExecutionStepResult.Warning: {
+          warning = true;
+        }
+      }
+    }
+    return (warning && ExecutionStatus.Warning) || ExecutionStatus.Successful;
   };
 
   const handleStepSelect = (executionStep: ExecutionStep) => {
@@ -67,6 +96,11 @@ const Executor: React.FunctionComponent<Props> = ({ eid, executionTitle }) => {
 
       const nextPendingStep = findFirstPendingStep(executionSteps);
       setCurrentStep(nextPendingStep);
+
+      if (!hasPendingStepsLeft(executionSteps)) {
+        const executionStatus = getExecutionStatus();
+        onFinish(executionStatus);
+      }
     } catch (error) {
       setIsStepUpdateLoading(false);
       notification.error({
@@ -125,11 +159,11 @@ const Executor: React.FunctionComponent<Props> = ({ eid, executionTitle }) => {
         left={<span style={{ fontSize: 18 }}>{executionTitle}</span>}
         right={
           <ButtonGroup>
-            <Button>
+            <Button disabled={!selectPrevious}>
               <Icon type="left" />
               Previous
             </Button>
-            <Button>
+            <Button disabled={!selectNext}>
               Next
               <Icon type="right" />
             </Button>

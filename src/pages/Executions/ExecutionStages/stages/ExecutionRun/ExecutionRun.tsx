@@ -62,6 +62,8 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
     </Popconfirm>
   );
 
+  const handleFinishedExecution = (status: ExecutionStatus) => {};
+
   return isContextLoading || isTestCasesLoading ? (
     <Spin />
   ) : (
@@ -78,6 +80,7 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
           <Executor
             executionTitle={currentExecution!.testCaseTitle!}
             eid={currentExecution!._id}
+            onFinish={handleFinishedExecution}
           />
         </Col>
         <Col span={6}>
