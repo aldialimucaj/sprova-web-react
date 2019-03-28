@@ -64,6 +64,9 @@ const Executor: React.FunctionComponent<Props> = ({ eid, executionTitle }) => {
       executionSteps!.splice(index, 1, executionStepNew);
 
       setIsStepUpdateLoading(false);
+
+      const nextPendingStep = findFirstPendingStep(executionSteps);
+      setCurrentStep(nextPendingStep);
     } catch (error) {
       setIsStepUpdateLoading(false);
       notification.error({
