@@ -3,11 +3,7 @@ import { postExecutionContext } from '@/api/execution-context.api';
 import { postExecutions } from '@/api/execution.api';
 import { FormButton, FormSearchSelect } from '@/components/form';
 import { ProjectContext } from '@/contexts/ProjectContext';
-import {
-  Execution,
-  ExecutionResult,
-  ExecutionStatus,
-} from '@/models/Execution';
+import { Execution, ExecutionStatus } from '@/models/Execution';
 import {
   ExecutionContext,
   ExecutionContextStatus,
@@ -68,7 +64,7 @@ const ExecutionSetupTestcase: React.FunctionComponent<
       projectId: match.params.pid,
       type: ExecutionType.TestCases,
       method: ExecutionMethod.Manual,
-      status: ExecutionContextStatus.Scheduled,
+      status: ExecutionContextStatus.Active,
     };
 
     setIsLoading(true);
@@ -81,16 +77,16 @@ const ExecutionSetupTestcase: React.FunctionComponent<
       const executions: Array<Partial<Execution>> = selectedTestCases.map(
         (testCase: TestCase) => {
           const executionSteps: ExecutionStep[] = testCase.steps.map(
-            (testStep: TestStep) => ({
+            (testStep: TestStep, index: number) => ({
               ...testStep,
+              key: index,
               result: ExecutionStepResult.Pending,
             })
           );
           return {
             contextId,
             testCaseId: testCase._id,
-            result: ExecutionResult.Pending,
-            status: ExecutionStatus.Waiting,
+            status: ExecutionStatus.Pending,
             steps: executionSteps,
           };
         }

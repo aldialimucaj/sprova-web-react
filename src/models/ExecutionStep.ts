@@ -1,6 +1,7 @@
 import { TestStep } from './TestStep';
 
 export interface ExecutionStep extends TestStep {
+  key: number;
   result: ExecutionStepResult;
   message?: string;
 }

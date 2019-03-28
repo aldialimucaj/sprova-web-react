@@ -5,21 +5,21 @@ export interface Execution {
   contextId: string;
   testCaseId: string;
   testCaseTitle?: string;
-  result: ExecutionResult;
   status: ExecutionStatus;
   steps: ExecutionStep[];
+  comments: ExecutionComment[];
   createdAt: Date;
   startedAt?: Date;
   finishedAt?: Date;
 }
 
-export enum ExecutionStatus {
-  Active = 'ACTIVE',
-  Finished = 'FINISHED',
-  Waiting = 'WAITING',
+export interface ExecutionComment {
+  type: 'note' | 'warning';
+  message: string;
+  stepKey?: string;
 }
 
-export enum ExecutionResult {
+export enum ExecutionStatus {
   Failed = 'FAILED',
   Pending = 'PENDING',
   Successful = 'SUCCESSFUL',

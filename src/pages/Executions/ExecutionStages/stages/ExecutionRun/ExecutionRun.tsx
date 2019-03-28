@@ -37,11 +37,11 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
   >(getExecutionsOfContext, contextId, true);
 
   if (!currentExecution && executions) {
-    const firstWaitingExecution: Execution | undefined = _.find(
+    const firstPendingExecution: Execution | undefined = _.find(
       executions,
-      (execution: Execution) => execution.status === ExecutionStatus.Waiting
+      (execution: Execution) => execution.status === ExecutionStatus.Pending
     );
-    setCurrentExecution(firstWaitingExecution || executions[0]);
+    setCurrentExecution(firstPendingExecution || executions[0]);
   }
 
   const handleExecutionSelect = (selectedExecution: Execution) => {
