@@ -12,6 +12,8 @@ import { RouteComponentProps, withRouter } from 'react-router-dom';
 import Executor from './Executor';
 import './index.scss';
 
+const ButtonGroup = Button.Group;
+
 interface Params {
   pid: string;
 }
@@ -64,6 +66,24 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   const handleFinishedExecution = (status: ExecutionStatus) => {};
 
+  const findPrevious = () => {
+    // return _.findIndex();
+  };
+
+  const findNext = () => {};
+
+  const hasPrevious = () => {
+    return false;
+  };
+
+  const hasNext = () => {
+    return false;
+  };
+
+  const selectPrevious = () => {};
+
+  const selectNext = () => {};
+
   return isContextLoading || isTestCasesLoading ? (
     <Spin />
   ) : (
@@ -77,8 +97,26 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
       <Row gutter={24}>
         <Col span={18}>
+          <Level
+            left={
+              <span style={{ fontSize: 18 }}>
+                {currentExecution!.testCaseTitle!}
+              </span>
+            }
+            right={
+              <ButtonGroup>
+                <Button disabled={!hasPrevious()} onClick={selectPrevious}>
+                  <Icon type="left" />
+                  Previous
+                </Button>
+                <Button disabled={!hasNext()} onClick={selectNext}>
+                  Next
+                  <Icon type="right" />
+                </Button>
+              </ButtonGroup>
+            }
+          />
           <Executor
-            executionTitle={currentExecution!.testCaseTitle!}
             eid={currentExecution!._id}
             onFinish={handleFinishedExecution}
           />

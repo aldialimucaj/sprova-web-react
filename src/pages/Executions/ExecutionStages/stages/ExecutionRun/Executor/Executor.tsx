@@ -10,23 +10,12 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import './index.scss';
 
-const ButtonGroup = Button.Group;
-
 interface Props extends RouteComponentProps {
   eid: string;
-  executionTitle: string;
   onFinish: (status: ExecutionStatus) => void;
-  selectPrevious?: () => void;
-  selectNext?: () => void;
 }
 
-const Executor: React.FunctionComponent<Props> = ({
-  eid,
-  executionTitle,
-  onFinish,
-  selectPrevious,
-  selectNext,
-}) => {
+const Executor: React.FunctionComponent<Props> = ({ eid, onFinish }) => {
   const [executionSteps, setExecutionSteps] = useState<ExecutionStep[]>([]);
   const [isExecutionStepsLoading, setIsExecutionStepsLoading] = useState(true);
   const [error, setError] = useState<string>('');
@@ -155,21 +144,6 @@ const Executor: React.FunctionComponent<Props> = ({
 
   return (
     <Fragment>
-      <Level
-        left={<span style={{ fontSize: 18 }}>{executionTitle}</span>}
-        right={
-          <ButtonGroup>
-            <Button disabled={!selectPrevious}>
-              <Icon type="left" />
-              Previous
-            </Button>
-            <Button disabled={!selectNext}>
-              Next
-              <Icon type="right" />
-            </Button>
-          </ButtonGroup>
-        }
-      />
       {isExecutionStepsLoading ? (
         <Spin />
       ) : error ? (
