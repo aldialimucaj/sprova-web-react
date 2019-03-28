@@ -1,11 +1,23 @@
 import { getExecutionContext } from '@/api/execution-context.api';
-import { getExecutionsOfContext } from '@/api/execution.api';
+import {
+  getExecutionsOfContext,
+  putExecutionStatus,
+} from '@/api/execution.api';
 import Level from '@/components/Level';
 import PageHeader from '@/components/PageHeader';
 import { useFetcher } from '@/hooks/useFetcher';
 import { Execution, ExecutionStatus } from '@/models/Execution';
 import { parseQuery } from '@/utils';
-import { Button, Col, Icon, List, Popconfirm, Row, Spin } from 'antd';
+import {
+  Button,
+  Col,
+  Icon,
+  List,
+  notification,
+  Popconfirm,
+  Row,
+  Spin,
+} from 'antd';
 import _ from 'lodash';
 import React, { Fragment, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -29,7 +41,11 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
     null
   );
 
-  const { data: context, isLoading: isContextLoading } = useFetcher(
+  const [isStatusUpdateLoading, setIsStatusUpdateLoading] = useState<boolean>(
+    false
+  );
+
+  const { isLoading: isContextLoading } = useFetcher(
     getExecutionContext,
     contextId
   );
@@ -64,7 +80,33 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
     </Popconfirm>
   );
 
-  const handleFinishedExecution = (status: ExecutionStatus) => {};
+  const handleFinishedExecution = async (executionStatus: ExecutionStatus) => {
+    setIsStatusUpdateLoading(true);
+
+    try {
+      await putExecutionStatus(currentExecution!._id!, executionStatus);
+
+      const executionNew: Execution = {
+        ...currentExecution!,
+        status: executionStatus,
+      };
+
+      const index = _.findIndex(executions, {
+        _id: executionNew._id,
+      });
+
+      executions!.splice(index, 1, executionNew);
+
+      setIsStatusUpdateLoading(false);
+    } catch (error) {
+      setIsStatusUpdateLoading(false);
+      notification.error({
+        placement: 'bottomRight',
+        message: 'Failed to update Execution Status',
+        description: error,
+      });
+    }
+  };
 
   const getStatusColor = (status: ExecutionStatus): string => {
     switch (status) {
@@ -98,6 +140,13 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
         return '';
       }
     }
+  };
+
+  const hasPendingLeft = () => {
+    return !!_.find(
+      executions,
+      (execution: Execution) => execution.status === ExecutionStatus.Pending
+    );
   };
 
   const findPrevious = () => {
@@ -150,10 +199,12 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
               </ButtonGroup>
             }
           />
-          <Executor
-            eid={currentExecution!._id}
-            onFinish={handleFinishedExecution}
-          />
+          <Spin spinning={isStatusUpdateLoading}>
+            <Executor
+              eid={currentExecution!._id}
+              onFinish={handleFinishedExecution}
+            />
+          </Spin>
         </Col>
         <Col span={6}>
           <List
@@ -190,7 +241,7 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
             footer={<span>Footer</span>}
           />
           <Button
-            disabled={true}
+            disabled={hasPendingLeft()}
             style={{ marginBottom: 8 }}
             block={true}
             type="primary"

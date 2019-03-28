@@ -1,4 +1,4 @@
-import { Execution } from '@/models/Execution';
+import { Execution, ExecutionStatus } from '@/models/Execution';
 import { ExecutionStep } from '@/models/ExecutionStep';
 import { AxiosError, AxiosResponse } from 'axios';
 import agent from './agent';
@@ -153,6 +153,32 @@ export function postExecution(execution: Partial<Execution>) {
           throw statusText;
         }
         return data as Execution;
+      }
+    );
+}
+
+export function putExecutionStatus(
+  executionId: string,
+  executionStatus: ExecutionStatus
+): Promise<boolean> {
+  return agent
+    .put(`/executions/${executionId}/status`, { status: executionStatus })
+    .catch(
+      (error: AxiosError): AxiosResponse => {
+        const { message, response } = error;
+        if (!response) {
+          throw message;
+        }
+        return response;
+      }
+    )
+    .then(
+      (response: AxiosResponse): boolean => {
+        const { data, status, statusText } = response;
+        if (status !== 200) {
+          throw statusText;
+        }
+        return !!data.ok;
       }
     );
 }
