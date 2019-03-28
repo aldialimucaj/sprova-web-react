@@ -66,6 +66,40 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   const handleFinishedExecution = (status: ExecutionStatus) => {};
 
+  const getStatusColor = (status: ExecutionStatus): string => {
+    switch (status) {
+      case ExecutionStatus.Successful: {
+        return '#f6ffed';
+      }
+      case ExecutionStatus.Warning: {
+        return '#fffbe6';
+      }
+      case ExecutionStatus.Failed: {
+        return '#fff1f0';
+      }
+      default: {
+        return 'white';
+      }
+    }
+  };
+
+  const getStatusIcon = (status: ExecutionStatus): string => {
+    switch (status) {
+      case ExecutionStatus.Successful: {
+        return 'check';
+      }
+      case ExecutionStatus.Warning: {
+        return 'exclamation';
+      }
+      case ExecutionStatus.Failed: {
+        return 'close';
+      }
+      default: {
+        return '';
+      }
+    }
+  };
+
   const findPrevious = () => {
     // return _.findIndex();
   };
@@ -135,15 +169,21 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
             dataSource={executions}
             renderItem={(_execution: Execution) => (
               <List.Item
+                style={{
+                  backgroundColor: `${getStatusColor(_execution.status)}`,
+                }}
                 className={`list-item ${
                   _execution._id === currentExecution!._id ? 'selected' : ''
                 }`}
                 onClick={() => handleExecutionSelect(_execution)}
               >
                 <Level
-                  style={{ marginBottom: 0, width: '100%' }}
+                  style={{
+                    marginBottom: 0,
+                    width: '100%',
+                  }}
                   left={<span>{_execution.testCaseTitle}</span>}
-                  right={<Icon type="check" />}
+                  right={<Icon type={getStatusIcon(_execution.status)} />}
                 />
               </List.Item>
             )}
