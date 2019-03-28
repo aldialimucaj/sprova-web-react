@@ -26,6 +26,7 @@ const Executor: React.FunctionComponent<Props> = ({ eid, executionTitle }) => {
   const [isStepUpdateLoading, setIsStepUpdateLoading] = useState(false);
   const {
     value: stepMessage,
+    setValue: setStepMessage,
     handleChange: handleStepMessageChange,
   } = useFormTextArea('');
 
@@ -36,6 +37,11 @@ const Executor: React.FunctionComponent<Props> = ({ eid, executionTitle }) => {
       steps,
       (step: ExecutionStep) => step.result === ExecutionStepResult.Pending
     );
+  };
+
+  const handleStepSelect = (executionStep: ExecutionStep) => {
+    setCurrentStep(executionStep);
+    setStepMessage('');
   };
 
   const handleStepResult = async (result: ExecutionStepResult) => {
@@ -99,6 +105,7 @@ const Executor: React.FunctionComponent<Props> = ({ eid, executionTitle }) => {
 
         const firstPendingStep = findFirstPendingStep(fetchedData);
         setCurrentStep(firstPendingStep);
+        setStepMessage('');
       } catch (error) {
         setError(error);
       }
@@ -210,7 +217,7 @@ const Executor: React.FunctionComponent<Props> = ({ eid, executionTitle }) => {
             ) : (
               <List.Item
                 className="selectable-step"
-                onClick={() => setCurrentStep(executionStep)}
+                onClick={() => handleStepSelect(executionStep)}
               >
                 <List.Item.Meta
                   title={executionStep.action}
