@@ -3,8 +3,12 @@ import Level from '@/components/Level';
 import PageHeader from '@/components/PageHeader';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFetcher } from '@/hooks/useFetcher';
-import { ExecutionContext } from '@/models/ExecutionContext';
-import { Alert, Button, Card, Col, Divider, Icon, List, Row } from 'antd';
+import {
+  ExecutionContext,
+  ExecutionContextStatus,
+} from '@/models/ExecutionContext';
+import { Alert, Button, Col, Divider, Icon, List, Row } from 'antd';
+import _ from 'lodash';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './index.scss';
@@ -16,13 +20,18 @@ interface Params {
 const ExecutionOverview: React.FunctionComponent<
   RouteComponentProps<Params>
 > = ({ history, match }) => {
-  const [{ project }] = useContext(ProjectContext);
-
   const {
     data: executionContexts,
     isLoading: isExecutionContextsLoading,
     error,
   } = useFetcher<ExecutionContext[]>(getExecutionContexts, match.params.pid);
+
+  const filterContextsByStatus = (status: ExecutionContextStatus) => {
+    return _.filter(
+      executionContexts,
+      (executionContext: ExecutionContext) => executionContext.status === status
+    );
+  };
 
   return error ? (
     <Alert message="Something went wrong" description={error} type="error" />
@@ -51,7 +60,7 @@ const ExecutionOverview: React.FunctionComponent<
           </div>
         }
         bordered={true}
-        dataSource={executionContexts}
+        dataSource={filterContextsByStatus(ExecutionContextStatus.Active)}
         renderItem={(executionContext: ExecutionContext) => (
           <List.Item
             onClick={() =>
@@ -111,7 +120,9 @@ const ExecutionOverview: React.FunctionComponent<
               />
             }
             bordered={true}
-            dataSource={[]}
+            dataSource={filterContextsByStatus(
+              ExecutionContextStatus.Scheduled
+            )}
             renderItem={(executionContext: ExecutionContext) => (
               <List.Item>{executionContext._id}</List.Item>
             )}
@@ -139,7 +150,7 @@ const ExecutionOverview: React.FunctionComponent<
               />
             }
             bordered={true}
-            dataSource={[]}
+            dataSource={filterContextsByStatus(ExecutionContextStatus.Finished)}
             renderItem={(executionContext: ExecutionContext) => (
               <List.Item>{executionContext._id}</List.Item>
             )}

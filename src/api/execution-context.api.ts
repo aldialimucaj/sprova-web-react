@@ -1,4 +1,7 @@
-import { ExecutionContext } from '@/models/ExecutionContext';
+import {
+  ExecutionContext,
+  ExecutionContextStatus,
+} from '@/models/ExecutionContext';
 import { AxiosError, AxiosResponse } from 'axios';
 import agent from './agent';
 
@@ -75,6 +78,34 @@ export function postExecutionContext(
           throw statusText;
         }
         return data as ExecutionContext;
+      }
+    );
+}
+
+export function putExecutionContextStatus(
+  executionContextId: string,
+  executionContextStatus: ExecutionContextStatus
+): Promise<boolean> {
+  return agent
+    .put(`/execution-contexts/${executionContextId}/status`, {
+      status: executionContextStatus,
+    })
+    .catch(
+      (error: AxiosError): AxiosResponse => {
+        const { message, response } = error;
+        if (!response) {
+          throw message;
+        }
+        return response;
+      }
+    )
+    .then(
+      (response: AxiosResponse): boolean => {
+        const { data, status, statusText } = response;
+        if (status !== 200) {
+          throw statusText;
+        }
+        return !!data.ok;
       }
     );
 }

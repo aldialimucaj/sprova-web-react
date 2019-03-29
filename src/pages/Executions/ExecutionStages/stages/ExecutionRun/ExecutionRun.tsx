@@ -1,4 +1,7 @@
-import { getExecutionContext } from '@/api/execution-context.api';
+import {
+  getExecutionContext,
+  putExecutionContextStatus,
+} from '@/api/execution-context.api';
 import {
   getExecutionsOfContext,
   putExecutionStatus,
@@ -7,6 +10,7 @@ import Level from '@/components/Level';
 import PageHeader from '@/components/PageHeader';
 import { useFetcher } from '@/hooks/useFetcher';
 import { Execution, ExecutionStatus } from '@/models/Execution';
+import { ExecutionContextStatus } from '@/models/ExecutionContext';
 import { parseQuery } from '@/utils';
 import {
   Button,
@@ -42,6 +46,9 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
   );
 
   const [isStatusUpdateLoading, setIsStatusUpdateLoading] = useState<boolean>(
+    false
+  );
+  const [isContextUpdateLoading, setIsContextUpdateLoading] = useState<boolean>(
     false
   );
 
@@ -103,6 +110,33 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
       notification.error({
         placement: 'bottomRight',
         message: 'Failed to update Execution Status',
+        description: error,
+      });
+    }
+  };
+
+  const finishExecutionContext = async () => {
+    setIsContextUpdateLoading(true);
+
+    try {
+      await putExecutionContextStatus(
+        contextId as string,
+        ExecutionContextStatus.Finished
+      );
+      setIsContextUpdateLoading(false);
+      notification.success({
+        placement: 'bottomRight',
+        message: 'Execution finished',
+      });
+
+      history.push(
+        `/projects/${match.params.pid}/executions/result?contextId=${contextId}`
+      );
+    } catch (error) {
+      setIsContextUpdateLoading(false);
+      notification.error({
+        placement: 'bottomRight',
+        message: 'Failed to finish Execution',
         description: error,
       });
     }
@@ -242,6 +276,7 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
           />
           <Button
             disabled={hasPendingLeft()}
+            onClick={finishExecutionContext}
             style={{ marginBottom: 8 }}
             block={true}
             type="primary"
