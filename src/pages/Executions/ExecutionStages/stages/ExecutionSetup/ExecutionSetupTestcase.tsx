@@ -13,6 +13,7 @@ import {
 import { ExecutionStep, ExecutionStepResult } from '@/models/ExecutionStep';
 import { TestCase } from '@/models/TestCase';
 import { TestStep } from '@/models/TestStep';
+import { parseQuery } from '@/utils';
 import { Icon, List, notification, Select } from 'antd';
 import _ from 'lodash';
 import React, { Fragment, useContext, useState } from 'react';
@@ -26,12 +27,22 @@ interface Params {
 
 const ExecutionSetupTestcase: React.FunctionComponent<
   RouteComponentProps<Params>
-> = ({ history, match }) => {
+> = ({ history, location, match }) => {
+  const { tid } = parseQuery(location);
+
   const [{ testCases }] = useContext(ProjectContext);
-  const [selectableTestCases, setSelectableTestCases] = useState<TestCase[]>(
-    testCases
+
+  const testCaseFromQuery: TestCase | undefined = _.find(
+    testCases,
+    (testCase: TestCase) => testCase._id === tid
   );
-  const [selectedTestCases, setSelectedTestCases] = useState<TestCase[]>([]);
+
+  const [selectableTestCases, setSelectableTestCases] = useState<TestCase[]>(
+    (testCaseFromQuery && _.without(testCases, testCaseFromQuery)) || testCases
+  );
+  const [selectedTestCases, setSelectedTestCases] = useState<TestCase[]>(
+    (testCaseFromQuery && [testCaseFromQuery]) || []
+  );
   const [currentTestCaseId, setCurrentTestCaseId] = useState<string | null>(
     null
   );

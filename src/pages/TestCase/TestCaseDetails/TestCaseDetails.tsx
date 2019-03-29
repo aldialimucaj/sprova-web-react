@@ -69,7 +69,7 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
     <Link
       to={{
         pathname: `/projects/${match.params.pid}/executions/setup`,
-        search: `?type=testcase&tid=${match.params.tid}`,
+        search: `?type=testcases&tid=${match.params.tid}`,
       }}
       style={{ marginRight: 16 }}
     >

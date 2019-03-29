@@ -1,5 +1,6 @@
 import { FormSelect } from '@/components/form';
 import PageHeader from '@/components/PageHeader';
+import { parseQuery } from '@/utils';
 import { Col, Form, Row, Select } from 'antd';
 import React, { Fragment, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
@@ -15,9 +16,22 @@ interface Params {
 }
 
 const ExecutionSetup: React.FunctionComponent<RouteComponentProps<Params>> = ({
+  location,
   match,
 }) => {
-  const [type, setType] = useState('testcases');
+  const { type: executionType } = parseQuery(location);
+
+  const validateType = (_type: string): string | undefined => {
+    return (
+      ((_type === 'testcases' || _type === 'cycle' || _type === 'testset') &&
+        _type) ||
+      undefined
+    );
+  };
+
+  const [type, setType] = useState(
+    validateType(executionType as string) || 'testcases'
+  );
 
   let form;
 
