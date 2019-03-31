@@ -158,7 +158,7 @@ const Executor: React.FunctionComponent<Props> = ({ eid, onFinish }) => {
           bordered={true}
           dataSource={executionSteps}
           renderItem={(executionStep: ExecutionStep) =>
-            currentStep && executionStep.action === currentStep.action ? (
+            currentStep && executionStep.key === currentStep.key ? (
               <List.Item
                 style={{
                   display: 'block',
@@ -177,12 +177,17 @@ const Executor: React.FunctionComponent<Props> = ({ eid, onFinish }) => {
                       </div>
                     }
                     right={
-                      <Tag
-                        color={getTagColor(executionStep.result)}
-                        style={{ pointerEvents: 'none' }}
-                      >
-                        {executionStep.result}
-                      </Tag>
+                      <Fragment>
+                        {executionStep.inheritedFrom ? (
+                          <Tag style={{ pointerEvents: 'none' }}>Inherited</Tag>
+                        ) : null}
+                        <Tag
+                          color={getTagColor(executionStep.result)}
+                          style={{ pointerEvents: 'none' }}
+                        >
+                          {executionStep.result}
+                        </Tag>
+                      </Fragment>
                     }
                   />
                   {executionStep.result === ExecutionStepResult.Pending ? (
@@ -234,6 +239,9 @@ const Executor: React.FunctionComponent<Props> = ({ eid, onFinish }) => {
                   title={executionStep.action}
                   description={`Expected: ${executionStep.expected}`}
                 />
+                {executionStep.inheritedFrom ? (
+                  <Tag style={{ pointerEvents: 'none' }}>Inherited</Tag>
+                ) : null}
                 <Tag
                   color={getTagColor(executionStep.result)}
                   style={{ pointerEvents: 'none' }}

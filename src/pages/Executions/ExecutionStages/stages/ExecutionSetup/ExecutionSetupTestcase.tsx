@@ -87,18 +87,10 @@ const ExecutionSetupTestcase: React.FunctionComponent<
 
       const executions: Array<Partial<Execution>> = selectedTestCases.map(
         (testCase: TestCase) => {
-          const executionSteps: ExecutionStep[] = testCase.steps.map(
-            (testStep: TestStep, index: number) => ({
-              ...testStep,
-              key: index,
-              result: ExecutionStepResult.Pending,
-            })
-          );
           return {
             contextId,
             testCaseId: testCase._id,
             status: ExecutionStatus.Pending,
-            steps: executionSteps,
           };
         }
       );
