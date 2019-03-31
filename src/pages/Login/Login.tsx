@@ -97,6 +97,7 @@ const Login: React.FunctionComponent<Props> = ({ form, history }) => {
               </Form.Item>
               <Form.Item>
                 <Button
+                  id="loginButton"
                   block={true}
                   type="primary"
                   htmlType="submit"
