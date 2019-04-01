@@ -1,11 +1,10 @@
 import { TestCase } from '@/models/TestCase';
-import { findChildren } from '@/utils';
-import { List, Tabs } from 'antd';
+import { Tabs } from 'antd';
 const TabPane = Tabs.TabPane;
-import React, { Fragment } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import './OverviewTab.scss';
-import ExecutionsTab from './ExecutionsTab';
+import React from 'react';
+import CodeDetails from './CodeDetails';
 
 interface Params {
   pid: string;
@@ -23,25 +22,23 @@ const OverviewTab: React.FunctionComponent<Props> = ({
 }) => {
 
   return (
-    <Fragment>
-      <Tabs defaultActiveKey="1" type="line" tabPosition="right">
-        <TabPane tab="Java" key="1">
-          Java
+    <Tabs defaultActiveKey="1" type="line" tabPosition="right">
+      <TabPane tab="Java" key="1">
+        <CodeDetails lang="java" testCaseId={testCase._id} />
+      </TabPane>
+      <TabPane tab="Kotlin" key="2">
+        Kotlin
         </TabPane>
-        <TabPane tab="Kotlin" key="2">
-          Kotlin
+      <TabPane tab="Kotlin" key="3">
+        JavaScript (protractor)
         </TabPane>
-        <TabPane tab="Kotlin" key="3">
-          JavaScript (protractor)
+      <TabPane tab="Kotlin" key="4">
+        JavaScript (generic)
         </TabPane>
-        <TabPane tab="Kotlin" key="4">
-          JavaScript (generic)
+      <TabPane tab="Kotlin" key="5">
+        Python
         </TabPane>
-        <TabPane tab="Kotlin" key="5">
-          Python
-        </TabPane>
-      </Tabs>
-    </Fragment>
+    </Tabs>
   );
 };
 
