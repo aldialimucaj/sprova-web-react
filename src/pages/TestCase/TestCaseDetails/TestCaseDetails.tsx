@@ -12,6 +12,7 @@ import {
 } from 'react-router-dom';
 import ExecutionsTab from './tabs/ExecutionsTab';
 import OverviewTab from './tabs/OverviewTab';
+import CodeGenerationTab from './tabs/CodeGenerationTab';
 
 const TabPane = Tabs.TabPane;
 
@@ -113,7 +114,10 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
         <TabPane tab="Executions" key="3">
           <ExecutionsTab />
         </TabPane>
-        <TabPane tab="Settings" key="4">
+        <TabPane tab="Code Generation" key="4">
+          <CodeGenerationTab testCase={testCase} />
+        </TabPane>
+        <TabPane tab="Settings" key="5">
           Content of Tab Pane 2
         </TabPane>
       </Tabs>
