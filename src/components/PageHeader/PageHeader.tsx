@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import './PageHeader.scss';
 
 interface Props extends RouteComponentProps {
-  title: string;
+  title: React.ReactNode;
   extra?: React.ReactNode;
   navIcon?: React.ReactNode;
   subTitle?: string;

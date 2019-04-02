@@ -1,4 +1,4 @@
-import Level from '@/components/Level';
+import PageHeader from '@/components/PageHeader';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { TestCase } from '@/models/TestCase';
 import { Button, Divider, Icon, Table } from 'antd';
@@ -58,20 +58,21 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   return (
     <Fragment>
-      <Level
-        left={
-          <span style={{ fontSize: 18 }}>
+      <PageHeader
+        title={
+          <span>
             <Link to={`/projects/${match.params.pid}`}>{project.title}</Link> /{' '}
             <strong>Test Cases</strong>
           </span>
         }
-        right={
+        extra={
           <Link to={`/projects/${match.params.pid}/testcases/new`}>
             <Button type="primary">
               <Icon type="plus" /> New
             </Button>
           </Link>
         }
+        subTitle="#51"
       />
       <Divider />
       <Table
