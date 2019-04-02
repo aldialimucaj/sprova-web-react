@@ -29,13 +29,13 @@ const OverviewTab: React.FunctionComponent<Props> = ({
       <TabPane tab="Kotlin" key="2">
         Kotlin
         </TabPane>
-      <TabPane tab="Kotlin" key="3">
+      <TabPane tab="JavaScript (protractor)" key="3">
         JavaScript (protractor)
         </TabPane>
-      <TabPane tab="Kotlin" key="4">
+      <TabPane tab="JavaScript (generic)" key="4">
         JavaScript (generic)
         </TabPane>
-      <TabPane tab="Kotlin" key="5">
+      <TabPane tab="Python" key="5">
         Python
         </TabPane>
     </Tabs>
