@@ -39,11 +39,6 @@ const ProjectMenu: React.FunctionComponent<RouteComponentProps<Params>> = ({
       path: 'testsets',
       text: 'Test Sets',
     },
-    {
-      icon: 'pie-chart',
-      path: 'reports',
-      text: 'Reports',
-    },
   ];
 
   const normalizedPath = location.pathname.replace(
