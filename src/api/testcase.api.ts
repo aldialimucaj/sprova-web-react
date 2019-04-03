@@ -1,6 +1,6 @@
 import { TestCase } from '@/models/TestCase';
 import { AxiosError, AxiosResponse } from 'axios';
-import agent from './agent';
+import agent from './agents/api.agent';
 
 export function getTestCases(projectId: string): Promise<TestCase[]> {
   return agent

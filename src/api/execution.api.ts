@@ -1,7 +1,7 @@
 import { Execution, ExecutionStatus } from '@/models/Execution';
 import { ExecutionStep } from '@/models/ExecutionStep';
 import { AxiosError, AxiosResponse } from 'axios';
-import agent from './agent';
+import agent from './agents/api.agent';
 
 export function getExecutions(): Promise<Execution[]> {
   return agent

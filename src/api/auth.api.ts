@@ -1,47 +1,45 @@
 import { User } from '@/models/User';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import decode from 'jwt-decode';
-import { setToken } from './agent';
+import { setToken } from './agents/api.agent';
+import authAgent from './agents/auth.agent';
 
 export function authenticate(
   username: string,
   password: string
 ): Promise<User> {
-  return (
-    axios
-      // TODO: extract URL
-      .post('http://localhost:8181/authenticate', {
-        password,
-        username,
-      })
-      .catch(
-        (error: AxiosError): AxiosResponse => {
-          const { message, response } = error;
-          if (!response) {
-            throw message;
-          }
-          return response;
+  return authAgent
+    .post('authenticate', {
+      password,
+      username,
+    })
+    .catch(
+      (error: AxiosError): AxiosResponse => {
+        const { message, response } = error;
+        if (!response) {
+          throw message;
         }
-      )
-      .then(
-        (response: AxiosResponse): string => {
-          const { data, status, statusText } = response;
-          const { error, token } = data;
-          if (status !== 200) {
-            throw error || statusText;
-          }
-          return token;
+        return response;
+      }
+    )
+    .then(
+      (response: AxiosResponse): string => {
+        const { data, status, statusText } = response;
+        const { error, token } = data;
+        if (status !== 200) {
+          throw error || statusText;
         }
-      )
-      .then(
-        (token: string): User => {
-          localStorage.setItem('token', token);
-          setToken(token);
+        return token;
+      }
+    )
+    .then(
+      (token: string): User => {
+        localStorage.setItem('token', token);
+        setToken(token);
 
-          return decode(token) as User;
-        }
-      )
-  );
+        return decode(token) as User;
+      }
+    );
 }
 
 export function getUser(): User | null {

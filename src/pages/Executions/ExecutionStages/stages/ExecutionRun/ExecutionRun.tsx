@@ -21,12 +21,14 @@ import {
   Popconfirm,
   Row,
   Spin,
+  Breadcrumb,
 } from 'antd';
 import _ from 'lodash';
-import React, { Fragment, useState } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import React, { Fragment, useState, useContext } from 'react';
+import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
 import Executor from './Executor';
 import './index.scss';
+import { ProjectContext } from '@/contexts/ProjectContext';
 
 const ButtonGroup = Button.Group;
 
@@ -40,6 +42,8 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
 }) => {
   const { contextId } = parseQuery(location);
+
+  const [{ project }] = useContext(ProjectContext);
 
   const [currentExecution, setCurrentExecution] = useState<Execution | null>(
     null
@@ -129,9 +133,7 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
         message: 'Execution finished',
       });
 
-      history.push(
-        `/projects/${match.params.pid}/executions/result?contextId=${contextId}`
-      );
+      history.push(`/projects/${match.params.pid}/executions/${contextId}`);
     } catch (error) {
       setIsContextUpdateLoading(false);
       notification.error({
@@ -206,10 +208,20 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
   ) : (
     <Fragment>
       <PageHeader
-        title="Execution Run"
+        breadcrumb={
+          <Breadcrumb>
+            <Link to={`/projects/${match.params.pid}`}>
+              <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+            </Link>
+            <Link to={`/projects/${match.params.pid}/executions`}>
+              <Breadcrumb.Item>Executions</Breadcrumb.Item>
+            </Link>
+            <Breadcrumb.Item>Run</Breadcrumb.Item>
+          </Breadcrumb>
+        }
+        title="Live Execution"
         subTitle="#51"
         extra={abortButton}
-        url={`/projects/${match.params.pid}/executions`}
       />
 
       <Row gutter={24}>

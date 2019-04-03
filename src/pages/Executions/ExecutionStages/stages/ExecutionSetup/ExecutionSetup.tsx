@@ -1,9 +1,10 @@
 import { FormSelect } from '@/components/form';
 import PageHeader from '@/components/PageHeader';
+import { ProjectContext } from '@/contexts/ProjectContext';
 import { parseQuery } from '@/utils';
-import { Col, Form, Row, Select } from 'antd';
-import React, { Fragment, useState } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Breadcrumb, Col, Form, Row, Select, Button, Icon } from 'antd';
+import React, { Fragment, useContext, useState } from 'react';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import ExecutionSetupCycle from './ExecutionSetupCycle';
 import ExecutionSetupTestcase from './ExecutionSetupTestcase';
 import ExecutionSetupTestset from './ExecutionSetupTestset';
@@ -20,6 +21,8 @@ const ExecutionSetup: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
 }) => {
   const { type: executionType } = parseQuery(location);
+
+  const [{ project }] = useContext(ProjectContext);
 
   const validateType = (_type: string): string | undefined => {
     return (
@@ -53,8 +56,18 @@ const ExecutionSetup: React.FunctionComponent<RouteComponentProps<Params>> = ({
   return (
     <Fragment>
       <PageHeader
-        title="Execution Setup"
-        url={`/projects/${match.params.pid}/executions`}
+        breadcrumb={
+          <Breadcrumb>
+            <Link to={`/projects/${match.params.pid}`}>
+              <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+            </Link>
+            <Link to={`/projects/${match.params.pid}/executions`}>
+              <Breadcrumb.Item>Executions</Breadcrumb.Item>
+            </Link>
+            <Breadcrumb.Item>Setup</Breadcrumb.Item>
+          </Breadcrumb>
+        }
+        title="Start New Execution"
       />
       <Row>
         <Col span={12}>

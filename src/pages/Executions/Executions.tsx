@@ -6,8 +6,12 @@ import {
   withRouter,
 } from 'react-router-dom';
 import ExecutionOverview from './ExecutionOverview';
-import ExecutionStages from './ExecutionStages';
 import './index.scss';
+import {
+  ExecutionSetup,
+  ExecutionRun,
+  ExecutionResult,
+} from './ExecutionStages/stages';
 
 interface Params {
   pid: string;
@@ -19,8 +23,13 @@ const Executions: React.FunctionComponent<RouteComponentProps<Params>> = ({
   return (
     <Switch>
       <Route
-        path="/projects/:pid/executions/:stage(setup|run|result)"
-        component={ExecutionStages}
+        path="/projects/:pid/executions/setup"
+        component={ExecutionSetup}
+      />
+      <Route path="/projects/:pid/executions/run" component={ExecutionRun} />
+      <Route
+        path="/projects/:pid/executions/:ecid"
+        component={ExecutionResult}
       />
       <Route
         path="/projects/:pid/executions"

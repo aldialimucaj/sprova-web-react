@@ -72,7 +72,6 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
             </Button>
           </Link>
         }
-        subTitle="#51"
       />
       <Divider />
       <Table

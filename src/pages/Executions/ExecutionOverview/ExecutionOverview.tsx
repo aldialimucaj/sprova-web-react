@@ -7,7 +7,7 @@ import {
   ExecutionContext,
   ExecutionContextStatus,
 } from '@/models/ExecutionContext';
-import { Alert, Button, Col, Divider, Icon, List, Row } from 'antd';
+import { Alert, Button, Col, Divider, Icon, List, Row, Breadcrumb } from 'antd';
 import _ from 'lodash';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
@@ -20,6 +20,8 @@ interface Params {
 const ExecutionOverview: React.FunctionComponent<
   RouteComponentProps<Params>
 > = ({ history, match }) => {
+  const [{ project }] = useContext(ProjectContext);
+
   const {
     data: executionContexts,
     isLoading: isExecutionContextsLoading,
@@ -38,9 +40,15 @@ const ExecutionOverview: React.FunctionComponent<
   ) : (
     <Fragment>
       <PageHeader
-        title="Executions"
-        subTitle="Overview"
-        url={`/projects/${match.params.pid}`}
+        breadcrumb={
+          <Breadcrumb>
+            <Link to={`/projects/${match.params.pid}`}>
+              <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+            </Link>
+            <Breadcrumb.Item>Executions</Breadcrumb.Item>
+          </Breadcrumb>
+        }
+        title="Overview"
         extra={
           <Link key="0" to={`/projects/${match.params.pid}/executions/setup`}>
             <Button type="primary">
@@ -152,7 +160,17 @@ const ExecutionOverview: React.FunctionComponent<
             bordered={true}
             dataSource={filterContextsByStatus(ExecutionContextStatus.Finished)}
             renderItem={(executionContext: ExecutionContext) => (
-              <List.Item>{executionContext._id}</List.Item>
+              <List.Item
+                onClick={() =>
+                  history.push(
+                    `/projects/${match.params.pid}/executions/${
+                      executionContext._id
+                    }`
+                  )
+                }
+              >
+                {executionContext._id}
+              </List.Item>
             )}
           />
         </Col>

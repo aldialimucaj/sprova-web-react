@@ -3,7 +3,7 @@ import {
   ExecutionContextStatus,
 } from '@/models/ExecutionContext';
 import { AxiosError, AxiosResponse } from 'axios';
-import agent from './agent';
+import agent from './agents/api.agent';
 
 export function getExecutionContexts(
   projectId?: string

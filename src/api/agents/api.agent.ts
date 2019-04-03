@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const URL = 'http://localhost:8181/api/';
+const url = 'http://localhost:8181/api/';
+const timeout = 5000;
 
 const getToken = () => localStorage.getItem('token');
 
@@ -13,12 +14,12 @@ export const setToken = (token: string | null) => {
 };
 
 const agent = axios.create({
-  baseURL: URL,
+  baseURL: url,
   headers: {
-    "Authorization": formatToken(getToken()),
+    Authorization: formatToken(getToken()),
     'Content-Type': 'application/json',
   },
-  timeout: 5000,
+  timeout,
 });
 
 export default agent;

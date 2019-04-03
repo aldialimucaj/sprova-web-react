@@ -1,6 +1,6 @@
 import { Project } from '@/models/Project';
 import { AxiosError, AxiosResponse } from 'axios';
-import agent from './agent';
+import agent from './agents/api.agent';
 
 export async function getProjects(
   limit?: number,

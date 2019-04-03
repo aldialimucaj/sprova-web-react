@@ -1,5 +1,5 @@
 import { deleteTestCase } from '@/api/testcase.api';
-import Level from '@/components/Level';
+import PageHeader from '@/components/PageHeader';
 import { ProjectContext, removeTestCase } from '@/contexts/ProjectContext';
 import { findById } from '@/utils';
 import { Button, Icon, notification, Popconfirm, Tabs } from 'antd';
@@ -10,9 +10,9 @@ import {
   RouteComponentProps,
   withRouter,
 } from 'react-router-dom';
+import CodeGenerationTab from './tabs/CodeGenerationTab';
 import ExecutionsTab from './tabs/ExecutionsTab';
 import OverviewTab from './tabs/OverviewTab';
-import CodeGenerationTab from './tabs/CodeGenerationTab';
 
 const TabPane = Tabs.TabPane;
 
@@ -25,7 +25,7 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
   history,
   match,
 }) => {
-  const [{ testCases }, dispatch] = useContext(ProjectContext);
+  const [{ project, testCases }, dispatch] = useContext(ProjectContext);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const testCase = findById(testCases, match.params.tid);
 
@@ -60,7 +60,8 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
   };
 
   const header = (
-    <span style={{ fontSize: 18 }}>
+    <span>
+      <Link to={`/projects/${match.params.pid}`}>{project!.title}</Link> /{' '}
       <Link to={`/projects/${match.params.pid}/testcases`}>Test Cases</Link> /{' '}
       <strong>{testCase.title}</strong>
     </span>
@@ -95,9 +96,9 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   return (
     <Fragment>
-      <Level
-        left={header}
-        right={
+      <PageHeader
+        title={header}
+        extra={
           <div>
             {executeButton}
             {deleteButton}

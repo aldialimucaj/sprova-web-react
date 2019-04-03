@@ -1,6 +1,6 @@
 import { Cycle } from '@/models/Cycle';
 import { AxiosError, AxiosResponse } from 'axios';
-import agent from './agent';
+import agent from './agents/api.agent';
 
 export function postCycle(cycle: Cycle) {
   return agent

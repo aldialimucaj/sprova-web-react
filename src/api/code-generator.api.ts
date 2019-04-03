@@ -1,7 +1,10 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import agent from './agent';
+import agent from './agents/api.agent';
 
-export async function getGeneratedTestCase(testCaseId: string, language: string) {
+export async function getGeneratedTestCase(
+  testCaseId: string,
+  language: string
+) {
   return await agent
     .get(`/generators/${language}/testcases/${testCaseId}`)
     .catch(
