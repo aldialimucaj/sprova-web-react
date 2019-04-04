@@ -17,9 +17,11 @@ import {
   Tooltip,
 } from 'antd';
 import Chart from 'chart.js';
-import React, { Fragment, useContext, useEffect } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import './ExecutionDetails.scss';
+import OverviewTab from './tabs/OverviewTab';
+import TestCasesTab from './tabs/TestCasesTab';
 
 const TabPane = Tabs.TabPane;
 
@@ -32,13 +34,9 @@ const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
   location,
 }) => {
-  const { contextId } = parseQuery(location);
-
-  const pieChartCanvas = React.createRef<HTMLCanvasElement>();
-
-  let pieChart: Chart;
-
   const [{ project }] = useContext(ProjectContext);
+
+  const [activeTabKey, setActiveTabKey] = useState('overview');
 
   const { data: execution, error, isLoading } = useFetcher(
     getExecution,
@@ -59,28 +57,18 @@ const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
     </Link>
   );
 
-  useEffect(() => {
-    pieChart = new Chart(pieChartCanvas.current!, {
-      type: 'doughnut',
-      data: {
-        labels: ['Success', 'Warning', 'Failure'],
-        datasets: [
-          {
-            label: '# of Votes',
-            data: [12, 19, 3],
-            backgroundColor: ['#52c41a', '#faad14', '#f5222d'],
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        title: {
-          display: true,
-          text: 'Test Execution Results',
-        },
-      },
-    });
-  }, []);
+  let content;
+
+  switch (activeTabKey) {
+    case 'overview': {
+      content = <OverviewTab />;
+      break;
+    }
+    case 'testCases': {
+      content = <TestCasesTab />;
+      break;
+    }
+  }
 
   return (
     <Fragment>
@@ -99,58 +87,18 @@ const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
         title="Finished Execution"
         extra={[generatePdfButton, rerunButton]}
         tabs={
-          <Tabs defaultActiveKey="1">
-            <TabPane tab="Details" key="1" />
-            <TabPane tab="Rule" key="2" />
+          <Tabs
+            defaultActiveKey={`${activeTabKey}`}
+            onChange={(activeKey: string) => setActiveTabKey(activeKey)}
+          >
+            <TabPane tab="Overview" key="overview" />
+            <TabPane tab="Test Cases" key="testCases" />
           </Tabs>
         }
       >
         <span>Execution Details</span>
       </PageHeader>
-      <Row gutter={24}>
-        <Col span={16}>
-          <Row gutter={24} style={{ marginBottom: 24 }}>
-            <Col span={8}>
-              <Card>
-                <Statistic title="Total Number of Tests" value={118} />
-              </Card>
-            </Col>
-            <Col span={8}>
-              <Card>
-                <Statistic title="Execution Duration" value="04:33:12" />
-              </Card>
-            </Col>
-            <Col span={8}>
-              <Card>
-                <Statistic title="Total Number of Tests" value={118} />
-              </Card>
-            </Col>
-          </Row>
-          <List
-            className="children-list"
-            size="small"
-            header={
-              <Level
-                style={{ marginBottom: 0 }}
-                left={
-                  <span>
-                    <Icon type="file-text" style={{ marginRight: 8 }} />
-                    Executed Test Cases
-                  </span>
-                }
-              />
-            }
-            bordered={true}
-            dataSource={[]}
-            renderItem={(item: any) => <List.Item />}
-          />
-        </Col>
-        <Col span={8}>
-          <Card>
-            <canvas ref={pieChartCanvas} width="400" height="400" />
-          </Card>
-        </Col>
-      </Row>
+      {content}
     </Fragment>
   );
 };

@@ -8,9 +8,7 @@ const LayoutWrapper: React.FunctionComponent<{}> = ({ children }) => {
   return (
     <Layout>
       <SideMenu />
-      <Layout
-        style={{ marginLeft: 80, backgroundColor: 'white' }}
-      >
+      <Layout style={{ marginLeft: 80, backgroundColor: 'white' }}>
         <Header />
         <Content>{children}</Content>
       </Layout>
