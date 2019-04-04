@@ -3,19 +3,15 @@ import { AxiosResponse } from 'axios';
 import agent from './agents/api.agent';
 import axiosErrorHandler from './utils/axiosErrorHandler';
 
-export async function getProjects(
-  limit?: number,
-  skip?: number,
-  sort?: any
-): Promise<Project[]> {
+export interface QueryParams {
+  limit?: number;
+  skip?: number;
+  sort?: any;
+}
+
+export async function getProjects(params?: QueryParams): Promise<Project[]> {
   return agent
-    .get('/projects', {
-      params: {
-        limit,
-        skip,
-        sort,
-      },
-    })
+    .get('/projects', { params })
     .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): Project[] => {

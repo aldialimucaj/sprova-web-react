@@ -1,10 +1,10 @@
 import {
   getExecutionContext,
-  putExecutionContextStatus,
+  updateExecutionContextStatus,
 } from '@/api/execution-context.api';
 import {
   getExecutionsOfContext,
-  putExecutionStatus,
+  updateExecutionStatus,
 } from '@/api/execution.api';
 import Level from '@/components/Level';
 import PageHeader from '@/components/PageHeader';
@@ -95,7 +95,7 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
     setIsStatusUpdateLoading(true);
 
     try {
-      await putExecutionStatus(currentExecution!._id!, executionStatus);
+      await updateExecutionStatus(currentExecution!._id!, executionStatus);
 
       const executionNew: Execution = {
         ...currentExecution!,
@@ -123,7 +123,7 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
     setIsContextUpdateLoading(true);
 
     try {
-      await putExecutionContextStatus(
+      await updateExecutionContextStatus(
         contextId as string,
         ExecutionContextStatus.Finished
       );

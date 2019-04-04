@@ -1,4 +1,4 @@
-import { getExecutionSteps, putExecutionStep } from '@/api/execution.api';
+import { getExecutionSteps, updateExecutionStep } from '@/api/execution.api';
 import { FormTextArea } from '@/components/form';
 import Level from '@/components/Level';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
@@ -72,7 +72,7 @@ const Executor: React.FunctionComponent<Props> = ({ eid, onFinish }) => {
     setIsStepUpdateLoading(true);
 
     try {
-      await putExecutionStep(eid, executionStepNew);
+      await updateExecutionStep(eid, executionStepNew);
 
       const index = _.findIndex(executionSteps, {
         action: executionStepNew.action,

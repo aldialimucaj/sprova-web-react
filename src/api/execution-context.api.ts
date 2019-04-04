@@ -7,7 +7,7 @@ import agent from './agents/api.agent';
 import axiosErrorHandler from './utils/axiosErrorHandler';
 
 export function getExecutionContexts(
-  projectId?: string
+  projectId: string
 ): Promise<ExecutionContext[]> {
   return agent
     .get('/execution-contexts', {
@@ -59,7 +59,7 @@ export function postExecutionContext(
     );
 }
 
-export function putExecutionContextStatus(
+export function updateExecutionContextStatus(
   executionContextId: string,
   executionContextStatus: ExecutionContextStatus
 ): Promise<boolean> {

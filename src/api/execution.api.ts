@@ -4,9 +4,13 @@ import { AxiosResponse } from 'axios';
 import agent from './agents/api.agent';
 import axiosErrorHandler from './utils/axiosErrorHandler';
 
-export function getExecutions(): Promise<Execution[]> {
+export function getExecutions(projectId: string): Promise<Execution[]> {
   return agent
-    .get('/executions')
+    .get('/executions', {
+      params: {
+        projectId,
+      },
+    })
     .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): Execution[] => {
@@ -110,7 +114,7 @@ export function postExecution(execution: Partial<Execution>) {
     );
 }
 
-export function putExecutionStatus(
+export function updateExecutionStatus(
   executionId: string,
   executionStatus: ExecutionStatus
 ): Promise<boolean> {
@@ -128,7 +132,7 @@ export function putExecutionStatus(
     );
 }
 
-export function putExecutionStep(
+export function updateExecutionStep(
   executionId: string,
   executionStep: ExecutionStep
 ): Promise<boolean> {
@@ -146,7 +150,7 @@ export function putExecutionStep(
     );
 }
 
-export function putExecutionSteps(
+export function updateExecutionSteps(
   executionId: string,
   executionSteps: ExecutionStep[]
 ): Promise<boolean> {
