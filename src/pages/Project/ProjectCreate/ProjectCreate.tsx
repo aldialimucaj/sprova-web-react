@@ -1,13 +1,13 @@
 import { getUser } from '@/api/auth.api';
 import { postProject } from '@/api/project.api';
 import { FormButton, FormInput } from '@/components/form';
+import PageHeader from '@/components/PageHeader';
 import { RichTextEditor } from '@/components/RichTextEditor';
-import SectionHeader from '@/components/SectionHeader';
 import { useFormInput } from '@/hooks/useFormInput';
 import { Project } from '@/models/Project';
-import { Col, Form, notification, Row } from 'antd';
+import { Breadcrumb, Col, Form, notification, Row } from 'antd';
 import React, { useState } from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { formContentLayout } from './utils';
 
 const ProjectCreate: React.FunctionComponent<RouteComponentProps> = ({
@@ -54,7 +54,17 @@ const ProjectCreate: React.FunctionComponent<RouteComponentProps> = ({
 
   return (
     <React.Fragment>
-      <SectionHeader title="Create new project" />
+      <PageHeader
+        breadcrumb={
+          <Breadcrumb>
+            <Link to={`/projects`}>
+              <Breadcrumb.Item>Projects</Breadcrumb.Item>
+            </Link>
+            <Breadcrumb.Item>New</Breadcrumb.Item>
+          </Breadcrumb>
+        }
+        title="Create Project"
+      />
       <Row>
         <Col {...formContentLayout}>
           <Form layout="vertical" onSubmit={handleSubmit}>

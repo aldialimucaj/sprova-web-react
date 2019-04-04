@@ -2,7 +2,7 @@ import { deleteTestCase } from '@/api/testcase.api';
 import PageHeader from '@/components/PageHeader';
 import { ProjectContext, removeTestCase } from '@/contexts/ProjectContext';
 import { findById } from '@/utils';
-import { Button, Icon, notification, Popconfirm, Tabs } from 'antd';
+import { Breadcrumb, Button, Icon, notification, Popconfirm, Tabs } from 'antd';
 import React, { Fragment, useContext, useState } from 'react';
 import {
   Link,
@@ -59,14 +59,6 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
     }
   };
 
-  const header = (
-    <span>
-      <Link to={`/projects/${match.params.pid}`}>{project!.title}</Link> /{' '}
-      <Link to={`/projects/${match.params.pid}/testcases`}>Test Cases</Link> /{' '}
-      <strong>{testCase.title}</strong>
-    </span>
-  );
-
   const executeButton = (
     <Link
       to={{
@@ -97,13 +89,19 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
   return (
     <Fragment>
       <PageHeader
-        title={header}
-        extra={
-          <div>
-            {executeButton}
-            {deleteButton}
-          </div>
+        breadcrumb={
+          <Breadcrumb>
+            <Link to={`/projects/${match.params.pid}`}>
+              <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+            </Link>
+            <Link to={`/projects/${match.params.pid}/testcases`}>
+              <Breadcrumb.Item>Test Cases</Breadcrumb.Item>
+            </Link>
+            <Breadcrumb.Item>Test Case</Breadcrumb.Item>
+          </Breadcrumb>
         }
+        title={testCase.title}
+        extra={[executeButton, deleteButton]}
       />
       <Tabs defaultActiveKey="1" type="card">
         <TabPane tab="Overview" key="1">

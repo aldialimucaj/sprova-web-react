@@ -1,4 +1,3 @@
-import CardList from '@/components/CardList';
 import Level from '@/components/Level';
 import PageHeader from '@/components/PageHeader';
 import { ProjectContext } from '@/contexts/ProjectContext';

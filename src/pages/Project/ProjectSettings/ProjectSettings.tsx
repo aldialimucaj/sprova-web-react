@@ -1,6 +1,6 @@
 import { deleteProject, updateProject } from '@/api/project.api';
+import PageHeader from '@/components/PageHeader';
 import { RichTextEditor } from '@/components/RichTextEditor';
-import SectionHeader from '@/components/SectionHeader';
 import {
   ProjectContext,
   resetProject,
@@ -9,6 +9,7 @@ import {
 import { Project } from '@/models/Project';
 import { hasFieldErrors } from '@/utils';
 import {
+  Breadcrumb,
   Button,
   Col,
   Form,
@@ -21,13 +22,18 @@ import {
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { Fragment, useContext, useState } from 'react';
-import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
+import {
+  Link,
+  Redirect,
+  RouteComponentProps,
+  withRouter,
+} from 'react-router-dom';
 import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
 
 const { Text } = Typography;
 
 interface Params {
-  id: string;
+  pid: string;
 }
 
 interface Props extends RouteComponentProps<Params>, FormComponentProps {}
@@ -99,24 +105,34 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
     }
   };
 
+  const deleteButton = (
+    <Popconfirm
+      placement="bottomRight"
+      title="Delete this project?"
+      onConfirm={deleteRequest}
+      icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
+      okText="Yes"
+      cancelText="Cancel"
+    >
+      <Button type="danger" loading={isDeleteLoading}>
+        Delete
+      </Button>
+    </Popconfirm>
+  );
+
   return (
     <Fragment>
-      <SectionHeader
-        title="Project Settings"
-        extra={
-          <Popconfirm
-            placement="bottomRight"
-            title="Delete this project?"
-            onConfirm={deleteRequest}
-            icon={<Icon type="question-circle-o" style={{ color: 'red' }} />}
-            okText="Yes"
-            cancelText="Cancel"
-          >
-            <Button type="danger" loading={isDeleteLoading}>
-              Delete
-            </Button>
-          </Popconfirm>
+      <PageHeader
+        breadcrumb={
+          <Breadcrumb>
+            <Link to={`/projects/${match.params.pid}`}>
+              <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+            </Link>
+            <Breadcrumb.Item>Settings</Breadcrumb.Item>
+          </Breadcrumb>
         }
+        extra={deleteButton}
+        title="Edit the Project"
       />
       <Row>
         <Col {...formContentLayout}>

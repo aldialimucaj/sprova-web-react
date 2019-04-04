@@ -1,40 +1,22 @@
-import SectionHeader from '@/components/SectionHeader';
-import { ProjectContext } from '@/contexts/ProjectContext';
-import { Cycle } from '@/models/Cycle';
-import { List } from 'antd';
-import React, { Fragment, useContext } from 'react';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import CycleList from './CycleList';
 
-interface Params {
-  id: string;
-}
-
-const Cycles: React.FunctionComponent<RouteComponentProps<Params>> = ({
-  match,
-}) => {
-  const [{ cycles }] = useContext(ProjectContext);
+const TestCase: React.FunctionComponent = () => {
   return (
-    <Fragment>
-      <SectionHeader
-        title="Cycles"
-        extra={
-          <Link to={`/projects/${match.params.id}/cycles/new`}>New Cycle</Link>
-        }
+    <Switch>
+      <Route
+        path={'/projects/:pid/cycles'}
+        exact={true}
+        component={CycleList}
       />
-      <List
-        itemLayout="horizontal"
-        dataSource={cycles}
-        renderItem={(cycle: Cycle) => (
-          <List.Item>
-            <List.Item.Meta
-              title={<a href="https://ant.design">{cycle.title}</a>}
-              description={cycle.description}
-            />
-          </List.Item>
-        )}
-      />
-    </Fragment>
+      {/* <Route path={'/projects/:pid/cycles/new'} component={CycleCreate} /> */}
+      {/* <Route
+        path={'/projects/:pid/cycles/:cid'}
+        component={CycleDetails}
+      /> */}
+    </Switch>
   );
 };
 
-export default Cycles;
+export default TestCase;

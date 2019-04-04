@@ -3,8 +3,8 @@ import { Route, Switch } from 'react-router-dom';
 import ExecutionDetails from './ExecutionDetails';
 import ExecutionOverview from './ExecutionOverview';
 import ExecutionRun from './ExecutionRun';
+import './Executions.scss';
 import ExecutionSetup from './ExecutionSetup';
-import './index.scss';
 
 const Executions: React.FunctionComponent = () => {
   return (

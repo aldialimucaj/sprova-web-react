@@ -5,7 +5,6 @@ import {
   FormSearchSelect,
   FormTextArea,
 } from '@/components/form';
-import Level from '@/components/Level';
 import { addTestCase, ProjectContext } from '@/contexts/ProjectContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
@@ -22,12 +21,14 @@ import {
   Row,
   Select,
   Tag,
+  Breadcrumb,
 } from 'antd';
 import React, { Fragment, useContext, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './TestCaseCreate.scss';
 import TestStepInput from './TestStepInput';
 import { formContentLayout } from './utils';
+import PageHeader from '@/components/PageHeader';
 
 const Option = Select.Option;
 
@@ -39,7 +40,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
   history,
   match,
 }) => {
-  const [{ testCases }, dispatch] = useContext(ProjectContext);
+  const [{ project, testCases }, dispatch] = useContext(ProjectContext);
 
   const {
     value: testCaseTitle,
@@ -102,17 +103,20 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   return (
     <Fragment>
-      <Level
-        left={
-          <span style={{ fontSize: 18 }}>
+      <PageHeader
+        breadcrumb={
+          <Breadcrumb>
+            <Link to={`/projects/${match.params.pid}`}>
+              <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+            </Link>
             <Link to={`/projects/${match.params.pid}/testcases`}>
-              Test Cases
-            </Link>{' '}
-            / <strong>Create Test Case</strong>
-          </span>
+              <Breadcrumb.Item>Test Cases</Breadcrumb.Item>
+            </Link>
+            <Breadcrumb.Item>New</Breadcrumb.Item>
+          </Breadcrumb>
         }
+        title="Create Test Case"
       />
-      <Divider />
       <Row>
         <Col {...formContentLayout}>
           <Form layout="vertical" onSubmit={handleSubmit}>
