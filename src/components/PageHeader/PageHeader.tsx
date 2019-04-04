@@ -12,18 +12,14 @@ interface Props extends RouteComponentProps {
 
 const PageHeaderWrapper: React.FunctionComponent<Props> = ({
   breadcrumb,
+  children,
   title,
   extra = [],
   subTitle,
 }) => {
   return (
     <Card className="page-header">
-      <Row
-        className="header-row"
-        type="flex"
-        justify="space-between"
-        align="middle"
-      >
+      <Row type="flex" justify="space-between" align="top">
         <Col>
           {breadcrumb ? (
             <div style={{ marginBottom: 12 }}>{breadcrumb}</div>
@@ -33,6 +29,7 @@ const PageHeaderWrapper: React.FunctionComponent<Props> = ({
         </Col>
         <Col>{extra}</Col>
       </Row>
+      {children && <div className="header-content">{children}</div>}
     </Card>
   );
 };

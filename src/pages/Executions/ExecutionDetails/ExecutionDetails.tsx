@@ -95,7 +95,9 @@ const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
         }
         title="Finished Execution"
         extra={[generatePdfButton, rerunButton]}
-      />
+      >
+        <span>Execution Details</span>
+      </PageHeader>
       <Row gutter={24}>
         <Col span={16}>
           <Row gutter={24} style={{ marginBottom: 24 }}>

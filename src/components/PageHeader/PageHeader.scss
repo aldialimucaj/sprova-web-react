@@ -1,11 +1,8 @@
 .page-header {
   margin-bottom: 24px;
+  padding: 16px;
   .ant-card-body {
     padding: 0;
-  }
-
-  .header-row {
-    margin: 16px;
   }
 
   .header-title {
@@ -22,6 +19,10 @@
     display: inline-block;
     font-size: 14px;
     line-height: 1.8;
+  }
+
+  .header-content {
+    margin-top: 12px;
   }
 
   .nav-icon {
