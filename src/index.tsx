@@ -1,8 +1,8 @@
+import '@/core/styles/global.scss';
 import 'antd/dist/antd.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.scss';
-import Root from './Root';
+import Root from './core/Root';
 import * as serviceWorker from './serviceWorker';
 
 const rootElement = document.getElementById('root');

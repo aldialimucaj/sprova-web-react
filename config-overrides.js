@@ -9,5 +9,6 @@ module.exports = override(
   }),
   addWebpackAlias({
     '@': path.resolve(__dirname, 'src'),
+    styles: path.resolve(__dirname, 'src/core/styles'),
   })
 );

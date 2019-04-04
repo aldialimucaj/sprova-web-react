@@ -1,9 +1,9 @@
+import PrivateRoute from '@/components/PrivateRoute';
+import App from '@/core/App';
+import { Login, Signup } from '@/pages';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import App from './App';
-import './App.scss';
-import PrivateRoute from './components/PrivateRoute';
-import { Login, Signup } from './pages';
+import './Root.scss';
 
 const Root = () => {
   return (
