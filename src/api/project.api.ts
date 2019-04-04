@@ -1,6 +1,7 @@
 import { Project } from '@/models/Project';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import agent from './agents/api.agent';
+import axiosErrorHandler from './utils/axiosErrorHandler';
 
 export async function getProjects(
   limit?: number,
@@ -15,15 +16,7 @@ export async function getProjects(
         sort,
       },
     })
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): Project[] => {
         const { data, status, statusText } = response;
@@ -38,15 +31,7 @@ export async function getProjects(
 export function getProject(projectId: string): Promise<Project> {
   return agent
     .get(`/projects/${projectId}`)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): Project => {
         const { data, status, statusText } = response;
@@ -61,15 +46,7 @@ export function getProject(projectId: string): Promise<Project> {
 export function postProject(project: Partial<Project>) {
   return agent
     .post('/projects', project)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): Project => {
         const { data, status, statusText } = response;
@@ -84,15 +61,7 @@ export function postProject(project: Partial<Project>) {
 export function updateProject(project: Project) {
   return agent
     .put(`/projects/${project._id}`, project)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): void => {
         const { data, status, statusText } = response;
@@ -106,15 +75,7 @@ export function updateProject(project: Project) {
 export function deleteProject(id: string) {
   return agent
     .delete(`/projects/${id}`)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): boolean => {
         const { data, status, statusText } = response;

@@ -1,8 +1,9 @@
 import { User } from '@/models/User';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import decode from 'jwt-decode';
 import { setToken } from './agents/api.agent';
 import authAgent from './agents/auth.agent';
+import axiosErrorHandler from './utils/axiosErrorHandler';
 
 export function authenticate(
   username: string,
@@ -13,15 +14,7 @@ export function authenticate(
       password,
       username,
     })
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): string => {
         const { data, status, statusText } = response;

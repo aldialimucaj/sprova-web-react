@@ -1,20 +1,13 @@
 import { Execution, ExecutionStatus } from '@/models/Execution';
 import { ExecutionStep } from '@/models/ExecutionStep';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import agent from './agents/api.agent';
+import axiosErrorHandler from './utils/axiosErrorHandler';
 
 export function getExecutions(): Promise<Execution[]> {
   return agent
     .get('/executions')
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): Execution[] => {
         const { data, status, statusText } = response;
@@ -29,15 +22,7 @@ export function getExecutions(): Promise<Execution[]> {
 export function getExecution(id: string): Promise<Execution> {
   return agent
     .get(`/executions/${id}`)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): Execution => {
         const { data, status, statusText } = response;
@@ -60,15 +45,7 @@ export function getExecutionsOfContext(
         withTitle,
       },
     })
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): Execution[] => {
         const { data, status, statusText } = response;
@@ -89,15 +66,7 @@ export function getExecutionsOfTestCase(
         testCaseId,
       },
     })
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): Execution[] => {
         const { data, status, statusText } = response;
@@ -114,15 +83,7 @@ export function getExecutionSteps(
 ): Promise<ExecutionStep[]> {
   return agent
     .get(`/executions/${executionId}/steps`)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): ExecutionStep[] => {
         const { data, status, statusText } = response;
@@ -137,15 +98,7 @@ export function getExecutionSteps(
 export function postExecution(execution: Partial<Execution>) {
   return agent
     .post('/executions', execution)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): Execution => {
         const { data, status, statusText } = response;
@@ -163,15 +116,7 @@ export function putExecutionStatus(
 ): Promise<boolean> {
   return agent
     .put(`/executions/${executionId}/status`, { status: executionStatus })
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): boolean => {
         const { data, status, statusText } = response;
@@ -189,15 +134,7 @@ export function putExecutionStep(
 ): Promise<boolean> {
   return agent
     .put(`/executions/${executionId}/steps`, executionStep)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): boolean => {
         const { data, status, statusText } = response;
@@ -215,15 +152,7 @@ export function putExecutionSteps(
 ): Promise<boolean> {
   return agent
     .put(`/executions/${executionId}/steps`, executionSteps)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): boolean => {
         const { data, status, statusText } = response;
@@ -238,15 +167,7 @@ export function putExecutionSteps(
 export function postExecutions(executions: Array<Partial<Execution>>) {
   return agent
     .post('/executions', executions)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): Execution[] => {
         const { data, status, statusText } = response;
@@ -261,15 +182,7 @@ export function postExecutions(executions: Array<Partial<Execution>>) {
 export function deleteExecution(id: string) {
   return agent
     .delete(`/executions/${id}`)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): boolean => {
         const { data, status, statusText } = response;

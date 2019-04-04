@@ -1,19 +1,12 @@
 import { Cycle } from '@/models/Cycle';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import agent from './agents/api.agent';
+import axiosErrorHandler from './utils/axiosErrorHandler';
 
 export function postCycle(cycle: Cycle) {
   return agent
     .post('/cycles', cycle)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): string => {
         const { data, status, statusText } = response;
@@ -28,15 +21,7 @@ export function postCycle(cycle: Cycle) {
 export function getCycles(): Promise<Cycle[]> {
   return agent
     .get('/cycles')
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): Cycle[] => {
         const { data, status, statusText } = response;

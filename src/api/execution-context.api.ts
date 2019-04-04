@@ -2,8 +2,9 @@ import {
   ExecutionContext,
   ExecutionContextStatus,
 } from '@/models/ExecutionContext';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import agent from './agents/api.agent';
+import axiosErrorHandler from './utils/axiosErrorHandler';
 
 export function getExecutionContexts(
   projectId?: string
@@ -14,15 +15,7 @@ export function getExecutionContexts(
         projectId,
       },
     })
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): ExecutionContext[] => {
         const { data, status, statusText } = response;
@@ -37,15 +30,7 @@ export function getExecutionContexts(
 export function getExecutionContext(id: string): Promise<ExecutionContext> {
   return agent
     .get(`/execution-contexts/${id}`)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): ExecutionContext => {
         const { data, status, statusText } = response;
@@ -62,15 +47,7 @@ export function postExecutionContext(
 ): Promise<ExecutionContext> {
   return agent
     .post('/execution-contexts', executionContext)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): ExecutionContext => {
         const { data, status, statusText } = response;
@@ -90,15 +67,7 @@ export function putExecutionContextStatus(
     .put(`/execution-contexts/${executionContextId}/status`, {
       status: executionContextStatus,
     })
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): boolean => {
         const { data, status, statusText } = response;
@@ -113,15 +82,7 @@ export function putExecutionContextStatus(
 export function deleteExecutionContext(id: string) {
   return agent
     .delete(`/execution-contexts/${id}`)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): boolean => {
         const { data, status, statusText } = response;

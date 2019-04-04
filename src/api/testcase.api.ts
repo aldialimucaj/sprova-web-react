@@ -1,6 +1,7 @@
 import { TestCase } from '@/models/TestCase';
-import { AxiosError, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import agent from './agents/api.agent';
+import axiosErrorHandler from './utils/axiosErrorHandler';
 
 export function getTestCases(projectId: string): Promise<TestCase[]> {
   return agent
@@ -9,15 +10,7 @@ export function getTestCases(projectId: string): Promise<TestCase[]> {
         projectId,
       },
     })
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): TestCase[] => {
         const { data, status, statusText } = response;
@@ -32,15 +25,7 @@ export function getTestCases(projectId: string): Promise<TestCase[]> {
 export function getTestCase(id: string): Promise<TestCase> {
   return agent
     .get(`/testcases/${id}`)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): TestCase => {
         const { data, status, statusText } = response;
@@ -55,15 +40,7 @@ export function getTestCase(id: string): Promise<TestCase> {
 export function postTestCase(testCase: Partial<TestCase>): Promise<TestCase> {
   return agent
     .post('/testcases', testCase)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): TestCase => {
         const { data, status, statusText } = response;
@@ -78,15 +55,7 @@ export function postTestCase(testCase: Partial<TestCase>): Promise<TestCase> {
 export function deleteTestCase(id: string) {
   return agent
     .delete(`/testcases/${id}`)
-    .catch(
-      (error: AxiosError): AxiosResponse => {
-        const { message, response } = error;
-        if (!response) {
-          throw message;
-        }
-        return response;
-      }
-    )
+    .catch(axiosErrorHandler)
     .then(
       (response: AxiosResponse): boolean => {
         const { data, status, statusText } = response;
