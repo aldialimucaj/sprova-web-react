@@ -25,7 +25,7 @@ import {
 } from 'antd';
 import React, { Fragment, useContext, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import './index.scss';
+import './TestCaseCreate.scss';
 import TestStepInput from './TestStepInput';
 import { formContentLayout } from './utils';
 

@@ -1,3 +1,3 @@
-import ExecutionResult from './ExecutionResult';
+import ExecutionResult from './ExecutionDetails';
 
 export default ExecutionResult;

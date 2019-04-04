@@ -1,22 +1,11 @@
 import React from 'react';
-import {
-  Route,
-  RouteComponentProps,
-  Switch,
-  withRouter,
-} from 'react-router-dom';
-import './index.scss';
+import { Route, Switch } from 'react-router-dom';
+import './TestCase.scss';
 import TestCaseCreate from './TestCaseCreate';
 import TestCaseDetails from './TestCaseDetails';
 import TestCaseList from './TestCaseList';
 
-interface Params {
-  pid: string;
-}
-
-const TestCase: React.FunctionComponent<RouteComponentProps<Params>> = ({
-  match,
-}) => {
+const TestCase: React.FunctionComponent = () => {
   return (
     <Switch>
       <Route
@@ -33,4 +22,4 @@ const TestCase: React.FunctionComponent<RouteComponentProps<Params>> = ({
   );
 };
 
-export default withRouter(TestCase);
+export default TestCase;

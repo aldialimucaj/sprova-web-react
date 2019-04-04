@@ -3,7 +3,7 @@ import { TestStep } from '@/models/TestStep';
 import { Button, Col, Input, List, Row } from 'antd';
 import _ from 'lodash';
 import React, { Fragment } from 'react';
-import './index.scss';
+import './TestCaseCreate.scss';
 
 interface Props {
   testSteps: TestStep[];

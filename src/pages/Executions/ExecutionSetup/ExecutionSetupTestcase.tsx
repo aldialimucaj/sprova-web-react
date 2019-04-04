@@ -10,9 +10,7 @@ import {
   ExecutionMethod,
   ExecutionType,
 } from '@/models/ExecutionContext';
-import { ExecutionStep, ExecutionStepResult } from '@/models/ExecutionStep';
 import { TestCase } from '@/models/TestCase';
-import { TestStep } from '@/models/TestStep';
 import { parseQuery } from '@/utils';
 import { Icon, List, notification, Select } from 'antd';
 import _ from 'lodash';

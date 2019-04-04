@@ -4,7 +4,7 @@ import { parseQuery } from '@/utils';
 import { Breadcrumb, Button, Icon } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import './index.scss';
+import './ExecutionDetails.scss';
 
 interface Params {
   pid: string;

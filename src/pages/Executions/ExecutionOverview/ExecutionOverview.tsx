@@ -11,7 +11,7 @@ import { Alert, Breadcrumb, Button, Col, Divider, Icon, List, Row } from 'antd';
 import _ from 'lodash';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import './index.scss';
+import './ExecutionOverview.scss';
 
 interface Params {
   pid: string;

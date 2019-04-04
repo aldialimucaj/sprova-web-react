@@ -8,11 +8,13 @@ import {
 } from '@/api/execution.api';
 import Level from '@/components/Level';
 import PageHeader from '@/components/PageHeader';
+import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFetcher } from '@/hooks/useFetcher';
 import { Execution, ExecutionStatus } from '@/models/Execution';
 import { ExecutionContextStatus } from '@/models/ExecutionContext';
 import { parseQuery } from '@/utils';
 import {
+  Breadcrumb,
   Button,
   Col,
   Icon,
@@ -21,14 +23,12 @@ import {
   Popconfirm,
   Row,
   Spin,
-  Breadcrumb,
 } from 'antd';
 import _ from 'lodash';
-import React, { Fragment, useState, useContext } from 'react';
-import { RouteComponentProps, withRouter, Link } from 'react-router-dom';
+import React, { Fragment, useContext, useState } from 'react';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import './ExecutionRun.scss';
 import Executor from './Executor';
-import './index.scss';
-import { ProjectContext } from '@/contexts/ProjectContext';
 
 const ButtonGroup = Button.Group;
 

@@ -8,7 +8,7 @@ import { Alert, Button, Form, Icon, List, notification, Spin, Tag } from 'antd';
 import _ from 'lodash';
 import React, { Fragment, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
-import './index.scss';
+import './Executor.scss';
 
 interface Props extends RouteComponentProps {
   eid: string;

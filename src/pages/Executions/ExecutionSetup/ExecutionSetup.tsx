@@ -2,13 +2,13 @@ import { FormSelect } from '@/components/form';
 import PageHeader from '@/components/PageHeader';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { parseQuery } from '@/utils';
-import { Breadcrumb, Col, Form, Row, Select, Button, Icon } from 'antd';
+import { Breadcrumb, Col, Form, Row, Select } from 'antd';
 import React, { Fragment, useContext, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import './ExecutionSetup.scss';
 import ExecutionSetupCycle from './ExecutionSetupCycle';
 import ExecutionSetupTestcase from './ExecutionSetupTestcase';
 import ExecutionSetupTestset from './ExecutionSetupTestset';
-import './index.scss';
 
 const Option = Select.Option;
 
