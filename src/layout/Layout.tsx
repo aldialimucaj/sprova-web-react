@@ -1,14 +1,21 @@
 import { Layout } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import Content from './Content';
 import Header from './Header';
 import SideMenu from './SideMenu';
 
 const LayoutWrapper: React.FunctionComponent<{}> = ({ children }) => {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
+
   return (
-    <Layout>
-      <SideMenu />
-      <Layout style={{ marginLeft: 80, backgroundColor: 'white' }}>
+    <Layout style={{ minHeight: '100vh' }}>
+      <SideMenu
+        collapsed={isSidebarCollapsed}
+        handleCollapse={(collapsed: boolean) =>
+          setIsSidebarCollapsed(collapsed)
+        }
+      />
+      <Layout style={{ backgroundColor: 'white' }}>
         <Header />
         <Content>{children}</Content>
       </Layout>
