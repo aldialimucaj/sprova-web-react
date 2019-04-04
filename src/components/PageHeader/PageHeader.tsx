@@ -5,17 +5,19 @@ import './PageHeader.scss';
 
 interface Props extends RouteComponentProps {
   breadcrumb?: React.ReactNode;
-  title: React.ReactNode;
   extra?: React.ReactNode;
+  tabs?: React.ReactNode;
   subTitle?: string;
+  title: React.ReactNode;
 }
 
 const PageHeaderWrapper: React.FunctionComponent<Props> = ({
   breadcrumb,
   children,
-  title,
+  tabs,
   extra = [],
   subTitle,
+  title,
 }) => {
   return (
     <Card className="page-header">
@@ -30,6 +32,7 @@ const PageHeaderWrapper: React.FunctionComponent<Props> = ({
         <Col>{extra}</Col>
       </Row>
       {children && <div className="header-content">{children}</div>}
+      {tabs && <div className="header-tabs">{tabs}</div>}
     </Card>
   );
 };

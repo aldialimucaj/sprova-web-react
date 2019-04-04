@@ -13,12 +13,15 @@ import {
   List,
   Row,
   Statistic,
+  Tabs,
   Tooltip,
 } from 'antd';
 import Chart from 'chart.js';
 import React, { Fragment, useContext, useEffect } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import './ExecutionDetails.scss';
+
+const TabPane = Tabs.TabPane;
 
 interface Params {
   pid: string;
@@ -95,6 +98,12 @@ const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
         }
         title="Finished Execution"
         extra={[generatePdfButton, rerunButton]}
+        tabs={
+          <Tabs defaultActiveKey="1">
+            <TabPane tab="Details" key="1" />
+            <TabPane tab="Rule" key="2" />
+          </Tabs>
+        }
       >
         <span>Execution Details</span>
       </PageHeader>

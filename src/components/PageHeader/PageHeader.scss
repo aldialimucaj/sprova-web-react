@@ -21,8 +21,18 @@
     line-height: 1.8;
   }
 
-  .header-content {
+  .header-content,
+  .header-tabs {
     margin-top: 12px;
+  }
+
+  .header-tabs {
+    margin-bottom: -16px;
+
+    .ant-tabs-bar {
+      margin-bottom: 1px;
+      border-bottom: 0;
+    }
   }
 
   .nav-icon {
