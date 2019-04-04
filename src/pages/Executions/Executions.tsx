@@ -1,25 +1,12 @@
 import React from 'react';
-import {
-  Route,
-  RouteComponentProps,
-  Switch,
-  withRouter,
-} from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+import ExecutionDetails from './ExecutionDetails';
 import ExecutionOverview from './ExecutionOverview';
+import ExecutionRun from './ExecutionRun';
+import ExecutionSetup from './ExecutionSetup';
 import './index.scss';
-import {
-  ExecutionSetup,
-  ExecutionRun,
-  ExecutionResult,
-} from './ExecutionStages/stages';
 
-interface Params {
-  pid: string;
-}
-
-const Executions: React.FunctionComponent<RouteComponentProps<Params>> = ({
-  match,
-}) => {
+const Executions: React.FunctionComponent = () => {
   return (
     <Switch>
       <Route
@@ -29,7 +16,7 @@ const Executions: React.FunctionComponent<RouteComponentProps<Params>> = ({
       <Route path="/projects/:pid/executions/run" component={ExecutionRun} />
       <Route
         path="/projects/:pid/executions/:ecid"
-        component={ExecutionResult}
+        component={ExecutionDetails}
       />
       <Route
         path="/projects/:pid/executions"
@@ -40,4 +27,4 @@ const Executions: React.FunctionComponent<RouteComponentProps<Params>> = ({
   );
 };
 
-export default withRouter(Executions);
+export default Executions;

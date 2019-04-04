@@ -1,7 +1,7 @@
 import PageHeader from '@/components/PageHeader';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { TestCase } from '@/models/TestCase';
-import { Button, Divider, Icon, Table } from 'antd';
+import { Button, Divider, Icon, Table, Breadcrumb } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import {
   Link,
@@ -59,12 +59,15 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
   return (
     <Fragment>
       <PageHeader
-        title={
-          <span>
-            <Link to={`/projects/${match.params.pid}`}>{project.title}</Link> /{' '}
-            <strong>Test Cases</strong>
-          </span>
+        breadcrumb={
+          <Breadcrumb>
+            <Link to={`/projects/${match.params.pid}`}>
+              <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+            </Link>
+            <Breadcrumb.Item>Test Case</Breadcrumb.Item>
+          </Breadcrumb>
         }
+        title="All Test Cases"
         extra={
           <Link to={`/projects/${match.params.pid}/testcases/new`}>
             <Button type="primary">
@@ -73,7 +76,6 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
           </Link>
         }
       />
-      <Divider />
       <Table
         className="testcases-list"
         bordered={true}
