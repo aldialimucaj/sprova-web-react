@@ -26,6 +26,7 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
 }) => {
   const [{ project, testCases }, dispatch] = useContext(ProjectContext);
+  const [activeTabKey, setActiveTabKey] = useState('overview');
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const testCase = findById(testCases, match.params.tid);
 
@@ -86,6 +87,31 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
     </Popconfirm>
   );
 
+  let content;
+
+  switch (activeTabKey) {
+    case 'overview': {
+      content = <OverviewTab testCase={testCase} testCases={testCases} />;
+      break;
+    }
+    case 'testSteps': {
+      content = 'Content of Tab Pane 2';
+      break;
+    }
+    case 'executions': {
+      content = <ExecutionsTab />;
+      break;
+    }
+    case 'codeGeneration': {
+      content = <CodeGenerationTab testCase={testCase} />;
+      break;
+    }
+    case 'settings': {
+      content = 'Content of Tab Pane 2';
+      break;
+    }
+  }
+
   return (
     <Fragment>
       <PageHeader
@@ -102,24 +128,22 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
         }
         title={testCase.title}
         extra={[executeButton, deleteButton]}
-      />
-      <Tabs defaultActiveKey="1" type="card">
-        <TabPane tab="Overview" key="1">
-          <OverviewTab testCase={testCase} testCases={testCases} />
-        </TabPane>
-        <TabPane tab="Test Steps" key="2">
-          Content of Tab Pane 2
-        </TabPane>
-        <TabPane tab="Executions" key="3">
-          <ExecutionsTab />
-        </TabPane>
-        <TabPane tab="Code Generation" key="4">
-          <CodeGenerationTab testCase={testCase} />
-        </TabPane>
-        <TabPane tab="Settings" key="5">
-          Content of Tab Pane 2
-        </TabPane>
-      </Tabs>
+        tabs={
+          <Tabs
+            defaultActiveKey={`${activeTabKey}`}
+            onChange={(activeKey: string) => setActiveTabKey(activeKey)}
+          >
+            <TabPane tab="Overview" key="overview" />
+            <TabPane tab="Test Steps" key="testSteps" />
+            <TabPane tab="Executions" key="executions" />
+            <TabPane tab="Code Generation" key="codeGeneration" />
+            <TabPane tab="Settings" key="settings" />
+          </Tabs>
+        }
+      >
+        TestCaseDetails
+      </PageHeader>
+      {content}
     </Fragment>
   );
 };
