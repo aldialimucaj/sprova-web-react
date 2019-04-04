@@ -5,6 +5,7 @@ import {
   FormSearchSelect,
   FormTextArea,
 } from '@/components/form';
+import PageHeader from '@/components/PageHeader';
 import { addTestCase, ProjectContext } from '@/contexts/ProjectContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
@@ -12,23 +13,21 @@ import { TestCase } from '@/models/TestCase';
 import { TestStep } from '@/models/TestStep';
 import { resolveInheritance } from '@/utils';
 import {
+  Breadcrumb,
   Button,
   Col,
-  Divider,
   Form,
   List,
   notification,
   Row,
   Select,
   Tag,
-  Breadcrumb,
 } from 'antd';
 import React, { Fragment, useContext, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './TestCaseCreate.scss';
 import TestStepInput from './TestStepInput';
 import { formContentLayout } from './utils';
-import PageHeader from '@/components/PageHeader';
 
 const Option = Select.Option;
 
@@ -50,6 +49,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
     value: description,
     handleChange: handleDescriptionChange,
   } = useFormTextArea('');
+
   const [parent, setParent] = useState<TestCase | null>(null);
   const [testSteps, setTestSteps] = useState<TestStep[]>([]);
 
