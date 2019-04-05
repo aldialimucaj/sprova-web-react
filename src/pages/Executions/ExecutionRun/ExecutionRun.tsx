@@ -29,6 +29,7 @@ import React, { Fragment, useContext, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './ExecutionRun.scss';
 import Executor from './Executor';
+import PageContent from '@/layout/PageContent';
 
 const ButtonGroup = Button.Group;
 
@@ -206,24 +207,26 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
   return isContextLoading || isTestCasesLoading ? (
     <Spin />
   ) : (
-    <Fragment>
-      <PageHeader
-        breadcrumb={
-          <Breadcrumb>
-            <Link to={`/projects/${match.params.pid}`}>
-              <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
-            </Link>
-            <Link to={`/projects/${match.params.pid}/executions`}>
-              <Breadcrumb.Item>Executions</Breadcrumb.Item>
-            </Link>
-            <Breadcrumb.Item>Run</Breadcrumb.Item>
-          </Breadcrumb>
-        }
-        title="Live Execution"
-        subTitle="#51"
-        extra={abortButton}
-      />
-
+    <PageContent
+      header={
+        <PageHeader
+          breadcrumb={
+            <Breadcrumb>
+              <Link to={`/projects/${match.params.pid}`}>
+                <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+              </Link>
+              <Link to={`/projects/${match.params.pid}/executions`}>
+                <Breadcrumb.Item>Executions</Breadcrumb.Item>
+              </Link>
+              <Breadcrumb.Item>Run</Breadcrumb.Item>
+            </Breadcrumb>
+          }
+          title="Live Execution"
+          subTitle="#51"
+          extra={abortButton}
+        />
+      }
+    >
       <Row gutter={24}>
         <Col span={18}>
           <Level
@@ -297,7 +300,7 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
           </Button>
         </Col>
       </Row>
-    </Fragment>
+    </PageContent>
   );
 };
 

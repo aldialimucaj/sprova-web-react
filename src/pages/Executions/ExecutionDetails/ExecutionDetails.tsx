@@ -22,6 +22,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import './ExecutionDetails.scss';
 import OverviewTab from './tabs/OverviewTab';
 import TestCasesTab from './tabs/TestCasesTab';
+import PageContent from '@/layout/PageContent';
 
 const TabPane = Tabs.TabPane;
 
@@ -71,35 +72,38 @@ const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
   }
 
   return (
-    <Fragment>
-      <PageHeader
-        breadcrumb={
-          <Breadcrumb>
-            <Link to={`/projects/${match.params.pid}`}>
-              <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
-            </Link>
-            <Link to={`/projects/${match.params.pid}/executions`}>
-              <Breadcrumb.Item>Executions</Breadcrumb.Item>
-            </Link>
-            <Breadcrumb.Item>Result</Breadcrumb.Item>
-          </Breadcrumb>
-        }
-        title="Finished Execution"
-        extra={[generatePdfButton, rerunButton]}
-        tabs={
-          <Tabs
-            defaultActiveKey={`${activeTabKey}`}
-            onChange={(activeKey: string) => setActiveTabKey(activeKey)}
-          >
-            <TabPane tab="Overview" key="overview" />
-            <TabPane tab="Test Cases" key="testCases" />
-          </Tabs>
-        }
-      >
-        <span>Execution Details</span>
-      </PageHeader>
+    <PageContent
+      header={
+        <PageHeader
+          breadcrumb={
+            <Breadcrumb>
+              <Link to={`/projects/${match.params.pid}`}>
+                <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+              </Link>
+              <Link to={`/projects/${match.params.pid}/executions`}>
+                <Breadcrumb.Item>Executions</Breadcrumb.Item>
+              </Link>
+              <Breadcrumb.Item>Result</Breadcrumb.Item>
+            </Breadcrumb>
+          }
+          title="Finished Execution"
+          extra={[generatePdfButton, rerunButton]}
+          tabs={
+            <Tabs
+              defaultActiveKey={`${activeTabKey}`}
+              onChange={(activeKey: string) => setActiveTabKey(activeKey)}
+            >
+              <TabPane tab="Overview" key="overview" />
+              <TabPane tab="Test Cases" key="testCases" />
+            </Tabs>
+          }
+        >
+          <span>Execution Details</span>
+        </PageHeader>
+      }
+    >
       {content}
-    </Fragment>
+    </PageContent>
   );
 };
 

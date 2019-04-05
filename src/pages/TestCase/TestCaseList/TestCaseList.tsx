@@ -9,6 +9,7 @@ import {
   RouteComponentProps,
   withRouter,
 } from 'react-router-dom';
+import PageContent from '@/layout/PageContent';
 
 interface Params {
   pid: string;
@@ -57,25 +58,28 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
   ];
 
   return (
-    <Fragment>
-      <PageHeader
-        breadcrumb={
-          <Breadcrumb>
-            <Link to={`/projects/${match.params.pid}`}>
-              <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+    <PageContent
+      header={
+        <PageHeader
+          breadcrumb={
+            <Breadcrumb>
+              <Link to={`/projects/${match.params.pid}`}>
+                <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+              </Link>
+              <Breadcrumb.Item>Test Cases</Breadcrumb.Item>
+            </Breadcrumb>
+          }
+          title="All Test Cases"
+          extra={
+            <Link to={`/projects/${match.params.pid}/testcases/new`}>
+              <Button type="primary">
+                <Icon type="plus" /> New
+              </Button>
             </Link>
-            <Breadcrumb.Item>Test Cases</Breadcrumb.Item>
-          </Breadcrumb>
-        }
-        title="All Test Cases"
-        extra={
-          <Link to={`/projects/${match.params.pid}/testcases/new`}>
-            <Button type="primary">
-              <Icon type="plus" /> New
-            </Button>
-          </Link>
-        }
-      />
+          }
+        />
+      }
+    >
       <Table
         className="testcases-list"
         bordered={true}
@@ -83,7 +87,7 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
         onRowClick={handleRowClick}
         dataSource={testCases}
       />
-    </Fragment>
+    </PageContent>
   );
 };
 

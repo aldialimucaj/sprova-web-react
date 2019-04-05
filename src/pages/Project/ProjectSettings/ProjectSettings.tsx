@@ -29,6 +29,7 @@ import {
   withRouter,
 } from 'react-router-dom';
 import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
+import PageContent from '@/layout/PageContent';
 
 const { Text } = Typography;
 
@@ -121,19 +122,22 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
   );
 
   return (
-    <Fragment>
-      <PageHeader
-        breadcrumb={
-          <Breadcrumb>
-            <Link to={`/projects/${match.params.pid}`}>
-              <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
-            </Link>
-            <Breadcrumb.Item>Settings</Breadcrumb.Item>
-          </Breadcrumb>
-        }
-        extra={deleteButton}
-        title="Edit the Project"
-      />
+    <PageContent
+      header={
+        <PageHeader
+          breadcrumb={
+            <Breadcrumb>
+              <Link to={`/projects/${match.params.pid}`}>
+                <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+              </Link>
+              <Breadcrumb.Item>Settings</Breadcrumb.Item>
+            </Breadcrumb>
+          }
+          extra={deleteButton}
+          title="Edit the Project"
+        />
+      }
+    >
       <Row>
         <Col {...formContentLayout}>
           <Form {...formItemLayout} onSubmit={handleSubmit}>
@@ -173,7 +177,7 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
           </Form>
         </Col>
       </Row>
-    </Fragment>
+    </PageContent>
   );
 };
 

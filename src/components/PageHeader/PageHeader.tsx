@@ -20,7 +20,7 @@ const PageHeaderWrapper: React.FunctionComponent<Props> = ({
   title,
 }) => {
   return (
-    <Card className="page-header">
+    <div className="page-header">
       <Row type="flex" justify="space-between" align="top">
         <Col>
           {breadcrumb ? (
@@ -33,7 +33,7 @@ const PageHeaderWrapper: React.FunctionComponent<Props> = ({
       </Row>
       {children && <div className="header-content">{children}</div>}
       {tabs && <div className="header-tabs">{tabs}</div>}
-    </Card>
+    </div>
   );
 };
 

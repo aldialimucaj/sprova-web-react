@@ -12,6 +12,7 @@ import _ from 'lodash';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './ExecutionOverview.scss';
+import PageContent from '@/layout/PageContent';
 
 interface Params {
   pid: string;
@@ -38,25 +39,28 @@ const ExecutionOverview: React.FunctionComponent<
   return error ? (
     <Alert message="Something went wrong" description={error} type="error" />
   ) : (
-    <Fragment>
-      <PageHeader
-        breadcrumb={
-          <Breadcrumb>
-            <Link to={`/projects/${match.params.pid}`}>
-              <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+    <PageContent
+      header={
+        <PageHeader
+          breadcrumb={
+            <Breadcrumb>
+              <Link to={`/projects/${match.params.pid}`}>
+                <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+              </Link>
+              <Breadcrumb.Item>Executions</Breadcrumb.Item>
+            </Breadcrumb>
+          }
+          title="Overview"
+          extra={
+            <Link key="0" to={`/projects/${match.params.pid}/executions/setup`}>
+              <Button type="primary">
+                <Icon type="caret-right" /> Start new
+              </Button>
             </Link>
-            <Breadcrumb.Item>Executions</Breadcrumb.Item>
-          </Breadcrumb>
-        }
-        title="Overview"
-        extra={
-          <Link key="0" to={`/projects/${match.params.pid}/executions/setup`}>
-            <Button type="primary">
-              <Icon type="caret-right" /> Start new
-            </Button>
-          </Link>
-        }
-      />
+          }
+        />
+      }
+    >
       <List
         loading={isExecutionContextsLoading}
         className="children-list is-highlight"
@@ -175,7 +179,7 @@ const ExecutionOverview: React.FunctionComponent<
           />
         </Col>
       </Row>
-    </Fragment>
+    </PageContent>
   );
 };
 

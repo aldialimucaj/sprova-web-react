@@ -8,6 +8,7 @@ import {
   RouteComponentProps,
   withRouter,
 } from 'react-router-dom';
+import PageContent from '@/layout/PageContent';
 
 interface Params {
   pid: string;
@@ -24,26 +25,30 @@ const CycleList: React.FunctionComponent<RouteComponentProps<Params>> = ({
   }
 
   return (
-    <Fragment>
-      <PageHeader
-        breadcrumb={
-          <Breadcrumb>
-            <Link to={`/projects/${match.params.pid}`}>
-              <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+    <PageContent
+      header={
+        <PageHeader
+          breadcrumb={
+            <Breadcrumb>
+              <Link to={`/projects/${match.params.pid}`}>
+                <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+              </Link>
+              <Breadcrumb.Item>Cycles</Breadcrumb.Item>
+            </Breadcrumb>
+          }
+          title="All Cycles"
+          extra={
+            <Link to={`/projects/${match.params.pid}/cycles/new`}>
+              <Button type="primary">
+                <Icon type="plus" /> New
+              </Button>
             </Link>
-            <Breadcrumb.Item>Cycles</Breadcrumb.Item>
-          </Breadcrumb>
-        }
-        title="All Cycles"
-        extra={
-          <Link to={`/projects/${match.params.pid}/cycles/new`}>
-            <Button type="primary">
-              <Icon type="plus" /> New
-            </Button>
-          </Link>
-        }
-      />
-    </Fragment>
+          }
+        />
+      }
+    >
+      Content
+    </PageContent>
   );
 };
 

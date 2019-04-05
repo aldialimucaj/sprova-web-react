@@ -17,6 +17,7 @@ import {
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import './ProjectList.scss';
+import PageContent from '@/layout/PageContent';
 
 const ProjectList: React.FunctionComponent = () => {
   const { data: projects, isLoading, error } = useFetcher(getProjects);
@@ -26,17 +27,20 @@ const ProjectList: React.FunctionComponent = () => {
   ) : error ? (
     <Alert message="Something went wrong" description={error} type="error" />
   ) : (
-    <Fragment>
-      <PageHeader
-        title="Projects"
-        extra={
-          <Link to={`/projects/new`}>
-            <Button type="primary">
-              <Icon type="plus" /> New
-            </Button>
-          </Link>
-        }
-      />
+    <PageContent
+      header={
+        <PageHeader
+          title="Projects"
+          extra={
+            <Link to={`/projects/new`}>
+              <Button type="primary">
+                <Icon type="plus" /> New
+              </Button>
+            </Link>
+          }
+        />
+      }
+    >
       {projects && projects.length > 0 ? (
         <Row gutter={16}>
           {projects.map((project: Project, index: number) => (
@@ -57,7 +61,7 @@ const ProjectList: React.FunctionComponent = () => {
           </Link>
         </Empty>
       )}
-    </Fragment>
+    </PageContent>
   );
 };
 

@@ -6,6 +6,7 @@ import { TestCase } from '@/models/TestCase';
 import { Col, Icon, List, Row } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import { Link, Redirect, RouteComponentProps } from 'react-router-dom';
+import PageContent from '@/layout/PageContent';
 
 const ProjectDetails: React.FunctionComponent<RouteComponentProps> = ({
   history,
@@ -17,8 +18,9 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps> = ({
   }
 
   return (
-    <Fragment>
-      <PageHeader title={project.title} subTitle="Overview" />
+    <PageContent
+      header={<PageHeader title={project.title} subTitle="Overview" />}
+    >
       <Row gutter={16}>
         <Col lg={12} style={{ marginBottom: 16 }}>
           <List
@@ -87,7 +89,7 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps> = ({
           />
         </Col>
       </Row>
-    </Fragment>
+    </PageContent>
   );
 };
 

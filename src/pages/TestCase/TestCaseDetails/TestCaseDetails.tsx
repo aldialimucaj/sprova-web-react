@@ -13,6 +13,7 @@ import {
 import CodeGenerationTab from './tabs/CodeGenerationTab';
 import ExecutionsTab from './tabs/ExecutionsTab';
 import OverviewTab from './tabs/OverviewTab';
+import PageContent from '@/layout/PageContent';
 
 const TabPane = Tabs.TabPane;
 
@@ -113,38 +114,41 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
   }
 
   return (
-    <Fragment>
-      <PageHeader
-        breadcrumb={
-          <Breadcrumb>
-            <Link to={`/projects/${match.params.pid}`}>
-              <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
-            </Link>
-            <Link to={`/projects/${match.params.pid}/testcases`}>
-              <Breadcrumb.Item>Test Cases</Breadcrumb.Item>
-            </Link>
-            <Breadcrumb.Item>Test Case</Breadcrumb.Item>
-          </Breadcrumb>
-        }
-        title={testCase.title}
-        extra={[executeButton, deleteButton]}
-        tabs={
-          <Tabs
-            defaultActiveKey={`${activeTabKey}`}
-            onChange={(activeKey: string) => setActiveTabKey(activeKey)}
-          >
-            <TabPane tab="Overview" key="overview" />
-            <TabPane tab="Test Steps" key="testSteps" />
-            <TabPane tab="Executions" key="executions" />
-            <TabPane tab="Code Generation" key="codeGeneration" />
-            <TabPane tab="Settings" key="settings" />
-          </Tabs>
-        }
-      >
-        TestCaseDetails
-      </PageHeader>
+    <PageContent
+      header={
+        <PageHeader
+          breadcrumb={
+            <Breadcrumb>
+              <Link to={`/projects/${match.params.pid}`}>
+                <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+              </Link>
+              <Link to={`/projects/${match.params.pid}/testcases`}>
+                <Breadcrumb.Item>Test Cases</Breadcrumb.Item>
+              </Link>
+              <Breadcrumb.Item>Test Case</Breadcrumb.Item>
+            </Breadcrumb>
+          }
+          title={testCase.title}
+          extra={[executeButton, deleteButton]}
+          tabs={
+            <Tabs
+              defaultActiveKey={`${activeTabKey}`}
+              onChange={(activeKey: string) => setActiveTabKey(activeKey)}
+            >
+              <TabPane tab="Overview" key="overview" />
+              <TabPane tab="Test Steps" key="testSteps" />
+              <TabPane tab="Executions" key="executions" />
+              <TabPane tab="Code Generation" key="codeGeneration" />
+              <TabPane tab="Settings" key="settings" />
+            </Tabs>
+          }
+        >
+          TestCaseDetails
+        </PageHeader>
+      }
+    >
       {content}
-    </Fragment>
+    </PageContent>
   );
 };
 

@@ -14,7 +14,7 @@ const HeaderWrapper: React.FunctionComponent<{}> = () => {
   const { data: projects } = useFetcher(getProjects);
 
   return (
-    <Header style={{ padding: 0 }}>
+    <Header style={{ padding: 0, zIndex: 2 }}>
       <Row type="flex" justify="center" className="navbar">
         <Col xs={24} xl={20} style={{ padding: '0 24px' }}>
           <Row type="flex" justify="end">
