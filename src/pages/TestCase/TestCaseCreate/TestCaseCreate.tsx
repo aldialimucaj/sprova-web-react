@@ -9,12 +9,14 @@ import PageHeader from '@/components/PageHeader';
 import { addTestCase, ProjectContext } from '@/contexts/ProjectContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
+import PageContent from '@/layout/PageContent';
 import { TestCase } from '@/models/TestCase';
 import { TestStep } from '@/models/TestStep';
 import { resolveInheritance } from '@/utils';
 import {
   Breadcrumb,
   Button,
+  Card,
   Col,
   Form,
   List,
@@ -22,14 +24,12 @@ import {
   Row,
   Select,
   Tag,
-  Card,
 } from 'antd';
 import React, { Fragment, useContext, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './TestCaseCreate.scss';
 import TestStepInput from './TestStepInput';
 import { formContentLayout } from './utils';
-import PageContent from '@/layout/PageContent';
 
 const Option = Select.Option;
 

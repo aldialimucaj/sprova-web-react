@@ -16,7 +16,7 @@ export const setToken = (token: string | null) => {
 const agent = axios.create({
   baseURL: url,
   headers: {
-    Authorization: formatToken(getToken()),
+    "Authorization": formatToken(getToken()),
     'Content-Type': 'application/json',
   },
   timeout,

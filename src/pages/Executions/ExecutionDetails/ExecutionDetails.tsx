@@ -3,6 +3,7 @@ import Level from '@/components/Level';
 import PageHeader from '@/components/PageHeader';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFetcher } from '@/hooks/useFetcher';
+import PageContent from '@/layout/PageContent';
 import { parseQuery } from '@/utils';
 import {
   Breadcrumb,
@@ -22,7 +23,6 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import './ExecutionDetails.scss';
 import OverviewTab from './tabs/OverviewTab';
 import TestCasesTab from './tabs/TestCasesTab';
-import PageContent from '@/layout/PageContent';
 
 const TabPane = Tabs.TabPane;
 

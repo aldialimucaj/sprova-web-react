@@ -1,10 +1,10 @@
 import { TestCase } from '@/models/TestCase';
 import { Tabs } from 'antd';
 const TabPane = Tabs.TabPane;
-import { RouteComponentProps, withRouter } from 'react-router';
-import './OverviewTab.scss';
 import React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
 import CodeDetails from './CodeDetails';
+import './OverviewTab.scss';
 
 interface Params {
   pid: string;

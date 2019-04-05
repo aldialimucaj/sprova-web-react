@@ -1,6 +1,7 @@
 import { deleteTestCase } from '@/api/testcase.api';
 import PageHeader from '@/components/PageHeader';
 import { ProjectContext, removeTestCase } from '@/contexts/ProjectContext';
+import PageContent from '@/layout/PageContent';
 import { findById } from '@/utils';
 import { Breadcrumb, Button, Icon, notification, Popconfirm, Tabs } from 'antd';
 import React, { Fragment, useContext, useState } from 'react';
@@ -13,7 +14,6 @@ import {
 import CodeGenerationTab from './tabs/CodeGenerationTab';
 import ExecutionsTab from './tabs/ExecutionsTab';
 import OverviewTab from './tabs/OverviewTab';
-import PageContent from '@/layout/PageContent';
 
 const TabPane = Tabs.TabPane;
 

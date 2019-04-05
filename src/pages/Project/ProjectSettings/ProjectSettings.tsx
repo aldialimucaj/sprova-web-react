@@ -6,6 +6,7 @@ import {
   resetProject,
   setProject,
 } from '@/contexts/ProjectContext';
+import PageContent from '@/layout/PageContent';
 import { Project } from '@/models/Project';
 import { hasFieldErrors } from '@/utils';
 import {
@@ -29,7 +30,6 @@ import {
   withRouter,
 } from 'react-router-dom';
 import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
-import PageContent from '@/layout/PageContent';
 
 const { Text } = Typography;
 

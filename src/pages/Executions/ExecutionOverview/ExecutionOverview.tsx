@@ -3,6 +3,7 @@ import Level from '@/components/Level';
 import PageHeader from '@/components/PageHeader';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFetcher } from '@/hooks/useFetcher';
+import PageContent from '@/layout/PageContent';
 import {
   ExecutionContext,
   ExecutionContextStatus,
@@ -12,7 +13,6 @@ import _ from 'lodash';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './ExecutionOverview.scss';
-import PageContent from '@/layout/PageContent';
 
 interface Params {
   pid: string;

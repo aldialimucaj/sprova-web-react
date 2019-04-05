@@ -2,6 +2,7 @@ import { getProjects } from '@/api/project.api';
 import Level from '@/components/Level';
 import PageHeader from '@/components/PageHeader';
 import { useFetcher } from '@/hooks/useFetcher';
+import PageContent from '@/layout/PageContent';
 import { Project } from '@/models/Project';
 import {
   Alert,
@@ -17,7 +18,6 @@ import {
 import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import './ProjectList.scss';
-import PageContent from '@/layout/PageContent';
 
 const ProjectList: React.FunctionComponent = () => {
   const { data: projects, isLoading, error } = useFetcher(getProjects);

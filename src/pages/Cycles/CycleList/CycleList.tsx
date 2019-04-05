@@ -1,5 +1,6 @@
 import PageHeader from '@/components/PageHeader';
 import { ProjectContext } from '@/contexts/ProjectContext';
+import PageContent from '@/layout/PageContent';
 import { Breadcrumb, Button, Icon } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import {
@@ -8,7 +9,6 @@ import {
   RouteComponentProps,
   withRouter,
 } from 'react-router-dom';
-import PageContent from '@/layout/PageContent';
 
 interface Params {
   pid: string;

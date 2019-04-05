@@ -1,12 +1,12 @@
 import Level from '@/components/Level';
 import PageHeader from '@/components/PageHeader';
 import { ProjectContext } from '@/contexts/ProjectContext';
+import PageContent from '@/layout/PageContent';
 import { Cycle } from '@/models/Cycle';
 import { TestCase } from '@/models/TestCase';
 import { Col, Icon, List, Row } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import { Link, Redirect, RouteComponentProps } from 'react-router-dom';
-import PageContent from '@/layout/PageContent';
 
 const ProjectDetails: React.FunctionComponent<RouteComponentProps> = ({
   history,
