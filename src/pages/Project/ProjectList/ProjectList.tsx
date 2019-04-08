@@ -1,21 +1,20 @@
 import { getProjects } from '@/api/project.api';
-import Level from '@/components/Level';
 import PageHeader from '@/components/PageHeader';
 import { useFetcher } from '@/hooks/useFetcher';
 import PageContent from '@/layout/PageContent';
 import { Project } from '@/models/Project';
 import {
   Alert,
+  Breadcrumb,
   Button,
   Card,
   Col,
-  Divider,
   Empty,
   Icon,
   Row,
   Spin,
 } from 'antd';
-import React, { Fragment } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import './ProjectList.scss';
 
@@ -30,7 +29,12 @@ const ProjectList: React.FunctionComponent = () => {
     <PageContent
       header={
         <PageHeader
-          title="Projects"
+          title="Choose a Project"
+          breadcrumb={
+            <Breadcrumb>
+              <Breadcrumb.Item>Projects</Breadcrumb.Item>
+            </Breadcrumb>
+          }
           extra={
             <Link to={`/projects/new`}>
               <Button type="primary">
