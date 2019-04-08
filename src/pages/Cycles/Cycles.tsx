@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import CycleCreate from './CycleCreate';
 import CycleList from './CycleList';
 
 const TestCase: React.FunctionComponent = () => {
@@ -10,7 +11,7 @@ const TestCase: React.FunctionComponent = () => {
         exact={true}
         component={CycleList}
       />
-      {/* <Route path={'/projects/:pid/cycles/new'} component={CycleCreate} /> */}
+      <Route path={'/projects/:pid/cycles/new'} component={CycleCreate} />
       {/* <Route
         path={'/projects/:pid/cycles/:cid'}
         component={CycleDetails}
