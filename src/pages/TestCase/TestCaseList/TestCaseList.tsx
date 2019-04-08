@@ -3,7 +3,7 @@ import { ProjectContext } from '@/contexts/ProjectContext';
 import PageContent from '@/layout/PageContent';
 import { TestCase } from '@/models/TestCase';
 import { Breadcrumb, Button, Icon, Table } from 'antd';
-import React, { Fragment, useContext } from 'react';
+import React, { useContext } from 'react';
 import {
   Link,
   Redirect,
@@ -84,7 +84,12 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
         className="testcases-list"
         bordered={true}
         columns={columns}
-        onRowClick={handleRowClick}
+        onRow={(record, rowIndex) => {
+          return {
+            onClick: () => handleRowClick(record),
+          };
+        }}
+        rowKey={(record: TestCase) => record._id}
         dataSource={testCases}
       />
     </PageContent>

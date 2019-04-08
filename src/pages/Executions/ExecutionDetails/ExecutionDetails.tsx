@@ -1,24 +1,12 @@
-import { getExecution } from '@/api/execution.api';
-import Level from '@/components/Level';
+import { getExecutionContext } from '@/api/execution-context.api';
+import { getExecutionsOfContext } from '@/api/execution.api';
 import PageHeader from '@/components/PageHeader';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFetcher } from '@/hooks/useFetcher';
 import PageContent from '@/layout/PageContent';
-import { parseQuery } from '@/utils';
-import {
-  Breadcrumb,
-  Button,
-  Card,
-  Col,
-  Icon,
-  List,
-  Row,
-  Statistic,
-  Tabs,
-  Tooltip,
-} from 'antd';
-import Chart from 'chart.js';
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import { Breadcrumb, Button, Col, Icon, Row, Spin, Tabs, Tooltip } from 'antd';
+import _ from 'lodash';
+import React, { useContext, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import './ExecutionDetails.scss';
 import OverviewTab from './tabs/OverviewTab';
@@ -33,14 +21,18 @@ interface Params {
 
 const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
-  location,
 }) => {
   const [{ project }] = useContext(ProjectContext);
 
   const [activeTabKey, setActiveTabKey] = useState('overview');
 
-  const { data: execution, error, isLoading } = useFetcher(
-    getExecution,
+  const {
+    data: executionContext,
+    isLoading: isExecutionContextLoading,
+  } = useFetcher(getExecutionContext, match.params.ecid);
+
+  const { data: executions, isLoading: isExecutionsLoading } = useFetcher(
+    getExecutionsOfContext,
     match.params.ecid
   );
 
@@ -62,7 +54,9 @@ const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   switch (activeTabKey) {
     case 'overview': {
-      content = <OverviewTab />;
+      content = (
+        <OverviewTab context={executionContext!} executions={executions!} />
+      );
       break;
     }
     case 'testCases': {
@@ -71,7 +65,9 @@ const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
     }
   }
 
-  return (
+  return isExecutionContextLoading || isExecutionsLoading ? (
+    <Spin />
+  ) : (
     <PageContent
       header={
         <PageHeader
@@ -98,7 +94,30 @@ const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
             </Tabs>
           }
         >
-          <span>Execution Details</span>
+          <Row>
+            <Col span={2}>
+              <div>
+                <strong>Created at:</strong>
+              </div>
+              <div>
+                <strong>Mode:</strong>
+              </div>
+              <div>
+                <strong>Target:</strong>
+              </div>
+              <div>
+                <strong>User:</strong>
+              </div>
+            </Col>
+            <Col>
+              <div>
+                {new Date(executionContext!.createdAt).toLocaleString()}
+              </div>
+              <div>{_.upperFirst(executionContext!.method.toLowerCase())}</div>
+              <div>{_.upperFirst(executionContext!.type.toLowerCase())}</div>
+              <div>{executionContext!.userId}</div>
+            </Col>
+          </Row>
         </PageHeader>
       }
     >

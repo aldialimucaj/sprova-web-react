@@ -8,7 +8,6 @@ export interface Execution {
   status: ExecutionStatus;
   steps: ExecutionStep[];
   createdAt: Date;
-  startedAt?: Date;
   finishedAt?: Date;
 }
 

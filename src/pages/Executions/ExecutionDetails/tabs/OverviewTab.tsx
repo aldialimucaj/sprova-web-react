@@ -1,14 +1,30 @@
+import { Execution } from '@/models/Execution';
+import { ExecutionContext } from '@/models/ExecutionContext';
+import { formatDuration } from '@/utils/formatDuration';
 import { Card, Col, Row, Statistic } from 'antd';
 import Chart from 'chart.js';
+import _ from 'lodash';
 import React, { useEffect } from 'react';
 
-const OverviewTab: React.FunctionComponent = () => {
+interface Props {
+  executions: Execution[];
+  context: ExecutionContext;
+}
+
+const OverviewTab: React.FunctionComponent<Props> = ({
+  context,
+  executions,
+}) => {
   const pieChartCanvas = React.createRef<HTMLCanvasElement>();
 
-  let pieChart: Chart;
+  const getExecutionDuration = () => {
+    const from = new Date(context.createdAt);
+    const to = new Date(context.finishedAt!);
+    return formatDuration(from, to);
+  };
 
   useEffect(() => {
-    pieChart = new Chart(pieChartCanvas.current!, {
+    const pieChart = new Chart(pieChartCanvas.current!, {
       type: 'doughnut',
       data: {
         labels: ['Success', 'Warning', 'Failure'],
@@ -37,12 +53,18 @@ const OverviewTab: React.FunctionComponent = () => {
         <Row gutter={24} style={{ marginBottom: 24 }}>
           <Col span={8}>
             <Card>
-              <Statistic title="Total Number of Tests" value={118} />
+              <Statistic
+                title="Total Number of Tests"
+                value={executions.length}
+              />
             </Card>
           </Col>
           <Col span={8}>
             <Card>
-              <Statistic title="Execution Duration" value="04:33:12" />
+              <Statistic
+                title="Execution Duration"
+                value={getExecutionDuration()}
+              />
             </Card>
           </Col>
           <Col span={8}>

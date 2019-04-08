@@ -3,8 +3,17 @@ import PageHeader from '@/components/PageHeader';
 import { ProjectContext, removeTestCase } from '@/contexts/ProjectContext';
 import PageContent from '@/layout/PageContent';
 import { findById } from '@/utils';
-import { Breadcrumb, Button, Icon, notification, Popconfirm, Tabs } from 'antd';
-import React, { Fragment, useContext, useState } from 'react';
+import {
+  Breadcrumb,
+  Button,
+  Icon,
+  notification,
+  Popconfirm,
+  Tabs,
+  Row,
+  Col,
+} from 'antd';
+import React, { useContext, useState } from 'react';
 import {
   Link,
   Redirect,
@@ -143,7 +152,16 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
             </Tabs>
           }
         >
-          TestCaseDetails
+          <Row>
+            <Col span={2}>
+              <div>
+                <strong>Created at:</strong>
+              </div>
+            </Col>
+            <Col>
+              <div>{new Date(testCase.createdAt).toDateString()}</div>
+            </Col>
+          </Row>
         </PageHeader>
       }
     >
