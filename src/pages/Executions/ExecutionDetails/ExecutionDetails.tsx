@@ -1,31 +1,17 @@
 import { getExecutionContext } from '@/api/execution-context.api';
 import { getExecutionsOfContext } from '@/api/execution.api';
+import Level from '@/components/Level';
 import PageHeader from '@/components/PageHeader';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFetcher } from '@/hooks/useFetcher';
 import PageContent from '@/layout/PageContent';
-import {
-  Breadcrumb,
-  Button,
-  Col,
-  Icon,
-  Row,
-  Spin,
-  Tabs,
-  Tooltip,
-  Card,
-  Statistic,
-  Progress,
-  List,
-  Divider,
-} from 'antd';
-import Chart from 'chart.js';
+import { Breadcrumb, Button, Col, Icon, Row, Spin, Tabs, Tooltip } from 'antd';
 import _ from 'lodash';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import './ExecutionDetails.scss';
-import Level from '@/components/Level';
-import { formatDuration } from '@/utils/formatDuration';
+import OverviewTab from './tabs/OverviewTab';
+import TestCasesTab from './tabs/TestCasesTab';
 
 const TabPane = Tabs.TabPane;
 
@@ -37,8 +23,6 @@ interface Params {
 const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
 }) => {
-  const pieChartCanvas = React.createRef<HTMLCanvasElement>();
-
   const [{ project }] = useContext(ProjectContext);
 
   const [activeTabKey, setActiveTabKey] = useState('overview');
@@ -67,43 +51,20 @@ const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
     </Link>
   );
 
-  useEffect(() => {
-    if (isExecutionContextLoading || isExecutionsLoading) {
-      return;
-    }
-    const pieChart = new Chart(pieChartCanvas.current!, {
-      type: 'doughnut',
-      data: {
-        labels: ['Success', 'Warning', 'Failure'],
-        datasets: [
-          {
-            label: '# of Votes',
-            data: [12, 19, 3],
-            backgroundColor: ['#52c41a', '#faad14', '#f5222d'],
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        legend: {
-          position: 'bottom',
-          labels: {
-            boxWidth: 20,
-          },
-        },
-      },
-    });
-  }, [
-    isExecutionContextLoading,
-    isExecutionsLoading,
-    /* TODO: Externalize data and add to dependencies */
-  ]);
+  let content;
 
-  const getExecutionDuration = () => {
-    const from = new Date(executionContext!.createdAt);
-    const to = new Date(executionContext!.finishedAt!);
-    return formatDuration(from, to);
-  };
+  switch (activeTabKey) {
+    case 'overview': {
+      content = (
+        <OverviewTab context={executionContext!} executions={executions!} />
+      );
+      break;
+    }
+    case 'testCases': {
+      content = <TestCasesTab />;
+      break;
+    }
+  }
 
   return isExecutionContextLoading || isExecutionsLoading ? (
     <Spin />
@@ -124,6 +85,15 @@ const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
           }
           title="Finished Execution"
           extra={[generatePdfButton, rerunButton]}
+          tabs={
+            <Tabs
+              defaultActiveKey={`${activeTabKey}`}
+              onChange={(activeKey: string) => setActiveTabKey(activeKey)}
+            >
+              <TabPane tab="Overview" key="overview" />
+              <TabPane tab="Test Cases" key="testCases" />
+            </Tabs>
+          }
         >
           <Row type="flex" justify="space-between">
             <Col span={8}>
@@ -165,67 +135,7 @@ const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
         </PageHeader>
       }
     >
-      <Row gutter={24}>
-        <Col span={6}>
-          <Card style={{ marginBottom: 24 }}>
-            <Statistic title="No. Tests Executed" value={executions!.length} />
-          </Card>
-          <Card>
-            <Statistic
-              title="Anzeige"
-              value="Hier könnte Ihre Werbung stehen!"
-            />
-          </Card>
-        </Col>
-        <Col span={6}>
-          <Card style={{ marginBottom: 24 }}>
-            <Statistic title="Duration" value={getExecutionDuration()} />
-          </Card>
-          <Card>
-            <Statistic
-              title="Anzeige"
-              value="Hier könnte Ihre Werbung stehen!"
-            />
-          </Card>
-        </Col>
-
-        <Col span={6}>
-          <Card>
-            <Progress type="circle" percent={75} />
-          </Card>
-        </Col>
-        <Col span={6}>
-          <Card>
-            <canvas ref={pieChartCanvas} />
-          </Card>
-        </Col>
-      </Row>
-
-      <Divider />
-
-      <Row gutter={24}>
-        <Col span={8}>
-          <List
-            className="children-list"
-            size="small"
-            header={
-              <Level
-                style={{ marginBottom: 0 }}
-                left={
-                  <span>
-                    <Icon type="file-text" style={{ marginRight: 8 }} />
-                    Executed Test Cases
-                  </span>
-                }
-              />
-            }
-            bordered={true}
-            dataSource={[]}
-            renderItem={(item: any) => <div />}
-          />
-        </Col>
-        <Col span={16}>Display Test Case Execution Details here.</Col>
-      </Row>
+      {content}
     </PageContent>
   );
 };
