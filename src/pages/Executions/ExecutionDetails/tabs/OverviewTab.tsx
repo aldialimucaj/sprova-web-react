@@ -27,8 +27,7 @@ const OverviewTab: React.FunctionComponent<Props> = ({
         labels: ['Success', 'Warning', 'Failure'],
         datasets: [
           {
-            label: '# of Votes',
-            data: [12, 19, 3],
+            data: getExecutionResults(),
             backgroundColor: ['#52c41a', '#faad14', '#f5222d'],
             borderWidth: 1,
           },
@@ -44,9 +43,20 @@ const OverviewTab: React.FunctionComponent<Props> = ({
         },
       },
     });
-  }, [
-    /* TODO: Externalize data and add to dependencies */
-  ]);
+  }, [executions]);
+
+  const getExecutionResults = (): [number, number, number] => {
+    const countByStatus = (status: ExecutionStatus) => {
+      return _.filter(executions, (execution) => execution.status === status)
+        .length;
+    };
+
+    return [
+      countByStatus(ExecutionStatus.Successful),
+      countByStatus(ExecutionStatus.Warning),
+      countByStatus(ExecutionStatus.Failed),
+    ];
+  };
 
   const getExecutionDuration = () => {
     const from = new Date(context!.createdAt);
