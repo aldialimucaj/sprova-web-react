@@ -34,7 +34,8 @@ const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   const { data: executions, isLoading: isExecutionsLoading } = useFetcher(
     getExecutionsOfContext,
-    match.params.ecid
+    match.params.ecid,
+    true
   );
 
   const generatePdfButton = (
@@ -61,7 +62,7 @@ const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
       break;
     }
     case 'testCases': {
-      content = <TestCasesTab />;
+      content = <TestCasesTab executions={executions!} />;
       break;
     }
   }

@@ -18,10 +18,8 @@ const OverviewTab: React.FunctionComponent<Props> = ({
 }) => {
   const pieChartCanvas = React.createRef<HTMLCanvasElement>();
 
-  let pieChart: Chart;
-
   useEffect(() => {
-    pieChart = new Chart(pieChartCanvas.current!, {
+    const pieChart = new Chart(pieChartCanvas.current!, {
       type: 'doughnut',
       data: {
         labels: ['Success', 'Warning', 'Failure'],
