@@ -154,6 +154,7 @@ const Executor: React.FunctionComponent<Props> = ({ eid, onFinish }) => {
         />
       ) : (
         <List
+          className="executor-list"
           size="default"
           bordered={true}
           dataSource={executionSteps}

@@ -22,6 +22,7 @@ import {
   List,
   notification,
   Popconfirm,
+  Progress,
   Row,
   Spin,
 } from 'antd';
@@ -193,16 +194,32 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
   const findNext = () => {};
 
   const hasPrevious = () => {
-    return false;
+    const currentExecutionIndex = _.indexOf(executions, currentExecution);
+    return currentExecutionIndex > 0;
   };
 
   const hasNext = () => {
-    return false;
+    const currentExecutionIndex = _.indexOf(executions, currentExecution);
+    return currentExecutionIndex < executions!.length - 1;
   };
 
-  const selectPrevious = () => {};
+  const selectPrevious = () => {
+    const currentExecutionIndex = _.indexOf(executions, currentExecution);
+    handleExecutionSelect(executions![currentExecutionIndex - 1]);
+  };
 
-  const selectNext = () => {};
+  const selectNext = () => {
+    const currentExecutionIndex = _.indexOf(executions, currentExecution);
+    handleExecutionSelect(executions![currentExecutionIndex + 1]);
+  };
+
+  const getExecutionProgess = () => {
+    const finishedExecutions = _.filter(
+      executions,
+      (execution: Execution) => execution.status !== ExecutionStatus.Pending
+    );
+    return Math.round((finishedExecutions.length / executions!.length) * 100);
+  };
 
   return isContextLoading || isTestCasesLoading ? (
     <Spin />
@@ -227,6 +244,12 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
         />
       }
     >
+      <Progress
+        status={getExecutionProgess() < 100 ? 'active' : 'success'}
+        className="execution-progress"
+        style={{ marginBottom: 24 }}
+        percent={getExecutionProgess()}
+      />
       <Row gutter={24}>
         <Col span={18}>
           <Level
@@ -237,11 +260,19 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
             }
             right={
               <ButtonGroup>
-                <Button disabled={!hasPrevious()} onClick={selectPrevious}>
+                <Button
+                  disabled={!hasPrevious()}
+                  onClick={selectPrevious}
+                  type="primary"
+                >
                   <Icon type="left" />
                   Previous
                 </Button>
-                <Button disabled={!hasNext()} onClick={selectNext}>
+                <Button
+                  disabled={!hasNext()}
+                  onClick={selectNext}
+                  type="primary"
+                >
                   Next
                   <Icon type="right" />
                 </Button>
