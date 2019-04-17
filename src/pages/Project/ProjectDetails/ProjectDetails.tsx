@@ -1,10 +1,10 @@
-import Level from '@/components/Level';
+import CardList from '@/components/CardList';
 import PageHeader from '@/components/PageHeader';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import PageContent from '@/layout/PageContent';
 import { Cycle } from '@/models/Cycle';
 import { TestCase } from '@/models/TestCase';
-import { Col, Icon, List, Row } from 'antd';
+import { Button, Col, Row } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import { Link, Redirect, RouteComponentProps } from 'react-router-dom';
 
@@ -23,69 +23,35 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps> = ({
     >
       <Row gutter={16}>
         <Col lg={12} style={{ marginBottom: 16 }}>
-          <List
-            className="children-list"
-            size="small"
-            header={
-              <Level
-                style={{ marginBottom: 0 }}
-                left={
-                  <span>
-                    <Icon type="clock-circle" style={{ marginRight: 8 }} />
-                    Cycles
-                  </span>
-                }
-                right={
-                  <Link to={`/projects/${project._id}/cycles`}>Show All</Link>
-                }
-              />
+          <CardList
+            zebra={true}
+            small={true}
+            title={<span>Cycles</span>}
+            actions={
+              <Link to={`/projects/${project._id}/cycles`}>Show All</Link>
             }
-            bordered={true}
-            dataSource={cycles.slice(0, 4)}
-            renderItem={(cycle: Cycle) => (
-              <List.Item
-                onClick={() =>
-                  history.push(`/projects/${project._id}/cycles/${cycle._id}`)
-                }
-              >
-                {cycle.title}
-              </List.Item>
-            )}
+            data={cycles.slice(0, 4)}
+            renderItem={(cycle: Cycle) => <div>{cycle.title}</div>}
+            onItemClick={(cycle: Cycle) =>
+              history.push(`/projects/${project._id}/cycles/${cycle._id}`)
+            }
+            empty={'No cycles found.'}
           />
         </Col>
         <Col lg={12} style={{ marginBottom: 16 }}>
-          <List
-            className="children-list"
-            size="small"
-            header={
-              <Level
-                style={{ marginBottom: 0 }}
-                left={
-                  <span>
-                    <Icon type="clock-circle" style={{ marginRight: 8 }} />
-                    Test Cases
-                  </span>
-                }
-                right={
-                  <Link to={`/projects/${project._id}/testcases`}>
-                    Show All
-                  </Link>
-                }
-              />
+          <CardList
+            zebra={true}
+            small={true}
+            title={<span>Test Cases</span>}
+            actions={
+              <Link to={`/projects/${project._id}/testcases`}>Show All</Link>
             }
-            bordered={true}
-            dataSource={testCases.slice(0, 4)}
-            renderItem={(testCase: TestCase) => (
-              <List.Item
-                onClick={() =>
-                  history.push(
-                    `/projects/${project._id}/testcases/${testCase._id}`
-                  )
-                }
-              >
-                {testCase.title}
-              </List.Item>
-            )}
+            data={testCases.slice(0, 4)}
+            renderItem={(testCase: TestCase) => <div>{testCase.title}</div>}
+            onItemClick={(testCase: TestCase) =>
+              history.push(`/projects/${project._id}/testcases/${testCase._id}`)
+            }
+            empty={'No test cases found.'}
           />
         </Col>
       </Row>
