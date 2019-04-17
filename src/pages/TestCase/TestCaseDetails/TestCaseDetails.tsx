@@ -6,12 +6,12 @@ import { findById } from '@/utils';
 import {
   Breadcrumb,
   Button,
+  Col,
   Icon,
   notification,
   Popconfirm,
-  Tabs,
   Row,
-  Col,
+  Tabs,
 } from 'antd';
 import React, { useContext, useState } from 'react';
 import {
@@ -23,6 +23,7 @@ import {
 import CodeGenerationTab from './tabs/CodeGenerationTab';
 import ExecutionsTab from './tabs/ExecutionsTab';
 import OverviewTab from './tabs/OverviewTab';
+import TestStepsTab from './tabs/TestStepsTab';
 
 const TabPane = Tabs.TabPane;
 
@@ -109,7 +110,7 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
       break;
     }
     case 'testSteps': {
-      content = 'Content of Tab Pane 2';
+      content = <TestStepsTab testCase={testCase} testCases={testCases} />;
       break;
     }
     case 'executions': {
