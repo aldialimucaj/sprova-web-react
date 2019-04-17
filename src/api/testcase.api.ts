@@ -52,7 +52,22 @@ export function postTestCase(testCase: Partial<TestCase>): Promise<TestCase> {
     );
 }
 
-export function deleteTestCase(id: string) {
+export function updateTestCase(testCase: TestCase): Promise<boolean> {
+  return agent
+    .put(`/testcases/${testCase._id}`, testCase)
+    .catch(axiosErrorHandler)
+    .then(
+      (response: AxiosResponse): boolean => {
+        const { data, status, statusText } = response;
+        if (status !== 200) {
+          throw statusText;
+        }
+        return !!data.ok;
+      }
+    );
+}
+
+export function deleteTestCase(id: string): Promise<boolean> {
   return agent
     .delete(`/testcases/${id}`)
     .catch(axiosErrorHandler)

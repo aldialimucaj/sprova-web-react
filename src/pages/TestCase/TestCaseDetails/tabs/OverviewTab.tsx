@@ -1,12 +1,14 @@
+import { updateTestCase } from '@/api/testcase.api';
+import CardList from '@/components/CardList';
+import Level from '@/components/Level';
 import { TestCase } from '@/models/TestCase';
 import { findChildren } from '@/utils';
-import { List, Row, Col, Card, Button, Icon } from 'antd';
-import React, { Fragment } from 'react';
+import { Alert, Button, Col, Divider, Input, Row } from 'antd';
+import React, { useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import './OverviewTab.scss';
-import Level from '@/components/Level';
-import Editor from '@/components/Editor';
-import CardList from '@/components/CardList';
+
+const TextArea = Input.TextArea;
 
 interface Params {
   pid: string;
@@ -24,24 +26,89 @@ const OverviewTab: React.FunctionComponent<Props> = ({
   testCase,
   testCases,
 }) => {
+  const [isDescriptionEditable, setIsDescriptionEditable] = useState(false);
+  const [descriptionLoading, setDescriptionLoading] = useState(false);
+  const [descriptionError, setDescriptionError] = useState('');
+  const [description, setDescription] = useState(testCase.description);
+
   const children = findChildren(testCases, match.params.tid);
+
+  const updateDescription = async () => {
+    if (description === testCase.description) {
+      setIsDescriptionEditable(false);
+      return;
+    }
+
+    setDescriptionLoading(true);
+
+    try {
+      const ok = await updateTestCase({ ...testCase, description });
+      if (!ok) {
+        throw new Error('Response not ok');
+      }
+      testCase.description = description;
+      setIsDescriptionEditable(false);
+    } catch (error) {
+      setDescriptionError(error);
+      setTimeout(() => setDescriptionError(''), 3000);
+    } finally {
+      setDescriptionLoading(false);
+    }
+  };
 
   return (
     <Row gutter={24}>
-      <Col span={16}>
+      <Col span={16}>Overview</Col>
+      <Col span={8}>
         <Level
-          left={<span style={{ fontSize: 18 }}>Description</span>}
+          style={{ marginBottom: 8 }}
+          left={<h3>Description</h3>}
           right={
-            <Button>
-              <Icon type="edit" />
-              Edit
-            </Button>
+            isDescriptionEditable ? (
+              <a
+                onClick={() => {
+                  setIsDescriptionEditable(false);
+                  setDescription(testCase.description);
+                }}
+              >
+                Cancel
+              </a>
+            ) : (
+              <a onClick={() => setIsDescriptionEditable(true)}>Edit</a>
+            )
           }
         />
-        <Editor />
-      </Col>
-      <Col span={8}>
-        <Level left={<h3>Description</h3>} right={<a>Edit</a>} />
+        {descriptionError && (
+          <Alert
+            style={{ marginBottom: 16 }}
+            message={descriptionError}
+            type="error"
+          />
+        )}
+        {isDescriptionEditable ? (
+          <div>
+            <TextArea
+              autosize={true}
+              placeholder="Description"
+              style={{ marginBottom: 16 }}
+              value={description}
+              onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
+                setDescription(event.target.value)
+              }
+            />
+            <Button
+              loading={descriptionLoading}
+              type="primary"
+              onClick={updateDescription}
+            >
+              Save
+            </Button>
+          </div>
+        ) : (
+          <p>{testCase.description || 'No Description.'}</p>
+        )}
+
+        <Divider />
         <CardList
           zebra={true}
           small={true}
