@@ -1,0 +1,43 @@
+.sprova-card-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  &-item {
+    padding: 1.25rem;
+    transition: all 0.3s;
+
+    &:not(:last-of-type) {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    &.is-small {
+      padding: 0.75rem 1.25rem;
+    }
+
+    &.is-zebra {
+      border-bottom: none;
+
+      &:nth-child(2n-1) {
+        background-color: #f7fafc;
+      }
+    }
+
+    &.is-clickable {
+      &:hover {
+        background-color: #e6f7ff;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.sprova-card-list-empty {
+  display: flex;
+  justify-content: center;
+  padding: 1.25rem;
+
+  &-item {
+    opacity: 0.5;
+  }
+}

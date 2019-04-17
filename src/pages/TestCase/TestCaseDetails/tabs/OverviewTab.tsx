@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import './OverviewTab.scss';
 import Level from '@/components/Level';
 import Editor from '@/components/Editor';
+import CardList from '@/components/CardList';
 
 interface Params {
   pid: string;
@@ -40,23 +41,16 @@ const OverviewTab: React.FunctionComponent<Props> = ({
         <Editor />
       </Col>
       <Col span={8}>
-        <List
-          className="children-list"
-          size="small"
-          header={<div>Children ({children.length})</div>}
-          bordered={true}
-          dataSource={children}
-          renderItem={(tc: TestCase) => (
-            <List.Item
-              onClick={() =>
-                history.push(
-                  `/projects/${match.params.pid}/testcases/${tc._id}`
-                )
-              }
-            >
-              {tc.title}
-            </List.Item>
-          )}
+        <Level left={<h3>Description</h3>} right={<a>Edit</a>} />
+        <CardList
+          zebra={true}
+          small={true}
+          title={<div>Children ({children.length})</div>}
+          data={children}
+          renderItem={(tc: TestCase) => <div>{tc.title}</div>}
+          onItemClick={(tc: TestCase) =>
+            history.push(`/projects/${match.params.pid}/testcases/${tc._id}`)
+          }
         />
       </Col>
     </Row>
