@@ -1,17 +1,7 @@
 import { authenticate, isAuthenticated } from '@/api/auth.api';
 import logo from '@/images/sprova.svg';
 import { hasFieldErrors } from '@/utils';
-import {
-  Alert,
-  Button,
-  Card,
-  Col,
-  Divider,
-  Form,
-  Input,
-  Row,
-  Spin,
-} from 'antd';
+import { Alert, Button, Col, Divider, Form, Input, Row, Spin } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { useState } from 'react';
 import {
@@ -21,6 +11,7 @@ import {
   withRouter,
 } from 'react-router-dom';
 import './Login.scss';
+import Card from '@/components/Card';
 
 interface Props extends RouteComponentProps, FormComponentProps {}
 
@@ -48,7 +39,7 @@ const Login: React.FunctionComponent<Props> = ({ form, history }) => {
   return !isAuthenticated() ? (
     <Row className="login-page" type="flex" justify="center">
       <Col span={6} style={{ textAlign: 'center' }}>
-        <Card className="login-card">
+        <Card>
           <img src={logo} width="64px" style={{ margin: 36 }} />
           <h3 style={{ marginBottom: 24 }}>Sign in to Sprova</h3>
           <Spin spinning={isLoading}>
