@@ -8,8 +8,9 @@ interface Props {
   data: any[];
   empty?: React.ReactNode;
   onItemClick?: (item: any) => void;
-  renderItem: (item: any) => React.ReactNode;
+  renderItem: (item: any, index: number) => React.ReactNode;
   small?: boolean;
+  style?: any;
   title?: React.ReactNode;
   zebra?: boolean;
 }
@@ -21,11 +22,12 @@ const CardList: React.FunctionComponent<Props> = ({
   onItemClick,
   renderItem,
   small = false,
+  style,
   title,
   zebra = false,
 }) => {
   return (
-    <Card title={title} padded={false} actions={actions}>
+    <Card title={title} padded={false} actions={actions} style={{ ...style }}>
       {data.length > 0 ? (
         <ul className={classnames('sprova-card-list')}>
           {data.map((item: any, index: number) => (
@@ -40,7 +42,7 @@ const CardList: React.FunctionComponent<Props> = ({
               onClick={() => onItemClick && onItemClick(item)}
               style={{ width: '100%' }}
             >
-              {renderItem(item)}
+              {renderItem(item, index)}
             </li>
           ))}
         </ul>

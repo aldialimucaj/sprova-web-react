@@ -4,18 +4,26 @@ import './Card.scss';
 
 interface Props {
   actions?: React.ReactNode;
+  onClick?: () => void;
   padded?: boolean;
+  style?: any;
   title?: React.ReactNode;
 }
 
 const Card: React.FunctionComponent<Props> = ({
   actions,
   children,
+  onClick,
   padded = true,
+  style,
   title,
 }) => {
   return (
-    <div className="sprova-card">
+    <div
+      className={classnames('sprova-card', { clickable: onClick })}
+      onClick={() => onClick && onClick()}
+      style={{ ...style }}
+    >
       {(actions || title) && (
         <div className="sprova-card-header">
           {title && <div className="sprova-card-header-title">{title}</div>}

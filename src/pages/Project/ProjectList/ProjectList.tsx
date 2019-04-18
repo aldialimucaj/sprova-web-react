@@ -1,24 +1,17 @@
 import { getProjects } from '@/api/project.api';
+import Card from '@/components/Card';
 import PageHeader from '@/components/PageHeader';
 import { useFetcher } from '@/hooks/useFetcher';
 import PageContent from '@/layout/PageContent';
 import { Project } from '@/models/Project';
-import {
-  Alert,
-  Breadcrumb,
-  Button,
-  Card,
-  Col,
-  Empty,
-  Icon,
-  Row,
-  Spin,
-} from 'antd';
+import { Alert, Breadcrumb, Button, Col, Empty, Icon, Row, Spin } from 'antd';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './ProjectList.scss';
 
-const ProjectList: React.FunctionComponent = () => {
+const ProjectList: React.FunctionComponent<RouteComponentProps> = ({
+  history,
+}) => {
   const { data: projects, isLoading, error } = useFetcher(getProjects);
 
   return isLoading ? (
@@ -49,12 +42,10 @@ const ProjectList: React.FunctionComponent = () => {
         <Row gutter={16}>
           {projects.map((project: Project, index: number) => (
             <Col span={6} key={index}>
-              <Link to={`/projects/${project._id}`}>
-                <Card className="clickable-card">
-                  <h3>{project.title}</h3>
-                  <p style={{ marginBottom: 0 }}>#DESCRIPTION#</p>
-                </Card>
-              </Link>
+              <Card onClick={() => history.push(`/projects/${project._id}`)}>
+                <h3>{project.title}</h3>
+                <p style={{ marginBottom: 0 }}>#DESCRIPTION#</p>
+              </Card>
             </Col>
           ))}
         </Row>
@@ -69,4 +60,4 @@ const ProjectList: React.FunctionComponent = () => {
   );
 };
 
-export default ProjectList;
+export default withRouter(ProjectList);

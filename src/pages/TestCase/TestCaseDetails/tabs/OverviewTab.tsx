@@ -2,11 +2,13 @@ import { updateTestCase } from '@/api/testcase.api';
 import CardList from '@/components/CardList';
 import Level from '@/components/Level';
 import { TestCase } from '@/models/TestCase';
-import { findChildren } from '@/utils';
-import { Alert, Button, Col, Divider, Input, Row } from 'antd';
-import React, { useState } from 'react';
+import { TestStep } from '@/models/TestStep';
+import { findById, findChildren, resolveInheritance } from '@/utils';
+import { Alert, Button, Col, Divider, Input, Row, Switch, Tag } from 'antd';
+import React, { Fragment, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import './OverviewTab.scss';
+import { Link } from 'react-router-dom';
 
 const TextArea = Input.TextArea;
 
@@ -30,6 +32,10 @@ const OverviewTab: React.FunctionComponent<Props> = ({
   const [descriptionLoading, setDescriptionLoading] = useState(false);
   const [descriptionError, setDescriptionError] = useState('');
   const [description, setDescription] = useState(testCase.description);
+
+  const [showInherited, setShowInherited] = useState(false);
+
+  const parent = findById(testCases, testCase.parentId);
 
   const children = findChildren(testCases, match.params.tid);
 
@@ -58,7 +64,63 @@ const OverviewTab: React.FunctionComponent<Props> = ({
 
   return (
     <Row gutter={24}>
-      <Col span={16}>Overview</Col>
+      <Col span={16}>
+        <Level
+          style={{ marginBottom: 8 }}
+          left={<h3>Test Steps</h3>}
+          right={
+            parent && (
+              <Fragment>
+                <span style={{ marginRight: 8 }}>Show inherited</span>
+                <Switch
+                  checked={showInherited}
+                  onChange={() => setShowInherited(!showInherited)}
+                />
+              </Fragment>
+            )
+          }
+        />
+        {parent && showInherited ? (
+          <CardList
+            style={{ marginBottom: 16 }}
+            small={true}
+            data={resolveInheritance(parent, testCases, true)}
+            renderItem={([testStep, mappedParent]: [TestStep, TestCase]) => (
+              <Level
+                style={{ margin: 0 }}
+                left={
+                  <div>
+                    <strong>{testStep.action}</strong>
+                    <div>{testStep.expected}</div>
+                  </div>
+                }
+                right={
+                  <Tag style={{ pointerEvents: 'none', margin: 0 }}>
+                    {mappedParent.title}
+                  </Tag>
+                }
+              />
+            )}
+          />
+        ) : null}
+        <CardList
+          small={true}
+          data={testCase.steps}
+          renderItem={(testStep: TestStep, index: number) => (
+            <Level
+              style={{ margin: 0 }}
+              left={
+                <div>
+                  <strong style={{ marginRight: 8 }}>{index + 1}.</strong>
+                  <strong>{testStep.action}</strong>
+                  <div>{testStep.expected}</div>
+                </div>
+              }
+              right={<a className="sprova-teststep-edit">Edit</a>}
+            />
+          )}
+        />
+      </Col>
       <Col span={8}>
         <Level
           style={{ marginBottom: 8 }}
@@ -107,8 +169,22 @@ const OverviewTab: React.FunctionComponent<Props> = ({
         ) : (
           <p>{testCase.description || 'No Description.'}</p>
         )}
-
         <Divider />
+
+        {parent && (
+          <Fragment>
+            <h3>Inherits from</h3>
+            <p>
+              <Link
+                to={`/projects/${match.params.pid}/testcases/${parent._id}`}
+              >
+                {parent.title}
+              </Link>
+            </p>
+            <Divider />
+          </Fragment>
+        )}
+
         <CardList
           zebra={true}
           small={true}

@@ -105,14 +105,6 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
       content = <OverviewTab testCase={testCase} testCases={testCases} />;
       break;
     }
-    case 'statistics': {
-      content = 'Statistics';
-      break;
-    }
-    case 'testSteps': {
-      content = <TestStepsTab testCase={testCase} testCases={testCases} />;
-      break;
-    }
     case 'executions': {
       content = <ExecutionsTab />;
       break;
@@ -146,8 +138,6 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
               onChange={(activeKey: string) => setActiveTabKey(activeKey)}
             >
               <TabPane tab="Overview" key="overview" />
-              <TabPane tab="Statistics" key="statistics" />
-              <TabPane tab="Test Steps" key="testSteps" />
               <TabPane tab="Executions" key="executions" />
               <TabPane tab="Code Generation" key="codeGeneration" />
             </Tabs>
