@@ -4,9 +4,11 @@ import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
 import PageContent from '@/layout/PageContent';
-import { Breadcrumb, Card, Col, Form, Row } from 'antd';
+import { Breadcrumb, Col, Form, Row } from 'antd';
 import React, { useContext, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import Card from '@/components/Card';
+import TestCaseSelector from '@/components/TestCaseSelector';
 
 interface Params {
   pid: string;
@@ -55,9 +57,9 @@ const CycleCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
       }
     >
       <Card>
-        <Row>
-          <Col {...formContentLayout}>
-            <Form layout="vertical">
+        <Form layout="vertical">
+          <Row>
+            <Col {...formContentLayout}>
               <FormInput
                 label="Title"
                 value={cycleTitle}
@@ -72,17 +74,17 @@ const CycleCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
                 placeholder="Description"
                 minLength={3}
               />
-              {/* Add TestCase Select component here */}
-              <FormButton
-                type="primary"
-                loading={isLoading}
-                disabled={!cycleTitle}
-              >
-                Create Cycle
-              </FormButton>
-            </Form>
-          </Col>
-        </Row>
+            </Col>
+          </Row>
+          <TestCaseSelector
+            style={{ marginBottom: 24 }}
+            source={testCases}
+            target={[]}
+          />
+          <FormButton type="primary" loading={isLoading} disabled={!cycleTitle}>
+            Create Cycle
+          </FormButton>
+        </Form>
       </Card>
     </PageContent>
   );
