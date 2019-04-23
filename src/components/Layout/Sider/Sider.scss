@@ -1,10 +1,9 @@
 @import '~styles/variables';
 @import '~styles/mixins';
 
-.sprova-layout-sider {
+.sprova-sider {
   grid-area: sider;
   width: 280px;
-  background-color: rgb(248, 250, 255);
   border-right: 1px solid rgba(0, 0, 0, 0.1);
   padding-left: $padding-lg;
   display: grid;

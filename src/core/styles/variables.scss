@@ -4,25 +4,29 @@ $background-color: #f0f2f5;
 $background-color-hover: #f8fbfc;
 $primary-color: #1890ff;
 
-$navbar-height: 60px;
+$navbar-height: 64px;
 $navbar-background-color: rgb(0, 21, 41);
 $navbar-box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 
-$page-container-padding: 24px;
+// Generics
 $transition-all: all 0.3s;
+$box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
 
+// Margins
 $margin-xs: 4px;
 $margin-sm: 8px;
 $margin-md: 16px;
 $margin-lg: 24px;
 $margin-xl: 32px;
 
+// Paddings
 $padding-xs: 4px;
 $padding-sm: 8px;
 $padding-md: 16px;
 $padding-lg: 24px;
 $padding-xl: 32px;
 
+// Screen Breakpoints
 $screen-sm: 769px;
 $screen-md: 1024px;
 $screen-lg: 1216px;

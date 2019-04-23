@@ -38,15 +38,13 @@ const Header: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
   return (
     <div className="sprova-header">
       <div className="sprova-header-left">
-        <span className="logo" id="logo">
-          <Link to="/projects">
-            <img src={logo} alt="logo" />
-            <h1>Sprova</h1>
-          </Link>
-        </span>
+        <Link to="/projects" className="logo">
+          <img src={logo} alt="logo" />
+          <h1>Sprova</h1>
+        </Link>
 
-        <Link to="/projects">
-          <span className="sprova-header-item">Projects</span>
+        <Link to="/projects" className="sprova-header-item">
+          Projects
         </Link>
       </div>
 
@@ -85,6 +83,10 @@ const Header: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
             {user!.username}
           </span>
         </Dropdown>
+
+        <span className="sprova-header-burger">
+          <Icon type="more" />
+        </span>
       </div>
     </div>
   );

@@ -1,28 +1,46 @@
 @import '~styles/variables';
 @import '~styles/mixins';
 
+$avatar-background-color: #b3daff;
+$avatar-color: darken($avatar-background-color, 30%);
+$avatar-font-size: 2rem;
+
 .sprova-header {
+  background-color: $white;
+  box-shadow: $navbar-box-shadow;
+  display: flex;
   grid-area: header;
-  background-color: white;
+  justify-content: space-between;
   padding: 0 $padding-lg;
   z-index: 1;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
-  justify-content: space-between;
-  align-items: center;
+
+  &-item {
+    cursor: pointer;
+    display: inline-block;
+    line-height: $navbar-height;
+    overflow: hidden;
+    padding: 0 $padding-lg;
+    transition: $transition-all;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.025);
+    }
+  }
 
   &-left {
     float: left;
     height: $navbar-height;
+
     .logo {
-      height: 100%;
-      overflow: hidden;
-      line-height: $navbar-height;
       display: inline-block;
+      line-height: $navbar-height;
+      overflow: hidden;
       transition: $transition-all;
       margin-right: $margin-xl;
+
       img {
         display: inline-block;
-        height: 32px;
+        height: calc(#{$navbar-height} / 2);
         vertical-align: middle;
       }
       h1 {
@@ -40,24 +58,29 @@
   &-right {
     float: right;
     height: $navbar-height;
+
     .avatar {
-      background-color: #b3daff;
-      color: #006eff;
-      font-size: 46px;
-      margin-right: 12px;
+      background-color: $avatar-background-color;
+      color: $avatar-color;
+      font-size: $avatar-font-size;
+      margin-right: $margin-sm;
     }
   }
 
-  &-item {
-    height: 100%;
-    line-height: $navbar-height;
-    display: inline-block;
-    overflow: hidden;
-    cursor: pointer;
-    padding: 0 $padding-lg;
-    transition: $transition-all;
-    &:hover {
-      background: rgba(0, 0, 0, 0.025);
+  &-burger {
+    @extend .sprova-header-item;
+    font-size: 1.2rem;
+    display: none;
+  }
+
+  @include screen-xs {
+    padding-right: 0;
+    &-item {
+      display: none;
+    }
+
+    &-burger {
+      display: inline-block;
     }
   }
 }

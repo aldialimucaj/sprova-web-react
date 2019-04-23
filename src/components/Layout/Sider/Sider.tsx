@@ -18,8 +18,8 @@ const Sider: React.FunctionComponent = ({ children }) => {
     </Menu>
   );
   return (
-    <div className="sprova-layout-sider">
-      <div className="sprova-layout-sider-top">
+    <div className="sprova-sider">
+      <div className="sprova-sider-top">
         <h3>Sports App</h3>
         <Dropdown overlay={menu} trigger={['click']}>
           <h3>
@@ -27,13 +27,13 @@ const Sider: React.FunctionComponent = ({ children }) => {
           </h3>
         </Dropdown>
       </div>
-      <div className="sprova-layout-sider-menu">
+      <div className="sprova-sider-menu">
         <h3>Menu</h3>
         <ul>
           <li>Test Cases</li>
         </ul>
       </div>
-      <div className="sprova-layout-sider-bottom">
+      <div className="sprova-sider-bottom">
         <ul className="menu">
           <li>
             <Link to="/">Settings</Link>
