@@ -1,14 +1,11 @@
+import { getUser, logout } from '@/api/auth.api';
 import logo from '@/images/sprova.svg';
-import React, { useState } from 'react';
+import { Avatar, Badge, Dropdown, Icon, Menu } from 'antd';
+import React from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './Header.scss';
-import { Dropdown, Menu, Icon, Badge, Avatar } from 'antd';
-import { getUser, logout } from '@/api/auth.api';
 
-const Header: React.FunctionComponent<RouteComponentProps> = ({
-  children,
-  history,
-}) => {
+const Header: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
   const doLogout = () => {
     logout();
     history.push('/login');
@@ -39,46 +36,54 @@ const Header: React.FunctionComponent<RouteComponentProps> = ({
   const user = getUser();
 
   return (
-    <div className="sprova-layout-header">
-      <div className="sprova-layout-header-left">
-        <div className="logo" id="logo">
+    <div className="sprova-header">
+      <div className="sprova-header-left">
+        <span className="logo" id="logo">
           <Link to="/projects">
             <img src={logo} alt="logo" />
             <h1>Sprova</h1>
           </Link>
-        </div>
-        <div className="navbar-item">
-          <span>Projects</span>
-        </div>
+        </span>
+
+        <Link to="/projects">
+          <span className="sprova-header-item">Projects</span>
+        </Link>
       </div>
 
-      <div className="sprova-layout-header-right">
+      <div className="sprova-header-right">
         <Dropdown
           overlay={notificationMenu}
           placement="bottomRight"
+          className="sprova-header-item"
           trigger={['click']}
         >
-          <div className="navbar-item">
-            <span>
-              <Badge
-                count={11}
-                style={{ backgroundColor: '#1890ff', boxShadow: 'none' }}
-              >
-                <Icon
-                  type="bell"
-                  style={{ fontSize: 16, padding: 4, verticalAlign: 'middle' }}
-                />
-              </Badge>
-            </span>
-          </div>
+          <span>
+            <Badge
+              count={5}
+              style={{
+                backgroundColor: '#1890ff',
+                boxShadow: 'none',
+              }}
+            >
+              <Icon
+                type="bell"
+                style={{ fontSize: 16, padding: 4, verticalAlign: 'middle' }}
+              />
+            </Badge>
+          </span>
         </Dropdown>
-        <Dropdown overlay={userMenu} placement="bottomRight">
-          <div className="navbar-item">
+
+        <Dropdown
+          overlay={userMenu}
+          placement="bottomRight"
+          className="sprova-header-item"
+        >
+          <span>
             <Avatar size="small" className="avatar">
               A
             </Avatar>
             {user!.username}
-          </div>
+          </span>
         </Dropdown>
       </div>
     </div>

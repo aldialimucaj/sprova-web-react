@@ -1,23 +1,24 @@
 @import '~styles/variables';
 @import '~styles/mixins';
 
-.sprova-layout-header {
+.sprova-header {
   grid-area: header;
   background-color: white;
   padding: 0 $padding-lg;
   z-index: 1;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
-  display: flex;
   justify-content: space-between;
   align-items: center;
 
   &-left {
+    float: left;
+    height: $navbar-height;
     .logo {
-      height: $navbar-height;
+      height: 100%;
       overflow: hidden;
       line-height: $navbar-height;
       display: inline-block;
-      transition: all 0.3s;
+      transition: $transition-all;
       margin-right: $margin-xl;
       img {
         display: inline-block;
@@ -26,7 +27,7 @@
       }
       h1 {
         display: inline-block;
-        margin: 0 0 0 24px;
+        margin: 0 0 2px 24px;
         color: rgb(34, 60, 77);
         font-weight: 600;
         font-size: 22px;
@@ -36,29 +37,25 @@
     }
   }
 
-  .avatar {
-    background-color: #b3daff;
-    color: #006eff;
-    font-size: 46px;
-    margin-right: 12px;
-  }
-
-  .navbar-icon {
-    color: white;
-    cursor: pointer;
-
-    &:hover {
-      opacity: 0.5;
+  &-right {
+    float: right;
+    height: $navbar-height;
+    .avatar {
+      background-color: #b3daff;
+      color: #006eff;
+      font-size: 46px;
+      margin-right: 12px;
     }
   }
 
-  .navbar-item {
+  &-item {
     height: 100%;
-    display: inline-block;
     line-height: $navbar-height;
+    display: inline-block;
+    overflow: hidden;
     cursor: pointer;
     padding: 0 $padding-lg;
-    transition: $generic-transition;
+    transition: $transition-all;
     &:hover {
       background: rgba(0, 0, 0, 0.025);
     }

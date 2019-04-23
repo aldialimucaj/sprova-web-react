@@ -2,6 +2,7 @@ import cx from 'classnames';
 import React, { useState } from 'react';
 import './Sider.scss';
 import { Dropdown, Icon, Menu } from 'antd';
+import { Link } from 'react-router-dom';
 
 const Sider: React.FunctionComponent = ({ children }) => {
   const menu = (
@@ -19,18 +20,24 @@ const Sider: React.FunctionComponent = ({ children }) => {
   return (
     <div className="sprova-layout-sider">
       <div className="sprova-layout-sider-top">
+        <h3>Sports App</h3>
         <Dropdown overlay={menu} trigger={['click']}>
-          <h3 className="ant-dropdown-link">
+          <h3>
             Release 7.4 <Icon type="down" />
           </h3>
         </Dropdown>
       </div>
       <div className="sprova-layout-sider-menu">
         <h3>Menu</h3>
+        <ul>
+          <li>Test Cases</li>
+        </ul>
       </div>
       <div className="sprova-layout-sider-bottom">
         <ul className="menu">
-          <li>Settings</li>
+          <li>
+            <Link to="/">Settings</Link>
+          </li>
         </ul>
       </div>
     </div>

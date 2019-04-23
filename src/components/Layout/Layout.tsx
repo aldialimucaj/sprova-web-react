@@ -1,12 +1,9 @@
-import cx from 'classnames';
-import React, { useState } from 'react';
+import React from 'react';
+import Header from './Header';
 import './Layout.scss';
-import Sider from './Sider/Sider';
-import Header from './Header/Header';
+import Sider from './Sider';
 
 const Layout: React.FunctionComponent = ({ children }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
   return (
     <div className="sprova-layout">
       <Header />

@@ -9,7 +9,7 @@
   padding-left: $padding-lg;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 80px 1fr 80px;
+  grid-template-rows: 80px 1fr auto;
   grid-template-areas:
     'top'
     'menu'
@@ -39,6 +39,11 @@
 
     .menu {
       list-style: none;
+      li {
+        font-size: 0.9rem;
+        font-weight: 500;
+        line-height: 2rem;
+      }
     }
   }
 }
