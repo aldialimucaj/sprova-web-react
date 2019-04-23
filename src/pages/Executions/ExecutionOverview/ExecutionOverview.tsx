@@ -83,27 +83,22 @@ const ExecutionOverview: React.FunctionComponent<
               )
             }
           >
-            <Level
-              style={{ marginBottom: 0, width: '100%' }}
-              left={
-                <div>
-                  <div style={{ fontSize: 10, color: 'grey' }}>
-                    {executionContext.method}
-                    <Divider type="vertical" />
-                    {executionContext.type}
-                  </div>
-                  <span>{executionContext._id}</span>
+            <Level>
+              <div>
+                <div style={{ fontSize: 10, color: 'grey' }}>
+                  {executionContext.method}
+                  <Divider type="vertical" />
+                  {executionContext.type}
                 </div>
-              }
-              right={
-                <div style={{ textAlign: 'end' }}>
-                  <div style={{ fontSize: 10, color: 'grey' }}>
-                    {new Date(executionContext.createdAt).toLocaleString()}
-                  </div>
-                  <span>5/10</span>
+                <span>{executionContext._id}</span>
+              </div>
+              <div style={{ textAlign: 'end' }}>
+                <div style={{ fontSize: 10, color: 'grey' }}>
+                  {new Date(executionContext.createdAt).toLocaleString()}
                 </div>
-              }
-            />
+                <span>5/10</span>
+              </div>
+            </Level>
           </List.Item>
         )}
       />
@@ -114,22 +109,15 @@ const ExecutionOverview: React.FunctionComponent<
             className="children-list"
             size="small"
             header={
-              <Level
-                style={{ marginBottom: 0 }}
-                left={
-                  <span>
-                    <Icon type="clock-circle" style={{ marginRight: 8 }} />
-                    Scheduled Executions
-                  </span>
-                }
-                right={
-                  <Link
-                    to={`/projects/${match.params.pid}/executions/schedule`}
-                  >
-                    Show Schedule
-                  </Link>
-                }
-              />
+              <Level>
+                <span>
+                  <Icon type="clock-circle" style={{ marginRight: 8 }} />
+                  Scheduled Executions
+                </span>
+                <Link to={`/projects/${match.params.pid}/executions/schedule`}>
+                  Show Schedule
+                </Link>
+              </Level>
             }
             bordered={true}
             dataSource={filterContextsByStatus(
@@ -146,20 +134,15 @@ const ExecutionOverview: React.FunctionComponent<
             className="children-list"
             size="small"
             header={
-              <Level
-                style={{ marginBottom: 0 }}
-                left={
-                  <span>
-                    <Icon type="check-circle" style={{ marginRight: 8 }} />
-                    Finished Executions
-                  </span>
-                }
-                right={
-                  <Link to={`/projects/${match.params.pid}/executions/history`}>
-                    Show History
-                  </Link>
-                }
-              />
+              <Level>
+                <span>
+                  <Icon type="check-circle" style={{ marginRight: 8 }} />
+                  Finished Executions
+                </span>
+                <Link to={`/projects/${match.params.pid}/executions/history`}>
+                  Show History
+                </Link>
+              </Level>
             }
             bordered={true}
             dataSource={filterContextsByStatus(ExecutionContextStatus.Finished)}

@@ -73,7 +73,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
     const testCaseNew: Partial<TestCase> = {
       title: testCaseTitle,
       description,
-      projectId: match.params.pid,
+      // projectId: match.params.pid,
       steps: testSteps,
     };
 

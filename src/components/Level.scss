@@ -1,0 +1,16 @@
+.sprova-level {
+  display: flex;
+  justify-content: space-between;
+
+  &.align-top {
+    align-items: flex-start;
+  }
+
+  &.align-center {
+    align-items: center;
+  }
+
+  &.align-bottom {
+    align-items: flex-end;
+  }
+}

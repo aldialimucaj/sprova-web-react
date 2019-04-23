@@ -4,9 +4,10 @@ import { ProjectContext } from '@/contexts/ProjectContext';
 import PageContent from '@/layout/PageContent';
 import { Cycle } from '@/models/Cycle';
 import { TestCase } from '@/models/TestCase';
-import { Button, Col, Row } from 'antd';
+import { Button, Col, Row, Divider } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import { Link, Redirect, RouteComponentProps } from 'react-router-dom';
+import Level from '@/components/Level';
 
 const ProjectDetails: React.FunctionComponent<RouteComponentProps> = ({
   history,
@@ -21,6 +22,10 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps> = ({
     <PageContent
       header={<PageHeader title={project.title} subTitle="Overview" />}
     >
+      <Level>
+        <h3>Cycles</h3>
+      </Level>
+      <Divider />
       <Row gutter={16}>
         <Col lg={12} style={{ marginBottom: 16 }}>
           <CardList

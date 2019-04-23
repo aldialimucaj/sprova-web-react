@@ -98,38 +98,34 @@ const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
         >
           <Row type="flex" justify="space-between">
             <Col span={8}>
-              <Level
-                left={
-                  <Col>
-                    <div>
-                      <strong>Created at:</strong>
-                    </div>
-                    <div>
-                      <strong>Mode:</strong>
-                    </div>
-                    <div>
-                      <strong>Target:</strong>
-                    </div>
-                    <div>
-                      <strong>User:</strong>
-                    </div>
-                  </Col>
-                }
-                right={
-                  <Col>
-                    <div>
-                      {new Date(executionContext!.createdAt).toLocaleString()}
-                    </div>
-                    <div>
-                      {_.upperFirst(executionContext!.method.toLowerCase())}
-                    </div>
-                    <div>
-                      {_.upperFirst(executionContext!.type.toLowerCase())}
-                    </div>
-                    <div>{executionContext!.userId}</div>
-                  </Col>
-                }
-              />
+              <Level>
+                <Col>
+                  <div>
+                    <strong>Created at:</strong>
+                  </div>
+                  <div>
+                    <strong>Mode:</strong>
+                  </div>
+                  <div>
+                    <strong>Target:</strong>
+                  </div>
+                  <div>
+                    <strong>User:</strong>
+                  </div>
+                </Col>
+                <Col>
+                  <div>
+                    {new Date(executionContext!.createdAt).toLocaleString()}
+                  </div>
+                  <div>
+                    {_.upperFirst(executionContext!.method.toLowerCase())}
+                  </div>
+                  <div>
+                    {_.upperFirst(executionContext!.type.toLowerCase())}
+                  </div>
+                  <div>{executionContext!.userId}</div>
+                </Col>
+              </Level>
             </Col>
             <Col style={{ textAlign: 'end' }} />
           </Row>

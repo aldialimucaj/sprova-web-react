@@ -55,17 +55,14 @@ const ExecutionsTab: React.FunctionComponent<RouteComponentProps<Params>> = ({
       renderItem={(exec: Execution) => {
         const icon = getStatusIcon(exec.status);
         return (
-          <Level
-            style={{ marginBottom: 0, width: '100%' }}
-            left={
-              <div>
-                {icon && <span style={{ marginRight: 16 }}>{icon}</span>}
+          <Level>
+            <div>
+              {icon && <span style={{ marginRight: 16 }}>{icon}</span>}
 
-                {exec._id}
-              </div>
-            }
-            right={<div>{new Date(exec.createdAt).toUTCString()}</div>}
-          />
+              {exec._id}
+            </div>
+            <div>{new Date(exec.createdAt).toUTCString()}</div>
+          </Level>
         );
       }}
       onItemClick={(exec: Execution) =>

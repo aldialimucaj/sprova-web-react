@@ -111,7 +111,9 @@ const TestCasesTab: React.FunctionComponent<Props> = ({ executions }) => {
           className="children-list"
           size="small"
           header={
-            <Level style={{ marginBottom: 0 }} left={<span>Test Cases</span>} />
+            <Level>
+              <span>Test Cases</span>
+            </Level>
           }
           bordered={true}
           dataSource={executions}
@@ -125,14 +127,10 @@ const TestCasesTab: React.FunctionComponent<Props> = ({ executions }) => {
               }`}
               onClick={() => handleExecutionSelect(_execution)}
             >
-              <Level
-                style={{
-                  marginBottom: 0,
-                  width: '100%',
-                }}
-                left={<span>{_execution.testCaseTitle}</span>}
-                right={<Icon type={getStatusIcon(_execution.status)} />}
-              />
+              <Level>
+                <span>{_execution.testCaseTitle}</span>
+                <Icon type={getStatusIcon(_execution.status)} />
+              </Level>
             </List.Item>
           )}
         />
@@ -162,28 +160,23 @@ const TestCasesTab: React.FunctionComponent<Props> = ({ executions }) => {
                     overflow: 'hidden',
                   }}
                 >
-                  <Level
-                    style={{ width: '100%' }}
-                    left={
-                      <div>
-                        <h4>{executionStep.action}</h4>
-                        <div>{`Expected: ${executionStep.expected}`}</div>
-                      </div>
-                    }
-                    right={
-                      <Fragment>
-                        {executionStep.inheritedFrom ? (
-                          <Tag style={{ pointerEvents: 'none' }}>Inherited</Tag>
-                        ) : null}
-                        <Tag
-                          color={getTagColor(executionStep.result)}
-                          style={{ pointerEvents: 'none' }}
-                        >
-                          {executionStep.result}
-                        </Tag>
-                      </Fragment>
-                    }
-                  />
+                  <Level>
+                    <div>
+                      <h4>{executionStep.action}</h4>
+                      <div>{`Expected: ${executionStep.expected}`}</div>
+                    </div>
+                    <Fragment>
+                      {executionStep.inheritedFrom ? (
+                        <Tag style={{ pointerEvents: 'none' }}>Inherited</Tag>
+                      ) : null}
+                      <Tag
+                        color={getTagColor(executionStep.result)}
+                        style={{ pointerEvents: 'none' }}
+                      >
+                        {executionStep.result}
+                      </Tag>
+                    </Fragment>
+                  </Level>
                   <div>
                     <strong>Message: </strong>
                     {executionStep.message || <i>No message.</i>}

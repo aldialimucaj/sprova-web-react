@@ -1,30 +1,29 @@
-import { Col, Row } from 'antd';
+import classnames from 'classnames';
 import React from 'react';
+import './Level.scss';
 
 interface Props {
-  left: JSX.Element;
-  middle?: JSX.Element;
-  right?: JSX.Element;
+  align?: 'top' | 'center' | 'bottom';
   style?: any;
 }
 
 const Level: React.FunctionComponent<Props> = ({
-  left,
-  middle,
-  right,
+  align = 'center',
+  children,
   style,
 }) => {
   return (
-    <Row
-      align="middle"
-      justify="space-between"
-      style={{ marginBottom: 24, ...style }}
-      type="flex"
+    <div
+      className={classnames(
+        'sprova-level',
+        { 'align-top': align === 'top' },
+        { 'align-center': align === 'center' },
+        { 'align-bottom': align === 'bottom' }
+      )}
+      style={{ ...style }}
     >
-      <Col>{left}</Col>
-      <Col>{middle}</Col>
-      <Col>{right}</Col>
-    </Row>
+      {children}
+    </div>
   );
 };
 

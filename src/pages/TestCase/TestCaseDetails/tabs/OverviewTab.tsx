@@ -65,41 +65,33 @@ const OverviewTab: React.FunctionComponent<Props> = ({
   return (
     <Row gutter={24}>
       <Col span={16}>
-        <Level
-          style={{ marginBottom: 8 }}
-          left={<h3>Test Steps</h3>}
-          right={
-            parent && (
-              <Fragment>
-                <span style={{ marginRight: 8 }}>Show inherited</span>
-                <Switch
-                  checked={showInherited}
-                  onChange={() => setShowInherited(!showInherited)}
-                />
-              </Fragment>
-            )
-          }
-        />
+        <Level style={{ marginBottom: 8 }}>
+          <h3>Test Steps</h3>
+          {parent && (
+            <Fragment>
+              <span style={{ marginRight: 8 }}>Show inherited</span>
+              <Switch
+                checked={showInherited}
+                onChange={() => setShowInherited(!showInherited)}
+              />
+            </Fragment>
+          )}
+        </Level>
         {parent && showInherited ? (
           <CardList
             style={{ marginBottom: 16 }}
             small={true}
             data={resolveInheritance(parent, testCases, true)}
             renderItem={([testStep, mappedParent]: [TestStep, TestCase]) => (
-              <Level
-                style={{ margin: 0 }}
-                left={
-                  <div>
-                    <strong>{testStep.action}</strong>
-                    <div>{testStep.expected}</div>
-                  </div>
-                }
-                right={
-                  <Tag style={{ pointerEvents: 'none', margin: 0 }}>
-                    {mappedParent.title}
-                  </Tag>
-                }
-              />
+              <Level>
+                <div>
+                  <strong>{testStep.action}</strong>
+                  <div>{testStep.expected}</div>
+                </div>
+                <Tag style={{ pointerEvents: 'none', margin: 0 }}>
+                  {mappedParent.title}
+                </Tag>
+              </Level>
             )}
           />
         ) : null}
@@ -107,39 +99,33 @@ const OverviewTab: React.FunctionComponent<Props> = ({
           small={true}
           data={testCase.steps}
           renderItem={(testStep: TestStep, index: number) => (
-            <Level
-              style={{ margin: 0 }}
-              left={
-                <div>
-                  <strong style={{ marginRight: 8 }}>{index + 1}.</strong>
-                  <strong>{testStep.action}</strong>
-                  <div>{testStep.expected}</div>
-                </div>
-              }
-              right={<a className="sprova-teststep-edit">Edit</a>}
-            />
+            <Level>
+              <div>
+                <strong style={{ marginRight: 8 }}>{index + 1}.</strong>
+                <strong>{testStep.action}</strong>
+                <div>{testStep.expected}</div>
+              </div>
+              <a className="sprova-teststep-edit">Edit</a>
+            </Level>
           )}
         />
       </Col>
       <Col span={8}>
-        <Level
-          style={{ marginBottom: 8 }}
-          left={<h3>Description</h3>}
-          right={
-            isDescriptionEditable ? (
-              <a
-                onClick={() => {
-                  setIsDescriptionEditable(false);
-                  setDescription(testCase.description);
-                }}
-              >
-                Cancel
-              </a>
-            ) : (
-              <a onClick={() => setIsDescriptionEditable(true)}>Edit</a>
-            )
-          }
-        />
+        <Level style={{ marginBottom: 8 }}>
+          <h3>Description</h3>
+          {isDescriptionEditable ? (
+            <a
+              onClick={() => {
+                setIsDescriptionEditable(false);
+                setDescription(testCase.description);
+              }}
+            >
+              Cancel
+            </a>
+          ) : (
+            <a onClick={() => setIsDescriptionEditable(true)}>Edit</a>
+          )}
+        </Level>
         {descriptionError && (
           <Alert
             style={{ marginBottom: 16 }}

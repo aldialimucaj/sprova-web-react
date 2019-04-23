@@ -169,28 +169,23 @@ const Executor: React.FunctionComponent<Props> = ({ eid, onFinish }) => {
                 }}
               >
                 <Spin spinning={isStepUpdateLoading}>
-                  <Level
-                    style={{ width: '100%' }}
-                    left={
-                      <div>
-                        <h4>{executionStep.action}</h4>
-                        <div>{`Expected: ${executionStep.expected}`}</div>
-                      </div>
-                    }
-                    right={
-                      <Fragment>
-                        {executionStep.inheritedFrom ? (
-                          <Tag style={{ pointerEvents: 'none' }}>Inherited</Tag>
-                        ) : null}
-                        <Tag
-                          color={getTagColor(executionStep.result)}
-                          style={{ pointerEvents: 'none' }}
-                        >
-                          {executionStep.result}
-                        </Tag>
-                      </Fragment>
-                    }
-                  />
+                  <Level>
+                    <div>
+                      <h4>{executionStep.action}</h4>
+                      <div>{`Expected: ${executionStep.expected}`}</div>
+                    </div>
+                    <Fragment>
+                      {executionStep.inheritedFrom ? (
+                        <Tag style={{ pointerEvents: 'none' }}>Inherited</Tag>
+                      ) : null}
+                      <Tag
+                        color={getTagColor(executionStep.result)}
+                        style={{ pointerEvents: 'none' }}
+                      >
+                        {executionStep.result}
+                      </Tag>
+                    </Fragment>
+                  </Level>
                   {executionStep.result === ExecutionStepResult.Pending ? (
                     <Fragment>
                       <Form layout="vertical">

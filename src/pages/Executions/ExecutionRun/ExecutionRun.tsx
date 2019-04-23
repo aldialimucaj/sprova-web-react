@@ -252,33 +252,25 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
       />
       <Row gutter={24}>
         <Col span={18}>
-          <Level
-            left={
-              <span style={{ fontSize: 18 }}>
-                {currentExecution!.testCaseTitle!}
-              </span>
-            }
-            right={
-              <ButtonGroup>
-                <Button
-                  disabled={!hasPrevious()}
-                  onClick={selectPrevious}
-                  type="primary"
-                >
-                  <Icon type="left" />
-                  Previous
-                </Button>
-                <Button
-                  disabled={!hasNext()}
-                  onClick={selectNext}
-                  type="primary"
-                >
-                  Next
-                  <Icon type="right" />
-                </Button>
-              </ButtonGroup>
-            }
-          />
+          <Level>
+            <span style={{ fontSize: 18 }}>
+              {currentExecution!.testCaseTitle!}
+            </span>
+            <ButtonGroup>
+              <Button
+                disabled={!hasPrevious()}
+                onClick={selectPrevious}
+                type="primary"
+              >
+                <Icon type="left" />
+                Previous
+              </Button>
+              <Button disabled={!hasNext()} onClick={selectNext} type="primary">
+                Next
+                <Icon type="right" />
+              </Button>
+            </ButtonGroup>
+          </Level>
           <Spin spinning={isStatusUpdateLoading}>
             <Executor
               eid={currentExecution!._id}
@@ -291,10 +283,9 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
             className="children-list"
             size="small"
             header={
-              <Level
-                style={{ marginBottom: 0 }}
-                left={<span>Test Cases</span>}
-              />
+              <Level>
+                <span>Test Cases</span>
+              </Level>
             }
             bordered={true}
             dataSource={executions}
@@ -308,14 +299,10 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
                 }`}
                 onClick={() => handleExecutionSelect(_execution)}
               >
-                <Level
-                  style={{
-                    marginBottom: 0,
-                    width: '100%',
-                  }}
-                  left={<span>{_execution.testCaseTitle}</span>}
-                  right={<Icon type={getStatusIcon(_execution.status)} />}
-                />
+                <Level>
+                  <span>{_execution.testCaseTitle}</span>
+                  <Icon type={getStatusIcon(_execution.status)} />
+                </Level>
               </List.Item>
             )}
             footer={<span>Footer</span>}
