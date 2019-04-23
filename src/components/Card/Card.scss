@@ -8,6 +8,13 @@
 
   transition: all 0.1s;
 
+  &.centered {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+  }
+
   &.clickable {
     &:hover {
       // background-color: #e6f7ff;

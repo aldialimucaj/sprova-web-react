@@ -4,6 +4,7 @@ import './Card.scss';
 
 interface Props {
   actions?: React.ReactNode;
+  centerContent?: boolean;
   onClick?: () => void;
   padded?: boolean;
   style?: any;
@@ -12,6 +13,7 @@ interface Props {
 
 const Card: React.FunctionComponent<Props> = ({
   actions,
+  centerContent = false,
   children,
   onClick,
   padded = true,
@@ -20,7 +22,11 @@ const Card: React.FunctionComponent<Props> = ({
 }) => {
   return (
     <div
-      className={classnames('sprova-card', { clickable: onClick })}
+      className={classnames(
+        'sprova-card',
+        { clickable: onClick },
+        { centered: centerContent }
+      )}
       onClick={() => onClick && onClick()}
       style={{ ...style }}
     >

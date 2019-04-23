@@ -4,15 +4,19 @@ import { ProjectContext } from '@/contexts/ProjectContext';
 import PageContent from '@/layout/PageContent';
 import { Cycle } from '@/models/Cycle';
 import { TestCase } from '@/models/TestCase';
-import { Button, Col, Row, Divider } from 'antd';
-import React, { Fragment, useContext } from 'react';
+import { Button, Col, Row, Divider, Icon } from 'antd';
+import React, { Fragment, useContext, useState } from 'react';
 import { Link, Redirect, RouteComponentProps } from 'react-router-dom';
 import Level from '@/components/Level';
+import Card from '@/components/Card';
+import Modal from '@/components/Modal';
 
 const ProjectDetails: React.FunctionComponent<RouteComponentProps> = ({
   history,
 }) => {
   const [{ cycles, project, testCases }] = useContext(ProjectContext);
+
+  const [isCycleModalOpen, setIsCycleModalOpen] = useState(false);
 
   if (!project) {
     return <Redirect to="/projects" />;
@@ -24,7 +28,23 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps> = ({
     >
       <Level>
         <h3>Cycles</h3>
+        <Button onClick={() => setIsCycleModalOpen(true)} type="primary">
+          New
+        </Button>
       </Level>
+      <Divider />
+      <Row gutter={24}>
+        {cycles.slice(0, 4).map((cycle: Cycle) => (
+          <Col>
+            <Card>
+              <h3>{cycle.title}</h3>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+      <Modal open={isCycleModalOpen} onClose={() => setIsCycleModalOpen(false)}>
+        Test
+      </Modal>
       <Divider />
       <Row gutter={16}>
         <Col lg={12} style={{ marginBottom: 16 }}>
