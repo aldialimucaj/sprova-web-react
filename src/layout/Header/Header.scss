@@ -43,17 +43,6 @@
   margin-right: 12px;
 }
 
-.trigger {
-  height: $navbar-height;
-  padding: 22px 24px;
-  font-size: 20px;
-  cursor: pointer;
-  transition: all 0.3s, padding 0s;
-  &:hover {
-    background: rgba(0, 0, 0, 0.025);
-  }
-}
-
 .navbar-item {
   height: 100%;
   display: inline-block;

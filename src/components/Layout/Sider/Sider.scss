@@ -1,0 +1,44 @@
+@import '~styles/variables';
+@import '~styles/mixins';
+
+.sprova-layout-sider {
+  grid-area: sider;
+  width: 280px;
+  background-color: rgb(248, 250, 255);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  padding-left: $padding-lg;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 80px 1fr 80px;
+  grid-template-areas:
+    'top'
+    'menu'
+    'bottom';
+
+  .divider {
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  &-top {
+    padding: $padding-md 0;
+    grid-area: top;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  &-menu {
+    padding: $padding-md 0;
+    grid-area: menu;
+    height: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  &-bottom {
+    padding: $padding-md 0;
+    grid-area: bottom;
+
+    .menu {
+      list-style: none;
+    }
+  }
+}

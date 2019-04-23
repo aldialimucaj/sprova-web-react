@@ -17,11 +17,7 @@ const PageContent: React.FunctionComponent<Props> = ({ children, header }) => {
           </Col>
         </Row>
       )}
-      <Row type="flex" justify="center">
-        <Col xs={24} xl={20} style={{ padding: '24px 24px' }}>
-          {children}
-        </Col>
-      </Row>
+      {children}
     </Content>
   );
 };

@@ -1,0 +1,39 @@
+@import '~styles/variables';
+@import '~styles/mixins';
+
+.sprova-layout {
+  height: 100vh;
+  display: grid;
+
+  @include screen-xs {
+    grid-template-columns: 1fr;
+    grid-template-rows: $navbar-height 80px 1fr;
+    grid-template-areas:
+      'header'
+      'sider'
+      'content';
+  }
+
+  @include screen-sm {
+    grid-template-columns: 1fr;
+    grid-template-rows: $navbar-height 80px 1fr;
+    grid-template-areas:
+      'header'
+      'sider'
+      'content';
+  }
+
+  @include screen-lg {
+    grid-template-columns: auto 1fr;
+    grid-template-rows: $navbar-height 1fr;
+    grid-template-areas:
+      'header header'
+      'sider content';
+  }
+
+  &-content {
+    padding: $padding-lg;
+    grid-area: content;
+    background-color: rgb(248, 250, 255);
+  }
+}
