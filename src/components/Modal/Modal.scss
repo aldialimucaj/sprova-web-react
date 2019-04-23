@@ -6,12 +6,13 @@ $timeout: 100ms;
 .sprova-modal {
   z-index: 2000;
   position: fixed;
-  top: 25%;
+  top: 15%;
   left: 50%;
   transform: translateX(-50%);
-}
 
-@media screen and (min-width: 600px) {
+  @include screen-md {
+    min-width: 30rem;
+  }
 }
 
 .sprova-modal-fade {

@@ -6,12 +6,14 @@ import './Modal.scss';
 interface Props {
   onClose?: () => void;
   open: boolean;
+  title?: string;
 }
 
 const Modal: React.FunctionComponent<Props> = ({
   children,
   onClose,
   open = false,
+  title,
 }) => {
   return (
     <Fragment>
@@ -22,7 +24,7 @@ const Modal: React.FunctionComponent<Props> = ({
         classNames="sprova-modal-fade"
       >
         <div className="sprova-modal">
-          <Card>{children}</Card>
+          <Card title={title}>{children}</Card>
         </div>
       </CSSTransition>
 

@@ -42,12 +42,13 @@ export function postCycle(cycle: Partial<Cycle>) {
     .post('/cycles', cycle)
     .catch(axiosErrorHandler)
     .then(
-      (response: AxiosResponse): string => {
+      (response: AxiosResponse): Cycle => {
         const { data, status, statusText } = response;
-        if (status !== 201 || !data.ok) {
+        if (status !== 201) {
           throw statusText;
         }
-        return data._id as string;
+        console.log(data);
+        return data as Cycle;
       }
     );
 }

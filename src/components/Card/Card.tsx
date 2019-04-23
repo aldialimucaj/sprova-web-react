@@ -7,6 +7,7 @@ interface Props {
   centerContent?: boolean;
   onClick?: () => void;
   padded?: boolean;
+  status?: 'success' | 'danger' | 'warning' | 'info';
   style?: any;
   title?: React.ReactNode;
 }
@@ -17,6 +18,7 @@ const Card: React.FunctionComponent<Props> = ({
   children,
   onClick,
   padded = true,
+  status,
   style,
   title,
 }) => {
@@ -25,7 +27,8 @@ const Card: React.FunctionComponent<Props> = ({
       className={classnames(
         'sprova-card',
         { clickable: onClick },
-        { centered: centerContent }
+        { centered: centerContent },
+        { [`is-${status}`]: status }
       )}
       onClick={() => onClick && onClick()}
       style={{ ...style }}
@@ -41,6 +44,7 @@ const Card: React.FunctionComponent<Props> = ({
       <div className={classnames('sprova-card-body', { 'is-padded': padded })}>
         {children}
       </div>
+      {status && <div className="sprova-card-status-bar" />}
     </div>
   );
 };

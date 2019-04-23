@@ -6,6 +6,7 @@ interface Props {
   htmlType?: 'submit' | 'button' | 'reset';
   loading?: boolean;
   onClick?: (event: React.FormEvent<HTMLButtonElement>) => void;
+  style?: any;
   type?: 'default' | 'danger' | 'primary' | 'ghost' | 'dashed';
 }
 
@@ -15,10 +16,11 @@ const FormButton: React.FunctionComponent<Props> = ({
   htmlType = 'submit',
   loading = false,
   onClick,
+  style,
   type = 'default',
 }) => {
   return (
-    <Form.Item>
+    <Form.Item style={{ ...style }}>
       <Button
         type={type}
         loading={loading}
