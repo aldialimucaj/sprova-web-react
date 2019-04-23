@@ -1,21 +1,11 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import CycleCreate from './CycleCreate';
-import CycleList from './CycleList';
+import CycleDetails from './CycleDetails';
 
 const TestCase: React.FunctionComponent = () => {
   return (
     <Switch>
-      <Route
-        path={'/projects/:pid/cycles'}
-        exact={true}
-        component={CycleList}
-      />
-      <Route path={'/projects/:pid/cycles/new'} component={CycleCreate} />
-      {/* <Route
-        path={'/projects/:pid/cycles/:cid'}
-        component={CycleDetails}
-      /> */}
+      <Route path={'/projects/:pid/cycles/:cid'} component={CycleDetails} />
     </Switch>
   );
 };
