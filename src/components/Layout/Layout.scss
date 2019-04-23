@@ -25,10 +25,8 @@
 
   @include screen-lg {
     grid-template-columns: auto 1fr;
-    grid-template-rows: $navbar-height 1fr;
-    grid-template-areas:
-      'header header'
-      'sider content';
+    grid-template-rows: 1fr;
+    grid-template-areas: 'sider content';
   }
 
   &-content {
