@@ -16,7 +16,7 @@ interface ProjectContext {
   projects: Project[];
 }
 
-const initialContext = {
+const initialContext: ProjectContext = {
   currentProject: null,
   error: null,
   isProjectsLoading: false,
