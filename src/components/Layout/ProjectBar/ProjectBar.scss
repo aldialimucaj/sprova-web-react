@@ -5,16 +5,23 @@ $item-size: calc(#{$projectbar-width-default} - 2 * #{$margin-md});
 
 .sprova-projectbar {
   grid-area: projectbar;
+  padding-top: $padding-md;
   background-color: $primary-darker;
 
   &-item {
+    border-radius: $radius;
     width: $item-size;
-    height: $item-size;
+    line-height: $item-size;
+    text-align: center;
     overflow: hidden;
     background-color: $projectbar-item-background;
     display: block;
     cursor: pointer;
     transition: all 0.3s;
+
+    &.is-selected {
+      background-color: $primary-color;
+    }
 
     &:not(:last-child) {
       margin: $margin-md;
@@ -29,5 +36,11 @@ $item-size: calc(#{$projectbar-width-default} - 2 * #{$margin-md});
     @extend .sprova-projectbar-item;
 
     margin: $margin-md;
+  }
+
+  &-error {
+    @extend .sprova-projectbar-item;
+
+    background-color: red;
   }
 }
