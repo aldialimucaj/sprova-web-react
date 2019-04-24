@@ -2,11 +2,19 @@ import { ProjectContext } from '@/contexts/ProjectContext';
 import logo from '@/images/sprova.svg';
 import { Dropdown, Icon, Menu } from 'antd';
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './SideMenu.scss';
+import { logout } from '@/api/auth.api';
 
-const SideMenu: React.FunctionComponent = () => {
+const SideMenu: React.FunctionComponent<RouteComponentProps> = ({
+  history,
+}) => {
   const { currentProject } = useContext(ProjectContext);
+
+  const signout = () => {
+    logout();
+    history.push('/login');
+  };
 
   const menu = (
     <Menu>
@@ -80,15 +88,15 @@ const SideMenu: React.FunctionComponent = () => {
 
       <div className="sprova-sidemenu-footer">
         <ul>
-          <Link to="/">
-            <li>
+          <li>
+            <a onClick={signout}>
               <Icon type="logout" style={{ marginRight: 8 }} /> Sign out
-            </li>
-          </Link>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
   );
 };
 
-export default SideMenu;
+export default withRouter(SideMenu);
