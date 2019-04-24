@@ -32,7 +32,7 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
   history,
 }) => {
-  const [{ project }] = useContext(ProjectContext);
+  const { currentProject } = useContext(ProjectContext);
 
   const { value: cycleTitle, setValue: setCycleTitle } = useFormInput('');
   const {
@@ -48,7 +48,7 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
     match.params.pid
   );
 
-  if (!project) {
+  if (!currentProject) {
     return <Redirect to="/projects" />;
   }
 
@@ -60,7 +60,7 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
     const cycleNew: Partial<Cycle> = {
       title: cycleTitle,
       description: cycleDescription,
-      projectId: project._id,
+      projectId: currentProject._id,
     };
 
     setIsCycleSubmitLoading(true);
@@ -87,7 +87,7 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   return (
     <PageContent
-      header={<PageHeader title={project.title} subTitle="Overview" />}
+      header={<PageHeader title={currentProject.title} subTitle="Overview" />}
     >
       <Level align="bottom">
         <div>

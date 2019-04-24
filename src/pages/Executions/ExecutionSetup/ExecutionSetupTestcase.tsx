@@ -28,7 +28,7 @@ const ExecutionSetupTestcase: React.FunctionComponent<
 > = ({ history, location, match }) => {
   const { tid } = parseQuery(location);
 
-  const [{ testCases }] = useContext(ProjectContext);
+  const testCases: TestCase[] = [];
 
   const testCaseFromQuery: TestCase | undefined = _.find(
     testCases,

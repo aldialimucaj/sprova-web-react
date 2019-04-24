@@ -1,5 +1,5 @@
-import { ProjectProvider } from '@/contexts/ProjectContext';
 import Layout from '@/components/Layout/Layout';
+import { ProjectProvider } from '@/contexts/ProjectContext';
 import { Project, ProjectCreate, ProjectList } from '@/pages';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';

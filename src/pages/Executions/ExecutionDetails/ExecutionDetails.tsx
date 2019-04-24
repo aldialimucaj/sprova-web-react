@@ -23,7 +23,7 @@ interface Params {
 const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
 }) => {
-  const [{ project }] = useContext(ProjectContext);
+  const { currentProject } = useContext(ProjectContext);
 
   const [activeTabKey, setActiveTabKey] = useState('overview');
 
@@ -76,7 +76,7 @@ const ExecutionResult: React.FunctionComponent<RouteComponentProps<Params>> = ({
           breadcrumb={
             <Breadcrumb>
               <Link to={`/projects/${match.params.pid}`}>
-                <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+                <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
               </Link>
               <Link to={`/projects/${match.params.pid}/executions`}>
                 <Breadcrumb.Item>Executions</Breadcrumb.Item>

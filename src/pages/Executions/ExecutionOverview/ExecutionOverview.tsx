@@ -21,7 +21,7 @@ interface Params {
 const ExecutionOverview: React.FunctionComponent<
   RouteComponentProps<Params>
 > = ({ history, match }) => {
-  const [{ project }] = useContext(ProjectContext);
+  const { currentProject } = useContext(ProjectContext);
 
   const {
     data: executionContexts,
@@ -45,7 +45,7 @@ const ExecutionOverview: React.FunctionComponent<
           breadcrumb={
             <Breadcrumb>
               <Link to={`/projects/${match.params.pid}`}>
-                <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+                <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
               </Link>
               <Breadcrumb.Item>Executions</Breadcrumb.Item>
             </Breadcrumb>

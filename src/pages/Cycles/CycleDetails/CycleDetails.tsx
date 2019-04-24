@@ -14,7 +14,7 @@ const CycleDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
   history,
 }) => {
-  const [{ project }] = useContext(ProjectContext);
+  const { currentProject } = useContext(ProjectContext);
 
   return (
     <PageContent
@@ -23,7 +23,7 @@ const CycleDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
           breadcrumb={
             <Breadcrumb>
               <Link to={`/projects/${match.params.pid}`}>
-                <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+                <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
               </Link>
               <Link to={`/projects/${match.params.pid}/testcases`}>
                 <Breadcrumb.Item>Test Cases</Breadcrumb.Item>

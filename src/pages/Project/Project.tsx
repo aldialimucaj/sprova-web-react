@@ -1,10 +1,6 @@
 import { getProject } from '@/api/project.api';
 import { getTestCases } from '@/api/testcase.api';
-import {
-  ProjectContext,
-  setProject,
-  setTestCases,
-} from '@/contexts/ProjectContext';
+import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFetcher } from '@/hooks/useFetcher';
 import { Project } from '@/models/Project';
 import { TestCase } from '@/models/TestCase';
@@ -20,9 +16,6 @@ import {
 import ProjectCreate from './ProjectCreate';
 import ProjectDetails from './ProjectDetails';
 import ProjectSettings from './ProjectSettings';
-import { setCycles } from '@/contexts/ProjectContext/ProjectActions';
-import { getCycles } from '@/api/cycle.api';
-import { Cycle } from '@/models/Cycle';
 
 interface Params {
   pid: string;
@@ -31,7 +24,6 @@ interface Params {
 const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
 }) => {
-  const [_, dispatch] = useContext(ProjectContext);
   const { data: project, isLoading: isProjectLoading } = useFetcher<Project>(
     getProject,
     match.params.pid
@@ -39,18 +31,6 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
   const { data: testCases, isLoading: isTestCasesLoading } = useFetcher<
     TestCase[]
   >(getTestCases, match.params.pid);
-
-  useEffect(() => {
-    if (project) {
-      dispatch(setProject(project));
-    }
-  }, [project]);
-
-  useEffect(() => {
-    if (testCases) {
-      dispatch(setTestCases(testCases));
-    }
-  }, [testCases]);
 
   return (
     <Fragment>

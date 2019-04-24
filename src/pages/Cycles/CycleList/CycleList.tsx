@@ -18,9 +18,9 @@ const CycleList: React.FunctionComponent<RouteComponentProps<Params>> = ({
   history,
   match,
 }) => {
-  const [{ project }] = useContext(ProjectContext);
+  const { currentProject } = useContext(ProjectContext);
 
-  if (!project) {
+  if (!currentProject) {
     return <Redirect to="/projects" />;
   }
 
@@ -31,7 +31,7 @@ const CycleList: React.FunctionComponent<RouteComponentProps<Params>> = ({
           breadcrumb={
             <Breadcrumb>
               <Link to={`/projects/${match.params.pid}`}>
-                <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+                <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
               </Link>
               <Breadcrumb.Item>Cycles</Breadcrumb.Item>
             </Breadcrumb>

@@ -1,12 +1,13 @@
-import { getProjects, postProject } from '@/api/project.api';
+import { postProject } from '@/api/project.api';
+import { FormButton, FormInput } from '@/components/form';
 import Modal from '@/components/Modal';
-import { useFetcher } from '@/hooks/useFetcher';
-import { Project } from '@/models/Project';
-import { Icon, Spin, Tooltip, Form, notification } from 'antd';
-import React, { Fragment, useState } from 'react';
-import './ProjectBar.scss';
-import { FormInput, FormButton } from '@/components/form';
+import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFormInput } from '@/hooks/useFormInput';
+import { Project } from '@/models/Project';
+import { Form, Icon, notification, Spin, Tooltip } from 'antd';
+import cx from 'classnames';
+import React, { Fragment, useContext, useState } from 'react';
+import './ProjectBar.scss';
 
 const ProjectBar: React.FunctionComponent = () => {
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
@@ -16,9 +17,15 @@ const ProjectBar: React.FunctionComponent = () => {
     handleChange: handleProjectTitleChange,
   } = useFormInput('');
   const [isProjectSubmitLoading, setIsProjectSubmitLoading] = useState(false);
-  const { data: projects, isLoading: isProjectsLoading, error } = useFetcher(
-    getProjects
-  );
+
+  const {
+    currentProject,
+    error,
+    isProjectsLoading,
+    onAddProject,
+    onSelectProject,
+    projects,
+  } = useContext(ProjectContext);
 
   const getFirstCharCapitalized = (s: string) =>
     s.substring(0, 1).toUpperCase() || '?';
@@ -38,7 +45,7 @@ const ProjectBar: React.FunctionComponent = () => {
 
     try {
       const project = await postProject(projectNew);
-      projects!.push(project);
+      onAddProject(project);
       setIsProjectModalOpen(false);
       setProjectTitle('');
       notification.success({
@@ -70,8 +77,18 @@ const ProjectBar: React.FunctionComponent = () => {
           <Fragment>
             {projects &&
               projects.map((project: Project) => (
-                <Tooltip placement="right" title={project.title}>
-                  <div className="sprova-projectbar-item">
+                <Tooltip
+                  key={project._id}
+                  placement="right"
+                  title={project.title}
+                >
+                  <div
+                    className={cx('sprova-projectbar-item', {
+                      'is-selected':
+                        currentProject && currentProject._id === project._id,
+                    })}
+                    onClick={() => onSelectProject(project)}
+                  >
                     {getFirstCharCapitalized(project.title)}
                   </div>
                 </Tooltip>

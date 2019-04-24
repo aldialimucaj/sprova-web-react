@@ -1,11 +1,7 @@
 import { deleteProject, updateProject } from '@/api/project.api';
 import PageHeader from '@/components/PageHeader';
 import { RichTextEditor } from '@/components/RichTextEditor';
-import {
-  ProjectContext,
-  resetProject,
-  setProject,
-} from '@/contexts/ProjectContext';
+import { ProjectContext } from '@/contexts/ProjectContext';
 import PageContent from '@/layout/PageContent';
 import { Project } from '@/models/Project';
 import { hasFieldErrors } from '@/utils';
@@ -45,25 +41,24 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
   match,
 }) => {
   const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
-  const [{ project }, dispatch] = useContext(ProjectContext);
+  const { currentProject } = useContext(ProjectContext);
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
-  const editor = { value: project && project.description };
+  const editor = { value: currentProject && currentProject.description };
 
-  if (!project) {
+  if (!currentProject) {
     return <Redirect to="/projects" />;
   }
 
   const deleteRequest = async () => {
     setIsDeleteLoading(true);
     try {
-      await deleteProject(project._id);
+      await deleteProject(currentProject._id);
       setIsDeleteLoading(false);
       notification.success({
         placement: 'bottomRight',
-        message: `${project.title} deleted`,
+        message: `${currentProject.title} deleted`,
       });
-      dispatch(resetProject());
       history.push('/projects');
     } catch (error) {
       setIsDeleteLoading(false);
@@ -81,7 +76,7 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
     const description = editor.value.toJSON();
     const { projectTitle: title } = getFieldsValue();
     const projectNew: Project = {
-      ...project,
+      ...currentProject,
       title,
       description,
     };
@@ -91,7 +86,6 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
     try {
       await updateProject(projectNew);
       setIsLoading(false);
-      dispatch(setProject(projectNew));
       notification.success({
         placement: 'bottomRight',
         message: 'Project updated',
@@ -128,7 +122,7 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
           breadcrumb={
             <Breadcrumb>
               <Link to={`/projects/${match.params.pid}`}>
-                <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+                <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
               </Link>
               <Breadcrumb.Item>Settings</Breadcrumb.Item>
             </Breadcrumb>
@@ -143,12 +137,12 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
           <Form {...formItemLayout} onSubmit={handleSubmit}>
             <Form.Item label="Project ID" colon={false}>
               <Text copyable={true} ellipsis={false}>
-                {project._id}
+                {currentProject._id}
               </Text>
             </Form.Item>
             <Form.Item label="Project Title" colon={false}>
               {getFieldDecorator('projectTitle', {
-                initialValue: project.title,
+                initialValue: currentProject.title,
                 rules: [
                   {
                     required: true,

@@ -19,9 +19,10 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
   history,
   match,
 }) => {
-  const [{ project, testCases }] = useContext(ProjectContext);
+  const { currentProject } = useContext(ProjectContext);
+  const testCases: TestCase[] = [];
 
-  if (!project) {
+  if (!currentProject) {
     return <Redirect to="/projects" />;
   }
 
@@ -64,7 +65,7 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
           breadcrumb={
             <Breadcrumb>
               <Link to={`/projects/${match.params.pid}`}>
-                <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+                <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
               </Link>
               <Breadcrumb.Item>Test Cases</Breadcrumb.Item>
             </Breadcrumb>

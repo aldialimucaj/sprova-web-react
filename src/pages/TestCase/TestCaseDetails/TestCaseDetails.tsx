@@ -1,6 +1,6 @@
 import { deleteTestCase } from '@/api/testcase.api';
 import PageHeader from '@/components/PageHeader';
-import { ProjectContext, removeTestCase } from '@/contexts/ProjectContext';
+import { ProjectContext } from '@/contexts/ProjectContext';
 import PageContent from '@/layout/PageContent';
 import { findById } from '@/utils';
 import {
@@ -23,7 +23,7 @@ import {
 import CodeGenerationTab from './tabs/CodeGenerationTab';
 import ExecutionsTab from './tabs/ExecutionsTab';
 import OverviewTab from './tabs/OverviewTab';
-import TestStepsTab from './tabs/TestStepsTab';
+import { TestCase } from '@/models/TestCase';
 
 const TabPane = Tabs.TabPane;
 
@@ -36,7 +36,8 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
   history,
   match,
 }) => {
-  const [{ project, testCases }, dispatch] = useContext(ProjectContext);
+  const { currentProject } = useContext(ProjectContext);
+  const testCases: TestCase[] = [];
   const [activeTabKey, setActiveTabKey] = useState('overview');
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const testCase = findById(testCases, match.params.tid);
@@ -55,7 +56,6 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
     try {
       await deleteTestCase(match.params.tid);
       setIsDeleteLoading(false);
-      dispatch(removeTestCase(match.params.tid));
       notification.success({
         placement: 'bottomRight',
         message: `${testCase.title} deleted`,
@@ -122,7 +122,7 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
           breadcrumb={
             <Breadcrumb>
               <Link to={`/projects/${match.params.pid}`}>
-                <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+                <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
               </Link>
               <Link to={`/projects/${match.params.pid}/testcases`}>
                 <Breadcrumb.Item>Test Cases</Breadcrumb.Item>

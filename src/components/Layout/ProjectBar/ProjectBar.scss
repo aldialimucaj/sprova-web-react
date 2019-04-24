@@ -21,6 +21,8 @@ $item-size: calc(#{$projectbar-width-default} - 2 * #{$margin-md});
 
     &.is-selected {
       background-color: $primary-color;
+      color: $white;
+      font-weight: bold;
     }
 
     &:not(:last-child) {

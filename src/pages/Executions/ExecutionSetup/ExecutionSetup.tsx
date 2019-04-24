@@ -23,7 +23,7 @@ const ExecutionSetup: React.FunctionComponent<RouteComponentProps<Params>> = ({
 }) => {
   const { type: executionType } = parseQuery(location);
 
-  const [{ project }] = useContext(ProjectContext);
+  const { currentProject } = useContext(ProjectContext);
 
   const validateType = (_type: string): string | undefined => {
     return (
@@ -61,7 +61,7 @@ const ExecutionSetup: React.FunctionComponent<RouteComponentProps<Params>> = ({
           breadcrumb={
             <Breadcrumb>
               <Link to={`/projects/${match.params.pid}`}>
-                <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+                <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
               </Link>
               <Link to={`/projects/${match.params.pid}/executions`}>
                 <Breadcrumb.Item>Executions</Breadcrumb.Item>

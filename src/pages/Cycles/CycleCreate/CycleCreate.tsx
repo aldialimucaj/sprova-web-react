@@ -1,5 +1,7 @@
+import Card from '@/components/Card';
 import { FormButton, FormInput, FormTextArea } from '@/components/form';
 import PageHeader from '@/components/PageHeader';
+import TestCaseSelector from '@/components/TestCaseSelector';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
@@ -7,8 +9,6 @@ import PageContent from '@/layout/PageContent';
 import { Breadcrumb, Col, Form, Row } from 'antd';
 import React, { useContext, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import Card from '@/components/Card';
-import TestCaseSelector from '@/components/TestCaseSelector';
 
 interface Params {
   pid: string;
@@ -24,7 +24,7 @@ const formContentLayout = {
 const CycleCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
 }) => {
-  const [{ project, testCases }] = useContext(ProjectContext);
+  const { currentProject } = useContext(ProjectContext);
 
   const {
     value: cycleTitle,
@@ -44,7 +44,7 @@ const CycleCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
           breadcrumb={
             <Breadcrumb>
               <Link to={`/projects/${match.params.pid}`}>
-                <Breadcrumb.Item>{project!.title}</Breadcrumb.Item>
+                <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
               </Link>
               <Link to={`/projects/${match.params.pid}/testcases`}>
                 <Breadcrumb.Item>Cycles</Breadcrumb.Item>
@@ -78,7 +78,7 @@ const CycleCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
           </Row>
           <TestCaseSelector
             style={{ marginBottom: 24 }}
-            source={testCases}
+            source={[]}
             target={[]}
           />
           <FormButton type="primary" loading={isLoading} disabled={!cycleTitle}>
