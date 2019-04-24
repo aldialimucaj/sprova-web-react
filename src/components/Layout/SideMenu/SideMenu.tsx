@@ -1,11 +1,10 @@
-import cx from 'classnames';
-import React, { useState } from 'react';
-import './Sider.scss';
 import logo from '@/images/sprova.svg';
 import { Dropdown, Icon, Menu } from 'antd';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import './SideMenu.scss';
 
-const Sider: React.FunctionComponent = ({ children }) => {
+const SideMenu: React.FunctionComponent = ({ children }) => {
   const menu = (
     <Menu>
       <Menu.Item key="0">
@@ -19,19 +18,23 @@ const Sider: React.FunctionComponent = ({ children }) => {
     </Menu>
   );
   return (
-    <div className="sprova-sider">
-      <div className="sprova-sider-menu">
-        <img src={logo} alt="logo" />
-        <h3 style={{ display: 'inline-block', marginLeft: 16 }}>Sports App</h3>
+    <div className="sprova-sidemenu">
+      <div className="sprova-sidemenu-title">
+        <img id="sprova-logo" src={logo} alt="logo" />
+        <h3 id="sprova-project-title">Sports App</h3>
+      </div>
 
-        <div className="sprova-sider-menu-section">Cycle</div>
-        <Dropdown overlay={menu} trigger={['click']}>
-          <h3>
-            Release 7.4 <Icon type="down" />
-          </h3>
-        </Dropdown>
+      <div className="sprova-sidemenu-menu">
+        <div className="sprova-sidemenu-menu-section">Cycle</div>
+        <div className="sprova-sidemenu-cycle-select">
+          <Dropdown overlay={menu} trigger={['click']}>
+            <h3>
+              Release 7.4 <Icon type="down" />
+            </h3>
+          </Dropdown>
+        </div>
 
-        <div className="sprova-sider-menu-section">Menu</div>
+        <div className="sprova-sidemenu-menu-section">Menu</div>
         <ul>
           <Link to="/">
             <li>
@@ -50,7 +53,7 @@ const Sider: React.FunctionComponent = ({ children }) => {
           </Link>
         </ul>
 
-        <div className="sprova-sider-menu-section">More</div>
+        <div className="sprova-sidemenu-menu-section">More</div>
         <ul>
           <Link to="/">
             <li>
@@ -69,24 +72,18 @@ const Sider: React.FunctionComponent = ({ children }) => {
           </Link>
         </ul>
       </div>
-      <div className="sprova-sider-footer">
-        <ul className="sprova-sider-footer-menu">
-          <li>
-            <Link to="/">
-              <Icon type="swap" style={{ marginRight: 8 }} />
-              Change Project
-            </Link>
-          </li>
-          <li>
-            <Link to="/">
-              <Icon type="logout" style={{ marginRight: 8 }} />
-              Sign out
-            </Link>
-          </li>
+
+      <div className="sprova-sidemenu-footer">
+        <ul>
+          <Link to="/">
+            <li>
+              <Icon type="logout" style={{ marginRight: 8 }} /> Sign out
+            </li>
+          </Link>
         </ul>
       </div>
     </div>
   );
 };
 
-export default Sider;
+export default SideMenu;

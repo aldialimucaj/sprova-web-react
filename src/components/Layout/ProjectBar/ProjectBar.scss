@@ -1,0 +1,33 @@
+@import '~styles/variables';
+@import '~styles/mixins';
+
+$item-size: calc(#{$projectbar-width-default} - 2 * #{$margin-md});
+
+.sprova-projectbar {
+  grid-area: projectbar;
+  background-color: $primary-darker;
+
+  &-item {
+    width: $item-size;
+    height: $item-size;
+    overflow: hidden;
+    background-color: $projectbar-item-background;
+    display: block;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:not(:last-child) {
+      margin: $margin-md;
+    }
+
+    &:hover {
+      background-color: $primary-color;
+    }
+  }
+
+  &-add {
+    @extend .sprova-projectbar-item;
+
+    margin: $margin-md;
+  }
+}

@@ -1,0 +1,82 @@
+@import '~styles/variables';
+@import '~styles/mixins';
+
+.sprova-sidemenu {
+  background-color: $primary-dark;
+  color: $white;
+  grid-area: sidemenu;
+  padding-left: $padding-lg;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    'title'
+    'menu'
+    'footer';
+
+  ul {
+    list-style: none;
+  }
+
+  a {
+    text-decoration: none;
+    color: $sidemenu-color;
+  }
+
+  li {
+    transition: all 0.3s;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 2rem;
+
+    &:hover {
+      color: $primary-color;
+    }
+  }
+
+  &-title {
+    grid-area: title;
+    margin: $margin-md 0;
+    display: flex;
+    align-items: center;
+
+    #sprova-logo {
+      display: inline-block;
+      height: calc(#{$navbar-height} / 2);
+      vertical-align: middle;
+    }
+
+    #sprova-project-title {
+      color: $sidemenu-color-light;
+      display: inline-block;
+      margin-left: $margin-md;
+    }
+  }
+
+  &-menu {
+    grid-area: menu;
+    color: $sidemenu-color;
+
+    &-section {
+      margin-top: $margin-lg;
+      margin-bottom: $margin-xs;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      opacity: 0.6;
+      letter-spacing: 0.2rem;
+      font-weight: bold;
+    }
+
+    .sprova-sidemenu-cycle-select {
+      h3 {
+        color: $sidemenu-color-light;
+      }
+    }
+  }
+
+  &-footer {
+    border-top: $border-light;
+    grid-area: footer;
+    padding: $padding-md 0;
+  }
+}

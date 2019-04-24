@@ -24,13 +24,12 @@
   }
 
   @include screen-lg {
-    grid-template-columns: auto 1fr;
+    grid-template-columns: $projectbar-width-default $sidemenu-width-default 1fr;
     grid-template-rows: 1fr;
-    grid-template-areas: 'sider content';
+    grid-template-areas: 'projectbar sidemenu content';
   }
 
   &-content {
-    padding: $padding-lg;
     grid-area: content;
   }
 }
