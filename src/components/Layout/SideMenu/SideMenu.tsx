@@ -1,10 +1,13 @@
+import { ProjectContext } from '@/contexts/ProjectContext';
 import logo from '@/images/sprova.svg';
 import { Dropdown, Icon, Menu } from 'antd';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import './SideMenu.scss';
 
-const SideMenu: React.FunctionComponent = ({ children }) => {
+const SideMenu: React.FunctionComponent = () => {
+  const { currentProject } = useContext(ProjectContext);
+
   const menu = (
     <Menu>
       <Menu.Item key="0">
@@ -21,7 +24,9 @@ const SideMenu: React.FunctionComponent = ({ children }) => {
     <div className="sprova-sidemenu">
       <div className="sprova-sidemenu-title">
         <img id="sprova-logo" src={logo} alt="logo" />
-        <h3 id="sprova-project-title">Sports App</h3>
+        <h3 id="sprova-project-title">
+          {(currentProject && currentProject.title) || 'Project Title'}
+        </h3>
       </div>
 
       <div className="sprova-sidemenu-menu">
