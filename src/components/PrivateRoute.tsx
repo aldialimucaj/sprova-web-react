@@ -1,9 +1,9 @@
 import { isAuthenticated } from '@/api/auth.api';
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, RouteProps } from 'react-router-dom';
 
-interface Props {
-  component: any;
+interface Props extends RouteProps {
+  component?: any;
   path: string;
 }
 

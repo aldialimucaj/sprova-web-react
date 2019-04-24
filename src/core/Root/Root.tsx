@@ -1,4 +1,5 @@
 import PrivateRoute from '@/components/PrivateRoute';
+import { ProjectProvider } from '@/contexts/ProjectContext';
 import App from '@/core/App';
 import { Login, Signup } from '@/pages';
 import React from 'react';
@@ -11,7 +12,9 @@ const Root = () => {
       <Switch>
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
-        <PrivateRoute path="" component={App} />
+        <ProjectProvider>
+          <PrivateRoute path="" component={App} />
+        </ProjectProvider>
       </Switch>
     </Router>
   );

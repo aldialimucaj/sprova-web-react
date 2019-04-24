@@ -7,9 +7,12 @@ import { Project } from '@/models/Project';
 import { Form, Icon, notification, Spin, Tooltip } from 'antd';
 import cx from 'classnames';
 import React, { Fragment, useContext, useState } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
 import './ProjectBar.scss';
 
-const ProjectBar: React.FunctionComponent = () => {
+const ProjectBar: React.FunctionComponent<RouteComponentProps> = ({
+  history,
+}) => {
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const {
     value: projectTitle,
@@ -64,6 +67,11 @@ const ProjectBar: React.FunctionComponent = () => {
     }
   };
 
+  const handleProjectSelect = (project: Project) => {
+    onSelectProject(project);
+    history.push(`/projects/${project._id}`);
+  };
+
   return (
     <Fragment>
       <div className="sprova-projectbar">
@@ -87,7 +95,7 @@ const ProjectBar: React.FunctionComponent = () => {
                       'is-selected':
                         currentProject && currentProject._id === project._id,
                     })}
-                    onClick={() => onSelectProject(project)}
+                    onClick={() => handleProjectSelect(project)}
                   >
                     {getFirstCharCapitalized(project.title)}
                   </div>
@@ -130,4 +138,4 @@ const ProjectBar: React.FunctionComponent = () => {
   );
 };
 
-export default ProjectBar;
+export default withRouter(ProjectBar);
