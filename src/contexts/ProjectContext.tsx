@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 const CURRENT_PROJECT_ID = 'currentProjectId';
 
 interface ProjectContext {
-  currentProject: Project | null | undefined;
+  currentProject: Project | null;
   error: string | null;
   isProjectsLoading: boolean;
   onSelectProject: (project: Project) => void;
@@ -29,9 +29,7 @@ const initialContext: ProjectContext = {
 const ProjectContext = React.createContext<ProjectContext>(initialContext);
 
 const ProjectProvider: React.FunctionComponent = ({ children }) => {
-  const [currentProject, setCurrentProject] = useState<
-    Project | null | undefined
-  >(undefined);
+  const [currentProject, setCurrentProject] = useState<Project | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isProjectsLoading, setIsProjectsLoading] = useState<boolean>(false);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -43,13 +41,10 @@ const ProjectProvider: React.FunctionComponent = ({ children }) => {
 
       try {
         const fetchedProjects = await getProjects();
-        if (fetchedProjects) {
-          setProjects(fetchedProjects);
-        }
+        setProjects(fetchedProjects);
+
         const _currentProject = findCurrentProject(fetchedProjects);
-        if (_currentProject) {
-          setCurrentProject(_currentProject);
-        }
+        setCurrentProject(_currentProject);
       } catch (error) {
         setError(error);
       } finally {
@@ -58,7 +53,7 @@ const ProjectProvider: React.FunctionComponent = ({ children }) => {
     };
 
     fetchProjects();
-  }, [setCurrentProject, setError]);
+  }, []);
 
   const findCurrentProject = (_projects: Project[]): Project | null => {
     if (!_projects || _projects.length === 0) {

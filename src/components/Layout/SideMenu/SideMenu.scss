@@ -57,6 +57,7 @@
   &-menu {
     grid-area: menu;
     color: $sidemenu-color;
+    padding-right: $padding-lg;
 
     &-section {
       margin-top: $margin-lg;
@@ -66,12 +67,6 @@
       opacity: 0.6;
       letter-spacing: 0.2rem;
       font-weight: bold;
-    }
-
-    .sprova-sidemenu-cycle-select {
-      h3 {
-        color: $sidemenu-color-light;
-      }
     }
   }
 

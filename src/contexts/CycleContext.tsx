@@ -48,13 +48,10 @@ const CycleProvider: React.FunctionComponent = ({ children }) => {
 
       try {
         const fetchedCycles = await getCycles(currentProject._id);
-        if (fetchedCycles) {
-          setCycles(fetchedCycles);
-        }
+        setCycles(fetchedCycles);
+
         const _currentCycle = findCurrentCycle(fetchedCycles);
-        if (_currentCycle) {
-          setCurrentCycle(_currentCycle);
-        }
+        setCurrentCycle(_currentCycle);
       } catch (error) {
         setError(error);
       } finally {
