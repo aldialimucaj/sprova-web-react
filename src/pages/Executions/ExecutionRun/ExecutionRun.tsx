@@ -6,11 +6,10 @@ import {
   getExecutionsOfContext,
   updateExecutionStatus,
 } from '@/api/execution.api';
+import { PageContent, PageHeader } from '@/components/Layout';
 import Level from '@/components/Level';
-import PageHeader from '@/components/PageHeader';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFetcher } from '@/hooks/useFetcher';
-import PageContent from '@/layout/PageContent';
 import { Execution, ExecutionStatus } from '@/models/Execution';
 import { ExecutionContextStatus } from '@/models/ExecutionContext';
 import { parseQuery } from '@/utils';

@@ -1,7 +1,6 @@
 import { deleteTestCase } from '@/api/testcase.api';
-import PageHeader from '@/components/PageHeader';
+import { PageContent, PageHeader } from '@/components/Layout';
 import { ProjectContext } from '@/contexts/ProjectContext';
-import PageContent from '@/layout/PageContent';
 import { findById } from '@/utils';
 import {
   Breadcrumb,

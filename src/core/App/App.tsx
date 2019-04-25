@@ -1,4 +1,4 @@
-import Layout from '@/components/Layout/Layout';
+import { Layout } from '@/components/Layout';
 import { CycleProvider } from '@/contexts/CycleContext';
 import { ProjectProvider } from '@/contexts/ProjectContext';
 import { Project } from '@/pages';

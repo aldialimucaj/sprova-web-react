@@ -1,9 +1,8 @@
-import PageHeader from '@/components/PageHeader';
-import PageContent from '@/layout/PageContent';
-import React, { useContext } from 'react';
-import { Breadcrumb } from 'antd';
-import { Link, RouteComponentProps } from 'react-router-dom';
+import { PageContent, PageHeader } from '@/components/Layout';
 import { ProjectContext } from '@/contexts/ProjectContext';
+import { Breadcrumb } from 'antd';
+import React, { useContext } from 'react';
+import { Link, RouteComponentProps } from 'react-router-dom';
 
 interface Params {
   pid: string;

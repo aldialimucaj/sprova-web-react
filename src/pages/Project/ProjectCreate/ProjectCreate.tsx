@@ -1,10 +1,9 @@
 import { getUser } from '@/api/auth.api';
 import { postProject } from '@/api/project.api';
 import { FormButton, FormInput } from '@/components/form';
-import PageHeader from '@/components/PageHeader';
+import { PageContent, PageHeader } from '@/components/Layout';
 import { RichTextEditor } from '@/components/RichTextEditor';
 import { useFormInput } from '@/hooks/useFormInput';
-import PageContent from '@/layout/PageContent';
 import { Project } from '@/models/Project';
 import { Breadcrumb, Card, Col, Form, notification, Row } from 'antd';
 import React, { useState } from 'react';

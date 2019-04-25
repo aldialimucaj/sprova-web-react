@@ -5,11 +5,10 @@ import {
   FormSearchSelect,
   FormTextArea,
 } from '@/components/form';
-import PageHeader from '@/components/PageHeader';
+import { PageContent, PageHeader } from '@/components/Layout';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
-import PageContent from '@/layout/PageContent';
 import { TestCase } from '@/models/TestCase';
 import { TestStep } from '@/models/TestStep';
 import { resolveInheritance } from '@/utils';

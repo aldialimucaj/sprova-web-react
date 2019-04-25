@@ -1,8 +1,7 @@
-import PageHeader from '@/components/PageHeader';
+import { PageContent, PageHeader } from '@/components/Layout';
 import { ProjectContext } from '@/contexts/ProjectContext';
-import PageContent from '@/layout/PageContent';
 import { Breadcrumb, Button, Icon } from 'antd';
-import React, { Fragment, useContext } from 'react';
+import React, { useContext } from 'react';
 import {
   Link,
   Redirect,

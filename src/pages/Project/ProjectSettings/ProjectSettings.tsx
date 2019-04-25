@@ -1,8 +1,7 @@
 import { deleteProject, updateProject } from '@/api/project.api';
-import PageHeader from '@/components/PageHeader';
+import { PageContent, PageHeader } from '@/components/Layout';
 import { RichTextEditor } from '@/components/RichTextEditor';
 import { ProjectContext } from '@/contexts/ProjectContext';
-import PageContent from '@/layout/PageContent';
 import { Project } from '@/models/Project';
 import { hasFieldErrors } from '@/utils';
 import {

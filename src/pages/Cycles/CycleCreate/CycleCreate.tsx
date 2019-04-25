@@ -1,11 +1,10 @@
 import Card from '@/components/Card';
 import { FormButton, FormInput, FormTextArea } from '@/components/form';
-import PageHeader from '@/components/PageHeader';
+import { PageContent, PageHeader } from '@/components/Layout';
 import TestCaseSelector from '@/components/TestCaseSelector';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
-import PageContent from '@/layout/PageContent';
 import { Breadcrumb, Col, Form, Row } from 'antd';
 import React, { useContext, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';

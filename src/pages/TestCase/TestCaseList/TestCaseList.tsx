@@ -1,6 +1,5 @@
-import PageHeader from '@/components/PageHeader';
+import { PageContent, PageHeader } from '@/components/Layout';
 import { ProjectContext } from '@/contexts/ProjectContext';
-import PageContent from '@/layout/PageContent';
 import { TestCase } from '@/models/TestCase';
 import { Breadcrumb, Button, Icon, Table } from 'antd';
 import React, { useContext } from 'react';

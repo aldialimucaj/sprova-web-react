@@ -1,8 +1,7 @@
 import { getProjects } from '@/api/project.api';
 import Card from '@/components/Card';
-import PageHeader from '@/components/PageHeader';
+import { PageContent, PageHeader } from '@/components/Layout';
 import { useFetcher } from '@/hooks/useFetcher';
-import PageContent from '@/layout/PageContent';
 import { Project } from '@/models/Project';
 import { Alert, Breadcrumb, Button, Col, Empty, Icon, Row, Spin } from 'antd';
 import React from 'react';

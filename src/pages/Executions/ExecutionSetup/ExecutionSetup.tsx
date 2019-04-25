@@ -1,7 +1,6 @@
 import { FormSelect } from '@/components/form';
-import PageHeader from '@/components/PageHeader';
+import { PageContent, PageHeader } from '@/components/Layout';
 import { ProjectContext } from '@/contexts/ProjectContext';
-import PageContent from '@/layout/PageContent';
 import { parseQuery } from '@/utils';
 import { Breadcrumb, Card, Col, Form, Row, Select } from 'antd';
 import React, { Fragment, useContext, useState } from 'react';

@@ -1,10 +1,9 @@
 import { getExecutionContext } from '@/api/execution-context.api';
 import { getExecutionsOfContext } from '@/api/execution.api';
+import { PageContent, PageHeader } from '@/components/Layout';
 import Level from '@/components/Level';
-import PageHeader from '@/components/PageHeader';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFetcher } from '@/hooks/useFetcher';
-import PageContent from '@/layout/PageContent';
 import { Breadcrumb, Button, Col, Icon, Row, Spin, Tabs, Tooltip } from 'antd';
 import _ from 'lodash';
 import React, { useContext, useState } from 'react';
