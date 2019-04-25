@@ -4,10 +4,10 @@ import { findById } from '@/utils';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 
-const CURRENT_PROJECT_ID = 'currentProjectId';
+const CURRENT_CYCLE_ID = 'currentCycleId';
 
-interface ProjectContext {
-  currentProject: Project | null | undefined;
+interface CycleContext {
+  currentCycle: Project | null;
   error: string | null;
   isProjectsLoading: boolean;
   onSelectProject: (project: Project) => void;
@@ -16,8 +16,8 @@ interface ProjectContext {
   projects: Project[];
 }
 
-const initialContext: ProjectContext = {
-  currentProject: null,
+const initialContext: CycleContext = {
+  currentCycle: null,
   error: null,
   isProjectsLoading: false,
   onAddProject: () => {},
@@ -26,12 +26,10 @@ const initialContext: ProjectContext = {
   projects: [],
 };
 
-const ProjectContext = React.createContext<ProjectContext>(initialContext);
+const CycleContext = React.createContext<CycleContext>(initialContext);
 
-const ProjectProvider: React.FunctionComponent = ({ children }) => {
-  const [currentProject, setCurrentProject] = useState<
-    Project | null | undefined
-  >(undefined);
+const CycleProvider: React.FunctionComponent = ({ children }) => {
+  const [currentCycle, setCurrentProject] = useState<Project | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isProjectsLoading, setIsProjectsLoading] = useState<boolean>(false);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -46,9 +44,9 @@ const ProjectProvider: React.FunctionComponent = ({ children }) => {
         if (fetchedProjects) {
           setProjects(fetchedProjects);
         }
-        const _currentProject = findCurrentProject(fetchedProjects);
-        if (_currentProject) {
-          setCurrentProject(_currentProject);
+        const _currentCycle = findCurrentProject(fetchedProjects);
+        if (_currentCycle) {
+          setCurrentProject(_currentCycle);
         }
       } catch (error) {
         setError(error);
@@ -65,9 +63,9 @@ const ProjectProvider: React.FunctionComponent = ({ children }) => {
       return null;
     }
     const firstProject = _projects[0];
-    const currentProjectId = localStorage.getItem(CURRENT_PROJECT_ID);
-    return currentProjectId
-      ? findById(_projects, currentProjectId) || firstProject
+    const currentCycleId = localStorage.getItem(CURRENT_CYCLE_ID);
+    return currentCycleId
+      ? findById(_projects, currentCycleId) || firstProject
       : firstProject;
   };
 
@@ -80,14 +78,14 @@ const ProjectProvider: React.FunctionComponent = ({ children }) => {
   };
 
   const handleSelectProject = (project: Project) => {
-    localStorage.setItem(CURRENT_PROJECT_ID, project._id);
+    localStorage.setItem(CURRENT_CYCLE_ID, project._id);
     setCurrentProject(project);
   };
 
   return (
-    <ProjectContext.Provider
+    <CycleContext.Provider
       value={{
-        currentProject,
+        currentCycle,
         error,
         isProjectsLoading,
         onAddProject: handleAddProject,
@@ -97,8 +95,8 @@ const ProjectProvider: React.FunctionComponent = ({ children }) => {
       }}
     >
       {children}
-    </ProjectContext.Provider>
+    </CycleContext.Provider>
   );
 };
 
-export { ProjectProvider, ProjectContext };
+export { CycleProvider, CycleContext };
