@@ -52,9 +52,9 @@ const ProjectProvider: React.FunctionComponent = ({ children }) => {
         }
       } catch (error) {
         setError(error);
+      } finally {
+        setIsProjectsLoading(false);
       }
-
-      setIsProjectsLoading(false);
     };
 
     fetchProjects();

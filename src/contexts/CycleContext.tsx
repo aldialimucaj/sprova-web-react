@@ -1,85 +1,92 @@
-import { getProjects } from '@/api/project.api';
-import { Project } from '@/models/Project';
+import { getCycles } from '@/api/cycle.api';
+import { Cycle } from '@/models/Cycle';
 import { findById } from '@/utils';
 import _ from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { ProjectContext } from './ProjectContext';
 
 const CURRENT_CYCLE_ID = 'currentCycleId';
 
 interface CycleContext {
-  currentCycle: Project | null;
+  currentCycle: Cycle | null;
   error: string | null;
-  isProjectsLoading: boolean;
-  onSelectProject: (project: Project) => void;
-  onRemoveProject: (project: Project) => void;
-  onAddProject: (project: Project) => void;
-  projects: Project[];
+  isCyclesLoading: boolean;
+  onSelectCycle: (cycle: Cycle) => void;
+  onRemoveCycle: (cycle: Cycle) => void;
+  onAddCycle: (cycle: Cycle) => void;
+  cycles: Cycle[];
 }
 
 const initialContext: CycleContext = {
   currentCycle: null,
   error: null,
-  isProjectsLoading: false,
-  onAddProject: () => {},
-  onRemoveProject: () => {},
-  onSelectProject: () => {},
-  projects: [],
+  isCyclesLoading: false,
+  onAddCycle: () => {},
+  onRemoveCycle: () => {},
+  onSelectCycle: () => {},
+  cycles: [],
 };
 
 const CycleContext = React.createContext<CycleContext>(initialContext);
 
 const CycleProvider: React.FunctionComponent = ({ children }) => {
-  const [currentCycle, setCurrentProject] = useState<Project | null>(null);
+  const { currentProject } = useContext(ProjectContext);
+
+  const [currentCycle, setCurrentCycle] = useState<Cycle | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isProjectsLoading, setIsProjectsLoading] = useState<boolean>(false);
-  const [projects, setProjects] = useState<Project[]>([]);
+  const [isCyclesLoading, setIsCyclesLoading] = useState<boolean>(false);
+  const [cycles, setCycles] = useState<Cycle[]>([]);
 
-  // useEffect(() => {
-  //   const fetchProjects = async () => {
-  //     setIsProjectsLoading(true);
-  //     setError('');
+  useEffect(() => {
+    if (!currentProject) {
+      return;
+    }
 
-  //     try {
-  //       const fetchedProjects = await getProjects();
-  //       if (fetchedProjects) {
-  //         setProjects(fetchedProjects);
-  //       }
-  //       const _currentCycle = findCurrentProject(fetchedProjects);
-  //       if (_currentCycle) {
-  //         setCurrentProject(_currentCycle);
-  //       }
-  //     } catch (error) {
-  //       setError(error);
-  //     }
+    const fetchCycles = async () => {
+      setIsCyclesLoading(true);
+      setError('');
 
-  //     setIsProjectsLoading(false);
-  //   };
+      try {
+        const fetchedCycles = await getCycles(currentProject._id);
+        if (fetchedCycles) {
+          setCycles(fetchedCycles);
+        }
+        const _currentCycle = findCurrentCycle(fetchedCycles);
+        if (_currentCycle) {
+          setCurrentCycle(_currentCycle);
+        }
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsCyclesLoading(false);
+      }
+    };
 
-  //   fetchProjects();
-  // }, []);
+    fetchCycles();
+  }, [currentProject]);
 
-  const findCurrentProject = (_projects: Project[]): Project | null => {
-    if (!_projects || _projects.length === 0) {
+  const findCurrentCycle = (_cycles: Cycle[]): Cycle | null => {
+    if (!_cycles || _cycles.length === 0) {
       return null;
     }
-    const firstProject = _projects[0];
+    const firstCycle = _cycles[0];
     const currentCycleId = localStorage.getItem(CURRENT_CYCLE_ID);
     return currentCycleId
-      ? findById(_projects, currentCycleId) || firstProject
-      : firstProject;
+      ? findById(_cycles, currentCycleId) || firstCycle
+      : firstCycle;
   };
 
-  const handleAddProject = (project: Project) => {
-    setProjects([...projects, project]);
+  const handleAddCycle = (cycle: Cycle) => {
+    setCycles([...cycles, cycle]);
   };
 
-  const handleRemoveProject = (project: Project) => {
-    setProjects(_.without(projects, project));
+  const handleRemoveCycle = (cycle: Cycle) => {
+    setCycles(_.without(cycles, cycle));
   };
 
-  const handleSelectProject = (project: Project) => {
-    localStorage.setItem(CURRENT_CYCLE_ID, project._id);
-    setCurrentProject(project);
+  const handleSelectCycle = (cycle: Cycle) => {
+    localStorage.setItem(CURRENT_CYCLE_ID, cycle._id);
+    setCurrentCycle(cycle);
   };
 
   return (
@@ -87,11 +94,11 @@ const CycleProvider: React.FunctionComponent = ({ children }) => {
       value={{
         currentCycle,
         error,
-        isProjectsLoading,
-        onAddProject: handleAddProject,
-        onRemoveProject: handleRemoveProject,
-        onSelectProject: handleSelectProject,
-        projects,
+        isCyclesLoading,
+        onAddCycle: handleAddCycle,
+        onRemoveCycle: handleRemoveCycle,
+        onSelectCycle: handleSelectCycle,
+        cycles,
       }}
     >
       {children}

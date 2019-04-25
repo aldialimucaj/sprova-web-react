@@ -1,18 +1,21 @@
+import { logout } from '@/api/auth.api';
 import { ProjectContext } from '@/contexts/ProjectContext';
+import { UserContext } from '@/contexts/UserContext';
 import logo from '@/images/sprova.svg';
 import { Dropdown, Icon, Menu } from 'antd';
 import React, { useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './SideMenu.scss';
-import { logout } from '@/api/auth.api';
 
 const SideMenu: React.FunctionComponent<RouteComponentProps> = ({
   history,
 }) => {
   const { currentProject } = useContext(ProjectContext);
+  const { onLogout } = useContext(UserContext);
 
   const signout = () => {
     logout();
+    onLogout();
     history.push('/login');
   };
 

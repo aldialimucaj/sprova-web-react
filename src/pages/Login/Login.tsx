@@ -1,9 +1,11 @@
 import { authenticate, isAuthenticated } from '@/api/auth.api';
+import Card from '@/components/Card';
+import { UserContext } from '@/contexts/UserContext';
 import logo from '@/images/sprova.svg';
 import { hasFieldErrors } from '@/utils';
 import { Alert, Button, Col, Divider, Form, Input, Row, Spin } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Link,
   Redirect,
@@ -11,11 +13,9 @@ import {
   withRouter,
 } from 'react-router-dom';
 import './Login.scss';
-import Card from '@/components/Card';
 
-interface Props extends RouteComponentProps, FormComponentProps {}
-
-const Login: React.FunctionComponent<Props> = ({ form, history }) => {
+const Login: React.FunctionComponent<FormComponentProps> = ({ form }) => {
+  const { user, onLogin } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
@@ -27,16 +27,18 @@ const Login: React.FunctionComponent<Props> = ({ form, history }) => {
     setIsLoading(true);
 
     try {
-      await authenticate(username, password);
+      const _user = await authenticate(username, password);
       setIsLoading(false);
-      history.push('/projects');
+      onLogin(_user);
     } catch (error) {
       setIsLoading(false);
       setError(error);
     }
   };
 
-  return !isAuthenticated() ? (
+  return user ? (
+    <Redirect to="/projects" />
+  ) : (
     <Row className="login-page" type="flex" justify="center">
       <Col span={6} style={{ textAlign: 'center' }}>
         <Card>
@@ -104,9 +106,7 @@ const Login: React.FunctionComponent<Props> = ({ form, history }) => {
         </Card>
       </Col>
     </Row>
-  ) : (
-    <Redirect to="/projects" />
   );
 };
 
-export default withRouter(Form.create({})(Login));
+export default Form.create({})(Login);
