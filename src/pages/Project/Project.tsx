@@ -1,60 +1,27 @@
-import { getProject } from '@/api/project.api';
-import { getTestCases } from '@/api/testcase.api';
 import { ProjectContext } from '@/contexts/ProjectContext';
-import { useFetcher } from '@/hooks/useFetcher';
-import { Project } from '@/models/Project';
-import { TestCase } from '@/models/TestCase';
 import { Cycles, Executions, TestCases } from '@/pages';
-import { Spin } from 'antd';
-import React, { Fragment, useContext, useEffect } from 'react';
-import {
-  Route,
-  RouteComponentProps,
-  Switch,
-  withRouter,
-} from 'react-router-dom';
+import React, { Fragment, useContext } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import ProjectCreate from './ProjectCreate';
 import ProjectDetails from './ProjectDetails';
 import ProjectSettings from './ProjectSettings';
-import Layout from '@/components/Layout/Layout';
 
-interface Params {
-  pid: string;
-}
-
-const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
-  match,
-}) => {
-  const { data: project, isLoading: isProjectLoading } = useFetcher<Project>(
-    getProject,
-    match.params.pid
-  );
-  const { data: testCases, isLoading: isTestCasesLoading } = useFetcher<
-    TestCase[]
-  >(getTestCases, match.params.pid);
+const ProjectPage: React.FunctionComponent = () => {
+  const { currentProject } = useContext(ProjectContext);
 
   return (
-    <Layout>
-      {isProjectLoading || isTestCasesLoading ? (
-        <Spin />
-      ) : (
-        <Fragment>
-          <Switch>
-            <Route path="/projects/new" component={ProjectCreate} />
-            <Route
-              path="/projects/:pid"
-              exact={true}
-              component={ProjectDetails}
-            />
-          </Switch>
-          <Route path="/projects/:pid/cycles" component={Cycles} />
-          <Route path="/projects/:pid/executions" component={Executions} />
-          <Route path="/projects/:pid/settings" component={ProjectSettings} />
-          <Route path="/projects/:pid/testcases" component={TestCases} />
-        </Fragment>
+    <Switch>
+      <Route path="/projects/new" component={ProjectCreate} />
+      <Route path="/projects/:pid" exact={true} component={ProjectDetails} />
+      <Route path="/projects/:pid/cycles" component={Cycles} />
+      <Route path="/projects/:pid/executions" component={Executions} />
+      <Route path="/projects/:pid/settings" component={ProjectSettings} />
+      <Route path="/projects/:pid/testcases" component={TestCases} />
+      {currentProject && (
+        <Redirect path="/projects" to={`/projects/${currentProject._id}`} />
       )}
-    </Layout>
+    </Switch>
   );
 };
 
-export default withRouter(ProjectPage);
+export default ProjectPage;

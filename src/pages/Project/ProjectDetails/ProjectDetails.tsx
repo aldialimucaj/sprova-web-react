@@ -22,7 +22,7 @@ import {
   Tag,
 } from 'antd';
 import React, { useContext, useState } from 'react';
-import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 interface Params {
   pid: string;
@@ -48,10 +48,6 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
     match.params.pid
   );
 
-  if (!currentProject) {
-    return <Redirect to="/projects" />;
-  }
-
   const handleCycleSubmit = async (
     event: React.FormEvent<HTMLButtonElement>
   ) => {
@@ -60,7 +56,7 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
     const cycleNew: Partial<Cycle> = {
       title: cycleTitle,
       description: cycleDescription,
-      projectId: currentProject._id,
+      projectId: currentProject!._id,
     };
 
     setIsCycleSubmitLoading(true);
@@ -85,9 +81,9 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
     }
   };
 
-  return (
+  return currentProject ? (
     <PageContent
-      header={<PageHeader title={currentProject.title} subTitle="Overview" />}
+      header={<PageHeader title={currentProject!.title} subTitle="Overview" />}
     >
       <Level align="bottom">
         <div>
@@ -160,7 +156,7 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
         </Form>
       </Modal>
     </PageContent>
-  );
+  ) : null;
 };
 
 export default withRouter(ProjectDetails);

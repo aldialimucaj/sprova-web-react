@@ -58,7 +58,7 @@ const ProjectProvider: React.FunctionComponent = ({ children }) => {
     };
 
     fetchProjects();
-  }, []);
+  }, [setCurrentProject, setError]);
 
   const findCurrentProject = (_projects: Project[]): Project | null => {
     if (!_projects || _projects.length === 0) {

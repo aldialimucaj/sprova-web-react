@@ -4,7 +4,7 @@ import Modal from '@/components/Modal';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { Project } from '@/models/Project';
-import { Form, Icon, notification, Spin, Tooltip } from 'antd';
+import { Form, Icon, notification, Tooltip } from 'antd';
 import cx from 'classnames';
 import React, { Fragment, useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -23,8 +23,6 @@ const ProjectBar: React.FunctionComponent<RouteComponentProps> = ({
 
   const {
     currentProject,
-    error,
-    isProjectsLoading,
     onAddProject,
     onSelectProject,
     projects,
@@ -75,42 +73,28 @@ const ProjectBar: React.FunctionComponent<RouteComponentProps> = ({
   return (
     <Fragment>
       <div className="sprova-projectbar">
-        {error ? (
-          <div className="sprova-projectbar-error">
-            <Icon type="warning" theme="filled" />
-          </div>
-        ) : isProjectsLoading ? (
-          <Spin />
-        ) : (
-          <Fragment>
-            {projects &&
-              projects.map((project: Project) => (
-                <Tooltip
-                  key={project._id}
-                  placement="right"
-                  title={project.title}
-                >
-                  <div
-                    className={cx('sprova-projectbar-item', {
-                      'is-selected':
-                        currentProject && currentProject._id === project._id,
-                    })}
-                    onClick={() => handleProjectSelect(project)}
-                  >
-                    {getFirstCharCapitalized(project.title)}
-                  </div>
-                </Tooltip>
-              ))}
-            <div
-              className="sprova-projectbar-add"
-              onClick={() => setIsProjectModalOpen(true)}
-            >
-              <Icon type="plus" />
-            </div>
-          </Fragment>
+        {projects &&
+          projects.map((project: Project) => (
+            <Tooltip key={project._id} placement="right" title={project.title}>
+              <div
+                className={cx('sprova-projectbar-item', {
+                  'is-selected':
+                    currentProject && currentProject._id === project._id,
+                })}
+                onClick={() => handleProjectSelect(project)}
+              >
+                {getFirstCharCapitalized(project.title)}
+              </div>
+            </Tooltip>
+          ))}
+        <div
+          className="sprova-projectbar-add"
+          onClick={() => setIsProjectModalOpen(true)}
+        >
+          <Icon type="plus" />
+        </div>
         )}
       </div>
-
       <Modal
         title="Create New Project"
         open={isProjectModalOpen}

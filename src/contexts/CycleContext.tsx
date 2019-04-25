@@ -34,29 +34,29 @@ const CycleProvider: React.FunctionComponent = ({ children }) => {
   const [isProjectsLoading, setIsProjectsLoading] = useState<boolean>(false);
   const [projects, setProjects] = useState<Project[]>([]);
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      setIsProjectsLoading(true);
-      setError('');
+  // useEffect(() => {
+  //   const fetchProjects = async () => {
+  //     setIsProjectsLoading(true);
+  //     setError('');
 
-      try {
-        const fetchedProjects = await getProjects();
-        if (fetchedProjects) {
-          setProjects(fetchedProjects);
-        }
-        const _currentCycle = findCurrentProject(fetchedProjects);
-        if (_currentCycle) {
-          setCurrentProject(_currentCycle);
-        }
-      } catch (error) {
-        setError(error);
-      }
+  //     try {
+  //       const fetchedProjects = await getProjects();
+  //       if (fetchedProjects) {
+  //         setProjects(fetchedProjects);
+  //       }
+  //       const _currentCycle = findCurrentProject(fetchedProjects);
+  //       if (_currentCycle) {
+  //         setCurrentProject(_currentCycle);
+  //       }
+  //     } catch (error) {
+  //       setError(error);
+  //     }
 
-      setIsProjectsLoading(false);
-    };
+  //     setIsProjectsLoading(false);
+  //   };
 
-    fetchProjects();
-  }, []);
+  //   fetchProjects();
+  // }, []);
 
   const findCurrentProject = (_projects: Project[]): Project | null => {
     if (!_projects || _projects.length === 0) {

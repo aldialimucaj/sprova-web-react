@@ -28,8 +28,4 @@
     grid-template-rows: 1fr;
     grid-template-areas: 'projectbar sidemenu content';
   }
-
-  &-content {
-    grid-area: content;
-  }
 }
