@@ -16,6 +16,7 @@ import {
 import ProjectCreate from './ProjectCreate';
 import ProjectDetails from './ProjectDetails';
 import ProjectSettings from './ProjectSettings';
+import Layout from '@/components/Layout/Layout';
 
 interface Params {
   pid: string;
@@ -33,7 +34,7 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
   >(getTestCases, match.params.pid);
 
   return (
-    <Fragment>
+    <Layout>
       {isProjectLoading || isTestCasesLoading ? (
         <Spin />
       ) : (
@@ -52,7 +53,7 @@ const ProjectPage: React.FunctionComponent<RouteComponentProps<Params>> = ({
           <Route path="/projects/:pid/testcases" component={TestCases} />
         </Fragment>
       )}
-    </Fragment>
+    </Layout>
   );
 };
 
