@@ -11,7 +11,7 @@
     grid-template-areas:
       'header'
       'sider'
-      'content';
+      'page';
   }
 
   @include screen-sm {
@@ -20,12 +20,12 @@
     grid-template-areas:
       'header'
       'sider'
-      'content';
+      'page';
   }
 
   @include screen-lg {
     grid-template-columns: $projectbar-width-default $sidemenu-width-default 1fr;
     grid-template-rows: 1fr;
-    grid-template-areas: 'projectbar sidemenu content';
+    grid-template-areas: 'projectbar sidemenu page';
   }
 }

@@ -20,7 +20,7 @@ import {
   Spin,
   Tag,
 } from 'antd';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, Fragment } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 interface Params {
@@ -81,80 +81,81 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
   };
 
   return currentProject ? (
-    <PageContent
-      header={<PageHeader title={currentProject!.title} subTitle="Overview" />}
-    >
-      <Level align="bottom">
-        <div>
-          <h3 style={{ display: 'inline-block', marginRight: 8 }}>Cycles</h3>
-          <Icon style={{ cursor: 'pointer' }} type="info-circle" />
-        </div>
-        <Button onClick={() => setIsCycleModalOpen(true)} type="primary">
-          New
-        </Button>
-      </Level>
-      <Divider />
-      {!isCyclesLoading && cycles ? (
-        <Row gutter={24} style={{ marginBottom: 24 }}>
-          {cycles.map((cycle: Cycle) => (
-            <Col span={8} key={cycle._id} style={{ marginBottom: 24 }}>
-              <Card
-                status="success"
-                onClick={() =>
-                  history.push(
-                    `/projects/${match.params.pid}/cycles/${cycle._id}`
-                  )
-                }
-              >
-                <h3>{cycle.title}</h3>
-                <p style={{ marginTop: 8, marginBottom: 16 }}>
-                  {cycle.description || 'No description.'}
-                </p>
-                <Tag>Released</Tag>
-                <Tag>Dev</Tag>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      ) : (
-        <Spin />
-      )}
+    <Fragment>
+      <PageHeader title={currentProject!.title} subTitle="Overview" />
+      <PageContent>
+        <Level align="bottom">
+          <div>
+            <h3 style={{ display: 'inline-block', marginRight: 8 }}>Cycles</h3>
+            <Icon style={{ cursor: 'pointer' }} type="info-circle" />
+          </div>
+          <Button onClick={() => setIsCycleModalOpen(true)} type="primary">
+            New
+          </Button>
+        </Level>
+        <Divider />
+        {!isCyclesLoading && cycles ? (
+          <Row gutter={24} style={{ marginBottom: 24 }}>
+            {cycles.map((cycle: Cycle) => (
+              <Col span={8} key={cycle._id} style={{ marginBottom: 24 }}>
+                <Card
+                  status="success"
+                  onClick={() =>
+                    history.push(
+                      `/projects/${match.params.pid}/cycles/${cycle._id}`
+                    )
+                  }
+                >
+                  <h3>{cycle.title}</h3>
+                  <p style={{ marginTop: 8, marginBottom: 16 }}>
+                    {cycle.description || 'No description.'}
+                  </p>
+                  <Tag>Released</Tag>
+                  <Tag>Dev</Tag>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        ) : (
+          <Spin />
+        )}
 
-      <Modal
-        title="Create New Cycle"
-        open={isCycleModalOpen}
-        onClose={() => setIsCycleModalOpen(false)}
-      >
-        <Form layout="vertical" onSubmit={handleCycleSubmit}>
-          <FormInput
-            label="Title"
-            value={cycleTitle}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              setCycleTitle(event.currentTarget.value)
-            }
-            placeholder="Cycle"
-            required={true}
-          />
-          <FormTextArea
-            value={cycleDescription}
-            onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-              setCycleDescription(event.currentTarget.value)
-            }
-            label="Description"
-            placeholder="Description"
-            minLength={3}
-          />
-          <FormButton
-            style={{ marginBottom: 0, paddingBottom: 0 }}
-            type="primary"
-            loading={isCycleSubmitLoading}
-            disabled={!cycleTitle}
-          >
-            Create Cycle
-          </FormButton>
-        </Form>
-      </Modal>
-    </PageContent>
+        <Modal
+          title="Create New Cycle"
+          open={isCycleModalOpen}
+          onClose={() => setIsCycleModalOpen(false)}
+        >
+          <Form layout="vertical" onSubmit={handleCycleSubmit}>
+            <FormInput
+              label="Title"
+              value={cycleTitle}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                setCycleTitle(event.currentTarget.value)
+              }
+              placeholder="Cycle"
+              required={true}
+            />
+            <FormTextArea
+              value={cycleDescription}
+              onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
+                setCycleDescription(event.currentTarget.value)
+              }
+              label="Description"
+              placeholder="Description"
+              minLength={3}
+            />
+            <FormButton
+              style={{ marginBottom: 0, paddingBottom: 0 }}
+              type="primary"
+              loading={isCycleSubmitLoading}
+              disabled={!cycleTitle}
+            >
+              Create Cycle
+            </FormButton>
+          </Form>
+        </Modal>
+      </PageContent>
+    </Fragment>
   ) : null;
 };
 

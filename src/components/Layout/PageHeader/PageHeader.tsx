@@ -11,7 +11,7 @@ interface Props extends RouteComponentProps {
   title: React.ReactNode;
 }
 
-const PageHeaderWrapper: React.FunctionComponent<Props> = ({
+const PageHeader: React.FunctionComponent<Props> = ({
   breadcrumb,
   children,
   tabs,
@@ -20,21 +20,21 @@ const PageHeaderWrapper: React.FunctionComponent<Props> = ({
   title,
 }) => {
   return (
-    <div className="page-header">
+    <div className="sprova-page-header">
       <Row type="flex" justify="space-between" align="top">
         <Col>
           {breadcrumb ? (
             <div style={{ marginBottom: 12 }}>{breadcrumb}</div>
           ) : null}
-          <span className="header-title">{title}</span>
-          <span className="header-title-sub">{subTitle}</span>
+          <span className="sprova-page-header-title">{title}</span>
+          <span className="sprova-page-header-title-sub">{subTitle}</span>
         </Col>
         <Col>{extra}</Col>
       </Row>
-      {children && <div className="header-content">{children}</div>}
-      {tabs && <div className="header-tabs">{tabs}</div>}
+      {children && <div className="sprova-page-header-content">{children}</div>}
+      {tabs && <div className="sprova-page-header-tabs">{tabs}</div>}
     </div>
   );
 };
 
-export default withRouter(PageHeaderWrapper);
+export default withRouter(PageHeader);

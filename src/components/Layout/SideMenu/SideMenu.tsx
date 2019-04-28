@@ -1,20 +1,22 @@
 import { postCycle } from '@/api/cycle.api';
-import { FormInput, FormTextArea, FormButton } from '@/components/form';
+import { FormButton, FormInput, FormTextArea } from '@/components/form';
 import Modal from '@/components/Modal';
 import { CycleContext } from '@/contexts/CycleContext';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
 import logo from '@/images/sprova.svg';
+import { Cycle } from '@/models/Cycle';
 import { Button, Divider, Form, Icon, notification, Select, Spin } from 'antd';
 import React, { Fragment, useContext, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './SideMenu.scss';
-import { Cycle } from '@/models/Cycle';
 
 const Option = Select.Option;
 
-const SideMenu: React.FunctionComponent<RouteComponentProps> = () => {
+const SideMenu: React.FunctionComponent<RouteComponentProps> = ({
+  history,
+}) => {
   const { currentCycle, cycles, isCyclesLoading, onAddCycle } = useContext(
     CycleContext
   );
@@ -25,7 +27,6 @@ const SideMenu: React.FunctionComponent<RouteComponentProps> = () => {
     value: cycleDescription,
     setValue: setCycleDescription,
   } = useFormTextArea('');
-
   const [isCycleModalOpen, setIsCycleModalOpen] = useState(false);
   const [isCycleSubmitLoading, setIsCycleSubmitLoading] = useState(false);
 
@@ -104,7 +105,12 @@ const SideMenu: React.FunctionComponent<RouteComponentProps> = () => {
   return (
     <Fragment>
       <div className="sprova-sidemenu">
-        <div className="sprova-sidemenu-title">
+        <div
+          className="sprova-sidemenu-title"
+          onClick={() =>
+            currentProject && history.push(`/projects/${currentProject._id}`)
+          }
+        >
           <img id="sprova-logo" src={logo} alt="logo" />
           <h3 id="sprova-project-title">
             {(currentProject && currentProject.title) || 'Sprova'}
@@ -137,35 +143,33 @@ const SideMenu: React.FunctionComponent<RouteComponentProps> = () => {
                   ))}
                 </Select>
               ) : (
-                <Fragment>
-                  <Button
-                    type="primary"
-                    block={true}
-                    onClick={() => setIsCycleModalOpen(true)}
-                    style={{ marginTop: 8 }}
-                  >
-                    Create New Cycle
-                  </Button>
-                </Fragment>
+                <Button
+                  type="primary"
+                  block={true}
+                  onClick={() => setIsCycleModalOpen(true)}
+                  style={{ marginTop: 8 }}
+                >
+                  Create New Cycle
+                </Button>
               )}
 
               {currentCycle ? (
                 <Fragment>
                   <div className="sprova-sidemenu-menu-section">Menu</div>
                   <ul>
-                    <Link to={`/projects`}>
+                    <Link to={`/projects/${currentProject._id}/executions`}>
                       <li>
                         <Icon type="thunderbolt" style={{ marginRight: 8 }} />{' '}
                         Executions
                       </li>
                     </Link>
-                    <Link to="/">
+                    <Link to={`/projects/${currentProject._id}/testcases`}>
                       <li>
                         <Icon type="file-text" style={{ marginRight: 8 }} />{' '}
                         Test Cases
                       </li>
                     </Link>
-                    <Link to="/">
+                    <Link to={`/projects/${currentProject._id}/testsets`}>
                       <li>
                         <Icon type="folder" style={{ marginRight: 8 }} /> Test
                         Sets

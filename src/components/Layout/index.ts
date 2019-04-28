@@ -1,5 +1,5 @@
 export { default as Layout } from './Layout';
-export { default as Content } from './Content';
+export { default as Page } from './Page';
 export { default as PageContent } from './PageContent';
 export { default as PageHeader } from './PageHeader';
 export { default as ProjectBar } from './ProjectBar';

@@ -1,4 +1,7 @@
-.page-content-header {
-  background-color: white;
-  border-bottom: 1px solid #e8e8e8;
+@import '~styles/variables';
+@import '~styles/mixins';
+
+.sprova-page-content {
+  overflow-x: auto;
+  padding: $padding-lg;
 }
