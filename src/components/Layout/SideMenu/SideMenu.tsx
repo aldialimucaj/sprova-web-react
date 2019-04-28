@@ -1,29 +1,24 @@
-import { logout } from '@/api/auth.api';
+import { postCycle } from '@/api/cycle.api';
+import { FormInput, FormTextArea, FormButton } from '@/components/form';
+import Modal from '@/components/Modal';
 import { CycleContext } from '@/contexts/CycleContext';
 import { ProjectContext } from '@/contexts/ProjectContext';
-import { UserContext } from '@/contexts/UserContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
 import logo from '@/images/sprova.svg';
-import { Button, Form, Icon, notification, Select, Spin, Divider } from 'antd';
+import { Button, Divider, Form, Icon, notification, Select, Spin } from 'antd';
 import React, { Fragment, useContext, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './SideMenu.scss';
-import Modal from '@/components/Modal';
-import { FormInput, FormTextArea, FormButton } from '@/components/form';
 import { Cycle } from '@/models/Cycle';
-import { postCycle } from '@/api/cycle.api';
 
 const Option = Select.Option;
 
-const SideMenu: React.FunctionComponent<RouteComponentProps> = ({
-  history,
-}) => {
+const SideMenu: React.FunctionComponent<RouteComponentProps> = () => {
   const { currentCycle, cycles, isCyclesLoading, onAddCycle } = useContext(
     CycleContext
   );
   const { currentProject, isProjectsLoading } = useContext(ProjectContext);
-  const { user, onLogout } = useContext(UserContext);
 
   const { value: cycleTitle, setValue: setCycleTitle } = useFormInput('');
   const {
@@ -33,12 +28,6 @@ const SideMenu: React.FunctionComponent<RouteComponentProps> = ({
 
   const [isCycleModalOpen, setIsCycleModalOpen] = useState(false);
   const [isCycleSubmitLoading, setIsCycleSubmitLoading] = useState(false);
-
-  const signout = () => {
-    logout();
-    onLogout();
-    history.push('/login');
-  };
 
   const handleCycleSubmit = async (
     event: React.FormEvent<HTMLButtonElement>
@@ -197,26 +186,6 @@ const SideMenu: React.FunctionComponent<RouteComponentProps> = ({
               ) : null}
             </Fragment>
           ) : null}
-        </div>
-
-        <div className="sprova-sidemenu-footer">
-          <ul>
-            <Link to="/">
-              <li>
-                <Icon type="user" style={{ marginRight: 8 }} /> {user!.username}
-              </li>
-            </Link>
-            <Link to="/">
-              <li>
-                <Icon type="setting" style={{ marginRight: 8 }} /> Settings
-              </li>
-            </Link>
-            <li>
-              <a onClick={signout}>
-                <Icon type="logout" style={{ marginRight: 8 }} /> Sign out
-              </a>
-            </li>
-          </ul>
         </div>
       </div>
       {cycleModal}

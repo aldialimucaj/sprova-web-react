@@ -1,25 +1,27 @@
+import { logout } from '@/api/auth.api';
 import { postProject } from '@/api/project.api';
 import { FormButton, FormInput } from '@/components/form';
 import Modal from '@/components/Modal';
 import { ProjectContext } from '@/contexts/ProjectContext';
+import { UserContext } from '@/contexts/UserContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { Project } from '@/models/Project';
-import { Form, Icon, notification, Tooltip } from 'antd';
-import cx from 'classnames';
+import { Form, Icon, notification } from 'antd';
 import React, { Fragment, useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import './ProjectBar.scss';
+import ProjectBarItem from './ProjectBarItem';
 
 const ProjectBar: React.FunctionComponent<RouteComponentProps> = ({
   history,
 }) => {
-  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const {
     value: projectTitle,
     setValue: setProjectTitle,
     handleChange: handleProjectTitleChange,
   } = useFormInput('');
   const [isProjectSubmitLoading, setIsProjectSubmitLoading] = useState(false);
+  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
 
   const {
     currentProject,
@@ -27,9 +29,7 @@ const ProjectBar: React.FunctionComponent<RouteComponentProps> = ({
     onSelectProject,
     projects,
   } = useContext(ProjectContext);
-
-  const getFirstCharCapitalized = (s: string) =>
-    s.substring(0, 1).toUpperCase() || '?';
+  const { user, onLogout } = useContext(UserContext);
 
   const handleProjectSubmit = async (
     event: React.FormEvent<HTMLButtonElement>
@@ -39,7 +39,7 @@ const ProjectBar: React.FunctionComponent<RouteComponentProps> = ({
     const projectNew: Partial<Project> = {
       title: projectTitle,
       description: '',
-      // TODO: Implement UserContext, then -> userId: currentUser._id,
+      userId: user!._id,
     };
 
     setIsProjectSubmitLoading(true);
@@ -70,31 +70,53 @@ const ProjectBar: React.FunctionComponent<RouteComponentProps> = ({
     history.push(`/projects/${project._id}`);
   };
 
+  const getFirstCharCapitalized = (s: string) =>
+    s.substring(0, 1).toUpperCase() || '?';
+
+  const signout = () => {
+    logout();
+    onLogout();
+    history.push('/login');
+  };
+
   return (
     <Fragment>
       <div className="sprova-projectbar">
-        {projects &&
-          projects.map((project: Project) => (
-            <Tooltip key={project._id} placement="right" title={project.title}>
-              <div
-                className={cx('sprova-projectbar-item', {
-                  'is-selected':
-                    currentProject && currentProject._id === project._id,
-                })}
+        <div className="sprova-projectbar-top">
+          {projects &&
+            projects.map((project: Project) => (
+              <ProjectBarItem
+                key={project._id}
                 onClick={() => handleProjectSelect(project)}
+                selected={
+                  !!currentProject && currentProject._id === project._id
+                }
+                tooltip={project.title}
               >
                 {getFirstCharCapitalized(project.title)}
-              </div>
-            </Tooltip>
-          ))}
-        <div
-          className="sprova-projectbar-add"
-          onClick={() => setIsProjectModalOpen(true)}
-        >
-          <Icon type="plus" />
+              </ProjectBarItem>
+            ))}
+          <ProjectBarItem
+            onClick={() => setIsProjectModalOpen(true)}
+            tooltip="Create Project"
+          >
+            +
+          </ProjectBarItem>
         </div>
-        )}
+
+        <div className="sprova-projectbar-bottom">
+          <ProjectBarItem tooltip="Account">
+            <Icon type="user" />
+          </ProjectBarItem>
+          <ProjectBarItem tooltip="Settings">
+            <Icon type="setting" />
+          </ProjectBarItem>
+          <ProjectBarItem tooltip="Sign Out" onClick={signout}>
+            <Icon type="logout" />
+          </ProjectBarItem>
+        </div>
       </div>
+
       <Modal
         title="Create New Project"
         open={isProjectModalOpen}

@@ -4,45 +4,10 @@
 $item-size: calc(#{$projectbar-width-default} - 2 * #{$margin-md});
 
 .sprova-projectbar {
-  grid-area: projectbar;
-  padding-top: $padding-md;
   background-color: $primary-darker;
-
-  &-item {
-    border-radius: $radius;
-    width: $item-size;
-    line-height: $item-size;
-    text-align: center;
-    overflow: hidden;
-    background-color: $projectbar-item-background;
-    display: block;
-    cursor: pointer;
-    transition: all 0.3s;
-
-    &.is-selected {
-      background-color: $primary-color;
-      color: $white;
-      font-weight: bold;
-    }
-
-    &:not(:last-child) {
-      margin: $margin-md;
-    }
-
-    &:hover {
-      background-color: $primary-color;
-    }
-  }
-
-  &-add {
-    @extend .sprova-projectbar-item;
-
-    margin: $margin-md;
-  }
-
-  &-error {
-    @extend .sprova-projectbar-item;
-
-    background-color: red;
-  }
+  display: flex;
+  flex-direction: column;
+  grid-area: projectbar;
+  justify-content: space-between;
+  padding: $padding-md;
 }
