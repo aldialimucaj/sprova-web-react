@@ -223,101 +223,104 @@ const ExecutionRun: React.FunctionComponent<RouteComponentProps<Params>> = ({
   return isContextLoading || isTestCasesLoading ? (
     <Spin />
   ) : (
-    <PageContent
-      header={
-        <PageHeader
-          breadcrumb={
-            <Breadcrumb>
-              <Link to={`/projects/${match.params.pid}`}>
-                <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
-              </Link>
-              <Link to={`/projects/${match.params.pid}/executions`}>
-                <Breadcrumb.Item>Executions</Breadcrumb.Item>
-              </Link>
-              <Breadcrumb.Item>Run</Breadcrumb.Item>
-            </Breadcrumb>
-          }
-          title="Live Execution"
-          subTitle="#51"
-          extra={abortButton}
-        />
-      }
-    >
-      <Progress
-        status={getExecutionProgess() < 100 ? 'active' : 'success'}
-        className="execution-progress"
-        style={{ marginBottom: 24 }}
-        percent={getExecutionProgess()}
+    <Fragment>
+      <PageHeader
+        breadcrumb={
+          <Breadcrumb>
+            <Link to={`/projects/${match.params.pid}`}>
+              <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
+            </Link>
+            <Link to={`/projects/${match.params.pid}/executions`}>
+              <Breadcrumb.Item>Executions</Breadcrumb.Item>
+            </Link>
+            <Breadcrumb.Item>Run</Breadcrumb.Item>
+          </Breadcrumb>
+        }
+        title="Live Execution"
+        subTitle="#51"
+        extra={abortButton}
       />
-      <Row gutter={24}>
-        <Col span={18}>
-          <Level>
-            <span style={{ fontSize: 18 }}>
-              {currentExecution!.testCaseTitle!}
-            </span>
-            <ButtonGroup>
-              <Button
-                disabled={!hasPrevious()}
-                onClick={selectPrevious}
-                type="primary"
-              >
-                <Icon type="left" />
-                Previous
-              </Button>
-              <Button disabled={!hasNext()} onClick={selectNext} type="primary">
-                Next
-                <Icon type="right" />
-              </Button>
-            </ButtonGroup>
-          </Level>
-          <Spin spinning={isStatusUpdateLoading}>
-            <Executor
-              eid={currentExecution!._id}
-              onFinish={handleFinishedExecution}
-            />
-          </Spin>
-        </Col>
-        <Col span={6}>
-          <List
-            className="children-list"
-            size="small"
-            header={
-              <Level>
-                <span>Test Cases</span>
-              </Level>
-            }
-            bordered={true}
-            dataSource={executions}
-            renderItem={(_execution: Execution) => (
-              <List.Item
-                style={{
-                  backgroundColor: `${getStatusColor(_execution.status)}`,
-                }}
-                className={`list-item ${
-                  _execution._id === currentExecution!._id ? 'selected' : ''
-                }`}
-                onClick={() => handleExecutionSelect(_execution)}
-              >
+      <PageContent>
+        <Progress
+          status={getExecutionProgess() < 100 ? 'active' : 'success'}
+          className="execution-progress"
+          style={{ marginBottom: 24 }}
+          percent={getExecutionProgess()}
+        />
+        <Row gutter={24}>
+          <Col span={18}>
+            <Level>
+              <span style={{ fontSize: 18 }}>
+                {currentExecution!.testCaseTitle!}
+              </span>
+              <ButtonGroup>
+                <Button
+                  disabled={!hasPrevious()}
+                  onClick={selectPrevious}
+                  type="primary"
+                >
+                  <Icon type="left" />
+                  Previous
+                </Button>
+                <Button
+                  disabled={!hasNext()}
+                  onClick={selectNext}
+                  type="primary"
+                >
+                  Next
+                  <Icon type="right" />
+                </Button>
+              </ButtonGroup>
+            </Level>
+            <Spin spinning={isStatusUpdateLoading}>
+              <Executor
+                eid={currentExecution!._id}
+                onFinish={handleFinishedExecution}
+              />
+            </Spin>
+          </Col>
+          <Col span={6}>
+            <List
+              className="children-list"
+              size="small"
+              header={
                 <Level>
-                  <span>{_execution.testCaseTitle}</span>
-                  <Icon type={getStatusIcon(_execution.status)} />
+                  <span>Test Cases</span>
                 </Level>
-              </List.Item>
-            )}
-            footer={<span>Footer</span>}
-          />
-          <Button
-            disabled={hasPendingLeft()}
-            onClick={finishExecutionContext}
-            style={{ marginBottom: 8 }}
-            block={true}
-            type="primary"
-          >
-            Finish
-          </Button>
-        </Col>
-      </Row>
-    </PageContent>
+              }
+              bordered={true}
+              dataSource={executions}
+              renderItem={(_execution: Execution) => (
+                <List.Item
+                  style={{
+                    backgroundColor: `${getStatusColor(_execution.status)}`,
+                  }}
+                  className={`list-item ${
+                    _execution._id === currentExecution!._id ? 'selected' : ''
+                  }`}
+                  onClick={() => handleExecutionSelect(_execution)}
+                >
+                  <Level>
+                    <span>{_execution.testCaseTitle}</span>
+                    <Icon type={getStatusIcon(_execution.status)} />
+                  </Level>
+                </List.Item>
+              )}
+              footer={<span>Footer</span>}
+            />
+            <Button
+              disabled={hasPendingLeft()}
+              onClick={finishExecutionContext}
+              style={{ marginBottom: 8 }}
+              block={true}
+              type="primary"
+            >
+              Finish
+            </Button>
+          </Col>
+        </Row>
+      </PageContent>
+    </Fragment>
   );
 };
 

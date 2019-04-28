@@ -54,44 +54,43 @@ const ExecutionSetup: React.FunctionComponent<RouteComponentProps<Params>> = ({
   }
 
   return (
-    <PageContent
-      header={
-        <PageHeader
-          breadcrumb={
-            <Breadcrumb>
-              <Link to={`/projects/${match.params.pid}`}>
-                <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
-              </Link>
-              <Link to={`/projects/${match.params.pid}/executions`}>
-                <Breadcrumb.Item>Executions</Breadcrumb.Item>
-              </Link>
-              <Breadcrumb.Item>Setup</Breadcrumb.Item>
-            </Breadcrumb>
-          }
-          title="Start New Execution"
-        />
-      }
-    >
-      <Card>
-        <Row>
-          <Col span={12}>
-            <Form layout="vertical">
-              <FormSelect
-                className="narrow-select"
-                label="Type"
-                value={type}
-                onChange={setType}
-              >
-                <Option value="testcases">Test Cases</Option>
-                <Option value="testset">Test Set</Option>
-                <Option value="cycle">Cycle</Option>
-              </FormSelect>
-              {form}
-            </Form>
-          </Col>
-        </Row>
-      </Card>
-    </PageContent>
+    <Fragment>
+      <PageHeader
+        breadcrumb={
+          <Breadcrumb>
+            <Link to={`/projects/${match.params.pid}`}>
+              <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
+            </Link>
+            <Link to={`/projects/${match.params.pid}/executions`}>
+              <Breadcrumb.Item>Executions</Breadcrumb.Item>
+            </Link>
+            <Breadcrumb.Item>Setup</Breadcrumb.Item>
+          </Breadcrumb>
+        }
+        title="Start New Execution"
+      />
+      <PageContent>
+        <Card>
+          <Row>
+            <Col span={12}>
+              <Form layout="vertical">
+                <FormSelect
+                  className="narrow-select"
+                  label="Type"
+                  value={type}
+                  onChange={setType}
+                >
+                  <Option value="testcases">Test Cases</Option>
+                  <Option value="testset">Test Set</Option>
+                  <Option value="cycle">Cycle</Option>
+                </FormSelect>
+                {form}
+              </Form>
+            </Col>
+          </Row>
+        </Card>
+      </PageContent>
+    </Fragment>
   );
 };
 

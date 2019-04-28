@@ -185,6 +185,12 @@ const SideMenu: React.FunctionComponent<RouteComponentProps> = ({
                         Notifications
                       </li>
                     </Link>
+                    <Link to="/">
+                      <li>
+                        <Icon type="setting" style={{ marginRight: 8 }} />{' '}
+                        Project Settings
+                      </li>
+                    </Link>
                   </ul>
                 </Fragment>
               ) : null}
