@@ -1,11 +1,11 @@
-import { getCycles, postCycle } from '@/api/cycle.api';
+import { postCycle } from '@/api/cycle.api';
 import Card from '@/components/Card';
 import { FormButton, FormInput, FormTextArea } from '@/components/form';
 import { PageContent, PageHeader } from '@/components/Layout';
 import Level from '@/components/Level';
 import Modal from '@/components/Modal';
+import { CycleContext } from '@/contexts/CycleContext';
 import { ProjectContext } from '@/contexts/ProjectContext';
-import { useFetcher } from '@/hooks/useFetcher';
 import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
 import { Cycle } from '@/models/Cycle';
@@ -20,7 +20,7 @@ import {
   Spin,
   Tag,
 } from 'antd';
-import React, { useContext, useState, Fragment } from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 interface Params {
@@ -32,20 +32,15 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
   history,
 }) => {
   const { currentProject } = useContext(ProjectContext);
+  const { cycles, isCyclesLoading } = useContext(CycleContext);
 
   const { value: cycleTitle, setValue: setCycleTitle } = useFormInput('');
   const {
     value: cycleDescription,
     setValue: setCycleDescription,
   } = useFormTextArea('');
-
   const [isCycleModalOpen, setIsCycleModalOpen] = useState(false);
   const [isCycleSubmitLoading, setIsCycleSubmitLoading] = useState(false);
-
-  const { data: cycles, isLoading: isCyclesLoading } = useFetcher<Cycle[]>(
-    getCycles,
-    match.params.pid
-  );
 
   const handleCycleSubmit = async (
     event: React.FormEvent<HTMLButtonElement>

@@ -1,14 +1,10 @@
 import { PageContent, PageHeader } from '@/components/Layout';
 import { ProjectContext } from '@/contexts/ProjectContext';
+import { TestCaseContext } from '@/contexts/TestCaseContext';
 import { TestCase } from '@/models/TestCase';
-import { Breadcrumb, Button, Icon, Table } from 'antd';
-import React, { useContext } from 'react';
-import {
-  Link,
-  Redirect,
-  RouteComponentProps,
-  withRouter,
-} from 'react-router-dom';
+import { Breadcrumb, Button, Icon, Spin, Table } from 'antd';
+import React, { Fragment, useContext } from 'react';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
 interface Params {
   pid: string;
@@ -19,14 +15,10 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
 }) => {
   const { currentProject } = useContext(ProjectContext);
-  const testCases: TestCase[] = [];
-
-  if (!currentProject) {
-    return <Redirect to="/projects" />;
-  }
+  const { testCases, isTestCasesLoading } = useContext(TestCaseContext);
 
   const handleRowClick = (record: TestCase) => {
-    history.push(`/projects/${match.params.pid}/testcases/${record._id}`);
+    history.push(`/projects/${currentProject!._id}/testcases/${record._id}`);
   };
 
   const columns = [
@@ -58,41 +50,44 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
   ];
 
   return (
-    <PageContent
-      header={
-        <PageHeader
-          breadcrumb={
-            <Breadcrumb>
-              <Link to={`/projects/${match.params.pid}`}>
-                <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
-              </Link>
-              <Breadcrumb.Item>Test Cases</Breadcrumb.Item>
-            </Breadcrumb>
-          }
-          title="All Test Cases"
-          extra={
-            <Link to={`/projects/${match.params.pid}/testcases/new`}>
-              <Button type="primary">
-                <Icon type="plus" /> New
-              </Button>
+    <Fragment>
+      <PageHeader
+        breadcrumb={
+          <Breadcrumb>
+            <Link to={`/projects/${match.params.pid}`}>
+              <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
             </Link>
-          }
-        />
-      }
-    >
-      <Table
-        className="testcases-list"
-        bordered={true}
-        columns={columns}
-        onRow={(record, rowIndex) => {
-          return {
-            onClick: () => handleRowClick(record),
-          };
-        }}
-        rowKey={(record: TestCase) => record._id}
-        dataSource={testCases}
+            <Breadcrumb.Item>Test Cases</Breadcrumb.Item>
+          </Breadcrumb>
+        }
+        title="All Test Cases"
+        extra={
+          <Link to={`/projects/${match.params.pid}/testcases/new`}>
+            <Button type="primary">
+              <Icon type="plus" /> New
+            </Button>
+          </Link>
+        }
       />
-    </PageContent>
+      <PageContent>
+        {isTestCasesLoading ? (
+          <Spin />
+        ) : (
+          <Table
+            className="testcases-list"
+            bordered={true}
+            columns={columns}
+            onRow={(record, rowIndex) => {
+              return {
+                onClick: () => handleRowClick(record),
+              };
+            }}
+            rowKey={(record: TestCase) => record._id}
+            dataSource={testCases}
+          />
+        )}
+      </PageContent>
+    </Fragment>
   );
 };
 

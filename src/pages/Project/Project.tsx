@@ -1,15 +1,20 @@
+import { CycleContext } from '@/contexts/CycleContext';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { Cycles, Executions, TestCases } from '@/pages';
-import React, { Fragment, useContext } from 'react';
+import { Spin } from 'antd';
+import React, { useContext } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import ProjectCreate from './ProjectCreate';
 import ProjectDetails from './ProjectDetails';
 import ProjectSettings from './ProjectSettings';
 
 const ProjectPage: React.FunctionComponent = () => {
-  const { currentProject } = useContext(ProjectContext);
+  const { currentProject, isProjectsLoading } = useContext(ProjectContext);
+  const { currentCycle, isCyclesLoading } = useContext(CycleContext);
 
-  return (
+  return isProjectsLoading || isCyclesLoading ? (
+    <Spin />
+  ) : currentProject && currentCycle ? (
     <Switch>
       <Route path="/projects/new" component={ProjectCreate} />
       <Route path="/projects/:pid" exact={true} component={ProjectDetails} />
@@ -21,7 +26,7 @@ const ProjectPage: React.FunctionComponent = () => {
         <Redirect path="/projects" to={`/projects/${currentProject._id}`} />
       )}
     </Switch>
-  );
+  ) : null;
 };
 
 export default ProjectPage;
