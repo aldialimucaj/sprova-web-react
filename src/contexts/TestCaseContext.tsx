@@ -7,7 +7,7 @@ import { ProjectContext } from './ProjectContext';
 
 interface TestCaseContext {
   error: string | null;
-  isTestCasesLoading: boolean;
+  isTestCasesFetched: boolean;
   onAddTestCase: (testCase: TestCase) => void;
   onRemoveTestCase: (testCase: TestCase) => void;
   testCases: TestCase[];
@@ -15,7 +15,7 @@ interface TestCaseContext {
 
 const initialContext: TestCaseContext = {
   error: null,
-  isTestCasesLoading: false,
+  isTestCasesFetched: false,
   onAddTestCase: () => {},
   onRemoveTestCase: () => {},
   testCases: [],
@@ -28,7 +28,7 @@ const TestCaseProvider: React.FunctionComponent = ({ children }) => {
   const { currentCycle } = useContext(CycleContext);
 
   const [error, setError] = useState<string | null>(null);
-  const [isTestCasesLoading, setIsTestCasesLoading] = useState<boolean>(false);
+  const [isTestCasesFetched, setIsTestCasesFetched] = useState<boolean>(false);
   const [testCases, setTestCases] = useState<TestCase[]>([]);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ const TestCaseProvider: React.FunctionComponent = ({ children }) => {
     }
 
     const fetchCycles = async () => {
-      setIsTestCasesLoading(true);
+      setIsTestCasesFetched(false);
       setError('');
 
       try {
@@ -48,7 +48,7 @@ const TestCaseProvider: React.FunctionComponent = ({ children }) => {
       } catch (error) {
         setError(error);
       } finally {
-        setIsTestCasesLoading(false);
+        setIsTestCasesFetched(true);
       }
     };
 
@@ -67,7 +67,7 @@ const TestCaseProvider: React.FunctionComponent = ({ children }) => {
     <TestCaseContext.Provider
       value={{
         error,
-        isTestCasesLoading,
+        isTestCasesFetched,
         onAddTestCase: handleAddTestCase,
         onRemoveTestCase: handleRemoveTestCase,
         testCases,

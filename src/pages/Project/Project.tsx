@@ -1,5 +1,6 @@
 import { CycleContext } from '@/contexts/CycleContext';
 import { ProjectContext } from '@/contexts/ProjectContext';
+import { TestCaseContext } from '@/contexts/TestCaseContext';
 import { Cycles, Executions, TestCases } from '@/pages';
 import { Spin } from 'antd';
 import React, { useContext } from 'react';
@@ -11,8 +12,9 @@ import ProjectSettings from './ProjectSettings';
 const ProjectPage: React.FunctionComponent = () => {
   const { currentProject, isProjectsLoading } = useContext(ProjectContext);
   const { currentCycle, isCyclesLoading } = useContext(CycleContext);
+  const { isTestCasesFetched } = useContext(TestCaseContext);
 
-  return isProjectsLoading || isCyclesLoading ? (
+  return isProjectsLoading || isCyclesLoading || !isTestCasesFetched ? (
     <Spin />
   ) : currentProject && currentCycle ? (
     <Switch>

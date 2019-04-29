@@ -15,7 +15,7 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
 }) => {
   const { currentProject } = useContext(ProjectContext);
-  const { testCases, isTestCasesLoading } = useContext(TestCaseContext);
+  const { testCases, isTestCasesFetched } = useContext(TestCaseContext);
 
   const handleRowClick = (record: TestCase) => {
     history.push(`/projects/${currentProject!._id}/testcases/${record._id}`);
@@ -70,7 +70,7 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
         }
       />
       <PageContent>
-        {isTestCasesLoading ? (
+        {!isTestCasesFetched ? (
           <Spin />
         ) : (
           <Table
