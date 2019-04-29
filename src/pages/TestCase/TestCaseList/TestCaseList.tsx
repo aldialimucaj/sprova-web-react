@@ -1,3 +1,4 @@
+import CardTable from '@/components/CardTable';
 import { PageContent, PageHeader } from '@/components/Layout';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { TestCaseContext } from '@/contexts/TestCaseContext';
@@ -73,17 +74,14 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
         {!isTestCasesFetched ? (
           <Spin />
         ) : (
-          <Table
-            className="testcases-list"
-            bordered={true}
-            columns={columns}
-            onRow={(record, rowIndex) => {
-              return {
-                onClick: () => handleRowClick(record),
-              };
-            }}
-            rowKey={(record: TestCase) => record._id}
-            dataSource={testCases}
+          <CardTable
+            data={testCases}
+            columnTitles={['Title', 'Description']}
+            onRowClick={handleRowClick}
+            renderRow={(testCase: TestCase, index: number) => [
+              <td key={0}>{testCase.title}</td>,
+              <td key={1}>{testCase.description}</td>,
+            ]}
           />
         )}
       </PageContent>

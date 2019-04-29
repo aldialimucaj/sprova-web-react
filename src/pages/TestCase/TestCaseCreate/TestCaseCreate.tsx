@@ -1,4 +1,5 @@
 import { postTestCase } from '@/api/testcase.api';
+import Card from '@/components/Card';
 import {
   FormButton,
   FormInput,
@@ -6,7 +7,9 @@ import {
   FormTextArea,
 } from '@/components/form';
 import { PageContent, PageHeader } from '@/components/Layout';
+import { CycleContext } from '@/contexts/CycleContext';
 import { ProjectContext } from '@/contexts/ProjectContext';
+import { TestCaseContext } from '@/contexts/TestCaseContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
 import { TestCase } from '@/models/TestCase';
@@ -28,7 +31,6 @@ import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './TestCaseCreate.scss';
 import TestStepInput from './TestStepInput';
 import { formContentLayout } from './utils';
-import Card from '@/components/Card';
 
 const Option = Select.Option;
 
@@ -41,7 +43,8 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
 }) => {
   const { currentProject } = useContext(ProjectContext);
-  const testCases: TestCase[] = [];
+  const { currentCycle } = useContext(CycleContext);
+  const { testCases, onAddTestCase } = useContext(TestCaseContext);
 
   const {
     value: testCaseTitle,
@@ -73,7 +76,8 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
     const testCaseNew: Partial<TestCase> = {
       title: testCaseTitle,
       description,
-      // projectId: match.params.pid,
+      projectId: currentProject!._id,
+      cycleId: currentCycle!._id,
       steps: testSteps,
     };
 
@@ -86,6 +90,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
     try {
       const testCase = await postTestCase(testCaseNew);
       setIsLoading(false);
+      onAddTestCase(testCase);
       notification.success({
         placement: 'bottomRight',
         message: `${testCase.title} created`,
