@@ -2,7 +2,7 @@ import { getUser } from '@/api/auth.api';
 import { postExecutionContext } from '@/api/execution-context.api';
 import { postExecutions } from '@/api/execution.api';
 import { FormButton, FormSearchSelect } from '@/components/form';
-import { ProjectContext } from '@/contexts/ProjectContext';
+import { TestCaseContext } from '@/contexts/TestCaseContext';
 import { Execution, ExecutionStatus } from '@/models/Execution';
 import {
   ExecutionContext,
@@ -28,7 +28,7 @@ const ExecutionSetupTestcase: React.FunctionComponent<
 > = ({ history, location, match }) => {
   const { tid } = parseQuery(location);
 
-  const testCases: TestCase[] = [];
+  const { testCases } = useContext(TestCaseContext);
 
   const testCaseFromQuery: TestCase | undefined = _.find(
     testCases,

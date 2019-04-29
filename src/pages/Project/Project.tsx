@@ -1,8 +1,8 @@
+import { PageLoad } from '@/components/Layout';
 import { CycleContext } from '@/contexts/CycleContext';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { TestCaseContext } from '@/contexts/TestCaseContext';
 import { Cycles, Executions, TestCases } from '@/pages';
-import { Spin } from 'antd';
 import React, { useContext } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import ProjectCreate from './ProjectCreate';
@@ -15,7 +15,7 @@ const ProjectPage: React.FunctionComponent = () => {
   const { isTestCasesFetched } = useContext(TestCaseContext);
 
   return isProjectsLoading || isCyclesLoading || !isTestCasesFetched ? (
-    <Spin />
+    <PageLoad />
   ) : currentProject && currentCycle ? (
     <Switch>
       <Route path="/projects/new" component={ProjectCreate} />
