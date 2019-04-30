@@ -47,7 +47,6 @@ export function postCycle(cycle: Partial<Cycle>) {
         if (status !== 201) {
           throw statusText;
         }
-        console.log(data);
         return data as Cycle;
       }
     );

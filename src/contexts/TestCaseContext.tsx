@@ -42,7 +42,8 @@ const TestCaseProvider: React.FunctionComponent = ({ children }) => {
 
       try {
         const fetchedTestCases = await getTestCases(
-          currentProject._id /* TODO: , currentCycle._id*/
+          currentProject._id,
+          currentCycle._id
         );
         setTestCases(fetchedTestCases);
       } catch (error) {

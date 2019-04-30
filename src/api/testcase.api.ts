@@ -3,11 +3,15 @@ import { AxiosResponse } from 'axios';
 import agent from './agents/api.agent';
 import axiosErrorHandler from './utils/axiosErrorHandler';
 
-export function getTestCases(projectId: string): Promise<TestCase[]> {
+export function getTestCases(
+  projectId: string,
+  cycleId: string
+): Promise<TestCase[]> {
   return agent
     .get('/testcases', {
       params: {
         projectId,
+        cycleId,
       },
     })
     .catch(axiosErrorHandler)
