@@ -4,7 +4,6 @@ const TabPane = Tabs.TabPane;
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import CodeDetails from './CodeDetails';
-import './OverviewTab.scss';
 
 interface Params {
   pid: string;
@@ -20,7 +19,6 @@ const OverviewTab: React.FunctionComponent<Props> = ({
   match,
   testCase,
 }) => {
-
   return (
     <Tabs defaultActiveKey="1" type="line" tabPosition="right">
       <TabPane tab="Java" key="1">
@@ -28,16 +26,16 @@ const OverviewTab: React.FunctionComponent<Props> = ({
       </TabPane>
       <TabPane tab="Kotlin" key="2">
         Kotlin
-        </TabPane>
+      </TabPane>
       <TabPane tab="JavaScript (protractor)" key="3">
         JavaScript (protractor)
-        </TabPane>
+      </TabPane>
       <TabPane tab="JavaScript (generic)" key="4">
         JavaScript (generic)
-        </TabPane>
+      </TabPane>
       <TabPane tab="Python" key="5">
         Python
-        </TabPane>
+      </TabPane>
     </Tabs>
   );
 };

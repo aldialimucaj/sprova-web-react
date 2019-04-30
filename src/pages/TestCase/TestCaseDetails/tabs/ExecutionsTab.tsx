@@ -6,7 +6,7 @@ import { Execution, ExecutionStatus } from '@/models/Execution';
 import { Icon, Spin } from 'antd';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import './OverviewTab.scss';
+import CardTable from '@/components/CardTable';
 
 interface Params {
   pid: string;
@@ -44,30 +44,25 @@ const ExecutionsTab: React.FunctionComponent<RouteComponentProps<Params>> = ({
     }
   };
 
-  return isLoading ? (
+  return isLoading || !executions ? (
     <Spin />
   ) : (
-    <CardList
-      zebra={true}
-      small={true}
-      title={<div>Executions ({executions!.length})</div>}
-      data={executions!}
-      renderItem={(exec: Execution) => {
-        const icon = getStatusIcon(exec.status);
-        return (
-          <Level>
-            <div>
-              {icon && <span style={{ marginRight: 16 }}>{icon}</span>}
-
-              {exec._id}
-            </div>
-            <div>{new Date(exec.createdAt).toUTCString()}</div>
-          </Level>
-        );
+    <CardTable
+      columnTitles={['Status', 'ID', 'Date']}
+      data={executions}
+      renderRow={(execution: Execution) => {
+        const icon = getStatusIcon(execution.status);
+        return [
+          <td key={0}>
+            {icon && <span style={{ marginRight: 16 }}>{icon}</span>}
+          </td>,
+          <td key={1}>{execution._id}</td>,
+          <td key={2}>{new Date(execution.createdAt).toUTCString()}</td>,
+        ];
       }}
-      onItemClick={(exec: Execution) =>
+      onRowClick={(execution: Execution) =>
         history.push(
-          `/projects/${match.params.pid}/executions/${exec.contextId}`
+          `/projects/${match.params.pid}/executions/${execution.contextId}`
         )
       }
     />

@@ -8,10 +8,11 @@ const classify = (Component: typeof React.Component, className: string) => {
 };
 
 interface Props {
-  actions?: React.ReactNode;
+  actions?: React.ReactNode[];
   columnTitles: string[];
   data: any[];
   empty?: React.ReactNode;
+  extras?: React.ReactNode;
   onRowClick?: (item: any) => void;
   renderRow: (item: any, index: number) => React.ReactNode[];
   style?: any;
@@ -23,14 +24,16 @@ const CardTable: React.FunctionComponent<Props> = ({
   columnTitles,
   data,
   empty,
+  extras,
   onRowClick,
   renderRow,
   style,
   title,
 }) => {
   return (
-    <Card title={title} padded={false} actions={actions} style={{ ...style }}>
+    <Card actions={actions} padded={false} style={{ ...style }} title={title}>
       <table className="sprova-card-table">
+        {extras && <div className="sprova-card-table-extras">{extras}</div>}
         <thead className="sprova-card-table-head">
           <tr className="sprova-card-table-row">
             {columnTitles.map((column: string, index: number) => (

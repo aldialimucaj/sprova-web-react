@@ -62,19 +62,20 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
           </Breadcrumb>
         }
         title="All Test Cases"
-        extra={
-          <Link to={`/projects/${match.params.pid}/testcases/new`}>
-            <Button type="primary">
-              <Icon type="plus" /> New
-            </Button>
-          </Link>
-        }
       />
       <PageContent>
         {!isTestCasesFetched ? (
           <Spin />
         ) : (
           <CardTable
+            actions={[
+              <Link key={0} to={`/projects/${match.params.pid}/testcases/new`}>
+                <Button type="primary">
+                  <Icon type="plus" /> New
+                </Button>
+              </Link>,
+            ]}
+            title="Test Cases"
             data={testCases}
             columnTitles={['Title', 'Description']}
             onRowClick={handleRowClick}

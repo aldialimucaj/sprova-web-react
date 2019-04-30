@@ -9,6 +9,11 @@
     padding: $padding-sm $padding-md;
   }
 
+  &-extras {
+    padding: $padding-md;
+    border-bottom: $border;
+  }
+
   &-head {
     border-bottom: $border;
   }
