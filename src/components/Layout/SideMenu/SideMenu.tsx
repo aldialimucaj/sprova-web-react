@@ -1,5 +1,6 @@
 import { postCycle } from '@/api/cycle.api';
 import { FormButton, FormInput, FormTextArea } from '@/components/form';
+import Menu, { Item, Section } from '@/components/Menu';
 import Modal from '@/components/Modal';
 import { CycleContext } from '@/contexts/CycleContext';
 import { ProjectContext } from '@/contexts/ProjectContext';
@@ -154,45 +155,30 @@ const SideMenu: React.FunctionComponent<RouteComponentProps> = ({
               )}
 
               {currentCycle ? (
-                <Fragment>
-                  <div className="sprova-sidemenu-menu-section">Menu</div>
-                  <ul>
-                    <Link to={`/projects/${currentProject._id}/executions`}>
-                      <li>
-                        <Icon type="thunderbolt" style={{ marginRight: 8 }} />{' '}
+                <Menu>
+                  <Section title="Menu">
+                    <Item icon={<Icon type="home" />}>
+                      <Link to={`/projects/${currentProject._id}`}>Home</Link>
+                    </Item>
+                    <Item icon={<Icon type="thunderbolt" />}>
+                      <Link to={`/projects/${currentProject._id}/executions`}>
                         Executions
-                      </li>
-                    </Link>
-                    <Link to={`/projects/${currentProject._id}/testcases`}>
-                      <li>
-                        <Icon type="file-text" style={{ marginRight: 8 }} />{' '}
+                      </Link>
+                    </Item>
+                    <Item icon={<Icon type="file-text" />}>
+                      <Link to={`/projects/${currentProject._id}/testcases`}>
                         Test Cases
-                      </li>
-                    </Link>
-                    <Link to={`/projects/${currentProject._id}/testsets`}>
-                      <li>
-                        <Icon type="folder" style={{ marginRight: 8 }} /> Test
-                        Sets
-                      </li>
-                    </Link>
-                  </ul>
-
-                  <div className="sprova-sidemenu-menu-section">More</div>
-                  <ul>
-                    <Link to="/">
-                      <li>
-                        <Icon type="bell" style={{ marginRight: 8 }} />{' '}
-                        Notifications
-                      </li>
-                    </Link>
-                    <Link to="/">
-                      <li>
-                        <Icon type="setting" style={{ marginRight: 8 }} />{' '}
+                      </Link>
+                    </Item>
+                  </Section>
+                  <Section title="More">
+                    <Item icon={<Icon type="setting" />}>
+                      <Link to={`/projects/${currentProject._id}/settings`}>
                         Project Settings
-                      </li>
-                    </Link>
-                  </ul>
-                </Fragment>
+                      </Link>
+                    </Item>
+                  </Section>
+                </Menu>
               ) : null}
             </Fragment>
           ) : null}
