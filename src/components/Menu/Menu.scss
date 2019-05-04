@@ -27,6 +27,13 @@
 
     // Set styles for active <NavLink> components
     & > a.active {
+      color: $primary-color;
+      font-weight: bold;
+
+      & ~ .sprova-menu-item-icon {
+        color: $primary-color;
+        font-weight: bold;
+      }
     }
 
     &-icon {

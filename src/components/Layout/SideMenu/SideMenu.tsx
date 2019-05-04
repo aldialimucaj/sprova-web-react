@@ -5,7 +5,12 @@ import logo from '@/images/sprova.svg';
 import { Cycle } from '@/models/Cycle';
 import { Button, Divider, Icon, Select, Spin } from 'antd';
 import React, { Fragment, useContext } from 'react';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import {
+  Link,
+  RouteComponentProps,
+  withRouter,
+  NavLink,
+} from 'react-router-dom';
 import './SideMenu.scss';
 
 const Option = Select.Option;
@@ -75,24 +80,29 @@ const SideMenu: React.FunctionComponent<RouteComponentProps> = ({
               <Fragment>
                 <Section title="Menu">
                   <Item icon={<Icon type="home" />}>
-                    <Link to={`/projects/${currentProject._id}`}>Home</Link>
+                    <NavLink
+                      exact={true}
+                      to={`/projects/${currentProject._id}`}
+                    >
+                      Home
+                    </NavLink>
                   </Item>
                   <Item icon={<Icon type="thunderbolt" />}>
-                    <Link to={`/projects/${currentProject._id}/executions`}>
+                    <NavLink to={`/projects/${currentProject._id}/executions`}>
                       Executions
-                    </Link>
+                    </NavLink>
                   </Item>
                   <Item icon={<Icon type="file-text" />}>
-                    <Link to={`/projects/${currentProject._id}/testcases`}>
+                    <NavLink to={`/projects/${currentProject._id}/testcases`}>
                       Test Cases
-                    </Link>
+                    </NavLink>
                   </Item>
                 </Section>
                 <Section title="More">
                   <Item icon={<Icon type="setting" />}>
-                    <Link to={`/projects/${currentProject._id}/settings`}>
+                    <NavLink to={`/projects/${currentProject._id}/settings`}>
                       Project Settings
-                    </Link>
+                    </NavLink>
                   </Item>
                 </Section>
               </Fragment>
