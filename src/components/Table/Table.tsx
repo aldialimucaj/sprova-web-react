@@ -7,7 +7,6 @@ interface Props {
   columnTitles: string[];
   data: any[];
   empty?: React.ReactNode;
-  extras?: React.ReactNode;
   onRowClick?: (item: any) => void;
   renderRow: (item: any, index: number) => React.ReactNode[];
   style?: any;
@@ -18,14 +17,12 @@ const Table: React.FunctionComponent<Props> = ({
   columnTitles,
   data,
   empty,
-  extras,
   onRowClick,
   renderRow,
   style,
 }) => {
-  return (
+  return data && data.length > 0 ? (
     <table className="sprova-table" style={{ ...style }}>
-      {extras && <div className="sprova-table-extras">{extras}</div>}
       <thead className="sprova-table-head">
         <tr className="sprova-table-row">
           {columnTitles.map((column: string, index: number) => (
@@ -33,30 +30,26 @@ const Table: React.FunctionComponent<Props> = ({
           ))}
         </tr>
       </thead>
-      {data.length > 0 ? (
-        <tbody className="sprova-table-body">
-          {data.map((item: any, index: number) => (
-            <tr
-              key={index}
-              className={classnames('sprova-table-row', {
-                'is-clickable': onRowClick,
-              })}
-              onClick={() => onRowClick && onRowClick(item)}
-            >
-              {renderRow(item, index)}
-            </tr>
-          ))}
-        </tbody>
-      ) : (
-        <div className={classnames('sprova-table-empty')}>
-          {empty || (
-            <span className={classnames('sprova-table-empty-item')}>
-              No data.
-            </span>
-          )}
-        </div>
-      )}
+      <tbody className="sprova-table-body">
+        {data.map((item: any, index: number) => (
+          <tr
+            key={index}
+            className={classnames('sprova-table-row', {
+              'is-clickable': onRowClick,
+            })}
+            onClick={() => onRowClick && onRowClick(item)}
+          >
+            {renderRow(item, index)}
+          </tr>
+        ))}
+      </tbody>
     </table>
+  ) : (
+    <div className={classnames('sprova-table-empty')}>
+      {empty || (
+        <span className={classnames('sprova-table-empty-item')}>No data.</span>
+      )}
+    </div>
   );
 };
 

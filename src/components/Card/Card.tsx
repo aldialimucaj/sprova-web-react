@@ -3,15 +3,46 @@ import React from 'react';
 import './Card.scss';
 
 interface CardBodyProps {
+  darker?: boolean;
   padded?: boolean;
 }
 
 export const CardBody: React.FunctionComponent<CardBodyProps> = ({
   children,
+  darker = false,
   padded = true,
 }) => {
   return (
-    <div className={classnames('sprova-card-body', { 'is-padded': padded })}>
+    <div
+      className={classnames(
+        'sprova-card-body',
+        { 'is-padded': padded },
+        { 'is-darker': darker }
+      )}
+    >
+      {children}
+    </div>
+  );
+};
+
+interface CardFooterProps {
+  darker?: boolean;
+  padded?: boolean;
+}
+
+export const CardFooter: React.FunctionComponent<CardFooterProps> = ({
+  children,
+  darker = false,
+  padded = true,
+}) => {
+  return (
+    <div
+      className={classnames(
+        'sprova-card-footer',
+        { 'is-padded': padded },
+        { 'is-darker': darker }
+      )}
+    >
       {children}
     </div>
   );

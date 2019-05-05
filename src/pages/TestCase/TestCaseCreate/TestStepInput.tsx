@@ -1,9 +1,10 @@
 import { useFormInput } from '@/hooks/useFormInput';
 import { TestStep } from '@/models/TestStep';
-import { Button, Col, Input, List, Row } from 'antd';
+import { Button, Col, Row } from 'antd';
 import _ from 'lodash';
-import React, { Fragment } from 'react';
+import React from 'react';
 import './TestCaseCreate.scss';
+import Input from '@/components/Input';
 
 interface Props {
   testSteps: TestStep[];
@@ -36,18 +37,13 @@ const TestStepInput: React.FunctionComponent<Props> = ({
     setExpected('');
   };
 
-  const removeTestStep = (testStep: TestStep) => {
-    setTestSteps(_.without(testSteps, testStep));
-  };
-
-  const footerInput = (
+  return (
     <Row gutter={16}>
       <Col span={10}>
         <Input
           value={action}
           onChange={handleActionChange}
           placeholder="Step action"
-          name="action"
         />
       </Col>
       <Col span={10}>
@@ -55,7 +51,6 @@ const TestStepInput: React.FunctionComponent<Props> = ({
           value={expected}
           onChange={handleExpectedChange}
           placeholder="Expected"
-          name="expected"
         />
       </Col>
       <Col span={4}>
@@ -64,31 +59,6 @@ const TestStepInput: React.FunctionComponent<Props> = ({
         </Button>
       </Col>
     </Row>
-  );
-
-  return (
-    <Fragment>
-      <List
-        className="steps-list"
-        bordered={true}
-        itemLayout="horizontal"
-        dataSource={testSteps}
-        renderItem={(testStep: TestStep) => (
-          <List.Item
-            actions={[
-              <a key="remove" onClick={() => removeTestStep(testStep)}>
-                remove
-              </a>,
-            ]}
-          >
-            <List.Item.Meta
-              title={<a href="https://ant.design">{testStep.action}</a>}
-            />
-          </List.Item>
-        )}
-      />
-      {footerInput}
-    </Fragment>
   );
 };
 

@@ -10,7 +10,7 @@ interface ItemProps {
 }
 
 export const Item: React.FunctionComponent<ItemProps> = ({
-  active = false,
+  active,
   children,
   icon,
   onClick,

@@ -21,18 +21,24 @@
     }
   }
 
-  &-body {
+  &-body,
+  &-footer {
     &.is-padded {
-      padding: 1.25rem;
+      padding: $padding-md;
     }
+
+    &.is-darker {
+      background-color: #f7fafc;
+    }
+  }
+
+  &-footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
   }
 
   &-header {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
     padding: $padding-md;
-    align-items: center;
 
     &-title {
       font-weight: 600;
