@@ -1,16 +1,11 @@
-import Menu, { Item, Section } from '@/components/Menu';
+import Menu, { Item, NavItem, Section } from '@/components/Menu';
 import { CycleContext } from '@/contexts/CycleContext';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import logo from '@/images/sprova.svg';
 import { Cycle } from '@/models/Cycle';
 import { Button, Divider, Icon, Select, Spin } from 'antd';
 import React, { Fragment, useContext } from 'react';
-import {
-  Link,
-  RouteComponentProps,
-  withRouter,
-  NavLink,
-} from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './SideMenu.scss';
 
 const Option = Select.Option;
@@ -79,31 +74,33 @@ const SideMenu: React.FunctionComponent<RouteComponentProps> = ({
             {currentCycle ? (
               <Fragment>
                 <Section title="Menu">
-                  <Item icon={<Icon type="home" />}>
-                    <NavLink
-                      exact={true}
-                      to={`/projects/${currentProject._id}`}
-                    >
-                      Home
-                    </NavLink>
-                  </Item>
-                  <Item icon={<Icon type="thunderbolt" />}>
-                    <NavLink to={`/projects/${currentProject._id}/executions`}>
-                      Executions
-                    </NavLink>
-                  </Item>
-                  <Item icon={<Icon type="file-text" />}>
-                    <NavLink to={`/projects/${currentProject._id}/testcases`}>
-                      Test Cases
-                    </NavLink>
-                  </Item>
+                  <NavItem
+                    icon={<Icon type="home" />}
+                    exact={true}
+                    route={`/projects/${currentProject._id}`}
+                  >
+                    Home
+                  </NavItem>
+                  <NavItem
+                    icon={<Icon type="thunderbolt" />}
+                    route={`/projects/${currentProject._id}/executions`}
+                  >
+                    Executions
+                  </NavItem>
+                  <NavItem
+                    icon={<Icon type="file-text" />}
+                    route={`/projects/${currentProject._id}/testcases`}
+                  >
+                    Test Cases
+                  </NavItem>
                 </Section>
                 <Section title="More">
-                  <Item icon={<Icon type="setting" />}>
-                    <NavLink to={`/projects/${currentProject._id}/settings`}>
-                      Project Settings
-                    </NavLink>
-                  </Item>
+                  <NavItem
+                    icon={<Icon type="setting" />}
+                    route={`/projects/${currentProject._id}/settings`}
+                  >
+                    Project Settings
+                  </NavItem>
                 </Section>
               </Fragment>
             ) : null}

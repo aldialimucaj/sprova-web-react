@@ -19,29 +19,36 @@
     }
   }
 
-  &-item {
+  &-item,
+  &-navitem {
     transition: all 0.3s;
     font-size: 0.9rem;
     font-weight: 500;
     line-height: 2rem;
 
-    // Set styles for active <NavLink> components
-    & > a.active {
+    &.is-active {
       color: $primary-color;
       font-weight: bold;
-
-      & ~ .sprova-menu-item-icon {
-        color: $primary-color;
-        font-weight: bold;
-      }
     }
 
     &-icon {
       margin-right: 12px;
     }
+  }
 
+  &-item {
+    &.clickable {
+      &:hover {
+        color: $primary-color;
+        cursor: pointer;
+      }
+    }
+  }
+
+  &-navitem {
     &:hover {
       color: $primary-color;
+      cursor: pointer;
     }
   }
 }
