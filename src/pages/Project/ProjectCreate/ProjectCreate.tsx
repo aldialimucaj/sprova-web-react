@@ -1,54 +1,60 @@
-import { getUser } from '@/api/auth.api';
 import { postProject } from '@/api/project.api';
-import { FormButton, FormInput } from '@/components/form';
+import Card, { CardBody, CardHeader } from '@/components/Card';
+import Input from '@/components/Input';
 import { PageContent, PageHeader } from '@/components/Layout';
-import { RichTextEditor } from '@/components/RichTextEditor';
+import Level from '@/components/Level';
+import TextArea from '@/components/TextArea';
+import { ProjectContext } from '@/contexts/ProjectContext';
+import { UserContext } from '@/contexts/UserContext';
 import { useFormInput } from '@/hooks/useFormInput';
+import { useFormTextArea } from '@/hooks/useFormTextArea';
 import { Project } from '@/models/Project';
-import { Breadcrumb, Card, Col, Form, notification, Row } from 'antd';
-import React, { Fragment, useState } from 'react';
+import { Breadcrumb, Button, notification } from 'antd';
+import React, { Fragment, useContext, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import { formContentLayout } from './utils';
 
 const ProjectCreate: React.FunctionComponent<RouteComponentProps> = ({
   history,
 }) => {
+  const { user } = useContext(UserContext);
+  const { onAddProject, onSelectProject } = useContext(ProjectContext);
   const {
     value: projectTitle,
     handleChange: handleProjectTitleChange,
   } = useFormInput('');
+  const {
+    value: description,
+    handleChange: handleDescriptionChange,
+  } = useFormTextArea('');
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const editor = { value: {} };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-
-    const { _id: userId } = getUser()!;
-
+  const handleProjectSubmit = async () => {
     const projectNew: Partial<Project> = {
       title: projectTitle,
-      description: editor.value,
-      userId,
+      description: '',
+      userId: user!._id,
     };
 
     setIsLoading(true);
 
     try {
-      const { _id } = await postProject(projectNew);
-      setIsLoading(false);
+      const project = await postProject(projectNew);
+      onAddProject(project);
+      onSelectProject(project);
       notification.success({
         placement: 'bottomRight',
-        message: `${projectTitle} created`,
-        description: `Project created with ID ${_id}`,
+        message: `${project.title} created`,
+        description: `Project created with ID ${project._id}`,
       });
-      history.push(`/projects/${_id}`);
     } catch (error) {
-      setIsLoading(false);
       notification.error({
         placement: 'bottomRight',
         message: 'Failed to create project',
         description: error,
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -66,31 +72,37 @@ const ProjectCreate: React.FunctionComponent<RouteComponentProps> = ({
         title="Create Project"
       />
       <PageContent>
-        <Card>
-          <Row>
-            <Col {...formContentLayout}>
-              <Form layout="vertical" onSubmit={handleSubmit}>
-                <FormInput
-                  label="Project Title"
-                  value={projectTitle}
-                  onChange={handleProjectTitleChange}
-                  placeholder="Test Case"
-                  required={true}
-                />
-                <Form.Item label="Description" colon={false}>
-                  <RichTextEditor content={editor} />
-                </Form.Item>
-                <FormButton
-                  type="primary"
-                  loading={isLoading}
-                  disabled={!projectTitle}
-                >
-                  Create Project
-                </FormButton>
-              </Form>
-            </Col>
-          </Row>
+        <Card style={{ marginBottom: 24 }}>
+          <CardHeader>
+            <Level>
+              <h4>General Information</h4>
+            </Level>
+          </CardHeader>
+          <CardBody darker={true}>
+            <Input
+              label="Title"
+              onChange={handleProjectTitleChange}
+              placeholder="Project Title"
+              required={true}
+              style={{ marginBottom: 24 }}
+              value={projectTitle}
+            />
+            <TextArea
+              label="Description"
+              value={description}
+              onChange={handleDescriptionChange}
+              placeholder="Description"
+            />
+          </CardBody>
         </Card>
+        <Button
+          type="primary"
+          loading={isLoading}
+          disabled={!projectTitle}
+          onClick={handleProjectSubmit}
+        >
+          Create Project
+        </Button>
       </PageContent>
     </Fragment>
   );

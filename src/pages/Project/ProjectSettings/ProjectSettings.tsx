@@ -1,22 +1,17 @@
 import { deleteProject, updateProject } from '@/api/project.api';
+import Card, { CardBody, CardHeader } from '@/components/Card';
 import { PageContent, PageHeader } from '@/components/Layout';
-import { RichTextEditor } from '@/components/RichTextEditor';
+import Level from '@/components/Level';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { Project } from '@/models/Project';
-import { hasFieldErrors } from '@/utils';
 import {
   Breadcrumb,
   Button,
-  Col,
-  Form,
   Icon,
-  Input,
   notification,
   Popconfirm,
-  Row,
   Typography,
 } from 'antd';
-import { FormComponentProps } from 'antd/lib/form';
 import React, { Fragment, useContext, useState } from 'react';
 import {
   Link,
@@ -24,30 +19,34 @@ import {
   RouteComponentProps,
   withRouter,
 } from 'react-router-dom';
-import { formContentLayout, formItemLayout, tailFormItemLayout } from './utils';
+
+import Input from '@/components/Input';
+import TextArea from '@/components/TextArea';
+import { useFormInput } from '@/hooks/useFormInput';
+import { useFormTextArea } from '@/hooks/useFormTextArea';
 
 const { Text } = Typography;
 
-interface Params {
-  pid: string;
-}
-
-interface Props extends RouteComponentProps<Params>, FormComponentProps {}
-
-const ProjectSettings: React.FunctionComponent<Props> = ({
-  form,
+const ProjectSettings: React.FunctionComponent<RouteComponentProps> = ({
   history,
-  match,
 }) => {
-  const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
   const { currentProject } = useContext(ProjectContext);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
-  const editor = { value: currentProject && currentProject.description };
 
   if (!currentProject) {
     return <Redirect to="/projects" />;
   }
+
+  const {
+    value: projectTitle,
+    handleChange: handleProjectTitleChange,
+  } = useFormInput(currentProject.title);
+  const {
+    value: description,
+    handleChange: handleDescriptionChange,
+  } = useFormTextArea(currentProject.description);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
   const deleteRequest = async () => {
     setIsDeleteLoading(true);
@@ -69,14 +68,10 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
     }
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const description = editor.value.toJSON();
-    const { projectTitle: title } = getFieldsValue();
+  const handleSubmit = async () => {
     const projectNew: Project = {
       ...currentProject,
-      title,
+      title: projectTitle,
       description,
     };
 
@@ -119,7 +114,7 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
       <PageHeader
         breadcrumb={
           <Breadcrumb>
-            <Link to={`/projects/${match.params.pid}`}>
+            <Link to={`/projects/${currentProject._id}`}>
               <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
             </Link>
             <Breadcrumb.Item>Settings</Breadcrumb.Item>
@@ -129,51 +124,43 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
         title="Edit the Project"
       />
       <PageContent>
-        <Row>
-          <Col {...formContentLayout}>
-            <Form {...formItemLayout} onSubmit={handleSubmit}>
-              <Form.Item label="Project ID" colon={false}>
-                <Text copyable={true} ellipsis={false}>
-                  {currentProject._id}
-                </Text>
-              </Form.Item>
-              <Form.Item label="Project Title" colon={false}>
-                {getFieldDecorator('projectTitle', {
-                  initialValue: currentProject.title,
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Title cannot be empty',
-                    },
-                  ],
-                })(<Input type="text" name="title" />)}
-              </Form.Item>
-              <Form.Item label="Description" colon={false}>
-                <div
-                  style={{
-                    backgroundColor: '#fff',
-                    border: '1px solid #e8e8e8',
-                  }}
-                >
-                  <RichTextEditor content={editor} />
-                </div>
-              </Form.Item>
-              <Form.Item {...tailFormItemLayout}>
-                <Button
-                  type="primary"
-                  loading={isLoading}
-                  htmlType="submit"
-                  disabled={hasFieldErrors(getFieldsError())}
-                >
-                  Save
-                </Button>
-              </Form.Item>
-            </Form>
-          </Col>
-        </Row>
+        <Card style={{ marginBottom: 24 }}>
+          <CardHeader>
+            <Level>
+              <h4>General Information</h4>
+              <Text copyable={true} ellipsis={false}>
+                {currentProject._id}
+              </Text>
+            </Level>
+          </CardHeader>
+          <CardBody darker={true}>
+            <Input
+              label="Title"
+              onChange={handleProjectTitleChange}
+              placeholder="Project Title"
+              required={true}
+              style={{ marginBottom: 24 }}
+              value={projectTitle}
+            />
+            <TextArea
+              label="Description"
+              value={description}
+              onChange={handleDescriptionChange}
+              placeholder="Description"
+            />
+          </CardBody>
+        </Card>
+        <Button
+          type="primary"
+          loading={isLoading}
+          disabled={!projectTitle}
+          onClick={handleSubmit}
+        >
+          Save
+        </Button>
       </PageContent>
     </Fragment>
   );
 };
 
-export default withRouter(Form.create({})(ProjectSettings));
+export default withRouter(ProjectSettings);
