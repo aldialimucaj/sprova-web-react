@@ -1,5 +1,5 @@
 import { postTestCase } from '@/api/testcase.api';
-import Card from '@/components/Card';
+import Card, { CardBody } from '@/components/Card';
 import {
   FormButton,
   FormInput,
@@ -125,90 +125,92 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
       />
       <PageContent>
         <Card>
-          <Row>
-            <Col {...formContentLayout}>
-              <Form layout="vertical" onSubmit={handleSubmit}>
-                <FormInput
-                  label="Title"
-                  value={testCaseTitle}
-                  onChange={handleTestCaseTitleChange}
-                  placeholder="Test Case"
-                  required={true}
-                />
-                <FormTextArea
-                  label="Description"
-                  value={description}
-                  onChange={handleDescriptionChange}
-                  placeholder="Description"
-                  minLength={3}
-                />
-                <FormSearchSelect
-                  label="Inherit from"
-                  placeholder="None"
-                  value={(parent && parent._id) || undefined}
-                  onChange={handleParentSelect}
-                >
-                  {testCases.map((testCase, index) => (
-                    <Option key={index} value={testCase._id}>
-                      {testCase.title}
-                    </Option>
-                  ))}
-                </FormSearchSelect>
-                <Form.Item
-                  label="Test Steps"
-                  required={true}
-                  validateStatus={'success'}
-                >
-                  {parent ? (
-                    <Button
-                      block={true}
-                      onClick={toggleShowInherited}
-                      type="dashed"
-                      style={{ marginBottom: 16 }}
-                    >
-                      {`${showInherited ? 'Hide' : 'Show'} inherited steps`}
-                    </Button>
-                  ) : null}
-
-                  {parent && showInherited ? (
-                    <List
-                      className="inherited-list"
-                      itemLayout="horizontal"
-                      bordered={true}
-                      dataSource={resolveInheritance(parent, testCases, true)}
-                      renderItem={([testStep, mappedParent]: [
-                        TestStep,
-                        TestCase
-                      ]) => (
-                        <List.Item
-                          style={{ backgroundColor: 'rgba(0, 0, 0, 0.025)' }}
-                        >
-                          <List.Item.Meta
-                            title={testStep.action}
-                            description={`Expected: ${testStep.expected}`}
-                          />
-                          <Tag style={{ pointerEvents: 'none' }}>
-                            {mappedParent.title}
-                          </Tag>
-                        </List.Item>
-                      )}
-                    />
-                  ) : null}
-                  <TestStepInput
-                    testSteps={testSteps}
-                    setTestSteps={setTestSteps}
+          <CardBody>
+            <Row>
+              <Col {...formContentLayout}>
+                <Form layout="vertical" onSubmit={handleSubmit}>
+                  <FormInput
+                    label="Title"
+                    value={testCaseTitle}
+                    onChange={handleTestCaseTitleChange}
+                    placeholder="Test Case"
+                    required={true}
                   />
-                </Form.Item>
-                <FormButton
-                  type="primary"
-                  loading={isLoading}
-                  disabled={!testCaseTitle || testSteps.length === 0}
-                >
-                  Create Test Case
-                </FormButton>
-              </Form>
-            </Col>
-          </Row>
+                  <FormTextArea
+                    label="Description"
+                    value={description}
+                    onChange={handleDescriptionChange}
+                    placeholder="Description"
+                    minLength={3}
+                  />
+                  <FormSearchSelect
+                    label="Inherit from"
+                    placeholder="None"
+                    value={(parent && parent._id) || undefined}
+                    onChange={handleParentSelect}
+                  >
+                    {testCases.map((testCase, index) => (
+                      <Option key={index} value={testCase._id}>
+                        {testCase.title}
+                      </Option>
+                    ))}
+                  </FormSearchSelect>
+                  <Form.Item
+                    label="Test Steps"
+                    required={true}
+                    validateStatus={'success'}
+                  >
+                    {parent ? (
+                      <Button
+                        block={true}
+                        onClick={toggleShowInherited}
+                        type="dashed"
+                        style={{ marginBottom: 16 }}
+                      >
+                        {`${showInherited ? 'Hide' : 'Show'} inherited steps`}
+                      </Button>
+                    ) : null}
+
+                    {parent && showInherited ? (
+                      <List
+                        className="inherited-list"
+                        itemLayout="horizontal"
+                        bordered={true}
+                        dataSource={resolveInheritance(parent, testCases, true)}
+                        renderItem={([testStep, mappedParent]: [
+                          TestStep,
+                          TestCase
+                        ]) => (
+                          <List.Item
+                            style={{ backgroundColor: 'rgba(0, 0, 0, 0.025)' }}
+                          >
+                            <List.Item.Meta
+                              title={testStep.action}
+                              description={`Expected: ${testStep.expected}`}
+                            />
+                            <Tag style={{ pointerEvents: 'none' }}>
+                              {mappedParent.title}
+                            </Tag>
+                          </List.Item>
+                        )}
+                      />
+                    ) : null}
+                    <TestStepInput
+                      testSteps={testSteps}
+                      setTestSteps={setTestSteps}
+                    />
+                  </Form.Item>
+                  <FormButton
+                    type="primary"
+                    loading={isLoading}
+                    disabled={!testCaseTitle || testSteps.length === 0}
+                  >
+                    Create Test Case
+                  </FormButton>
+                </Form>
+              </Col>
+            </Row>
+          </CardBody>
         </Card>
       </PageContent>
     </Fragment>

@@ -1,6 +1,6 @@
-import React, { useState, Fragment } from 'react';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import Card from '../Card';
+import React, { Fragment } from 'react';
+import { CSSTransition } from 'react-transition-group';
+import Card, { CardBody, CardHeader } from '../Card';
 import './Modal.scss';
 
 interface Props {
@@ -24,7 +24,12 @@ const Modal: React.FunctionComponent<Props> = ({
         classNames="sprova-modal-fade"
       >
         <div className="sprova-modal">
-          <Card title={title}>{children}</Card>
+          <Card>
+            <CardHeader>
+              <h3>{title}</h3>
+            </CardHeader>
+            <CardBody>{children}</CardBody>
+          </Card>
         </div>
       </CSSTransition>
 

@@ -1,9 +1,11 @@
-import CardTable from '@/components/CardTable';
+import Card, { CardBody, CardHeader } from '@/components/Card';
 import { PageContent, PageHeader } from '@/components/Layout';
+import Level from '@/components/Level';
+import Table from '@/components/Table';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { TestCaseContext } from '@/contexts/TestCaseContext';
 import { TestCase } from '@/models/TestCase';
-import { Breadcrumb, Button, Icon, Spin, Table } from 'antd';
+import { Breadcrumb, Button, Icon, Spin } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
@@ -22,34 +24,6 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
     history.push(`/projects/${currentProject!._id}/testcases/${record._id}`);
   };
 
-  const columns = [
-    {
-      title: 'Title',
-      dataIndex: 'title',
-      key: 'title',
-    },
-    {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
-    },
-    {
-      title: 'Statistics',
-      dataIndex: 'statistics',
-      key: 'statistics',
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      width: '10%',
-      render: (text: string, record: any) => (
-        <Button size="small" type="primary" onClick={undefined}>
-          Execute
-        </Button>
-      ),
-    },
-  ];
-
   return (
     <Fragment>
       <PageHeader
@@ -67,23 +41,37 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
         {!isTestCasesFetched ? (
           <Spin />
         ) : (
-          <CardTable
-            actions={[
-              <Link key={0} to={`/projects/${match.params.pid}/testcases/new`}>
-                <Button type="primary">
-                  <Icon type="plus" /> New
-                </Button>
-              </Link>,
-            ]}
-            title="Test Cases"
-            data={testCases}
-            columnTitles={['Title', 'Description']}
-            onRowClick={handleRowClick}
-            renderRow={(testCase: TestCase, index: number) => [
-              <td key={0}>{testCase.title}</td>,
-              <td key={1}>{testCase.description}</td>,
-            ]}
-          />
+          <Card>
+            <CardHeader>
+              <Level>
+                <h3>Test Cases</h3>
+                <div>
+                  {
+                    <Link
+                      key={0}
+                      to={`/projects/${match.params.pid}/testcases/new`}
+                    >
+                      <Button type="primary">
+                        <Icon type="plus" /> New
+                      </Button>
+                    </Link>
+                  }
+                </div>
+              </Level>
+            </CardHeader>
+            <CardBody padded={false}>
+              <Table
+                title="Test Cases"
+                data={testCases}
+                columnTitles={['Title', 'Description']}
+                onRowClick={handleRowClick}
+                renderRow={(testCase: TestCase, index: number) => [
+                  <td key={0}>{testCase.title}</td>,
+                  <td key={1}>{testCase.description}</td>,
+                ]}
+              />
+            </CardBody>
+          </Card>
         )}
       </PageContent>
     </Fragment>

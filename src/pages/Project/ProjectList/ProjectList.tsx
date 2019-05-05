@@ -1,5 +1,5 @@
 import { getProjects } from '@/api/project.api';
-import Card from '@/components/Card';
+import Card, { CardBody } from '@/components/Card';
 import { PageContent, PageHeader } from '@/components/Layout';
 import { useFetcher } from '@/hooks/useFetcher';
 import { Project } from '@/models/Project';
@@ -42,8 +42,10 @@ const ProjectList: React.FunctionComponent<RouteComponentProps> = ({
           {projects.map((project: Project, index: number) => (
             <Col span={6} key={index}>
               <Card onClick={() => history.push(`/projects/${project._id}`)}>
-                <h3>{project.title}</h3>
-                <p style={{ marginBottom: 0 }}>#DESCRIPTION#</p>
+                <CardBody>
+                  <h3>{project.title}</h3>
+                  <p style={{ marginBottom: 0 }}>#DESCRIPTION#</p>
+                </CardBody>
               </Card>
             </Col>
           ))}

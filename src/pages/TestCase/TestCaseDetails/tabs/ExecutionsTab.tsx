@@ -1,12 +1,12 @@
 import { getExecutionsOfTestCase } from '@/api/execution.api';
-import CardList from '@/components/CardList';
+import Card, { CardBody, CardHeader } from '@/components/Card';
 import Level from '@/components/Level';
+import Table from '@/components/Table';
 import { useFetcher } from '@/hooks/useFetcher';
 import { Execution, ExecutionStatus } from '@/models/Execution';
 import { Icon, Spin } from 'antd';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import CardTable from '@/components/CardTable';
 
 interface Params {
   pid: string;
@@ -47,25 +47,29 @@ const ExecutionsTab: React.FunctionComponent<RouteComponentProps<Params>> = ({
   return isLoading || !executions ? (
     <Spin />
   ) : (
-    <CardTable
-      columnTitles={['Status', 'ID', 'Date']}
-      data={executions}
-      renderRow={(execution: Execution) => {
-        const icon = getStatusIcon(execution.status);
-        return [
-          <td key={0}>
-            {icon && <span style={{ marginRight: 16 }}>{icon}</span>}
-          </td>,
-          <td key={1}>{execution._id}</td>,
-          <td key={2}>{new Date(execution.createdAt).toUTCString()}</td>,
-        ];
-      }}
-      onRowClick={(execution: Execution) =>
-        history.push(
-          `/projects/${match.params.pid}/executions/${execution.contextId}`
-        )
-      }
-    />
+    <Card>
+      <CardBody padded={false}>
+        <Table
+          columnTitles={['Status', 'ID', 'Date']}
+          data={executions}
+          renderRow={(execution: Execution) => {
+            const icon = getStatusIcon(execution.status);
+            return [
+              <td key={0}>
+                {icon && <span style={{ marginRight: 16 }}>{icon}</span>}
+              </td>,
+              <td key={1}>{execution._id}</td>,
+              <td key={2}>{new Date(execution.createdAt).toUTCString()}</td>,
+            ];
+          }}
+          onRowClick={(execution: Execution) =>
+            history.push(
+              `/projects/${match.params.pid}/executions/${execution.contextId}`
+            )
+          }
+        />
+      </CardBody>
+    </Card>
   );
 };
 

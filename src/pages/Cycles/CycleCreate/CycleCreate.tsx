@@ -1,7 +1,6 @@
 import Card from '@/components/Card';
 import { FormButton, FormInput, FormTextArea } from '@/components/form';
 import { PageContent, PageHeader } from '@/components/Layout';
-import TestCaseSelector from '@/components/TestCaseSelector';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
@@ -75,11 +74,6 @@ const CycleCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
               />
             </Col>
           </Row>
-          <TestCaseSelector
-            style={{ marginBottom: 24 }}
-            source={[]}
-            target={[]}
-          />
           <FormButton type="primary" loading={isLoading} disabled={!cycleTitle}>
             Create Cycle
           </FormButton>

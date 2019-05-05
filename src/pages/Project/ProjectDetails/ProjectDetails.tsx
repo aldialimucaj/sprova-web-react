@@ -1,5 +1,5 @@
 import { postCycle } from '@/api/cycle.api';
-import Card from '@/components/Card';
+import Card, { CardBody } from '@/components/Card';
 import { FormButton, FormInput, FormTextArea } from '@/components/form';
 import { PageContent, PageHeader } from '@/components/Layout';
 import Level from '@/components/Level';
@@ -101,12 +101,14 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
                     )
                   }
                 >
-                  <h3>{cycle.title}</h3>
-                  <p style={{ marginTop: 8, marginBottom: 16 }}>
-                    {cycle.description || 'No description.'}
-                  </p>
-                  <Tag>Released</Tag>
-                  <Tag>Dev</Tag>
+                  <CardBody>
+                    <h3>{cycle.title}</h3>
+                    <p style={{ marginTop: 8, marginBottom: 16 }}>
+                      {cycle.description || 'No description.'}
+                    </p>
+                    <Tag>Released</Tag>
+                    <Tag>Dev</Tag>
+                  </CardBody>
                 </Card>
               </Col>
             ))}

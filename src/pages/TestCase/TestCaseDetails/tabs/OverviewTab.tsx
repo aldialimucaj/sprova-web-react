@@ -1,15 +1,14 @@
 import { updateTestCase } from '@/api/testcase.api';
-import CardList from '@/components/CardList';
+import Card, { CardBody, CardHeader } from '@/components/Card';
 import Level from '@/components/Level';
+import List from '@/components/List';
+import Table from '@/components/Table';
 import { TestCase } from '@/models/TestCase';
 import { TestStep } from '@/models/TestStep';
 import { findById, findChildren, resolveInheritance } from '@/utils';
-import { Alert, Button, Col, Divider, Input, Row, Switch, Tag } from 'antd';
+import { Alert, Button, Col, Input, Row, Switch, Tag } from 'antd';
 import React, { Fragment, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { Link } from 'react-router-dom';
-import CardTable from '@/components/CardTable';
-import Card from '@/components/Card';
 
 const TextArea = Input.TextArea;
 
@@ -67,71 +66,81 @@ const OverviewTab: React.FunctionComponent<Props> = ({
     <Fragment>
       <Row gutter={24}>
         <Col span={12}>
-          <Card
-            style={{ marginBottom: 24 }}
-            title="Description"
-            actions={[
-              isDescriptionEditable ? (
-                <a
-                  onClick={() => {
-                    setIsDescriptionEditable(false);
-                    setDescription(testCase.description);
-                  }}
-                >
-                  Cancel
-                </a>
-              ) : (
-                <a onClick={() => setIsDescriptionEditable(true)}>Edit</a>
-              ),
-            ]}
-          >
-            {descriptionError && (
-              <Alert
-                style={{ marginBottom: 16 }}
-                message={descriptionError}
-                type="error"
-              />
-            )}
-            {isDescriptionEditable ? (
-              <div>
-                <TextArea
-                  autosize={true}
-                  placeholder="Description"
+          <Card style={{ marginBottom: 24 }}>
+            <CardHeader>
+              <Level>
+                <h3>Description</h3>
+                <div>
+                  {isDescriptionEditable ? (
+                    <a
+                      onClick={() => {
+                        setIsDescriptionEditable(false);
+                        setDescription(testCase.description);
+                      }}
+                    >
+                      Cancel
+                    </a>
+                  ) : (
+                    <a onClick={() => setIsDescriptionEditable(true)}>Edit</a>
+                  )}
+                </div>
+              </Level>
+            </CardHeader>
+            <CardBody>
+              {descriptionError && (
+                <Alert
                   style={{ marginBottom: 16 }}
-                  value={description}
-                  onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                    setDescription(event.target.value)
-                  }
+                  message={descriptionError}
+                  type="error"
                 />
-                <Button
-                  loading={descriptionLoading}
-                  type="primary"
-                  onClick={updateDescription}
-                >
-                  Save
-                </Button>
-              </div>
-            ) : (
-              <p>{testCase.description || 'No Description.'}</p>
-            )}
+              )}
+              {isDescriptionEditable ? (
+                <div>
+                  <TextArea
+                    autosize={true}
+                    placeholder="Description"
+                    style={{ marginBottom: 16 }}
+                    value={description}
+                    onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
+                      setDescription(event.target.value)
+                    }
+                  />
+                  <Button
+                    loading={descriptionLoading}
+                    type="primary"
+                    onClick={updateDescription}
+                  >
+                    Save
+                  </Button>
+                </div>
+              ) : (
+                <p>{testCase.description || 'No Description.'}</p>
+              )}
+            </CardBody>
           </Card>
         </Col>
         <Col span={12}>
-          <CardTable
-            columnTitles={['Title']}
-            data={children}
-            style={{ marginBottom: 24 }}
-            title="Children"
-            renderRow={(tc: TestCase) => [<td key={0}>{tc.title}</td>]}
-            onRowClick={(tc: TestCase) =>
-              history.push(`/projects/${match.params.pid}/testcases/${tc._id}`)
-            }
-          />
+          <Card style={{ marginBottom: 24 }}>
+            <CardHeader>
+              <h3>Children</h3>
+            </CardHeader>
+            <CardBody padded={false}>
+              <Table
+                columnTitles={['Title']}
+                data={children}
+                renderRow={(tc: TestCase) => [<td key={0}>{tc.title}</td>]}
+                onRowClick={(tc: TestCase) =>
+                  history.push(
+                    `/projects/${match.params.pid}/testcases/${tc._id}`
+                  )
+                }
+              />
+            </CardBody>
+          </Card>
         </Col>
       </Row>
-
       {parent && showInherited ? (
-        <CardList
+        <List
           style={{ marginBottom: 16 }}
           small={true}
           data={resolveInheritance(parent, testCases, true)}
@@ -148,31 +157,38 @@ const OverviewTab: React.FunctionComponent<Props> = ({
           )}
         />
       ) : null}
-      <CardTable
-        actions={[
-          parent && (
-            <Fragment>
-              <span style={{ marginRight: 8 }}>Show inherited</span>
-              <Switch
-                checked={showInherited}
-                onChange={() => setShowInherited(!showInherited)}
-              />
-            </Fragment>
-          ),
-        ]}
-        title="Test Steps"
-        columnTitles={['#', 'Action', 'Expected']}
-        data={testCase.steps}
-        renderRow={(testStep: TestStep, index: number) => [
-          <td key={0}>{index + 1}</td>,
-          <td key={1}>{testStep.action}</td>,
-          <td key={2}>{testStep.expected}</td>,
-          <td key={3}>
-            <a className="sprova-teststep-edit">Edit</a>
-          </td>,
-        ]}
-        style={{ marginBottom: 24 }}
-      />
+      <Card>
+        <CardHeader>
+          <Level>
+            <h3>Test Steps</h3>
+            <div>
+              {parent && (
+                <Fragment>
+                  <span style={{ marginRight: 8 }}>Show inherited</span>
+                  <Switch
+                    checked={showInherited}
+                    onChange={() => setShowInherited(!showInherited)}
+                  />
+                </Fragment>
+              )}
+            </div>
+          </Level>
+        </CardHeader>
+        <CardBody padded={false}>
+          <Table
+            columnTitles={['#', 'Action', 'Expected']}
+            data={[...testCase.steps]}
+            renderRow={(testStep: TestStep, index: number) => [
+              <td key={0}>{index + 1}</td>,
+              <td key={1}>{testStep.action}</td>,
+              <td key={2}>{testStep.expected}</td>,
+              <td key={3}>
+                <a className="sprova-teststep-edit">Edit</a>
+              </td>,
+            ]}
+          />
+        </CardBody>
+      </Card>
     </Fragment>
   );
 };
