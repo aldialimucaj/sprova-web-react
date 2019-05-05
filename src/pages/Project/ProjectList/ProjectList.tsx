@@ -4,7 +4,7 @@ import { PageContent, PageHeader } from '@/components/Layout';
 import { useFetcher } from '@/hooks/useFetcher';
 import { Project } from '@/models/Project';
 import { Alert, Breadcrumb, Button, Col, Empty, Icon, Row, Spin } from 'antd';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './ProjectList.scss';
 
@@ -18,46 +18,45 @@ const ProjectList: React.FunctionComponent<RouteComponentProps> = ({
   ) : error ? (
     <Alert message="Something went wrong" description={error} type="error" />
   ) : (
-    <PageContent
-      header={
-        <PageHeader
-          title="Choose a Project"
-          breadcrumb={
-            <Breadcrumb>
-              <Breadcrumb.Item>Projects</Breadcrumb.Item>
-            </Breadcrumb>
-          }
-          extra={
-            <Link to={`/projects/new`}>
-              <Button type="primary">
-                <Icon type="plus" /> New
-              </Button>
-            </Link>
-          }
-        />
-      }
-    >
-      {projects && projects.length > 0 ? (
-        <Row gutter={16}>
-          {projects.map((project: Project, index: number) => (
-            <Col span={6} key={index}>
-              <Card onClick={() => history.push(`/projects/${project._id}`)}>
-                <CardBody>
-                  <h3>{project.title}</h3>
-                  <p style={{ marginBottom: 0 }}>#DESCRIPTION#</p>
-                </CardBody>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      ) : (
-        <Empty description={'No Projects found'}>
-          <Link to="/projects/new">
-            <Button type="primary">Create Now</Button>
+    <Fragment>
+      <PageHeader
+        title="Choose a Project"
+        breadcrumb={
+          <Breadcrumb>
+            <Breadcrumb.Item>Projects</Breadcrumb.Item>
+          </Breadcrumb>
+        }
+        extra={
+          <Link to={`/projects/new`}>
+            <Button type="primary">
+              <Icon type="plus" /> New
+            </Button>
           </Link>
-        </Empty>
-      )}
-    </PageContent>
+        }
+      />
+      <PageContent>
+        {projects && projects.length > 0 ? (
+          <Row gutter={16}>
+            {projects.map((project: Project, index: number) => (
+              <Col span={6} key={index}>
+                <Card onClick={() => history.push(`/projects/${project._id}`)}>
+                  <CardBody>
+                    <h3>{project.title}</h3>
+                    <p style={{ marginBottom: 0 }}>#DESCRIPTION#</p>
+                  </CardBody>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        ) : (
+          <Empty description={'No Projects found'}>
+            <Link to="/projects/new">
+              <Button type="primary">Create Now</Button>
+            </Link>
+          </Empty>
+        )}
+      </PageContent>
+    </Fragment>
   );
 };
 

@@ -5,12 +5,8 @@ import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
 import { Breadcrumb, Col, Form, Row } from 'antd';
-import React, { useContext, useState } from 'react';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-
-interface Params {
-  pid: string;
-}
+import React, { Fragment, useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const formContentLayout = {
   xs: { span: 24 },
@@ -19,9 +15,7 @@ const formContentLayout = {
   xl: { span: 14 },
 };
 
-const CycleCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
-  match,
-}) => {
+const CycleCreate: React.FunctionComponent = () => {
   const { currentProject } = useContext(ProjectContext);
 
   const {
@@ -36,51 +30,54 @@ const CycleCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return (
-    <PageContent
-      header={
-        <PageHeader
-          breadcrumb={
-            <Breadcrumb>
-              <Link to={`/projects/${match.params.pid}`}>
-                <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
-              </Link>
-              <Link to={`/projects/${match.params.pid}/testcases`}>
-                <Breadcrumb.Item>Cycles</Breadcrumb.Item>
-              </Link>
-              <Breadcrumb.Item>New</Breadcrumb.Item>
-            </Breadcrumb>
-          }
-          title="Create Cycle"
-        />
-      }
-    >
-      <Card>
-        <Form layout="vertical">
-          <Row>
-            <Col {...formContentLayout}>
-              <FormInput
-                label="Title"
-                value={cycleTitle}
-                onChange={handleCycleTitleChange}
-                placeholder="Cycle"
-                required={true}
-              />
-              <FormTextArea
-                label="Description"
-                value={description}
-                onChange={handleDescriptionChange}
-                placeholder="Description"
-                minLength={3}
-              />
-            </Col>
-          </Row>
-          <FormButton type="primary" loading={isLoading} disabled={!cycleTitle}>
-            Create Cycle
-          </FormButton>
-        </Form>
-      </Card>
-    </PageContent>
+    <Fragment>
+      <PageHeader
+        breadcrumb={
+          <Breadcrumb>
+            <Link to={`/projects/${currentProject!._id}`}>
+              <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
+            </Link>
+            <Link to={`/projects/${currentProject!._id}/testcases`}>
+              <Breadcrumb.Item>Cycles</Breadcrumb.Item>
+            </Link>
+            <Breadcrumb.Item>New</Breadcrumb.Item>
+          </Breadcrumb>
+        }
+        title="Create Cycle"
+      />
+      <PageContent>
+        <Card>
+          <Form layout="vertical">
+            <Row>
+              <Col {...formContentLayout}>
+                <FormInput
+                  label="Title"
+                  value={cycleTitle}
+                  onChange={handleCycleTitleChange}
+                  placeholder="Cycle"
+                  required={true}
+                />
+                <FormTextArea
+                  label="Description"
+                  value={description}
+                  onChange={handleDescriptionChange}
+                  placeholder="Description"
+                  minLength={3}
+                />
+              </Col>
+            </Row>
+            <FormButton
+              type="primary"
+              loading={isLoading}
+              disabled={!cycleTitle}
+            >
+              Create Cycle
+            </FormButton>
+          </Form>
+        </Card>
+      </PageContent>
+    </Fragment>
   );
 };
 
-export default withRouter(CycleCreate);
+export default CycleCreate;

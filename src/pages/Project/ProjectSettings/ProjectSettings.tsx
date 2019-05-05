@@ -115,62 +115,64 @@ const ProjectSettings: React.FunctionComponent<Props> = ({
   );
 
   return (
-    <PageContent
-      header={
-        <PageHeader
-          breadcrumb={
-            <Breadcrumb>
-              <Link to={`/projects/${match.params.pid}`}>
-                <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
-              </Link>
-              <Breadcrumb.Item>Settings</Breadcrumb.Item>
-            </Breadcrumb>
-          }
-          extra={deleteButton}
-          title="Edit the Project"
-        />
-      }
-    >
-      <Row>
-        <Col {...formContentLayout}>
-          <Form {...formItemLayout} onSubmit={handleSubmit}>
-            <Form.Item label="Project ID" colon={false}>
-              <Text copyable={true} ellipsis={false}>
-                {currentProject._id}
-              </Text>
-            </Form.Item>
-            <Form.Item label="Project Title" colon={false}>
-              {getFieldDecorator('projectTitle', {
-                initialValue: currentProject.title,
-                rules: [
-                  {
-                    required: true,
-                    message: 'Title cannot be empty',
-                  },
-                ],
-              })(<Input type="text" name="title" />)}
-            </Form.Item>
-            <Form.Item label="Description" colon={false}>
-              <div
-                style={{ backgroundColor: '#fff', border: '1px solid #e8e8e8' }}
-              >
-                <RichTextEditor content={editor} />
-              </div>
-            </Form.Item>
-            <Form.Item {...tailFormItemLayout}>
-              <Button
-                type="primary"
-                loading={isLoading}
-                htmlType="submit"
-                disabled={hasFieldErrors(getFieldsError())}
-              >
-                Save
-              </Button>
-            </Form.Item>
-          </Form>
-        </Col>
-      </Row>
-    </PageContent>
+    <Fragment>
+      <PageHeader
+        breadcrumb={
+          <Breadcrumb>
+            <Link to={`/projects/${match.params.pid}`}>
+              <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
+            </Link>
+            <Breadcrumb.Item>Settings</Breadcrumb.Item>
+          </Breadcrumb>
+        }
+        extra={deleteButton}
+        title="Edit the Project"
+      />
+      <PageContent>
+        <Row>
+          <Col {...formContentLayout}>
+            <Form {...formItemLayout} onSubmit={handleSubmit}>
+              <Form.Item label="Project ID" colon={false}>
+                <Text copyable={true} ellipsis={false}>
+                  {currentProject._id}
+                </Text>
+              </Form.Item>
+              <Form.Item label="Project Title" colon={false}>
+                {getFieldDecorator('projectTitle', {
+                  initialValue: currentProject.title,
+                  rules: [
+                    {
+                      required: true,
+                      message: 'Title cannot be empty',
+                    },
+                  ],
+                })(<Input type="text" name="title" />)}
+              </Form.Item>
+              <Form.Item label="Description" colon={false}>
+                <div
+                  style={{
+                    backgroundColor: '#fff',
+                    border: '1px solid #e8e8e8',
+                  }}
+                >
+                  <RichTextEditor content={editor} />
+                </div>
+              </Form.Item>
+              <Form.Item {...tailFormItemLayout}>
+                <Button
+                  type="primary"
+                  loading={isLoading}
+                  htmlType="submit"
+                  disabled={hasFieldErrors(getFieldsError())}
+                >
+                  Save
+                </Button>
+              </Form.Item>
+            </Form>
+          </Col>
+        </Row>
+      </PageContent>
+    </Fragment>
   );
 };
 

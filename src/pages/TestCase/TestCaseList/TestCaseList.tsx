@@ -5,23 +5,18 @@ import Table from '@/components/Table';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { TestCaseContext } from '@/contexts/TestCaseContext';
 import { TestCase } from '@/models/TestCase';
-import { Breadcrumb, Button, Icon, Spin } from 'antd';
+import { Breadcrumb, Button, Icon } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
-interface Params {
-  pid: string;
-}
-
-const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
+const TestCaseList: React.FunctionComponent<RouteComponentProps> = ({
   history,
-  match,
 }) => {
   const { currentProject } = useContext(ProjectContext);
   const { testCases, isTestCasesFetched } = useContext(TestCaseContext);
 
-  const handleRowClick = (record: TestCase) => {
-    history.push(`/projects/${currentProject!._id}/testcases/${record._id}`);
+  const handleRowClick = (testCase: TestCase) => {
+    history.push(`/projects/${currentProject!._id}/testcases/${testCase._id}`);
   };
 
   return (
@@ -29,7 +24,7 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
       <PageHeader
         breadcrumb={
           <Breadcrumb>
-            <Link to={`/projects/${match.params.pid}`}>
+            <Link to={`/projects/${currentProject!._id}`}>
               <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
             </Link>
             <Breadcrumb.Item>Test Cases</Breadcrumb.Item>
@@ -37,42 +32,34 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps<Params>> = ({
         }
         title="All Test Cases"
       />
-      <PageContent>
-        {!isTestCasesFetched ? (
-          <Spin />
-        ) : (
-          <Card>
-            <CardHeader>
-              <Level>
-                <h3>Test Cases</h3>
-                <div>
-                  {
-                    <Link
-                      key={0}
-                      to={`/projects/${match.params.pid}/testcases/new`}
-                    >
-                      <Button type="primary">
-                        <Icon type="plus" /> New
-                      </Button>
-                    </Link>
-                  }
-                </div>
-              </Level>
-            </CardHeader>
-            <CardBody padded={false}>
-              <Table
-                title="Test Cases"
-                data={testCases}
-                columnTitles={['Title', 'Description']}
-                onRowClick={handleRowClick}
-                renderRow={(testCase: TestCase, index: number) => [
-                  <td key={0}>{testCase.title}</td>,
-                  <td key={1}>{testCase.description}</td>,
-                ]}
-              />
-            </CardBody>
-          </Card>
-        )}
+      <PageContent loading={!isTestCasesFetched}>
+        <Card>
+          <CardHeader>
+            <Level>
+              <h3>Test Cases</h3>
+              <Button
+                type="primary"
+                onClick={() =>
+                  history.push(`/projects/${currentProject!._id}/testcases/new`)
+                }
+              >
+                <Icon type="plus" /> New
+              </Button>
+            </Level>
+          </CardHeader>
+          <CardBody padded={false}>
+            <Table
+              title="Test Cases"
+              data={testCases}
+              columnTitles={['Title', 'Description']}
+              onRowClick={handleRowClick}
+              renderRow={(testCase: TestCase) => [
+                <td key={0}>{testCase.title}</td>,
+                <td key={1}>{testCase.description}</td>,
+              ]}
+            />
+          </CardBody>
+        </Card>
       </PageContent>
     </Fragment>
   );

@@ -6,20 +6,18 @@ import { Cycle } from '@/models/Cycle';
 import { Button, Divider, Icon, Select, Spin } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import './SideMenu.scss';
+import './Sider.scss';
 
 const Option = Select.Option;
 
-const SideMenu: React.FunctionComponent<RouteComponentProps> = ({
-  history,
-}) => {
+const Sider: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
   const { currentCycle, cycles, isCyclesLoading } = useContext(CycleContext);
   const { currentProject, isProjectsLoading } = useContext(ProjectContext);
 
   return (
-    <div className="sprova-sidemenu">
+    <div className="sprova-sider">
       <div
-        className="sprova-sidemenu-title"
+        className="sprova-sider-title"
         onClick={() =>
           currentProject && history.push(`/projects/${currentProject._id}`)
         }
@@ -30,7 +28,7 @@ const SideMenu: React.FunctionComponent<RouteComponentProps> = ({
         </h3>
       </div>
 
-      <div className="sprova-sidemenu-menu">
+      <div className="sprova-sider-menu">
         {isProjectsLoading || isCyclesLoading ? (
           <Spin />
         ) : currentProject ? (
@@ -111,4 +109,4 @@ const SideMenu: React.FunctionComponent<RouteComponentProps> = ({
   );
 };
 
-export default withRouter(SideMenu);
+export default withRouter(Sider);

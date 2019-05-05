@@ -6,7 +6,7 @@ import { RichTextEditor } from '@/components/RichTextEditor';
 import { useFormInput } from '@/hooks/useFormInput';
 import { Project } from '@/models/Project';
 import { Breadcrumb, Card, Col, Form, notification, Row } from 'antd';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { formContentLayout } from './utils';
 
@@ -53,47 +53,46 @@ const ProjectCreate: React.FunctionComponent<RouteComponentProps> = ({
   };
 
   return (
-    <PageContent
-      header={
-        <PageHeader
-          breadcrumb={
-            <Breadcrumb>
-              <Link to={`/projects`}>
-                <Breadcrumb.Item>Projects</Breadcrumb.Item>
-              </Link>
-              <Breadcrumb.Item>New</Breadcrumb.Item>
-            </Breadcrumb>
-          }
-          title="Create Project"
-        />
-      }
-    >
-      <Card>
-        <Row>
-          <Col {...formContentLayout}>
-            <Form layout="vertical" onSubmit={handleSubmit}>
-              <FormInput
-                label="Project Title"
-                value={projectTitle}
-                onChange={handleProjectTitleChange}
-                placeholder="Test Case"
-                required={true}
-              />
-              <Form.Item label="Description" colon={false}>
-                <RichTextEditor content={editor} />
-              </Form.Item>
-              <FormButton
-                type="primary"
-                loading={isLoading}
-                disabled={!projectTitle}
-              >
-                Create Project
-              </FormButton>
-            </Form>
-          </Col>
-        </Row>
-      </Card>
-    </PageContent>
+    <Fragment>
+      <PageHeader
+        breadcrumb={
+          <Breadcrumb>
+            <Link to={`/projects`}>
+              <Breadcrumb.Item>Projects</Breadcrumb.Item>
+            </Link>
+            <Breadcrumb.Item>New</Breadcrumb.Item>
+          </Breadcrumb>
+        }
+        title="Create Project"
+      />
+      <PageContent>
+        <Card>
+          <Row>
+            <Col {...formContentLayout}>
+              <Form layout="vertical" onSubmit={handleSubmit}>
+                <FormInput
+                  label="Project Title"
+                  value={projectTitle}
+                  onChange={handleProjectTitleChange}
+                  placeholder="Test Case"
+                  required={true}
+                />
+                <Form.Item label="Description" colon={false}>
+                  <RichTextEditor content={editor} />
+                </Form.Item>
+                <FormButton
+                  type="primary"
+                  loading={isLoading}
+                  disabled={!projectTitle}
+                >
+                  Create Project
+                </FormButton>
+              </Form>
+            </Col>
+          </Row>
+        </Card>
+      </PageContent>
+    </Fragment>
   );
 };
 
