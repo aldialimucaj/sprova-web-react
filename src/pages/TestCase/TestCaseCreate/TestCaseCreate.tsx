@@ -61,6 +61,10 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
   const handleParentSelect = (parentId: string) => {
     const parentNew = testCases.find((testCase) => testCase._id === parentId);
     setParent(parentNew || null);
+
+    if (!parentNew) {
+      setShowInherited(false);
+    }
   };
 
   const handleAddTestStep = (testStep: TestStep) => {
