@@ -8,6 +8,7 @@ import { TestCase } from '@/models/TestCase';
 import { Breadcrumb, Button, Icon } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import Input from '@/components/Input';
 
 const TestCaseList: React.FunctionComponent<RouteComponentProps> = ({
   history,
@@ -35,8 +36,14 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps> = ({
       <PageContent loading={!isTestCasesFetched}>
         <Card>
           <CardHeader>
+            <h4 style={{ marginBottom: 16 }}>Test Cases</h4>
             <Level>
-              <h3>Test Cases</h3>
+              <Input
+                onChange={() => {}}
+                placeholder="Filter"
+                style={{ width: 250 }}
+                value=""
+              />
               <Button
                 type="primary"
                 onClick={() =>
