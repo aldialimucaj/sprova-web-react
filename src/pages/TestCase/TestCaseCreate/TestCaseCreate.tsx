@@ -1,4 +1,4 @@
-import { postTestCase } from '@/api/testcase.api';
+import { postTestCase, getTestCaseSteps } from '@/api/testcase.api';
 import Card, { CardBody, CardFooter, CardHeader } from '@/components/Card';
 import Input from '@/components/Input';
 import { PageContent, PageHeader } from '@/components/Layout';
@@ -12,8 +12,16 @@ import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
 import { TestCase } from '@/models/TestCase';
 import { TestStep } from '@/models/TestStep';
-import { Breadcrumb, Button, notification, Select, Switch } from 'antd';
-import React, { Fragment, useContext, useState } from 'react';
+import {
+  Breadcrumb,
+  Button,
+  notification,
+  Select,
+  Switch,
+  Icon,
+  Tooltip,
+} from 'antd';
+import React, { Fragment, useContext, useState, useEffect } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './TestCaseCreate.scss';
 import TestStepInput from './TestStepInput';
@@ -43,9 +51,12 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   const [parent, setParent] = useState<TestCase | null>(null);
   const [testSteps, setTestSteps] = useState<TestStep[]>([]);
+  const [inheritedSteps, setInheritedSteps] = useState<TestStep[]>([]);
+  const [showInherited, setShowInherited] = useState<boolean>(false);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [showInherited, setShowInherited] = useState<boolean>(false);
+  const [isTestStepsLoading, setIsTestStepsLoading] = useState<boolean>(false);
+  const [testStepsError, setTestStepsError] = useState<string | null>(null);
 
   const handleParentSelect = (parentId: string) => {
     const parentNew = testCases.find((testCase) => testCase._id === parentId);
@@ -90,6 +101,37 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
       });
     }
   };
+
+  const handleShowInheritedSwitch = () => {
+    setShowInherited(!showInherited);
+  };
+
+  const isFormValid = () =>
+    testCaseTitle && testCaseTitle.length > 0 && testSteps.length > 0;
+
+  useEffect(() => {
+    if (!parent) {
+      setInheritedSteps([]);
+      return;
+    }
+
+    const fetchInheritedSteps = async () => {
+      setIsTestStepsLoading(true);
+
+      try {
+        const fetchedTestSteps = await getTestCaseSteps(parent._id, true);
+        setInheritedSteps(fetchedTestSteps);
+        setTestStepsError(null);
+      } catch (error) {
+        setTestStepsError(error);
+        setShowInherited(false);
+      } finally {
+        setIsTestStepsLoading(false);
+      }
+    };
+
+    fetchInheritedSteps();
+  }, [parent]);
 
   return (
     <Fragment>
@@ -153,11 +195,23 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
                 </Select>
               </div>
               <div>
+                {testStepsError && (
+                  <Tooltip title={testStepsError}>
+                    <span style={{ marginRight: 8 }}>
+                      <Icon
+                        type="close-circle"
+                        theme="twoTone"
+                        twoToneColor="red"
+                      />
+                    </span>
+                  </Tooltip>
+                )}
                 <span style={{ marginRight: 8 }}>Show inherited steps</span>
                 <Switch
-                  disabled={!parent}
                   checked={showInherited}
-                  onChange={() => setShowInherited(!showInherited)}
+                  disabled={!parent || !!testStepsError}
+                  loading={isTestStepsLoading}
+                  onChange={handleShowInheritedSwitch}
                 />
               </div>
             </Level>
@@ -165,7 +219,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
           <CardBody padded={false}>
             <Table
               columnTitles={['#', 'Action', 'Expected']}
-              data={[...testSteps]}
+              data={[...(showInherited ? inheritedSteps : []), ...testSteps]}
               renderRow={(testStep: TestStep, index: number) => [
                 <td key={0}>{index + 1}</td>,
                 <td key={1}>{testStep.action}</td>,
@@ -184,7 +238,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
         <Button
           type="primary"
           loading={isLoading}
-          disabled={!testCaseTitle || testSteps.length === 0}
+          disabled={!isFormValid()}
           onClick={handleCreateTestCase}
         >
           Create Test Case

@@ -2,6 +2,7 @@ import { TestCase } from '@/models/TestCase';
 import { AxiosResponse } from 'axios';
 import agent from './agents/api.agent';
 import axiosErrorHandler from './utils/axiosErrorHandler';
+import { TestStep } from '@/models/TestStep';
 
 export function getTestCases(
   projectId: string,
@@ -37,6 +38,28 @@ export function getTestCase(id: string): Promise<TestCase> {
           throw statusText;
         }
         return data as TestCase;
+      }
+    );
+}
+
+export function getTestCaseSteps(
+  id: string,
+  resolveInheritance = false
+): Promise<TestStep[]> {
+  return agent
+    .get(`/testcases/${id}/steps`, {
+      params: {
+        resolveInheritance,
+      },
+    })
+    .catch(axiosErrorHandler)
+    .then(
+      (response: AxiosResponse): TestStep[] => {
+        const { data, status, statusText } = response;
+        if (status !== 200) {
+          throw statusText;
+        }
+        return data as TestStep[];
       }
     );
 }
