@@ -4,6 +4,7 @@
 .sprova-sider {
   background-color: $primary-dark;
   color: $white;
+  position: relative;
   grid-area: sidemenu;
   padding-left: $padding-lg;
 
@@ -60,5 +61,11 @@
       letter-spacing: 0.2rem;
       font-weight: bold;
     }
+  }
+
+  &-footer {
+    bottom: $padding-md;
+    left: $padding-lg;
+    position: absolute;
   }
 }

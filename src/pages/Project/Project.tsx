@@ -14,7 +14,9 @@ const ProjectPage: React.FunctionComponent = () => {
   const { currentCycle, isCyclesLoading } = useContext(CycleContext);
   const { isTestCasesFetched } = useContext(TestCaseContext);
 
-  return isProjectsLoading || isCyclesLoading || !isTestCasesFetched ? (
+  return isProjectsLoading ||
+    isCyclesLoading ||
+    (currentCycle && !isTestCasesFetched) ? (
     <PageLoad />
   ) : currentProject && currentCycle ? (
     <Switch>

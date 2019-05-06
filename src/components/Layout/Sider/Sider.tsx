@@ -1,6 +1,8 @@
+import { logout } from '@/api/auth.api';
 import Menu, { Item, NavItem, Section } from '@/components/Menu';
 import { CycleContext } from '@/contexts/CycleContext';
 import { ProjectContext } from '@/contexts/ProjectContext';
+import { UserContext } from '@/contexts/UserContext';
 import logo from '@/images/sprova.svg';
 import { Cycle } from '@/models/Cycle';
 import { Button, Divider, Icon, Select, Spin } from 'antd';
@@ -13,6 +15,13 @@ const Option = Select.Option;
 const Sider: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
   const { currentCycle, cycles, isCyclesLoading } = useContext(CycleContext);
   const { currentProject, isProjectsLoading } = useContext(ProjectContext);
+  const { onLogout, user } = useContext(UserContext);
+
+  const signout = () => {
+    logout();
+    onLogout();
+    history.push('/login');
+  };
 
   return (
     <div className="sprova-sider">
@@ -104,6 +113,24 @@ const Sider: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
             ) : null}
           </Menu>
         ) : null}
+      </div>
+      <div className="sprova-sider-footer">
+        <Menu>
+          <Section>
+            <Item icon={<Icon type="swap" />} onClick={signout}>
+              Change Project
+            </Item>
+            <NavItem icon={<Icon type="user" />} route={`/users/${user!._id}`}>
+              Account
+            </NavItem>
+            <NavItem icon={<Icon type="setting" />} route="/settings">
+              Settings
+            </NavItem>
+            <Item icon={<Icon type="logout" />} onClick={signout}>
+              Sign Out
+            </Item>
+          </Section>
+        </Menu>
       </div>
     </div>
   );
