@@ -1,19 +1,16 @@
+import Input from '@/components/Input';
 import { useFormInput } from '@/hooks/useFormInput';
 import { TestStep } from '@/models/TestStep';
 import { Button, Col, Row } from 'antd';
-import _ from 'lodash';
 import React from 'react';
 import './TestCaseCreate.scss';
-import Input from '@/components/Input';
 
-interface Props {
-  testSteps: TestStep[];
-  setTestSteps: (testSteps: TestStep[]) => void;
+interface TestStepInputProps {
+  onAdd: (testStep: TestStep) => void;
 }
 
-const TestStepInput: React.FunctionComponent<Props> = ({
-  testSteps,
-  setTestSteps,
+const TestStepInput: React.FunctionComponent<TestStepInputProps> = ({
+  onAdd,
 }) => {
   const {
     value: action,
@@ -26,16 +23,17 @@ const TestStepInput: React.FunctionComponent<Props> = ({
     handleChange: handleExpectedChange,
   } = useFormInput('');
 
-  const addTestStep = () => {
-    const testStepNew = {
+  const handleAddTestStep = () => {
+    const testStep = {
       action,
       expected,
     };
-    const testStepsNew = [...testSteps, testStepNew];
-    setTestSteps(testStepsNew);
+    onAdd(testStep);
     setAction('');
     setExpected('');
   };
+
+  const isFormValid = () => action && action.length > 0;
 
   return (
     <Row gutter={16}>
@@ -43,6 +41,7 @@ const TestStepInput: React.FunctionComponent<Props> = ({
         <Input
           value={action}
           onChange={handleActionChange}
+          onEnter={() => isFormValid() && handleAddTestStep()}
           placeholder="Step action"
         />
       </Col>
@@ -50,11 +49,17 @@ const TestStepInput: React.FunctionComponent<Props> = ({
         <Input
           value={expected}
           onChange={handleExpectedChange}
+          onEnter={() => isFormValid() && handleAddTestStep()}
           placeholder="Expected"
         />
       </Col>
       <Col span={4}>
-        <Button block={true} type="primary" onClick={addTestStep}>
+        <Button
+          block={true}
+          type="primary"
+          disabled={!isFormValid()}
+          onClick={handleAddTestStep}
+        >
           Add
         </Button>
       </Col>

@@ -7,6 +7,7 @@ interface InputProps {
   placeholder?: string;
   required?: boolean;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onEnter?: () => void;
   style?: any;
   type?: string;
   value: string;
@@ -17,10 +18,17 @@ const Input: React.FunctionComponent<InputProps> = ({
   placeholder,
   required = false,
   onChange,
+  onEnter,
   style,
   type = 'text',
   value,
 }) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.keyCode === 13 && onEnter) {
+      onEnter();
+    }
+  };
+
   return (
     <Fragment>
       {label && (
@@ -31,6 +39,7 @@ const Input: React.FunctionComponent<InputProps> = ({
         </label>
       )}
       <input
+        onKeyDown={handleKeyDown}
         className="sprova-input"
         onChange={onChange}
         placeholder={placeholder}

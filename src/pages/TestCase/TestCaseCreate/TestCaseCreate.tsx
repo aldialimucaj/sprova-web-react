@@ -47,13 +47,16 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showInherited, setShowInherited] = useState<boolean>(false);
 
-  const handleParentSelect = (parentIdString: string) => {
-    const parentId = parentIdString;
+  const handleParentSelect = (parentId: string) => {
     const parentNew = testCases.find((testCase) => testCase._id === parentId);
     setParent(parentNew || null);
   };
 
-  const handleSubmit = async () => {
+  const handleAddTestStep = (testStep: TestStep) => {
+    setTestSteps([...testSteps, testStep]);
+  };
+
+  const handleCreateTestCase = async () => {
     const testCaseNew: Partial<TestCase> = {
       title: testCaseTitle,
       description,
@@ -174,7 +177,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
             />
           </CardBody>
           <CardFooter darker={true}>
-            <TestStepInput testSteps={testSteps} setTestSteps={setTestSteps} />
+            <TestStepInput onAdd={handleAddTestStep} />
           </CardFooter>
         </Card>
 
@@ -182,7 +185,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
           type="primary"
           loading={isLoading}
           disabled={!testCaseTitle || testSteps.length === 0}
-          onClick={handleSubmit}
+          onClick={handleCreateTestCase}
         >
           Create Test Case
         </Button>
