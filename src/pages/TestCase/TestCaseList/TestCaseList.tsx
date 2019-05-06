@@ -1,7 +1,7 @@
 import Card, { CardBody, CardHeader } from '@/components/Card';
 import { PageContent, PageHeader } from '@/components/Layout';
 import Level from '@/components/Level';
-import Table from '@/components/Table';
+import Table, { TableColumn, TableRow } from '@/components/Table';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { TestCaseContext } from '@/contexts/TestCaseContext';
 import { TestCase } from '@/models/TestCase';
@@ -49,14 +49,14 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps> = ({
           </CardHeader>
           <CardBody padded={false}>
             <Table
-              title="Test Cases"
               data={testCases}
               columnTitles={['Title', 'Description']}
-              onRowClick={handleRowClick}
-              renderRow={(testCase: TestCase) => [
-                <td key={0}>{testCase.title}</td>,
-                <td key={1}>{testCase.description}</td>,
-              ]}
+              renderRow={(testCase: TestCase, index: number) => (
+                <TableRow key={index} onClick={() => handleRowClick(testCase)}>
+                  <TableColumn>{testCase.title}</TableColumn>
+                  <TableColumn>{testCase.description}</TableColumn>
+                </TableRow>
+              )}
             />
           </CardBody>
         </Card>

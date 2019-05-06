@@ -1,7 +1,6 @@
 import { getExecutionsOfTestCase } from '@/api/execution.api';
-import Card, { CardBody, CardHeader } from '@/components/Card';
-import Level from '@/components/Level';
-import Table from '@/components/Table';
+import Card, { CardBody } from '@/components/Card';
+import Table, { TableColumn, TableRow } from '@/components/Table';
 import { useFetcher } from '@/hooks/useFetcher';
 import { Execution, ExecutionStatus } from '@/models/Execution';
 import { Icon, Spin } from 'antd';
@@ -52,21 +51,27 @@ const ExecutionsTab: React.FunctionComponent<RouteComponentProps<Params>> = ({
         <Table
           columnTitles={['Status', 'ID', 'Date']}
           data={executions}
-          renderRow={(execution: Execution) => {
+          renderRow={(execution: Execution, index: number) => {
             const icon = getStatusIcon(execution.status);
-            return [
-              <td key={0}>
-                {icon && <span style={{ marginRight: 16 }}>{icon}</span>}
-              </td>,
-              <td key={1}>{execution._id}</td>,
-              <td key={2}>{new Date(execution.createdAt).toUTCString()}</td>,
-            ];
+            return (
+              <TableRow
+                key={index}
+                onClick={(exec: Execution) =>
+                  history.push(
+                    `/projects/${match.params.pid}/executions/${exec.contextId}`
+                  )
+                }
+              >
+                <TableColumn>
+                  {icon && <span style={{ marginRight: 16 }}>{icon}</span>}
+                </TableColumn>
+                <TableColumn>{execution._id}</TableColumn>
+                <TableColumn>
+                  {new Date(execution.createdAt).toUTCString()}
+                </TableColumn>
+              </TableRow>
+            );
           }}
-          onRowClick={(execution: Execution) =>
-            history.push(
-              `/projects/${match.params.pid}/executions/${execution.contextId}`
-            )
-          }
         />
       </CardBody>
     </Card>

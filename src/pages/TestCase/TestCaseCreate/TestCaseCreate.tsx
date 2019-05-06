@@ -1,9 +1,9 @@
-import { postTestCase, getTestCaseSteps } from '@/api/testcase.api';
+import { getTestCaseSteps, postTestCase } from '@/api/testcase.api';
 import Card, { CardBody, CardFooter, CardHeader } from '@/components/Card';
 import Input from '@/components/Input';
 import { PageContent, PageHeader } from '@/components/Layout';
 import Level from '@/components/Level';
-import Table from '@/components/Table';
+import Table, { TableColumn, TableRow } from '@/components/Table';
 import TextArea from '@/components/TextArea';
 import { CycleContext } from '@/contexts/CycleContext';
 import { ProjectContext } from '@/contexts/ProjectContext';
@@ -15,13 +15,15 @@ import { TestStep } from '@/models/TestStep';
 import {
   Breadcrumb,
   Button,
+  Icon,
   notification,
   Select,
   Switch,
-  Icon,
+  Tag,
   Tooltip,
 } from 'antd';
-import React, { Fragment, useContext, useState, useEffect } from 'react';
+import * as _ from 'lodash';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './TestCaseCreate.scss';
 import TestStepInput from './TestStepInput';
@@ -110,6 +112,10 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
     setShowInherited(!showInherited);
   };
 
+  const handleRemoveTestStep = (testStep: TestStep) => {
+    setTestSteps(_.without(testSteps, testStep));
+  };
+
   const isFormValid = () =>
     testCaseTitle && testCaseTitle.length > 0 && testSteps.length > 0;
 
@@ -123,7 +129,12 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
       setIsTestStepsLoading(true);
 
       try {
-        const fetchedTestSteps = await getTestCaseSteps(parent._id, true);
+        let fetchedTestSteps = await getTestCaseSteps(parent._id, true);
+
+        fetchedTestSteps = fetchedTestSteps.map((step: TestStep) =>
+          step.inheritedFrom ? step : { ...step, inheritedFrom: parent.title }
+        );
+
         setInheritedSteps(fetchedTestSteps);
         setTestStepsError(null);
       } catch (error) {
@@ -222,17 +233,33 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
           </CardHeader>
           <CardBody padded={false}>
             <Table
-              columnTitles={['#', 'Action', 'Expected']}
+              columnTitles={['#', 'Action', 'Expected', 'Inherited From', '']}
               data={[...(showInherited ? inheritedSteps : []), ...testSteps]}
               empty="No Test Steps."
-              renderRow={(testStep: TestStep, index: number) => [
-                <td key={0}>{index + 1}</td>,
-                <td key={1}>{testStep.action}</td>,
-                <td key={2}>{testStep.expected}</td>,
-                <td key={3}>
-                  <a className="sprova-teststep-edit">Remove</a>
-                </td>,
-              ]}
+              renderRow={(testStep: TestStep, index: number) => (
+                <TableRow key={index}>
+                  <TableColumn>{index + 1}</TableColumn>
+                  <TableColumn>{testStep.action}</TableColumn>
+                  <TableColumn>{testStep.expected}</TableColumn>
+                  <TableColumn>
+                    {testStep.inheritedFrom ? (
+                      <Tag>{testStep.inheritedFrom}</Tag>
+                    ) : (
+                      <span style={{ opacity: 0.4 }}>None</span>
+                    )}
+                  </TableColumn>
+                  <TableColumn>
+                    {!testStep.inheritedFrom && (
+                      <a
+                        className="sprova-teststep-edit"
+                        onClick={() => handleRemoveTestStep(testStep)}
+                      >
+                        Remove
+                      </a>
+                    )}
+                  </TableColumn>
+                </TableRow>
+              )}
             />
           </CardBody>
           <CardFooter darker={true}>

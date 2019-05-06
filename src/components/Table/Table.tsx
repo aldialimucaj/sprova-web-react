@@ -2,46 +2,70 @@ import classnames from 'classnames';
 import React from 'react';
 import './Table.scss';
 
-interface Props {
-  actions?: React.ReactNode[];
+interface TableColumnProps {
+  style?: any;
+}
+
+export const TableColumn: React.FunctionComponent<TableColumnProps> = ({
+  children,
+  style,
+}) => {
+  return (
+    <td className={classnames('sprova-table-column')} style={{ ...style }}>
+      {children}
+    </td>
+  );
+};
+
+interface TableRowProps {
+  onClick?: (item: any) => void;
+  style?: any;
+}
+
+export const TableRow: React.FunctionComponent<TableRowProps> = ({
+  children,
+  onClick,
+  style,
+}) => {
+  return (
+    <tr
+      className={classnames('sprova-table-row', {
+        'is-clickable': onClick,
+      })}
+      onClick={onClick}
+      style={{ ...style }}
+    >
+      {children}
+    </tr>
+  );
+};
+
+interface TableProps {
   columnTitles: string[];
   data: any[];
   empty?: React.ReactNode;
-  onRowClick?: (item: any) => void;
-  renderRow: (item: any, index: number) => React.ReactNode[];
+  renderRow: (item: any, index: number) => React.ReactNode;
   style?: any;
-  title?: string;
 }
 
-const Table: React.FunctionComponent<Props> = ({
+const Table: React.FunctionComponent<TableProps> = ({
   columnTitles,
   data,
   empty,
-  onRowClick,
   renderRow,
   style,
 }) => {
   return data && data.length > 0 ? (
     <table className="sprova-table" style={{ ...style }}>
       <thead className="sprova-table-head">
-        <tr className="sprova-table-row">
+        <TableRow>
           {columnTitles.map((column: string, index: number) => (
             <th key={index}>{column}</th>
           ))}
-        </tr>
+        </TableRow>
       </thead>
       <tbody className="sprova-table-body">
-        {data.map((item: any, index: number) => (
-          <tr
-            key={index}
-            className={classnames('sprova-table-row', {
-              'is-clickable': onRowClick,
-            })}
-            onClick={() => onRowClick && onRowClick(item)}
-          >
-            {renderRow(item, index)}
-          </tr>
-        ))}
+        {data.map((item: any, index: number) => renderRow(item, index))}
       </tbody>
     </table>
   ) : (

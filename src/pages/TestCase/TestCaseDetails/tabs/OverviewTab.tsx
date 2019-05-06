@@ -2,7 +2,7 @@ import { updateTestCase } from '@/api/testcase.api';
 import Card, { CardBody, CardHeader } from '@/components/Card';
 import Level from '@/components/Level';
 import List from '@/components/List';
-import Table from '@/components/Table';
+import Table, { TableColumn, TableRow } from '@/components/Table';
 import { TestCase } from '@/models/TestCase';
 import { TestStep } from '@/models/TestStep';
 import { findById, findChildren, resolveInheritance } from '@/utils';
@@ -128,12 +128,18 @@ const OverviewTab: React.FunctionComponent<Props> = ({
               <Table
                 columnTitles={['Title']}
                 data={children}
-                renderRow={(tc: TestCase) => [<td key={0}>{tc.title}</td>]}
-                onRowClick={(tc: TestCase) =>
-                  history.push(
-                    `/projects/${match.params.pid}/testcases/${tc._id}`
-                  )
-                }
+                renderRow={(tc: TestCase, index: number) => (
+                  <TableRow
+                    key={index}
+                    onClick={(tc: TestCase) =>
+                      history.push(
+                        `/projects/${match.params.pid}/testcases/${tc._id}`
+                      )
+                    }
+                  >
+                    <TableColumn key={0}>{tc.title}</TableColumn>
+                  </TableRow>
+                )}
               />
             </CardBody>
           </Card>
@@ -178,14 +184,16 @@ const OverviewTab: React.FunctionComponent<Props> = ({
           <Table
             columnTitles={['#', 'Action', 'Expected']}
             data={[...testCase.steps]}
-            renderRow={(testStep: TestStep, index: number) => [
-              <td key={0}>{index + 1}</td>,
-              <td key={1}>{testStep.action}</td>,
-              <td key={2}>{testStep.expected}</td>,
-              <td key={3}>
-                <a className="sprova-teststep-edit">Edit</a>
-              </td>,
-            ]}
+            renderRow={(testStep: TestStep, index: number) => (
+              <TableRow>
+                <TableColumn>{index + 1}</TableColumn>
+                <TableColumn key={1}>{testStep.action}</TableColumn>
+                <TableColumn>{testStep.expected}</TableColumn>
+                <TableColumn>
+                  <a className="sprova-teststep-edit">Edit</a>
+                </TableColumn>
+              </TableRow>
+            )}
           />
         </CardBody>
       </Card>
