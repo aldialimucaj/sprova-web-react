@@ -4,7 +4,6 @@ export interface ExecutionStep extends TestStep {
   key: number;
   result: ExecutionStepResult;
   message?: string;
-  inheritedFrom?: string;
 }
 
 export enum ExecutionStepResult {

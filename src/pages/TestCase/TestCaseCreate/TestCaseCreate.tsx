@@ -220,6 +220,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
             <Table
               columnTitles={['#', 'Action', 'Expected']}
               data={[...(showInherited ? inheritedSteps : []), ...testSteps]}
+              empty="No Test Steps."
               renderRow={(testStep: TestStep, index: number) => [
                 <td key={0}>{index + 1}</td>,
                 <td key={1}>{testStep.action}</td>,
