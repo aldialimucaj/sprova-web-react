@@ -36,7 +36,7 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
   match,
 }) => {
   const { currentProject } = useContext(ProjectContext);
-  const { testCases } = useContext(TestCaseContext);
+  const { testCases, onRemoveTestCase } = useContext(TestCaseContext);
 
   const [activeTabKey, setActiveTabKey] = useState('overview');
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
@@ -56,11 +56,12 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
     try {
       await deleteTestCase(match.params.tid);
       setIsDeleteLoading(false);
+      onRemoveTestCase(testCase);
+      history.push(`/projects/${match.params.pid}/testcases`);
       notification.success({
         placement: 'bottomRight',
         message: `${testCase.title} deleted`,
       });
-      history.push(`/projects/${match.params.pid}/testcases`);
     } catch (error) {
       setIsDeleteLoading(false);
       notification.error({
