@@ -134,7 +134,10 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
               <div>
                 <span style={{ marginRight: 16 }}>Inherit from</span>
                 <Select
+                  allowClear={true}
+                  showSearch={true}
                   placeholder="None"
+                  optionFilterProp="children"
                   value={(parent && parent._id) || undefined}
                   onChange={handleParentSelect}
                   style={{ width: 200 }}
@@ -146,15 +149,14 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
                   ))}
                 </Select>
               </div>
-              {parent && (
-                <div>
-                  <span style={{ marginRight: 8 }}>Show inherited steps</span>
-                  <Switch
-                    checked={showInherited}
-                    onChange={() => setShowInherited(!showInherited)}
-                  />
-                </div>
-              )}
+              <div>
+                <span style={{ marginRight: 8 }}>Show inherited steps</span>
+                <Switch
+                  disabled={!parent}
+                  checked={showInherited}
+                  onChange={() => setShowInherited(!showInherited)}
+                />
+              </div>
             </Level>
           </CardHeader>
           <CardBody padded={false}>
