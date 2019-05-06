@@ -189,7 +189,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
         <Card style={{ marginBottom: 24 }}>
           <CardHeader>
-            <h4 style={{ marginBottom: 16 }}>Test Steps</h4>
+            <h4 style={{ marginBottom: 16 }}>* Test Steps</h4>
             <Level>
               <div>
                 <span style={{ marginRight: 16 }}>Inherit from</span>

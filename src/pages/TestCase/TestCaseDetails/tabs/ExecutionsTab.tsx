@@ -56,11 +56,13 @@ const ExecutionsTab: React.FunctionComponent<RouteComponentProps<Params>> = ({
             return (
               <TableRow
                 key={index}
-                onClick={(exec: Execution) =>
+                onClick={() => {
                   history.push(
-                    `/projects/${match.params.pid}/executions/${exec.contextId}`
-                  )
-                }
+                    `/projects/${match.params.pid}/executions/${
+                      execution.contextId
+                    }`
+                  );
+                }}
               >
                 <TableColumn>
                   {icon && <span style={{ marginRight: 16 }}>{icon}</span>}

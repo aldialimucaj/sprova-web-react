@@ -131,7 +131,7 @@ const OverviewTab: React.FunctionComponent<Props> = ({
                 renderRow={(tc: TestCase, index: number) => (
                   <TableRow
                     key={index}
-                    onClick={(tc: TestCase) =>
+                    onClick={() =>
                       history.push(
                         `/projects/${match.params.pid}/testcases/${tc._id}`
                       )
