@@ -5,6 +5,7 @@ import { PageContent, PageHeader } from '@/components/Layout';
 import Level from '@/components/Level';
 import TestCaseSelect from '@/components/TestCaseSelect/TestCaseSelect';
 import { ProjectContext } from '@/contexts/ProjectContext';
+import { TestCaseContext } from '@/contexts/TestCaseContext';
 import { UserContext } from '@/contexts/UserContext';
 import { Execution, ExecutionStatus } from '@/models/Execution';
 import {
@@ -19,7 +20,6 @@ import * as _ from 'lodash';
 import React, { Fragment, useContext, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './ExecutionSetup.scss';
-import { TestCaseContext } from '@/contexts/TestCaseContext';
 
 const Option = Select.Option;
 

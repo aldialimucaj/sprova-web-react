@@ -6,7 +6,7 @@ import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFetcher } from '@/hooks/useFetcher';
 import { Breadcrumb, Button, Col, Icon, Row, Spin, Tabs, Tooltip } from 'antd';
 import _ from 'lodash';
-import React, { useContext, useState, Fragment } from 'react';
+import React, { Fragment, useContext, useState } from 'react';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import './ExecutionDetails.scss';
 import OverviewTab from './tabs/OverviewTab';

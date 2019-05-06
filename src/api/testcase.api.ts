@@ -1,8 +1,8 @@
 import { TestCase } from '@/models/TestCase';
+import { TestStep } from '@/models/TestStep';
 import { AxiosResponse } from 'axios';
 import agent from './agents/api.agent';
 import axiosErrorHandler from './utils/axiosErrorHandler';
-import { TestStep } from '@/models/TestStep';
 
 export function getTestCases(
   projectId: string,

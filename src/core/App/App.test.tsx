@@ -1,9 +1,9 @@
+import PrivateRoute from '@/components/PrivateRoute';
+import { Login } from '@/pages';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import App from './App';
-import PrivateRoute from './components/PrivateRoute';
-import { Login } from './pages';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');

@@ -1,4 +1,5 @@
 import Card, { CardBody, CardHeader } from '@/components/Card';
+import Input from '@/components/Input';
 import { PageContent, PageHeader } from '@/components/Layout';
 import Level from '@/components/Level';
 import Table, { TableColumn, TableRow } from '@/components/Table';
@@ -8,7 +9,6 @@ import { TestCase } from '@/models/TestCase';
 import { Breadcrumb, Button, Icon } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-import Input from '@/components/Input';
 
 const TestCaseList: React.FunctionComponent<RouteComponentProps> = ({
   history,
