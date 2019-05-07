@@ -1,7 +1,6 @@
 import React from 'react';
 import './Layout.scss';
 import Page from './Page';
-import ProjectBar from './ProjectBar';
 import Sider from './Sider';
 
 const Layout: React.FunctionComponent = ({ children }) => {
