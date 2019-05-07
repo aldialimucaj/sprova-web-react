@@ -47,6 +47,7 @@ const ProjectCreate: React.FunctionComponent<RouteComponentProps> = ({
         message: `${project.title} created`,
         description: `Project created with ID ${project._id}`,
       });
+      history.push(`/projects/${project._id}`);
     } catch (error) {
       notification.error({
         placement: 'bottomRight',

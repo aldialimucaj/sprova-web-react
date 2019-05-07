@@ -54,7 +54,7 @@ export const CardHeader: React.FunctionComponent = ({ children }) => {
 
 interface CardProps {
   onClick?: () => void;
-  status?: 'success' | 'danger' | 'warning' | 'info';
+  status?: 'success' | 'danger' | 'warning' | 'info' | null;
   style?: any;
 }
 

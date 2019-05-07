@@ -1,44 +1,53 @@
-import { authenticate, isAuthenticated } from '@/api/auth.api';
+import { authenticate } from '@/api/auth.api';
 import Card, { CardBody } from '@/components/Card';
+import Input from '@/components/Input';
+import { CURRENT_PROJECT_ID } from '@/contexts/ProjectContext';
 import { UserContext } from '@/contexts/UserContext';
+import { useFormInput } from '@/hooks/useFormInput';
 import logo from '@/images/sprova.svg';
-import { hasFieldErrors } from '@/utils';
-import { Alert, Button, Col, Divider, Form, Input, Row, Spin } from 'antd';
-import { FormComponentProps } from 'antd/lib/form';
+import { Alert, Button, Col, Divider, Row, Spin } from 'antd';
 import React, { useContext, useState } from 'react';
-import {
-  Link,
-  Redirect,
-  RouteComponentProps,
-  withRouter,
-} from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './Login.scss';
 
-const Login: React.FunctionComponent<FormComponentProps> = ({ form }) => {
+const Login: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
   const { user, onLogin } = useContext(UserContext);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const { getFieldDecorator, getFieldsError, getFieldsValue } = form;
 
-  const handleSubmit = async (event: React.FormEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    const { username, password } = getFieldsValue();
+  const { value: username, handleChange: handleUsernameChange } = useFormInput(
+    ''
+  );
+  const { value: password, handleChange: handlePasswordChange } = useFormInput(
+    ''
+  );
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    if (!isFormValid()) {
+      return;
+    }
 
     setIsLoading(true);
 
     try {
       const _user = await authenticate(username, password);
-      setIsLoading(false);
       onLogin(_user);
     } catch (error) {
-      setIsLoading(false);
       setError(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return user ? (
-    <Redirect to="/projects" />
-  ) : (
+  if (user) {
+    const currentProjectId = localStorage.getItem(CURRENT_PROJECT_ID);
+    history.push(`/projects${currentProjectId ? `/${currentProjectId}` : ''}`);
+  }
+
+  const isFormValid = () =>
+    username && username.length > 0 && password && password.length > 0;
+
+  return (
     <Row className="login-page" type="flex" justify="center">
       <Col span={6} style={{ textAlign: 'center' }}>
         <Card>
@@ -55,52 +64,30 @@ const Login: React.FunctionComponent<FormComponentProps> = ({ form }) => {
                   onClose={() => setError('')}
                 />
               ) : null}
-              <Form
-                hideRequiredMark={true}
-                layout="vertical"
-                onSubmit={handleSubmit}
+              <Input
+                onChange={handleUsernameChange}
+                onEnter={handleSubmit}
+                placeholder="Username"
+                style={{ marginBottom: 24 }}
+                value={username}
+              />
+              <Input
+                onChange={handlePasswordChange}
+                onEnter={handleSubmit}
+                placeholder="Password"
+                style={{ marginBottom: 24 }}
+                value={password}
+              />
+              <Button
+                block={true}
+                disabled={!isFormValid()}
+                id="loginButton"
+                onClick={handleSubmit}
+                style={{ marginBottom: 16 }}
+                type="primary"
               >
-                <Form.Item label="Username" colon={false}>
-                  {getFieldDecorator('username', {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Username cannot be empty',
-                      },
-                    ],
-                  })(
-                    <Input type="text" name="username" placeholder="Username" />
-                  )}
-                </Form.Item>
-                <Form.Item label="Password" colon={false}>
-                  {getFieldDecorator('password', {
-                    rules: [
-                      {
-                        required: true,
-                        message: 'Password cannot be empty',
-                      },
-                    ],
-                  })(
-                    <Input.Password
-                      action="click"
-                      type="password"
-                      name="password"
-                      placeholder="Password"
-                    />
-                  )}
-                </Form.Item>
-                <Form.Item>
-                  <Button
-                    id="loginButton"
-                    block={true}
-                    type="primary"
-                    htmlType="submit"
-                    disabled={hasFieldErrors(getFieldsError())}
-                  >
-                    Login
-                  </Button>
-                </Form.Item>
-              </Form>
+                Login
+              </Button>
             </Spin>
             <Divider>or</Divider>
             <Link to="/signup">Request new account</Link>
@@ -111,4 +98,4 @@ const Login: React.FunctionComponent<FormComponentProps> = ({ form }) => {
   );
 };
 
-export default Form.create({})(Login);
+export default withRouter(Login);

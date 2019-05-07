@@ -1,62 +1,98 @@
-import { getProjects } from '@/api/project.api';
+import { logout } from '@/api/auth.api';
 import Card, { CardBody } from '@/components/Card';
-import { PageContent, PageHeader } from '@/components/Layout';
-import { useFetcher } from '@/hooks/useFetcher';
+import { PageLoad } from '@/components/Layout';
+import Level from '@/components/Level';
+import { ProjectContext } from '@/contexts/ProjectContext';
+import { UserContext } from '@/contexts/UserContext';
 import { Project } from '@/models/Project';
-import { Alert, Breadcrumb, Button, Col, Empty, Icon, Row, Spin } from 'antd';
-import React, { Fragment } from 'react';
+import { Alert, Button, Divider, Empty, Icon } from 'antd';
+import React, { useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './ProjectList.scss';
 
 const ProjectList: React.FunctionComponent<RouteComponentProps> = ({
   history,
 }) => {
-  const { data: projects, isLoading, error } = useFetcher(getProjects);
+  const {
+    currentProject,
+    projects,
+    error,
+    isProjectsLoading,
+    onSelectProject,
+  } = useContext(ProjectContext);
+  const { onLogout, user } = useContext(UserContext);
 
-  return isLoading ? (
-    <Spin />
-  ) : error ? (
-    <Alert message="Something went wrong" description={error} type="error" />
+  const selectProject = (project: Project) => {
+    onSelectProject(project);
+    history.push(`/projects/${project._id}`);
+  };
+
+  const isCurrentProject = (project: Project) =>
+    currentProject && currentProject._id === project._id;
+
+  const signout = () => {
+    logout();
+    onLogout();
+    history.push('/login');
+  };
+
+  return isProjectsLoading ? (
+    <PageLoad />
   ) : (
-    <Fragment>
-      <PageHeader
-        title="Choose a Project"
-        breadcrumb={
-          <Breadcrumb>
-            <Breadcrumb.Item>Projects</Breadcrumb.Item>
-          </Breadcrumb>
-        }
-        extra={
-          <Link to={`/projects/new`}>
-            <Button type="primary">
-              <Icon type="plus" /> New
-            </Button>
+    <div className="projects-list-page">
+      <div className="projects-list-container">
+        <Level align="bottom">
+          <h3>Projects</h3>
+          <Link to="/projects/new">
+            <Button type="primary">New</Button>
           </Link>
-        }
-      />
-      <PageContent>
-        {projects && projects.length > 0 ? (
-          <Row gutter={16}>
-            {projects.map((project: Project, index: number) => (
-              <Col span={6} key={index}>
-                <Card onClick={() => history.push(`/projects/${project._id}`)}>
-                  <CardBody>
-                    <h3>{project.title}</h3>
-                    <p style={{ marginBottom: 0 }}>#DESCRIPTION#</p>
-                  </CardBody>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        ) : (
-          <Empty description={'No Projects found'}>
-            <Link to="/projects/new">
-              <Button type="primary">Create Now</Button>
-            </Link>
-          </Empty>
-        )}
-      </PageContent>
-    </Fragment>
+        </Level>
+        <Divider />
+
+        <div className="project-list">
+          {error ? (
+            <Alert message={error} type="error" />
+          ) : projects && projects.length > 0 ? (
+            projects.map((project: Project, index: number) => (
+              <Card
+                key={index}
+                onClick={() => selectProject(project)}
+                style={{ marginBottom: 24 }}
+                status={isCurrentProject(project) ? 'info' : null}
+              >
+                <CardBody>
+                  <h3>{project.title}</h3>
+                  <p>{'No description.'}</p>
+                </CardBody>
+              </Card>
+            ))
+          ) : (
+            <Empty description={'No Projects found'}>
+              <Link to="/projects/new">
+                <Button type="primary">Create New Project</Button>
+              </Link>
+            </Empty>
+          )}
+        </div>
+
+        <div className="project-list-footer">
+          <Link to={`/users/${user!._id}`}>
+            <Icon style={{ marginRight: 8 }} type="user" />
+            {user!.username}
+          </Link>
+          <Divider type="vertical" />
+          <Link to="/settings">
+            <Icon style={{ marginRight: 8 }} type="setting" />
+            Settings
+          </Link>
+          <Divider type="vertical" />
+          <a onClick={signout}>
+            <Icon style={{ marginRight: 8 }} type="logout" />
+            Sign Out
+          </a>
+        </div>
+      </div>
+    </div>
   );
 };
 

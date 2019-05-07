@@ -22,6 +22,7 @@ export const Item: React.FunctionComponent<ItemProps> = ({
         { 'is-active': active },
         { clickable: onClick }
       )}
+      onClick={onClick}
     >
       {icon && <span className="sprova-menu-navitem-icon">{icon}</span>}
       {children}

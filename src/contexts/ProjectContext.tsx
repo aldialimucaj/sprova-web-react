@@ -4,13 +4,13 @@ import { findById } from '@/utils';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
 
-const CURRENT_PROJECT_ID = 'currentProjectId';
+export const CURRENT_PROJECT_ID = 'currentProjectId';
 
 interface ProjectContext {
   currentProject: Project | null;
   error: string | null;
   isProjectsLoading: boolean;
-  onSelectProject: (project: Project) => void;
+  onSelectProject: (project: Project | null) => void;
   onRemoveProject: (project: Project) => void;
   onAddProject: (project: Project) => void;
   projects: Project[];
@@ -74,8 +74,12 @@ const ProjectProvider: React.FunctionComponent = ({ children }) => {
     setProjects(_.without(projects, project));
   };
 
-  const handleSelectProject = (project: Project) => {
-    localStorage.setItem(CURRENT_PROJECT_ID, project._id);
+  const handleSelectProject = (project: Project | null) => {
+    if (project) {
+      localStorage.setItem(CURRENT_PROJECT_ID, project._id);
+    } else {
+      localStorage.removeItem(CURRENT_PROJECT_ID);
+    }
     setCurrentProject(project);
   };
 

@@ -14,8 +14,14 @@ const Option = Select.Option;
 
 const Sider: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
   const { currentCycle, cycles, isCyclesLoading } = useContext(CycleContext);
-  const { currentProject, isProjectsLoading } = useContext(ProjectContext);
+  const { currentProject, isProjectsLoading, onSelectProject } = useContext(
+    ProjectContext
+  );
   const { onLogout, user } = useContext(UserContext);
+
+  const changeProject = () => {
+    history.push('/projects');
+  };
 
   const signout = () => {
     logout();
@@ -117,7 +123,7 @@ const Sider: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
       <div className="sprova-sider-footer">
         <Menu>
           <Section>
-            <Item icon={<Icon type="swap" />} onClick={signout}>
+            <Item icon={<Icon type="swap" />} onClick={changeProject}>
               Change Project
             </Item>
             <NavItem icon={<Icon type="user" />} route={`/users/${user!._id}`}>
