@@ -1,3 +1,3 @@
-import Cycles from './Cycles';
+import CycleCreate from './CycleCreate';
 
-export default Cycles;
+export default CycleCreate;

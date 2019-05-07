@@ -1,22 +1,23 @@
-import Card from '@/components/Card';
-import { FormButton, FormInput, FormTextArea } from '@/components/form';
+import { postCycle } from '@/api/cycle.api';
+import Card, { CardBody, CardHeader } from '@/components/Card';
+import Input from '@/components/Input';
 import { PageContent, PageHeader } from '@/components/Layout';
+import Level from '@/components/Level';
+import TextArea from '@/components/TextArea';
+import { CycleContext } from '@/contexts/CycleContext';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
-import { Breadcrumb, Col, Form, Row } from 'antd';
+import { Cycle } from '@/models/Cycle';
+import { Breadcrumb, Button, notification } from 'antd';
 import React, { Fragment, useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
-const formContentLayout = {
-  xs: { span: 24 },
-  md: { span: 18 },
-  lg: { span: 16 },
-  xl: { span: 14 },
-};
-
-const CycleCreate: React.FunctionComponent = () => {
+const CycleCreate: React.FunctionComponent<RouteComponentProps> = ({
+  history,
+}) => {
   const { currentProject } = useContext(ProjectContext);
+  const { onAddCycle, onSelectCycle } = useContext(CycleContext);
 
   const {
     value: cycleTitle,
@@ -28,6 +29,36 @@ const CycleCreate: React.FunctionComponent = () => {
   } = useFormTextArea('');
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const handleCycleSubmit = async () => {
+    const cycleNew: Partial<Cycle> = {
+      title: cycleTitle,
+      description: '',
+      projectId: currentProject!._id,
+    };
+
+    setIsLoading(true);
+
+    try {
+      const cycle = await postCycle(cycleNew);
+      onAddCycle(cycle);
+      onSelectCycle(cycle);
+      notification.success({
+        placement: 'bottomRight',
+        message: `${cycle.title} created`,
+        description: `Cycle created with ID ${cycle._id}`,
+      });
+      history.push(`/projects/${currentProject!._id}`);
+    } catch (error) {
+      notification.error({
+        placement: 'bottomRight',
+        message: 'Failed to create cycle',
+        description: error,
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Fragment>
@@ -46,38 +77,40 @@ const CycleCreate: React.FunctionComponent = () => {
         title="Create Cycle"
       />
       <PageContent>
-        <Card>
-          <Form layout="vertical">
-            <Row>
-              <Col {...formContentLayout}>
-                <FormInput
-                  label="Title"
-                  value={cycleTitle}
-                  onChange={handleCycleTitleChange}
-                  placeholder="Cycle"
-                  required={true}
-                />
-                <FormTextArea
-                  label="Description"
-                  value={description}
-                  onChange={handleDescriptionChange}
-                  placeholder="Description"
-                  minLength={3}
-                />
-              </Col>
-            </Row>
-            <FormButton
-              type="primary"
-              loading={isLoading}
-              disabled={!cycleTitle}
-            >
-              Create Cycle
-            </FormButton>
-          </Form>
+        <Card style={{ marginBottom: 24 }}>
+          <CardHeader>
+            <Level>
+              <h4>General Information</h4>
+            </Level>
+          </CardHeader>
+          <CardBody darker={true}>
+            <Input
+              label="Title"
+              onChange={handleCycleTitleChange}
+              placeholder="Cycle Name"
+              required={true}
+              style={{ marginBottom: 24 }}
+              value={cycleTitle}
+            />
+            <TextArea
+              label="Description"
+              value={description}
+              onChange={handleDescriptionChange}
+              placeholder="Description"
+            />
+          </CardBody>
         </Card>
+        <Button
+          type="primary"
+          loading={isLoading}
+          disabled={!cycleTitle}
+          onClick={handleCycleSubmit}
+        >
+          Create Project
+        </Button>
       </PageContent>
     </Fragment>
   );
 };
 
-export default CycleCreate;
+export default withRouter(CycleCreate);
