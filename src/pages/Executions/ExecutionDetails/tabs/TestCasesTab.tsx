@@ -1,9 +1,8 @@
 import { getExecutionSteps } from '@/api/execution.api';
-import { FormTextArea } from '@/components/form';
 import Level from '@/components/Level';
 import { Execution, ExecutionStatus } from '@/models/Execution';
 import { ExecutionStep, ExecutionStepResult } from '@/models/ExecutionStep';
-import { Alert, Button, Col, Form, Icon, List, Row, Spin, Tag } from 'antd';
+import { Alert, Col, Icon, List, Row, Spin, Tag } from 'antd';
 import React, { Fragment, useEffect, useState } from 'react';
 
 interface Props {
