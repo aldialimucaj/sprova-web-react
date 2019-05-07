@@ -106,7 +106,7 @@ const CycleCreate: React.FunctionComponent<RouteComponentProps> = ({
           disabled={!cycleTitle}
           onClick={handleCycleSubmit}
         >
-          Create Project
+          Create Cycle
         </Button>
       </PageContent>
     </Fragment>

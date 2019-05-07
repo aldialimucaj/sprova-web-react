@@ -7,7 +7,6 @@ import Settings from '@/pages/Settings';
 import UserPage from '@/pages/User';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import './App.scss';
 
 const App = () => {
   return (

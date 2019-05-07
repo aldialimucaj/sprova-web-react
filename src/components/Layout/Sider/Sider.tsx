@@ -14,10 +14,10 @@ import './Sider.scss';
 const Option = Select.Option;
 
 const Sider: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
-  const { currentCycle, cycles, isCyclesLoading, onSelectCycle } = useContext(
+  const { currentCycle, cycles, isCyclesFetched, onSelectCycle } = useContext(
     CycleContext
   );
-  const { currentProject, isProjectsLoading } = useContext(ProjectContext);
+  const { currentProject, isProjectsFetched } = useContext(ProjectContext);
   const { onLogout, user } = useContext(UserContext);
 
   const changeProject = () => {
@@ -54,12 +54,12 @@ const Sider: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
       </div>
 
       <div className="sprova-sider-menu">
-        {isProjectsLoading || isCyclesLoading ? (
+        {!(isProjectsFetched && isCyclesFetched) ? (
           <Spin />
         ) : currentProject ? (
           <Menu>
-            <Section title="Cycle">
-              {currentCycle ? (
+            {currentCycle ? (
+              <Section title="Cycle">
                 <Item>
                   <Select
                     defaultValue={currentCycle._id}
@@ -89,20 +89,8 @@ const Sider: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
                     ))}
                   </Select>
                 </Item>
-              ) : (
-                <Item>
-                  <Link to={`/projects/${currentProject._id}/cycles/new`}>
-                    <Button
-                      type="primary"
-                      block={true}
-                      style={{ marginTop: 8 }}
-                    >
-                      Create New Cycle
-                    </Button>
-                  </Link>
-                </Item>
-              )}
-            </Section>
+              </Section>
+            ) : null}
             {currentCycle ? (
               <Fragment>
                 <Section title="Menu">

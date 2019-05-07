@@ -17,9 +17,9 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
   history,
 }) => {
   const { currentProject } = useContext(ProjectContext);
-  const { currentCycle, cycles, isCyclesLoading } = useContext(CycleContext);
+  const { currentCycle, cycles } = useContext(CycleContext);
 
-  return currentProject ? (
+  return (
     <Fragment>
       <PageHeader
         title={currentProject!.title}
@@ -34,36 +34,32 @@ const ProjectDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
           <Button type="primary">New</Button>
         </Level>
         <Divider />
-        {!isCyclesLoading && cycles ? (
-          <Row gutter={24} style={{ marginBottom: 24 }}>
-            {cycles.map((cycle: Cycle) => (
-              <Col span={8} key={cycle._id} style={{ marginBottom: 24 }}>
-                <Card
-                  status="success"
-                  onClick={() =>
-                    history.push(
-                      `/projects/${match.params.pid}/cycles/${cycle._id}`
-                    )
-                  }
-                >
-                  <CardBody>
-                    <h3>{cycle.title}</h3>
-                    <p style={{ marginTop: 8, marginBottom: 16 }}>
-                      {cycle.description || 'No description.'}
-                    </p>
-                    <Tag>Released</Tag>
-                    <Tag>Dev</Tag>
-                  </CardBody>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        ) : (
-          <Spin />
-        )}
+        <Row gutter={24} style={{ marginBottom: 24 }}>
+          {cycles.map((cycle: Cycle) => (
+            <Col span={8} key={cycle._id} style={{ marginBottom: 24 }}>
+              <Card
+                status="success"
+                onClick={() =>
+                  history.push(
+                    `/projects/${match.params.pid}/cycles/${cycle._id}`
+                  )
+                }
+              >
+                <CardBody>
+                  <h3>{cycle.title}</h3>
+                  <p style={{ marginTop: 8, marginBottom: 16 }}>
+                    {cycle.description || 'No description.'}
+                  </p>
+                  <Tag>Released</Tag>
+                  <Tag>Dev</Tag>
+                </CardBody>
+              </Card>
+            </Col>
+          ))}
+        </Row>
       </PageContent>
     </Fragment>
-  ) : null;
+  );
 };
 
 export default withRouter(ProjectDetails);

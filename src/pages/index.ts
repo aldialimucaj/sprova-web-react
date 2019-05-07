@@ -1,4 +1,3 @@
-export { default as Cycles } from './Cycles';
 export { default as Executions } from './Executions';
 export { default as Login } from './Login';
 export { default as Project } from './Project';

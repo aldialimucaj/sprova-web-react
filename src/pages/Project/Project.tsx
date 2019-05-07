@@ -3,24 +3,36 @@ import { CycleContext } from '@/contexts/CycleContext';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { TestCaseContext } from '@/contexts/TestCaseContext';
 import { Executions, TestCases } from '@/pages';
-import CycleCreate from '@/pages/Cycles/CycleCreate';
+import { CycleCreate, CyclesNotFound } from '@/pages/Cycles';
 import React, { useContext } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import ProjectDetails from './ProjectDetails';
 import ProjectSettings from './ProjectSettings';
 
 const ProjectPage: React.FunctionComponent = () => {
-  const { currentProject, isProjectsLoading } = useContext(ProjectContext);
-  const { currentCycle, isCyclesLoading } = useContext(CycleContext);
+  const { currentProject, isProjectsFetched } = useContext(ProjectContext);
+  const { currentCycle, isCyclesFetched } = useContext(CycleContext);
   const { isTestCasesFetched } = useContext(TestCaseContext);
 
   return (
     <Layout>
-      {isProjectsLoading ||
-      isCyclesLoading ||
-      (currentCycle && !isTestCasesFetched) ? (
+      {!(isProjectsFetched && isCyclesFetched) ? (
         <PageLoad />
-      ) : currentProject && currentCycle ? (
+      ) : !currentProject ? (
+        <Redirect to="/projects" />
+      ) : !currentCycle ? (
+        <Switch>
+          <Route path="/projects/:pid/cycles/new" component={CycleCreate} />
+          <Route
+            path="/projects/:pid"
+            exact={true}
+            component={CyclesNotFound}
+          />
+          <Redirect to={`/projects/${currentProject._id}`} />
+        </Switch>
+      ) : !isTestCasesFetched ? (
+        <PageLoad />
+      ) : (
         <Switch>
           <Route
             path="/projects/:pid"
@@ -32,7 +44,7 @@ const ProjectPage: React.FunctionComponent = () => {
           <Route path="/projects/:pid/settings" component={ProjectSettings} />
           <Route path="/projects/:pid/testcases" component={TestCases} />
         </Switch>
-      ) : null}
+      )}
     </Layout>
   );
 };

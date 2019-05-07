@@ -10,7 +10,7 @@ const CURRENT_CYCLE_ID = 'currentCycleId';
 interface CycleContext {
   currentCycle: Cycle | null;
   error: string | null;
-  isCyclesLoading: boolean;
+  isCyclesFetched: boolean;
   onSelectCycle: (cycle: Cycle) => void;
   onRemoveCycle: (cycle: Cycle) => void;
   onAddCycle: (cycle: Cycle) => void;
@@ -20,7 +20,7 @@ interface CycleContext {
 const initialContext: CycleContext = {
   currentCycle: null,
   error: null,
-  isCyclesLoading: false,
+  isCyclesFetched: false,
   onAddCycle: () => {},
   onRemoveCycle: () => {},
   onSelectCycle: () => {},
@@ -34,16 +34,17 @@ const CycleProvider: React.FunctionComponent = ({ children }) => {
 
   const [currentCycle, setCurrentCycle] = useState<Cycle | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isCyclesLoading, setIsCyclesLoading] = useState<boolean>(false);
+  const [isCyclesFetched, setIsCyclesFetched] = useState<boolean>(false);
   const [cycles, setCycles] = useState<Cycle[]>([]);
 
   useEffect(() => {
     if (!currentProject) {
+      setIsCyclesFetched(true);
       return;
     }
 
     const fetchCycles = async () => {
-      setIsCyclesLoading(true);
+      setIsCyclesFetched(false);
       setError('');
 
       try {
@@ -55,7 +56,7 @@ const CycleProvider: React.FunctionComponent = ({ children }) => {
       } catch (error) {
         setError(error);
       } finally {
-        setIsCyclesLoading(false);
+        setIsCyclesFetched(true);
       }
     };
 
@@ -91,7 +92,7 @@ const CycleProvider: React.FunctionComponent = ({ children }) => {
       value={{
         currentCycle,
         error,
-        isCyclesLoading,
+        isCyclesFetched,
         onAddCycle: handleAddCycle,
         onRemoveCycle: handleRemoveCycle,
         onSelectCycle: handleSelectCycle,

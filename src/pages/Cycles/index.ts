@@ -1,3 +1,2 @@
-import CycleCreate from './CycleCreate';
-
-export default CycleCreate;
+export { default as CycleCreate } from './CycleCreate';
+export { default as CyclesNotFound } from './CyclesNotFound';

@@ -17,7 +17,7 @@ const ProjectList: React.FunctionComponent<RouteComponentProps> = ({
     currentProject,
     projects,
     error,
-    isProjectsLoading,
+    isProjectsFetched,
     onSelectProject,
   } = useContext(ProjectContext);
   const { onLogout, user } = useContext(UserContext);
@@ -36,9 +36,7 @@ const ProjectList: React.FunctionComponent<RouteComponentProps> = ({
     history.push('/login');
   };
 
-  return isProjectsLoading ? (
-    <PageLoad />
-  ) : (
+  return isProjectsFetched ? (
     <div className="projects-list-page">
       <div className="projects-list-container">
         <Level align="bottom">
@@ -93,6 +91,8 @@ const ProjectList: React.FunctionComponent<RouteComponentProps> = ({
         </div>
       </div>
     </div>
+  ) : (
+    <PageLoad />
   );
 };
 

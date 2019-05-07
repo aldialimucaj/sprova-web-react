@@ -9,7 +9,7 @@ export const CURRENT_PROJECT_ID = 'currentProjectId';
 interface ProjectContext {
   currentProject: Project | null;
   error: string | null;
-  isProjectsLoading: boolean;
+  isProjectsFetched: boolean;
   onSelectProject: (project: Project | null) => void;
   onRemoveProject: (project: Project) => void;
   onAddProject: (project: Project) => void;
@@ -19,7 +19,7 @@ interface ProjectContext {
 const initialContext: ProjectContext = {
   currentProject: null,
   error: null,
-  isProjectsLoading: false,
+  isProjectsFetched: false,
   onAddProject: () => {},
   onRemoveProject: () => {},
   onSelectProject: () => {},
@@ -31,12 +31,12 @@ const ProjectContext = React.createContext<ProjectContext>(initialContext);
 const ProjectProvider: React.FunctionComponent = ({ children }) => {
   const [currentProject, setCurrentProject] = useState<Project | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isProjectsLoading, setIsProjectsLoading] = useState<boolean>(false);
+  const [isProjectsFetched, setIsProjectsFetched] = useState<boolean>(false);
   const [projects, setProjects] = useState<Project[]>([]);
 
   useEffect(() => {
     const fetchProjects = async () => {
-      setIsProjectsLoading(true);
+      setIsProjectsFetched(false);
       setError('');
 
       try {
@@ -48,7 +48,7 @@ const ProjectProvider: React.FunctionComponent = ({ children }) => {
       } catch (error) {
         setError(error);
       } finally {
-        setIsProjectsLoading(false);
+        setIsProjectsFetched(true);
       }
     };
 
@@ -88,7 +88,7 @@ const ProjectProvider: React.FunctionComponent = ({ children }) => {
       value={{
         currentProject,
         error,
-        isProjectsLoading,
+        isProjectsFetched,
         onAddProject: handleAddProject,
         onRemoveProject: handleRemoveProject,
         onSelectProject: handleSelectProject,

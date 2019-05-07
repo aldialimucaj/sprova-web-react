@@ -33,6 +33,7 @@ const TestCaseProvider: React.FunctionComponent = ({ children }) => {
 
   useEffect(() => {
     if (!(currentProject && currentCycle)) {
+      setIsTestCasesFetched(true);
       return;
     }
 
