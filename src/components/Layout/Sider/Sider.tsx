@@ -5,6 +5,7 @@ import { ProjectContext } from '@/contexts/ProjectContext';
 import { UserContext } from '@/contexts/UserContext';
 import logo from '@/images/sprova.svg';
 import { Cycle } from '@/models/Cycle';
+import { findById } from '@/utils';
 import { Button, Divider, Icon, Select, Spin } from 'antd';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
@@ -13,10 +14,10 @@ import './Sider.scss';
 const Option = Select.Option;
 
 const Sider: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
-  const { currentCycle, cycles, isCyclesLoading } = useContext(CycleContext);
-  const { currentProject, isProjectsLoading, onSelectProject } = useContext(
-    ProjectContext
+  const { currentCycle, cycles, isCyclesLoading, onSelectCycle } = useContext(
+    CycleContext
   );
+  const { currentProject, isProjectsLoading } = useContext(ProjectContext);
   const { onLogout, user } = useContext(UserContext);
 
   const changeProject = () => {
@@ -27,6 +28,15 @@ const Sider: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
     logout();
     onLogout();
     history.push('/login');
+  };
+
+  const handleCycleChange = (cycleId: string) => {
+    const cycle = findById(cycles, cycleId);
+
+    if (cycle) {
+      onSelectCycle(cycle);
+      history.push(`/projects/${currentProject!._id}`);
+    }
   };
 
   return (
@@ -57,11 +67,20 @@ const Sider: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
                       <div>
                         {menu}
                         <Divider style={{ margin: '4px 0' }} />
-                        <div style={{ padding: '8px', cursor: 'pointer' }}>
+                        <div
+                          style={{ padding: '8px', cursor: 'pointer' }}
+                          onClick={() =>
+                            history.push(
+                              `/projects/${currentProject!._id}/cycles/new`
+                            )
+                          }
+                        >
                           <Icon type="plus" /> Add item
                         </div>
                       </div>
                     )}
+                    onChange={handleCycleChange}
+                    style={{ width: '160' }}
                   >
                     {cycles.map((cycle: Cycle) => (
                       <Option key={cycle._id} value={cycle._id}>
@@ -117,26 +136,22 @@ const Sider: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
                 </Section>
               </Fragment>
             ) : null}
+            <Section title="General">
+              <Item icon={<Icon type="swap" />} onClick={changeProject}>
+                Change Project
+              </Item>
+              <NavItem
+                icon={<Icon type="user" />}
+                route={`/users/${user!._id}`}
+              >
+                {user!.username}
+              </NavItem>
+              <Item icon={<Icon type="logout" />} onClick={signout}>
+                Sign Out
+              </Item>
+            </Section>
           </Menu>
         ) : null}
-      </div>
-      <div className="sprova-sider-footer">
-        <Menu>
-          <Section>
-            <Item icon={<Icon type="swap" />} onClick={changeProject}>
-              Change Project
-            </Item>
-            <NavItem icon={<Icon type="user" />} route={`/users/${user!._id}`}>
-              Account
-            </NavItem>
-            <NavItem icon={<Icon type="setting" />} route="/settings">
-              Settings
-            </NavItem>
-            <Item icon={<Icon type="logout" />} onClick={signout}>
-              Sign Out
-            </Item>
-          </Section>
-        </Menu>
       </div>
     </div>
   );
