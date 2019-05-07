@@ -24,8 +24,8 @@
   }
 
   @include screen-lg {
-    grid-template-columns: $projectbar-width-default $sidemenu-width-default 1fr;
+    grid-template-columns: $sidemenu-width-default 1fr;
     grid-template-rows: 1fr;
-    grid-template-areas: 'projectbar sidemenu page';
+    grid-template-areas: 'sidemenu page';
   }
 }
