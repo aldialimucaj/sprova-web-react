@@ -1,9 +1,12 @@
-import { Layout } from '@/components/Layout';
 import { CycleProvider } from '@/contexts/CycleContext';
 import { ProjectProvider } from '@/contexts/ProjectContext';
 import { TestCaseProvider } from '@/contexts/TestCaseContext';
-import { Project } from '@/pages';
+import { Project, ProjectCreate, ProjectList } from '@/pages';
+import PageNotFound from '@/pages/PageNotFound';
+import Settings from '@/pages/Settings';
+import UserPage from '@/pages/User';
 import React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import './App.scss';
 
 const App = () => {
@@ -11,9 +14,15 @@ const App = () => {
     <ProjectProvider>
       <CycleProvider>
         <TestCaseProvider>
-          <Layout>
-            <Project />
-          </Layout>
+          <Switch>
+            <Route path="/projects" exact={true} component={ProjectList} />
+            <Route path="/projects/new" component={ProjectCreate} />
+            <Route path="/projects/:pid" component={Project} />
+            <Route path="/users/:uid" component={UserPage} />
+            <Route path="/settings" component={Settings} />
+            <Redirect path="/" exact={true} to="/projects" />
+            <Route path="" component={PageNotFound} />
+          </Switch>
         </TestCaseProvider>
       </CycleProvider>
     </ProjectProvider>

@@ -1,4 +1,4 @@
-import { PageLoad } from '@/components/Layout';
+import { PageLoad, Layout } from '@/components/Layout';
 import { CycleContext } from '@/contexts/CycleContext';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { TestCaseContext } from '@/contexts/TestCaseContext';
@@ -14,23 +14,27 @@ const ProjectPage: React.FunctionComponent = () => {
   const { currentCycle, isCyclesLoading } = useContext(CycleContext);
   const { isTestCasesFetched } = useContext(TestCaseContext);
 
-  return isProjectsLoading ||
-    isCyclesLoading ||
-    (currentCycle && !isTestCasesFetched) ? (
-    <PageLoad />
-  ) : currentProject && currentCycle ? (
-    <Switch>
-      <Route path="/projects/new" component={ProjectCreate} />
-      <Route path="/projects/:pid" exact={true} component={ProjectDetails} />
-      <Route path="/projects/:pid/cycles" component={Cycles} />
-      <Route path="/projects/:pid/executions" component={Executions} />
-      <Route path="/projects/:pid/settings" component={ProjectSettings} />
-      <Route path="/projects/:pid/testcases" component={TestCases} />
-      {currentProject && (
-        <Redirect path="/projects" to={`/projects/${currentProject._id}`} />
-      )}
-    </Switch>
-  ) : null;
+  return (
+    <Layout>
+      {isProjectsLoading ||
+      isCyclesLoading ||
+      (currentCycle && !isTestCasesFetched) ? (
+        <PageLoad />
+      ) : currentProject && currentCycle ? (
+        <Switch>
+          <Route
+            path="/projects/:pid"
+            exact={true}
+            component={ProjectDetails}
+          />
+          <Route path="/projects/:pid/cycles" component={Cycles} />
+          <Route path="/projects/:pid/executions" component={Executions} />
+          <Route path="/projects/:pid/settings" component={ProjectSettings} />
+          <Route path="/projects/:pid/testcases" component={TestCases} />
+        </Switch>
+      ) : null}
+    </Layout>
+  );
 };
 
 export default ProjectPage;
