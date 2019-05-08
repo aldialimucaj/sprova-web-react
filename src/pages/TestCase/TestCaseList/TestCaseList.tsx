@@ -61,7 +61,11 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps> = ({
               renderRow={(testCase: TestCase, index: number) => (
                 <TableRow key={index} onClick={() => handleRowClick(testCase)}>
                   <TableColumn>{testCase.title}</TableColumn>
-                  <TableColumn>{testCase.description}</TableColumn>
+                  <TableColumn>
+                    {testCase.description || (
+                      <span style={{ opacity: 0.4 }}>No description</span>
+                    )}
+                  </TableColumn>
                 </TableRow>
               )}
             />

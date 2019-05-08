@@ -240,7 +240,11 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
                 <TableRow key={index}>
                   <TableColumn>{index + 1}</TableColumn>
                   <TableColumn>{testStep.action}</TableColumn>
-                  <TableColumn>{testStep.expected}</TableColumn>
+                  <TableColumn>
+                    {testStep.expected || (
+                      <span style={{ opacity: 0.4 }}>No expected result</span>
+                    )}
+                  </TableColumn>
                   <TableColumn>
                     {testStep.inheritedFrom ? (
                       <Tag>{testStep.inheritedFrom}</Tag>
