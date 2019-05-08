@@ -57,7 +57,7 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps> = ({
                 <Input
                   onChange={handleQueryChange}
                   placeholder="Filter"
-                  style={{ width: 250 }}
+                  style={{ display: 'inline-block', width: 250 }}
                   value={query}
                 />
                 {query && (

@@ -42,7 +42,12 @@ const Input: React.ForwardRefExoticComponent<
     };
 
     return (
-      <Label extra={extra} text={label} required={required}>
+      <Label
+        extra={extra}
+        text={label}
+        required={required}
+        style={{ ...style }}
+      >
         {!disabled ? (
           <input
             className="sprova-input"
@@ -50,12 +55,11 @@ const Input: React.ForwardRefExoticComponent<
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
             ref={ref}
-            style={{ ...style }}
             type={type}
             value={value}
           />
         ) : value ? (
-          <p style={{ ...style }}>{value}</p>
+          <p>{value}</p>
         ) : (
           <span style={{ opacity: 0.4 }}>{empty || 'No value'}</span>
         )}

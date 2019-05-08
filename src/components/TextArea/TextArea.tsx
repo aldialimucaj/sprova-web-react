@@ -14,34 +14,46 @@ interface TextAreaProps {
   value: string;
 }
 
-const TextArea: React.FunctionComponent<TextAreaProps> = ({
-  disabled = false,
-  empty,
-  extra,
-  label,
-  placeholder,
-  required = false,
-  onChange,
-  style,
-  value,
-}) => {
-  return (
-    <Label extra={extra} required={required} text={label}>
-      {!disabled ? (
-        <textarea
-          className="sprova-textarea"
-          onChange={onChange}
-          placeholder={placeholder}
-          style={{ ...style }}
-          value={value}
-        />
-      ) : value ? (
-        <p style={{ ...style }}>{value}</p>
-      ) : (
-        <span style={{ opacity: 0.4 }}>{empty || 'No value'}</span>
-      )}
-    </Label>
-  );
-};
+const TextArea: React.ForwardRefExoticComponent<
+  TextAreaProps & React.RefAttributes<HTMLTextAreaElement>
+> = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
+  (
+    {
+      disabled = false,
+      empty,
+      extra,
+      label,
+      placeholder,
+      required = false,
+      onChange,
+      style,
+      value,
+    },
+    ref
+  ) => {
+    return (
+      <Label
+        extra={extra}
+        required={required}
+        text={label}
+        style={{ ...style }}
+      >
+        {!disabled ? (
+          <textarea
+            className="sprova-textarea"
+            onChange={onChange}
+            placeholder={placeholder}
+            ref={ref}
+            value={value}
+          />
+        ) : value ? (
+          <p>{value}</p>
+        ) : (
+          <span style={{ opacity: 0.4 }}>{empty || 'No value'}</span>
+        )}
+      </Label>
+    );
+  }
+);
 
 export default TextArea;
