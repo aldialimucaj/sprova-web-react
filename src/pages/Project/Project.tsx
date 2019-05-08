@@ -5,6 +5,7 @@ import { TestCaseContext } from '@/contexts/TestCaseContext';
 import { Executions, TestCases } from '@/pages';
 import { CycleCreate, CyclesNotFound } from '@/pages/Cycles';
 import React, { useContext } from 'react';
+import Helmet from 'react-helmet';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import ProjectDetails from './ProjectDetails';
 import ProjectSettings from './ProjectSettings';
@@ -16,6 +17,11 @@ const ProjectPage: React.FunctionComponent = () => {
 
   return (
     <Layout>
+      <Helmet>
+        <title>
+          Sprova | {(currentProject && currentProject.title) || 'Project'}
+        </title>
+      </Helmet>
       {!(isProjectsFetched && isCyclesFetched) ? (
         <PageLoad />
       ) : !currentProject ? (

@@ -6,7 +6,8 @@ import { UserContext } from '@/contexts/UserContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import logo from '@/images/sprova.svg';
 import { Alert, Button, Col, Divider, Row, Spin } from 'antd';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
+import Helmet from 'react-helmet';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './Login.scss';
 
@@ -52,53 +53,58 @@ const Login: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
   }, [user]);
 
   return (
-    <Row className="login-page" type="flex" justify="center">
-      <Col span={6} style={{ textAlign: 'center' }}>
-        <Card>
-          <CardBody>
-            <img src={logo} width="64px" style={{ margin: 36 }} />
-            <h3 style={{ marginBottom: 24 }}>Sign in to Sprova</h3>
-            <Spin spinning={isLoading}>
-              {error ? (
-                <Alert
-                  className="form-item"
-                  type="error"
-                  message={error}
-                  closable={true}
-                  onClose={() => setError('')}
+    <Fragment>
+      <Helmet>
+        <title>Sprova | Login</title>
+      </Helmet>
+      <Row className="login-page" type="flex" justify="center">
+        <Col span={6} style={{ textAlign: 'center' }}>
+          <Card>
+            <CardBody>
+              <img src={logo} width="64px" style={{ margin: 36 }} />
+              <h3 style={{ marginBottom: 24 }}>Sign in to Sprova</h3>
+              <Spin spinning={isLoading}>
+                {error ? (
+                  <Alert
+                    className="form-item"
+                    type="error"
+                    message={error}
+                    closable={true}
+                    onClose={() => setError('')}
+                  />
+                ) : null}
+                <Input
+                  onChange={handleUsernameChange}
+                  onEnter={handleSubmit}
+                  placeholder="Username"
+                  style={{ marginBottom: 24 }}
+                  value={username}
                 />
-              ) : null}
-              <Input
-                onChange={handleUsernameChange}
-                onEnter={handleSubmit}
-                placeholder="Username"
-                style={{ marginBottom: 24 }}
-                value={username}
-              />
-              <Input
-                onChange={handlePasswordChange}
-                onEnter={handleSubmit}
-                placeholder="Password"
-                style={{ marginBottom: 24 }}
-                value={password}
-              />
-              <Button
-                block={true}
-                disabled={!isFormValid()}
-                id="loginButton"
-                onClick={handleSubmit}
-                style={{ marginBottom: 16 }}
-                type="primary"
-              >
-                Login
-              </Button>
-            </Spin>
-            <Divider>or</Divider>
-            <Link to="/signup">Request new account</Link>
-          </CardBody>
-        </Card>
-      </Col>
-    </Row>
+                <Input
+                  onChange={handlePasswordChange}
+                  onEnter={handleSubmit}
+                  placeholder="Password"
+                  style={{ marginBottom: 24 }}
+                  value={password}
+                />
+                <Button
+                  block={true}
+                  disabled={!isFormValid()}
+                  id="loginButton"
+                  onClick={handleSubmit}
+                  style={{ marginBottom: 16 }}
+                  type="primary"
+                >
+                  Login
+                </Button>
+              </Spin>
+              <Divider>or</Divider>
+              <Link to="/signup">Request new account</Link>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+    </Fragment>
   );
 };
 

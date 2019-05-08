@@ -6,7 +6,8 @@ import { ProjectContext } from '@/contexts/ProjectContext';
 import { UserContext } from '@/contexts/UserContext';
 import { Project } from '@/models/Project';
 import { Alert, Button, Divider, Empty, Icon } from 'antd';
-import React, { useContext } from 'react';
+import React, { Fragment, useContext } from 'react';
+import Helmet from 'react-helmet';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './ProjectList.scss';
 
@@ -36,63 +37,70 @@ const ProjectList: React.FunctionComponent<RouteComponentProps> = ({
     history.push('/login');
   };
 
-  return isProjectsFetched ? (
-    <div className="projects-list-page">
-      <div className="projects-list-container">
-        <Level align="bottom">
-          <h3>Projects</h3>
-          <Link to="/projects/new">
-            <Button type="primary">New</Button>
-          </Link>
-        </Level>
-        <Divider />
-
-        <div className="project-list">
-          {error ? (
-            <Alert message={error} type="error" />
-          ) : projects && projects.length > 0 ? (
-            projects.map((project: Project, index: number) => (
-              <Card
-                key={index}
-                onClick={() => selectProject(project)}
-                style={{ marginBottom: 24 }}
-                status={isCurrentProject(project) ? 'info' : null}
-              >
-                <CardBody>
-                  <h3>{project.title}</h3>
-                  <p>{'No description.'}</p>
-                </CardBody>
-              </Card>
-            ))
-          ) : (
-            <Empty description={'No Projects found'}>
+  return (
+    <Fragment>
+      <Helmet>
+        <title>Sprova | Projects</title>
+      </Helmet>
+      {isProjectsFetched ? (
+        <div className="projects-list-page">
+          <div className="projects-list-container">
+            <Level align="bottom">
+              <h3>Projects</h3>
               <Link to="/projects/new">
-                <Button type="primary">Create New Project</Button>
+                <Button type="primary">New</Button>
               </Link>
-            </Empty>
-          )}
-        </div>
+            </Level>
+            <Divider />
 
-        <div className="project-list-footer">
-          <Link to={`/users/${user!._id}`}>
-            <Icon style={{ marginRight: 8 }} type="user" />
-            {user!.username}
-          </Link>
-          <Divider type="vertical" />
-          <Link to="/settings">
-            <Icon style={{ marginRight: 8 }} type="setting" />
-            Settings
-          </Link>
-          <Divider type="vertical" />
-          <a onClick={signout}>
-            <Icon style={{ marginRight: 8 }} type="logout" />
-            Sign Out
-          </a>
+            <div className="project-list">
+              {error ? (
+                <Alert message={error} type="error" />
+              ) : projects && projects.length > 0 ? (
+                projects.map((project: Project, index: number) => (
+                  <Card
+                    key={index}
+                    onClick={() => selectProject(project)}
+                    style={{ marginBottom: 24 }}
+                    status={isCurrentProject(project) ? 'info' : null}
+                  >
+                    <CardBody>
+                      <h3>{project.title}</h3>
+                      <p>{'No description.'}</p>
+                    </CardBody>
+                  </Card>
+                ))
+              ) : (
+                <Empty description={'No Projects found'}>
+                  <Link to="/projects/new">
+                    <Button type="primary">Create New Project</Button>
+                  </Link>
+                </Empty>
+              )}
+            </div>
+
+            <div className="project-list-footer">
+              <Link to={`/users/${user!._id}`}>
+                <Icon style={{ marginRight: 8 }} type="user" />
+                {user!.username}
+              </Link>
+              <Divider type="vertical" />
+              <Link to="/settings">
+                <Icon style={{ marginRight: 8 }} type="setting" />
+                Settings
+              </Link>
+              <Divider type="vertical" />
+              <a onClick={signout}>
+                <Icon style={{ marginRight: 8 }} type="logout" />
+                Sign Out
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  ) : (
-    <PageLoad />
+      ) : (
+        <PageLoad />
+      )}
+    </Fragment>
   );
 };
 

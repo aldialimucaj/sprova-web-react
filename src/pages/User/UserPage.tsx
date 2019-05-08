@@ -1,7 +1,17 @@
-import React from 'react';
+import { UserContext } from '@/contexts/UserContext';
+import React, { Fragment, useContext } from 'react';
+import Helmet from 'react-helmet';
 
 const UserPage: React.FunctionComponent = () => {
-  return <div>UserPage</div>;
+  const { user } = useContext(UserContext);
+  return (
+    <Fragment>
+      <Helmet>
+        <title>Sprova | {(user && user.username) || 'User'}</title>
+      </Helmet>
+      <div>UserPage</div>
+    </Fragment>
+  );
 };
 
 export default UserPage;

@@ -13,7 +13,8 @@ import {
   Spin,
 } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
+import Helmet from 'react-helmet';
 import {
   Link,
   Redirect,
@@ -46,101 +47,106 @@ const Signup: React.FunctionComponent<Props> = ({ form, history }) => {
   };
 
   return !isAuthenticated() ? (
-    <Row className="login-page" type="flex" justify="center">
-      <Col span={6} style={{ textAlign: 'center' }}>
-        <Card className="login-card">
-          <img src={logo} width="64px" style={{ margin: 36 }} />
-          <h3 style={{ marginBottom: 24 }}>Sign up for Sprova</h3>
-          <Spin spinning={isLoading}>
-            {error ? (
-              <Alert
-                className="form-item"
-                type="error"
-                message={error}
-                closable={true}
-                onClose={() => setError('')}
-              />
-            ) : null}
-            <Form layout="vertical" onSubmit={handleSubmit}>
-              <Form.Item label="Username" colon={false}>
-                {getFieldDecorator('username', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Username cannot be empty',
-                    },
-                  ],
-                })(
-                  <Input type="text" name="username" placeholder="Username" />
-                )}
-              </Form.Item>
-              <Form.Item label="Email" colon={false}>
-                {getFieldDecorator('email', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Email cannot be empty',
-                    },
-                  ],
-                })(
-                  <Input
-                    type="text"
-                    name="username"
-                    placeholder="hello@sprova.com"
-                  />
-                )}
-              </Form.Item>
-              <Form.Item label="Password" colon={false}>
-                {getFieldDecorator('password', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Password cannot be empty',
-                    },
-                  ],
-                })(
-                  <Input.Password
-                    action="password"
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                  />
-                )}
-              </Form.Item>
-              <Form.Item label="Repeat Password" colon={false}>
-                {getFieldDecorator('passwordRepeat', {
-                  rules: [
-                    {
-                      required: true,
-                      message: 'Password cannot be empty',
-                    },
-                  ],
-                })(
-                  <Input.Password
-                    action="password"
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                  />
-                )}
-              </Form.Item>
-              <Form.Item>
-                <Button
-                  block={true}
-                  type="primary"
-                  htmlType="submit"
-                  disabled={hasFieldErrors(getFieldsError())}
-                >
-                  Request account
-                </Button>
-              </Form.Item>
-            </Form>
-          </Spin>
-          <Divider>or</Divider>
-          <Link to="/login">Sign in with existing account</Link>
-        </Card>
-      </Col>
-    </Row>
+    <Fragment>
+      <Helmet>
+        <title>Sprova | Sign Up</title>
+      </Helmet>
+      <Row className="login-page" type="flex" justify="center">
+        <Col span={6} style={{ textAlign: 'center' }}>
+          <Card className="login-card">
+            <img src={logo} width="64px" style={{ margin: 36 }} />
+            <h3 style={{ marginBottom: 24 }}>Sign up for Sprova</h3>
+            <Spin spinning={isLoading}>
+              {error ? (
+                <Alert
+                  className="form-item"
+                  type="error"
+                  message={error}
+                  closable={true}
+                  onClose={() => setError('')}
+                />
+              ) : null}
+              <Form layout="vertical" onSubmit={handleSubmit}>
+                <Form.Item label="Username" colon={false}>
+                  {getFieldDecorator('username', {
+                    rules: [
+                      {
+                        required: true,
+                        message: 'Username cannot be empty',
+                      },
+                    ],
+                  })(
+                    <Input type="text" name="username" placeholder="Username" />
+                  )}
+                </Form.Item>
+                <Form.Item label="Email" colon={false}>
+                  {getFieldDecorator('email', {
+                    rules: [
+                      {
+                        required: true,
+                        message: 'Email cannot be empty',
+                      },
+                    ],
+                  })(
+                    <Input
+                      type="text"
+                      name="username"
+                      placeholder="hello@sprova.com"
+                    />
+                  )}
+                </Form.Item>
+                <Form.Item label="Password" colon={false}>
+                  {getFieldDecorator('password', {
+                    rules: [
+                      {
+                        required: true,
+                        message: 'Password cannot be empty',
+                      },
+                    ],
+                  })(
+                    <Input.Password
+                      action="password"
+                      type="password"
+                      name="password"
+                      placeholder="Password"
+                    />
+                  )}
+                </Form.Item>
+                <Form.Item label="Repeat Password" colon={false}>
+                  {getFieldDecorator('passwordRepeat', {
+                    rules: [
+                      {
+                        required: true,
+                        message: 'Password cannot be empty',
+                      },
+                    ],
+                  })(
+                    <Input.Password
+                      action="password"
+                      type="password"
+                      name="password"
+                      placeholder="Password"
+                    />
+                  )}
+                </Form.Item>
+                <Form.Item>
+                  <Button
+                    block={true}
+                    type="primary"
+                    htmlType="submit"
+                    disabled={hasFieldErrors(getFieldsError())}
+                  >
+                    Request account
+                  </Button>
+                </Form.Item>
+              </Form>
+            </Spin>
+            <Divider>or</Divider>
+            <Link to="/login">Sign in with existing account</Link>
+          </Card>
+        </Col>
+      </Row>
+    </Fragment>
   ) : (
     <Redirect to="/projects" />
   );

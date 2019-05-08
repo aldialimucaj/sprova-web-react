@@ -11,6 +11,7 @@ import { useFormTextArea } from '@/hooks/useFormTextArea';
 import { Project } from '@/models/Project';
 import { Breadcrumb, Button, notification } from 'antd';
 import React, { Fragment, useContext, useState } from 'react';
+import Helmet from 'react-helmet';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
 const ProjectCreate: React.FunctionComponent<RouteComponentProps> = ({
@@ -61,6 +62,9 @@ const ProjectCreate: React.FunctionComponent<RouteComponentProps> = ({
 
   return (
     <Fragment>
+      <Helmet>
+        <title>Sprova | Create Project</title>
+      </Helmet>
       <PageHeader
         breadcrumb={
           <Breadcrumb>
