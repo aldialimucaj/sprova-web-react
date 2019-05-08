@@ -5,8 +5,10 @@ import Level from '@/components/Level';
 import Table, { TableColumn, TableRow } from '@/components/Table';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { TestCaseContext } from '@/contexts/TestCaseContext';
+import { useFormInput } from '@/hooks/useFormInput';
 import { TestCase } from '@/models/TestCase';
 import { Breadcrumb, Button, Icon } from 'antd';
+import * as _ from 'lodash';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
@@ -16,9 +18,22 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps> = ({
   const { currentProject } = useContext(ProjectContext);
   const { testCases, isTestCasesFetched } = useContext(TestCaseContext);
 
+  const {
+    value: query,
+    setValue: setQuery,
+    handleChange: handleQueryChange,
+  } = useFormInput('');
+
   const handleRowClick = (testCase: TestCase) => {
     history.push(`/projects/${currentProject!._id}/testcases/${testCase._id}`);
   };
+
+  const filterTestCases = (_testCases: TestCase[], _query: string) =>
+    _.filter(_testCases, (testCase: TestCase) =>
+      testCase.title.toLowerCase().includes(_query.toLowerCase())
+    );
+
+  const resetQuery = () => setQuery('');
 
   return (
     <Fragment>
@@ -38,12 +53,20 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps> = ({
           <CardHeader>
             <h4 style={{ marginBottom: 16 }}>Test Cases</h4>
             <Level>
-              <Input
-                onChange={() => {}}
-                placeholder="Filter"
-                style={{ width: 250 }}
-                value=""
-              />
+              <span>
+                <Input
+                  onChange={handleQueryChange}
+                  placeholder="Filter"
+                  style={{ width: 250 }}
+                  value={query}
+                />
+                {query && (
+                  <a onClick={resetQuery} style={{ marginLeft: 16 }}>
+                    Reset
+                  </a>
+                )}
+              </span>
+
               <Button
                 type="primary"
                 onClick={() =>
@@ -56,7 +79,7 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps> = ({
           </CardHeader>
           <CardBody padded={false}>
             <Table
-              data={testCases}
+              data={filterTestCases(testCases, query)}
               columnTitles={['Title', 'Description']}
               renderRow={(testCase: TestCase, index: number) => (
                 <TableRow key={index} onClick={() => handleRowClick(testCase)}>
