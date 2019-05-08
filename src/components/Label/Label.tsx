@@ -1,6 +1,6 @@
 import Level from '@/components/Level';
 import cx from 'classnames';
-import React, { Fragment } from 'react';
+import React from 'react';
 import './Label.scss';
 
 interface LabelProps {

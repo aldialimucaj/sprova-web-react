@@ -1,6 +1,5 @@
-import { updateTestCase } from '@/api/testcase.api';
+import { getTestCaseSteps, updateTestCase } from '@/api/testcase.api';
 import Card, { CardBody, CardHeader } from '@/components/Card';
-import Input from '@/components/Input';
 import { Label } from '@/components/Label';
 import Level from '@/components/Level';
 import List from '@/components/List';
@@ -10,8 +9,18 @@ import { useFormTextArea } from '@/hooks/useFormTextArea';
 import { TestCase } from '@/models/TestCase';
 import { TestStep } from '@/models/TestStep';
 import { findById, findChildren } from '@/utils';
-import { Alert, Col, Row, Spin, Switch, Typography } from 'antd';
-import React, { Fragment, useEffect, useState } from 'react';
+import {
+  Alert,
+  Col,
+  Icon,
+  Row,
+  Spin,
+  Switch,
+  Tag,
+  Tooltip,
+  Typography,
+} from 'antd';
+import React, { useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 const Text = Typography.Text;
@@ -46,6 +55,10 @@ const OverviewTab: React.FunctionComponent<Props> = ({
   const [parent, setParent] = useState<TestCase | null>(null);
   const [children, setChildren] = useState<TestCase[]>([]);
 
+  const [inheritedSteps, setInheritedSteps] = useState<TestStep[]>([]);
+  const [isTestStepsLoading, setIsTestStepsLoading] = useState<boolean>(false);
+  const [testStepsError, setTestStepsError] = useState<string | null>(null);
+
   const handleUpdateDescription = async () => {
     if (description === testCase.description) {
       setIsDescriptionEditable(false);
@@ -71,7 +84,12 @@ const OverviewTab: React.FunctionComponent<Props> = ({
 
   const handleSelectTestCase = (_testCase: TestCase) => {
     setDescription(_testCase.description);
+    setShowInherited(false);
     history.push(`/projects/${match.params.pid}/testcases/${_testCase._id}`);
+  };
+
+  const handleShowInheritedSwitch = () => {
+    setShowInherited(!showInherited);
   };
 
   const descriptionActions = isDescriptionEditable ? (
@@ -104,78 +122,86 @@ const OverviewTab: React.FunctionComponent<Props> = ({
     }
   }, [testCases, match.params.tid]);
 
+  useEffect(() => {
+    if (!parent) {
+      setInheritedSteps([]);
+      return;
+    }
+
+    const fetchInheritedSteps = async () => {
+      setIsTestStepsLoading(true);
+
+      try {
+        let fetchedTestSteps = await getTestCaseSteps(parent._id, true);
+
+        fetchedTestSteps = fetchedTestSteps.map((step: TestStep) =>
+          step.inheritedFrom ? step : { ...step, inheritedFrom: parent.title }
+        );
+
+        setInheritedSteps(fetchedTestSteps);
+        setTestStepsError(null);
+      } catch (error) {
+        setTestStepsError(error);
+        setShowInherited(false);
+      } finally {
+        setIsTestStepsLoading(false);
+      }
+    };
+
+    fetchInheritedSteps();
+  }, [parent]);
+
   return (
-    <Fragment>
-      <Row gutter={24}>
-        <Col span={6}>
+    <Row gutter={24}>
+      <Col span={6}>
+        <Card style={{ marginBottom: 24 }}>
+          <CardHeader>
+            <Level>
+              <h4>General Information</h4>
+            </Level>
+          </CardHeader>
+          <CardBody>
+            {descriptionError && (
+              <Alert
+                style={{ marginBottom: 16 }}
+                message={descriptionError}
+                type="error"
+              />
+            )}
+
+            <Label text="Test Case ID" style={{ marginBottom: 16 }}>
+              <Text copyable={true} ellipsis={false}>
+                {(testCase && testCase._id) || 'Test Case ID'}
+              </Text>
+            </Label>
+
+            <Label text="Created At" style={{ marginBottom: 16 }}>
+              {(testCase && new Date(testCase.createdAt).toDateString()) ||
+                'Date'}
+            </Label>
+
+            <Spin spinning={isDescriptionLoading}>
+              <TextArea
+                disabled={!isDescriptionEditable}
+                empty="No Description"
+                extra={descriptionActions}
+                label="Description"
+                onChange={handleDescriptionChange}
+                placeholder="Description"
+                value={description}
+              />
+            </Spin>
+          </CardBody>
+        </Card>
+
+        {parent ? (
           <Card style={{ marginBottom: 24 }}>
             <CardHeader>
-              <Level>
-                <h4>General Information</h4>
-              </Level>
-            </CardHeader>
-            <CardBody>
-              {descriptionError && (
-                <Alert
-                  style={{ marginBottom: 16 }}
-                  message={descriptionError}
-                  type="error"
-                />
-              )}
-
-              <Label text="Test Case ID" style={{ marginBottom: 16 }}>
-                <Text copyable={true} ellipsis={false}>
-                  {(testCase && testCase._id) || 'Test Case ID'}
-                </Text>
-              </Label>
-
-              <Label text="Created At" style={{ marginBottom: 16 }}>
-                {(testCase && new Date(testCase.createdAt).toDateString()) ||
-                  'Date'}
-              </Label>
-
-              <Spin spinning={isDescriptionLoading}>
-                <TextArea
-                  disabled={!isDescriptionEditable}
-                  empty="No Description"
-                  extra={descriptionActions}
-                  label="Description"
-                  onChange={handleDescriptionChange}
-                  placeholder="Description"
-                  value={description}
-                />
-              </Spin>
-            </CardBody>
-          </Card>
-
-          {parent ? (
-            <Card style={{ marginBottom: 24 }}>
-              <CardHeader>
-                <h4>Inherits From</h4>
-              </CardHeader>
-              <CardBody padded={false}>
-                <List
-                  data={[parent]}
-                  onItemClick={handleSelectTestCase}
-                  renderItem={(_testCase: TestCase, index: number) =>
-                    _testCase.title
-                  }
-                  small={true}
-                  zebra={true}
-                />
-              </CardBody>
-            </Card>
-          ) : null}
-
-          <Card style={{ marginBottom: 24 }}>
-            <CardHeader>
-              <Level>
-                <h4>Children</h4>
-              </Level>
+              <h4>Inherits From</h4>
             </CardHeader>
             <CardBody padded={false}>
               <List
-                data={children}
+                data={[parent]}
                 onItemClick={handleSelectTestCase}
                 renderItem={(_testCase: TestCase, index: number) =>
                   _testCase.title
@@ -185,45 +211,86 @@ const OverviewTab: React.FunctionComponent<Props> = ({
               />
             </CardBody>
           </Card>
-        </Col>
-        <Col span={18}>
-          <Card>
-            <CardHeader>
-              <Level>
-                <h3>Test Steps</h3>
-                <div>
-                  {parent && (
-                    <Fragment>
-                      <span style={{ marginRight: 8 }}>Show inherited</span>
-                      <Switch
-                        checked={showInherited}
-                        onChange={() => setShowInherited(!showInherited)}
-                      />
-                    </Fragment>
-                  )}
-                </div>
-              </Level>
-            </CardHeader>
-            <CardBody padded={false}>
-              <Table
-                columnTitles={['#', 'Action', 'Expected']}
-                data={[...testCase.steps]}
-                renderRow={(testStep: TestStep, index: number) => (
-                  <TableRow key={index}>
-                    <TableColumn>{index + 1}</TableColumn>
-                    <TableColumn key={1}>{testStep.action}</TableColumn>
-                    <TableColumn>{testStep.expected}</TableColumn>
-                    <TableColumn>
-                      <a className="sprova-teststep-edit">Edit</a>
-                    </TableColumn>
-                  </TableRow>
+        ) : null}
+
+        <Card>
+          <CardHeader>
+            <h4>Children</h4>
+          </CardHeader>
+          <CardBody padded={false}>
+            <List
+              data={children}
+              onItemClick={handleSelectTestCase}
+              renderItem={(_testCase: TestCase, index: number) =>
+                _testCase.title
+              }
+              small={true}
+              zebra={true}
+            />
+          </CardBody>
+        </Card>
+      </Col>
+
+      <Col span={18}>
+        <Card>
+          <CardHeader>
+            <Level>
+              <h4>Test Steps</h4>
+              <div>
+                {testStepsError && (
+                  <Tooltip title={testStepsError}>
+                    <Icon
+                      style={{ marginRight: 8 }}
+                      type="close-circle"
+                      theme="twoTone"
+                      twoToneColor="red"
+                    />
+                  </Tooltip>
                 )}
-              />
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
-    </Fragment>
+                <span style={{ marginRight: 8 }}>Show inherited steps</span>
+                <Switch
+                  checked={showInherited}
+                  disabled={!parent || !!testStepsError}
+                  loading={isTestStepsLoading}
+                  onChange={handleShowInheritedSwitch}
+                />
+              </div>
+            </Level>
+          </CardHeader>
+          <CardBody padded={false}>
+            <Table
+              columnTitles={['#', 'Action', 'Expected', 'Inherited From', '']}
+              data={[
+                ...(showInherited ? inheritedSteps : []),
+                ...testCase.steps,
+              ]}
+              empty="No Test Steps."
+              renderRow={(testStep: TestStep, index: number) => (
+                <TableRow key={index}>
+                  <TableColumn>{index + 1}</TableColumn>
+                  <TableColumn>{testStep.action}</TableColumn>
+                  <TableColumn>
+                    {testStep.expected || (
+                      <span style={{ opacity: 0.4 }}>No expected result</span>
+                    )}
+                  </TableColumn>
+                  <TableColumn>
+                    {testStep.inheritedFrom ? (
+                      <Tag>{testStep.inheritedFrom}</Tag>
+                    ) : (
+                      <span style={{ opacity: 0.4 }}>None</span>
+                    )}
+                  </TableColumn>
+                  <TableColumn>
+                    {!testStep.inheritedFrom && <a onClick={() => {}}>Edit</a>}
+                  </TableColumn>
+                </TableRow>
+              )}
+            />
+          </CardBody>
+        </Card>
+      </Col>
+    </Row>
   );
 };
 

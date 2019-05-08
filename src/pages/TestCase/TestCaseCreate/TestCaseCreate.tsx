@@ -212,13 +212,12 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
               <div>
                 {testStepsError && (
                   <Tooltip title={testStepsError}>
-                    <span style={{ marginRight: 8 }}>
-                      <Icon
-                        type="close-circle"
-                        theme="twoTone"
-                        twoToneColor="red"
-                      />
-                    </span>
+                    <Icon
+                      style={{ marginRight: 8 }}
+                      type="close-circle"
+                      theme="twoTone"
+                      twoToneColor="red"
+                    />
                   </Tooltip>
                 )}
                 <span style={{ marginRight: 8 }}>Show inherited steps</span>
@@ -254,10 +253,7 @@ const TestCaseCreate: React.FunctionComponent<RouteComponentProps<Params>> = ({
                   </TableColumn>
                   <TableColumn>
                     {!testStep.inheritedFrom && (
-                      <a
-                        className="sprova-teststep-edit"
-                        onClick={() => handleRemoveTestStep(testStep)}
-                      >
+                      <a onClick={() => handleRemoveTestStep(testStep)}>
                         Remove
                       </a>
                     )}
