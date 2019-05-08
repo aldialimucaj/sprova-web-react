@@ -2,7 +2,7 @@ import Input from '@/components/Input';
 import { useFormInput } from '@/hooks/useFormInput';
 import { TestStep } from '@/models/TestStep';
 import { Button, Col, Row } from 'antd';
-import React from 'react';
+import React, { useRef } from 'react';
 import './TestCaseCreate.scss';
 
 interface TestStepInputProps {
@@ -12,6 +12,8 @@ interface TestStepInputProps {
 const TestStepInput: React.FunctionComponent<TestStepInputProps> = ({
   onAdd,
 }) => {
+  const actionInputRef = useRef<HTMLInputElement>(null);
+
   const {
     value: action,
     setValue: setAction,
@@ -24,13 +26,22 @@ const TestStepInput: React.FunctionComponent<TestStepInputProps> = ({
   } = useFormInput('');
 
   const handleAddTestStep = () => {
+    if (!isFormValid()) {
+      return;
+    }
+
     const testStep = {
       action,
       expected,
     };
+
     onAdd(testStep);
     setAction('');
     setExpected('');
+
+    if (actionInputRef && actionInputRef.current) {
+      actionInputRef.current.focus();
+    }
   };
 
   const isFormValid = () => action && action.length > 0;
@@ -39,17 +50,18 @@ const TestStepInput: React.FunctionComponent<TestStepInputProps> = ({
     <Row gutter={16}>
       <Col span={10}>
         <Input
-          value={action}
           onChange={handleActionChange}
-          onEnter={() => isFormValid() && handleAddTestStep()}
+          onEnter={handleAddTestStep}
           placeholder="Step action"
+          ref={actionInputRef}
+          value={action}
         />
       </Col>
       <Col span={10}>
         <Input
           value={expected}
           onChange={handleExpectedChange}
-          onEnter={() => isFormValid() && handleAddTestStep()}
+          onEnter={handleAddTestStep}
           placeholder="Expected"
         />
       </Col>

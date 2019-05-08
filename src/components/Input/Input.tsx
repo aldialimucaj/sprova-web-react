@@ -13,42 +13,50 @@ interface InputProps {
   value: string;
 }
 
-const Input: React.FunctionComponent<InputProps> = ({
-  label,
-  placeholder,
-  required = false,
-  onChange,
-  onEnter,
-  style,
-  type = 'text',
-  value,
-}) => {
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.keyCode === 13 && onEnter) {
-      onEnter();
-    }
-  };
+const Input: React.ForwardRefExoticComponent<
+  InputProps & React.RefAttributes<HTMLInputElement>
+> = React.forwardRef<HTMLInputElement, InputProps>(
+  (
+    {
+      label,
+      placeholder,
+      required = false,
+      onChange,
+      onEnter,
+      style,
+      type = 'text',
+      value,
+    },
+    ref
+  ) => {
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.keyCode === 13 && onEnter) {
+        onEnter();
+      }
+    };
 
-  return (
-    <Fragment>
-      {label && (
-        <label
-          className={cx('sprova-input-label', { 'is-required': required })}
-        >
-          {label}
-        </label>
-      )}
-      <input
-        onKeyDown={handleKeyDown}
-        className="sprova-input"
-        onChange={onChange}
-        placeholder={placeholder}
-        style={{ ...style }}
-        type={type}
-        value={value}
-      />
-    </Fragment>
-  );
-};
+    return (
+      <Fragment>
+        {label && (
+          <label
+            className={cx('sprova-input-label', { 'is-required': required })}
+          >
+            {label}
+          </label>
+        )}
+        <input
+          onKeyDown={handleKeyDown}
+          className="sprova-input"
+          onChange={onChange}
+          placeholder={placeholder}
+          ref={ref}
+          style={{ ...style }}
+          type={type}
+          value={value}
+        />
+      </Fragment>
+    );
+  }
+);
 
 export default Input;
