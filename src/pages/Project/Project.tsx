@@ -3,11 +3,10 @@ import { CycleContext } from '@/contexts/CycleContext';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { TestCaseContext } from '@/contexts/TestCaseContext';
 import { Executions, TestCases } from '@/pages';
-import { CycleCreate, CyclesNotFound } from '@/pages/Cycles';
+import { CycleCreate, CycleDetails, CyclesNotFound } from '@/pages/Cycles';
 import React, { useContext } from 'react';
 import Helmet from 'react-helmet';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import ProjectDetails from './ProjectDetails';
 import ProjectSettings from './ProjectSettings';
 
 const ProjectPage: React.FunctionComponent = () => {
@@ -40,11 +39,7 @@ const ProjectPage: React.FunctionComponent = () => {
         <PageLoad />
       ) : (
         <Switch>
-          <Route
-            path="/projects/:pid"
-            exact={true}
-            component={ProjectDetails}
-          />
+          <Route path="/projects/:pid" exact={true} component={CycleDetails} />
           <Route path="/projects/:pid/cycles/new" component={CycleCreate} />
           <Route path="/projects/:pid/executions" component={Executions} />
           <Route path="/projects/:pid/settings" component={ProjectSettings} />

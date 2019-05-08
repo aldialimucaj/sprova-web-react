@@ -156,9 +156,7 @@ const OverviewTab: React.FunctionComponent<Props> = ({
       <Col span={6}>
         <Card style={{ marginBottom: 24 }}>
           <CardHeader>
-            <Level>
-              <h4>General Information</h4>
-            </Level>
+            <h4>General Information</h4>
           </CardHeader>
           <CardBody>
             {descriptionError && (
