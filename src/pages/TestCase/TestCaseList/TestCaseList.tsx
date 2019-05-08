@@ -86,7 +86,7 @@ const TestCaseList: React.FunctionComponent<RouteComponentProps> = ({
                   <TableColumn>{testCase.title}</TableColumn>
                   <TableColumn>
                     {testCase.description || (
-                      <span style={{ opacity: 0.4 }}>No description</span>
+                      <span style={{ opacity: 0.4 }}>No Description</span>
                     )}
                   </TableColumn>
                 </TableRow>

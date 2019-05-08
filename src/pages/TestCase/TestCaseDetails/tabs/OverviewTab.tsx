@@ -1,15 +1,20 @@
 import { updateTestCase } from '@/api/testcase.api';
 import Card, { CardBody, CardHeader } from '@/components/Card';
 import Input from '@/components/Input';
+import { Label } from '@/components/Label';
 import Level from '@/components/Level';
+import List from '@/components/List';
 import Table, { TableColumn, TableRow } from '@/components/Table';
 import TextArea from '@/components/TextArea';
+import { useFormTextArea } from '@/hooks/useFormTextArea';
 import { TestCase } from '@/models/TestCase';
 import { TestStep } from '@/models/TestStep';
-import { findById, findChildren, resolveInheritance } from '@/utils';
-import { Alert, Button, Col, Row, Switch, Tag, Spin } from 'antd';
-import React, { Fragment, useState } from 'react';
+import { findById, findChildren } from '@/utils';
+import { Alert, Col, Row, Spin, Switch, Typography } from 'antd';
+import React, { Fragment, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
+
+const Text = Typography.Text;
 
 interface Params {
   pid: string;
@@ -27,24 +32,27 @@ const OverviewTab: React.FunctionComponent<Props> = ({
   testCase,
   testCases,
 }) => {
+  const {
+    value: description,
+    setValue: setDescription,
+    handleChange: handleDescriptionChange,
+  } = useFormTextArea(testCase.description);
   const [isDescriptionEditable, setIsDescriptionEditable] = useState(false);
-  const [descriptionLoading, setDescriptionLoading] = useState(false);
+  const [isDescriptionLoading, setIsDescriptionLoading] = useState(false);
   const [descriptionError, setDescriptionError] = useState('');
-  const [description, setDescription] = useState(testCase.description);
 
   const [showInherited, setShowInherited] = useState(false);
 
-  const parent = findById(testCases, testCase.parentId);
+  const [parent, setParent] = useState<TestCase | null>(null);
+  const [children, setChildren] = useState<TestCase[]>([]);
 
-  const children = findChildren(testCases, match.params.tid);
-
-  const updateDescription = async () => {
+  const handleUpdateDescription = async () => {
     if (description === testCase.description) {
       setIsDescriptionEditable(false);
       return;
     }
 
-    setDescriptionLoading(true);
+    setIsDescriptionLoading(true);
 
     try {
       const ok = await updateTestCase({ ...testCase, description });
@@ -57,9 +65,44 @@ const OverviewTab: React.FunctionComponent<Props> = ({
       setDescriptionError(error);
       setTimeout(() => setDescriptionError(''), 3000);
     } finally {
-      setDescriptionLoading(false);
+      setIsDescriptionLoading(false);
     }
   };
+
+  const handleSelectTestCase = (_testCase: TestCase) => {
+    setDescription(_testCase.description);
+    history.push(`/projects/${match.params.pid}/testcases/${_testCase._id}`);
+  };
+
+  const descriptionActions = isDescriptionEditable ? (
+    <span>
+      <a onClick={handleUpdateDescription} style={{ marginRight: 8 }}>
+        Save
+      </a>
+      <a
+        onClick={() => {
+          setIsDescriptionEditable(false);
+          setDescription(testCase.description);
+        }}
+      >
+        Cancel
+      </a>
+    </span>
+  ) : (
+    <a onClick={() => setIsDescriptionEditable(true)}>Edit</a>
+  );
+
+  useEffect(() => {
+    const _parent = findById(testCases, testCase.parentId);
+    setParent(_parent || null);
+  }, [testCases, testCase.parentId, match.params.tid]);
+
+  useEffect(() => {
+    const _children = findChildren(testCases, match.params.tid);
+    if (_children) {
+      setChildren(_children);
+    }
+  }, [testCases, match.params.tid]);
 
   return (
     <Fragment>
@@ -79,64 +122,46 @@ const OverviewTab: React.FunctionComponent<Props> = ({
                   type="error"
                 />
               )}
-              <Spin spinning={descriptionLoading}>
+
+              <Label text="Test Case ID" style={{ marginBottom: 16 }}>
+                <Text copyable={true} ellipsis={false}>
+                  {(testCase && testCase._id) || 'Test Case ID'}
+                </Text>
+              </Label>
+
+              <Label text="Created At" style={{ marginBottom: 16 }}>
+                {(testCase && new Date(testCase.createdAt).toDateString()) ||
+                  'Date'}
+              </Label>
+
+              <Spin spinning={isDescriptionLoading}>
                 <TextArea
                   disabled={!isDescriptionEditable}
-                  extra={
-                    isDescriptionEditable ? (
-                      <span>
-                        <a
-                          onClick={updateDescription}
-                          style={{ marginRight: 8 }}
-                        >
-                          Save
-                        </a>
-                        <a
-                          onClick={() => {
-                            setIsDescriptionEditable(false);
-                            setDescription(testCase.description);
-                          }}
-                        >
-                          Cancel
-                        </a>
-                      </span>
-                    ) : (
-                      <a onClick={() => setIsDescriptionEditable(true)}>Edit</a>
-                    )
-                  }
+                  empty="No Description"
+                  extra={descriptionActions}
                   label="Description"
-                  onChange={(event: React.ChangeEvent<HTMLTextAreaElement>) =>
-                    setDescription(event.target.value)
-                  }
+                  onChange={handleDescriptionChange}
                   placeholder="Description"
-                  style={{ marginBottom: 16 }}
                   value={description}
                 />
               </Spin>
             </CardBody>
           </Card>
 
-          {testCase!.parentId ? (
+          {parent ? (
             <Card style={{ marginBottom: 24 }}>
               <CardHeader>
                 <h4>Inherits From</h4>
               </CardHeader>
               <CardBody padded={false}>
-                <Table
-                  columnTitles={['Title']}
-                  data={children}
-                  renderRow={(tc: TestCase, index: number) => (
-                    <TableRow
-                      key={index}
-                      onClick={() =>
-                        history.push(
-                          `/projects/${match.params.pid}/testcases/${tc._id}`
-                        )
-                      }
-                    >
-                      <TableColumn key={0}>{tc.title}</TableColumn>
-                    </TableRow>
-                  )}
+                <List
+                  data={[parent]}
+                  onItemClick={handleSelectTestCase}
+                  renderItem={(_testCase: TestCase, index: number) =>
+                    _testCase.title
+                  }
+                  small={true}
+                  zebra={true}
                 />
               </CardBody>
             </Card>
@@ -146,37 +171,17 @@ const OverviewTab: React.FunctionComponent<Props> = ({
             <CardHeader>
               <Level>
                 <h4>Children</h4>
-                <span>
-                  <Input
-                    onChange={() => {}}
-                    placeholder="Filter"
-                    style={{ width: 250 }}
-                    value=""
-                  />
-                  {/* {query && (
-                    <a onClick={resetQuery} style={{ marginLeft: 16 }}>
-                      Reset
-                    </a>
-                  )} */}
-                </span>
               </Level>
             </CardHeader>
             <CardBody padded={false}>
-              <Table
-                columnTitles={['Title']}
+              <List
                 data={children}
-                renderRow={(tc: TestCase, index: number) => (
-                  <TableRow
-                    key={index}
-                    onClick={() =>
-                      history.push(
-                        `/projects/${match.params.pid}/testcases/${tc._id}`
-                      )
-                    }
-                  >
-                    <TableColumn key={0}>{tc.title}</TableColumn>
-                  </TableRow>
-                )}
+                onItemClick={handleSelectTestCase}
+                renderItem={(_testCase: TestCase, index: number) =>
+                  _testCase.title
+                }
+                small={true}
+                zebra={true}
               />
             </CardBody>
           </Card>

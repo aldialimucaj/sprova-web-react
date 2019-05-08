@@ -21,6 +21,7 @@ import {
 } from 'react-router-dom';
 
 import Input from '@/components/Input';
+import { Label } from '@/components/Label';
 import TextArea from '@/components/TextArea';
 import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
@@ -125,12 +126,14 @@ const ProjectSettings: React.FunctionComponent<RouteComponentProps> = ({
           <CardHeader>
             <Level>
               <h4>General Information</h4>
-              <Text copyable={true} ellipsis={false}>
-                {currentProject!._id}
-              </Text>
             </Level>
           </CardHeader>
           <CardBody darker={true}>
+            <Label text="Project ID" style={{ marginBottom: 24 }}>
+              <Text copyable={true} ellipsis={false}>
+                {currentProject!._id}
+              </Text>
+            </Label>
             <Input
               label="Title"
               onChange={handleProjectTitleChange}

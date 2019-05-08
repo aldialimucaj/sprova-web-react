@@ -1,8 +1,11 @@
-import cx from 'classnames';
-import React, { Fragment } from 'react';
+import { Label } from '@/components/Label';
+import React from 'react';
 import './Input.scss';
 
 interface InputProps {
+  disabled?: boolean;
+  empty?: string;
+  extra?: React.ReactNode;
   label?: string;
   placeholder?: string;
   required?: boolean;
@@ -18,11 +21,14 @@ const Input: React.ForwardRefExoticComponent<
 > = React.forwardRef<HTMLInputElement, InputProps>(
   (
     {
+      disabled = false,
+      empty,
+      extra,
       label,
-      placeholder,
-      required = false,
       onChange,
       onEnter,
+      placeholder,
+      required = false,
       style,
       type = 'text',
       value,
@@ -36,25 +42,24 @@ const Input: React.ForwardRefExoticComponent<
     };
 
     return (
-      <Fragment>
-        {label && (
-          <label
-            className={cx('sprova-input-label', { 'is-required': required })}
-          >
-            {label}
-          </label>
+      <Label extra={extra} text={label} required={required}>
+        {!disabled ? (
+          <input
+            className="sprova-input"
+            onChange={onChange}
+            onKeyDown={handleKeyDown}
+            placeholder={placeholder}
+            ref={ref}
+            style={{ ...style }}
+            type={type}
+            value={value}
+          />
+        ) : value ? (
+          <p style={{ ...style }}>{value}</p>
+        ) : (
+          <span style={{ opacity: 0.4 }}>{empty || 'No value'}</span>
         )}
-        <input
-          onKeyDown={handleKeyDown}
-          className="sprova-input"
-          onChange={onChange}
-          placeholder={placeholder}
-          ref={ref}
-          style={{ ...style }}
-          type={type}
-          value={value}
-        />
-      </Fragment>
+      </Label>
     );
   }
 );

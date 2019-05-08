@@ -1,43 +1,32 @@
-import Level from '@/components/Level';
-import cx from 'classnames';
-import React, { Fragment } from 'react';
+import { Label } from '@/components/Label';
+import React from 'react';
 import './TextArea.scss';
 
 interface TextAreaProps {
   disabled?: boolean;
+  empty?: string;
   extra?: React.ReactNode;
   label?: string;
   placeholder?: string;
-  required?: boolean;
-  rows?: number;
   onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  required?: boolean;
   style?: any;
   value: string;
 }
 
 const TextArea: React.FunctionComponent<TextAreaProps> = ({
   disabled = false,
+  empty,
   extra,
   label,
   placeholder,
   required = false,
-  rows,
   onChange,
   style,
   value,
 }) => {
   return (
-    <Fragment>
-      {label && (
-        <Level className="sprova-textarea-level">
-          <label
-            className={cx('sprova-textarea-label', { 'is-required': required })}
-          >
-            {label}
-          </label>
-          {extra}
-        </Level>
-      )}
+    <Label extra={extra} required={required} text={label}>
       {!disabled ? (
         <textarea
           className="sprova-textarea"
@@ -46,10 +35,12 @@ const TextArea: React.FunctionComponent<TextAreaProps> = ({
           style={{ ...style }}
           value={value}
         />
+      ) : value ? (
+        <p style={{ ...style }}>{value}</p>
       ) : (
-        <p>{value}</p>
+        <span style={{ opacity: 0.4 }}>{empty || 'No value'}</span>
       )}
-    </Fragment>
+    </Label>
   );
 };
 
