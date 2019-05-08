@@ -6,7 +6,7 @@ import { UserContext } from '@/contexts/UserContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import logo from '@/images/sprova.svg';
 import { Alert, Button, Col, Divider, Row, Spin } from 'antd';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './Login.scss';
 
@@ -31,21 +31,25 @@ const Login: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
 
     try {
       const _user = await authenticate(username, password);
+      setIsLoading(false);
       onLogin(_user);
     } catch (error) {
-      setError(error);
-    } finally {
       setIsLoading(false);
+      setError(error);
     }
   };
 
-  if (user) {
-    const currentProjectId = localStorage.getItem(CURRENT_PROJECT_ID);
-    history.push(`/projects${currentProjectId ? `/${currentProjectId}` : ''}`);
-  }
-
   const isFormValid = () =>
     username && username.length > 0 && password && password.length > 0;
+
+  useEffect(() => {
+    if (user) {
+      const currentProjectId = localStorage.getItem(CURRENT_PROJECT_ID);
+      history.push(
+        `/projects${currentProjectId ? `/${currentProjectId}` : ''}`
+      );
+    }
+  }, [user]);
 
   return (
     <Row className="login-page" type="flex" justify="center">
