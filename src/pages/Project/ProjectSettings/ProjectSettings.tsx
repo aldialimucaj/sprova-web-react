@@ -32,18 +32,14 @@ const ProjectSettings: React.FunctionComponent<RouteComponentProps> = ({
 }) => {
   const { currentProject } = useContext(ProjectContext);
 
-  if (!currentProject) {
-    return <Redirect to="/projects" />;
-  }
-
   const {
     value: projectTitle,
     handleChange: handleProjectTitleChange,
-  } = useFormInput(currentProject.title);
+  } = useFormInput(currentProject!.title);
   const {
     value: description,
     handleChange: handleDescriptionChange,
-  } = useFormTextArea(currentProject.description);
+  } = useFormTextArea(currentProject!.description);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
@@ -51,11 +47,11 @@ const ProjectSettings: React.FunctionComponent<RouteComponentProps> = ({
   const deleteRequest = async () => {
     setIsDeleteLoading(true);
     try {
-      await deleteProject(currentProject._id);
+      await deleteProject(currentProject!._id);
       setIsDeleteLoading(false);
       notification.success({
         placement: 'bottomRight',
-        message: `${currentProject.title} deleted`,
+        message: `${currentProject!.title} deleted`,
       });
       history.push('/projects');
     } catch (error) {
@@ -70,7 +66,7 @@ const ProjectSettings: React.FunctionComponent<RouteComponentProps> = ({
 
   const handleSubmit = async () => {
     const projectNew: Project = {
-      ...currentProject,
+      ...currentProject!,
       title: projectTitle,
       description,
     };
@@ -84,6 +80,7 @@ const ProjectSettings: React.FunctionComponent<RouteComponentProps> = ({
         placement: 'bottomRight',
         message: 'Project updated',
       });
+      history.push(`/projects/${currentProject!._id}`);
     } catch (error) {
       setIsLoading(false);
       notification.error({
@@ -114,7 +111,7 @@ const ProjectSettings: React.FunctionComponent<RouteComponentProps> = ({
       <PageHeader
         breadcrumb={
           <Breadcrumb>
-            <Link to={`/projects/${currentProject._id}`}>
+            <Link to={`/projects/${currentProject!._id}`}>
               <Breadcrumb.Item>{currentProject!.title}</Breadcrumb.Item>
             </Link>
             <Breadcrumb.Item>Settings</Breadcrumb.Item>
@@ -129,7 +126,7 @@ const ProjectSettings: React.FunctionComponent<RouteComponentProps> = ({
             <Level>
               <h4>General Information</h4>
               <Text copyable={true} ellipsis={false}>
-                {currentProject._id}
+                {currentProject!._id}
               </Text>
             </Level>
           </CardHeader>
