@@ -63,6 +63,7 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   const executeButton = (
     <Link
+      key="execute"
       to={{
         pathname: `/projects/${match.params.pid}/executions/setup`,
         search: `?type=testcases&tid=${match.params.tid}`,
@@ -91,6 +92,7 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
 
   const deleteButton = (
     <Popconfirm
+      key="delete"
       placement="bottomRight"
       title="Delete this test case?"
       onConfirm={handleDeleteTestCase}

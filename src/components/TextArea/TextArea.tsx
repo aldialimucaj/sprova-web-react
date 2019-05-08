@@ -1,8 +1,11 @@
+import Level from '@/components/Level';
 import cx from 'classnames';
 import React, { Fragment } from 'react';
 import './TextArea.scss';
 
 interface TextAreaProps {
+  disabled?: boolean;
+  extra?: React.ReactNode;
   label?: string;
   placeholder?: string;
   required?: boolean;
@@ -13,6 +16,8 @@ interface TextAreaProps {
 }
 
 const TextArea: React.FunctionComponent<TextAreaProps> = ({
+  disabled = false,
+  extra,
   label,
   placeholder,
   required = false,
@@ -24,19 +29,26 @@ const TextArea: React.FunctionComponent<TextAreaProps> = ({
   return (
     <Fragment>
       {label && (
-        <label
-          className={cx('sprova-textarea-label', { 'is-required': required })}
-        >
-          {label}
-        </label>
+        <Level className="sprova-textarea-level">
+          <label
+            className={cx('sprova-textarea-label', { 'is-required': required })}
+          >
+            {label}
+          </label>
+          {extra}
+        </Level>
       )}
-      <textarea
-        className="sprova-textarea"
-        onChange={onChange}
-        placeholder={placeholder}
-        style={{ ...style }}
-        value={value}
-      />
+      {!disabled ? (
+        <textarea
+          className="sprova-textarea"
+          onChange={onChange}
+          placeholder={placeholder}
+          style={{ ...style }}
+          value={value}
+        />
+      ) : (
+        <p>{value}</p>
+      )}
     </Fragment>
   );
 };

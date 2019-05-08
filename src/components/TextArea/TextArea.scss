@@ -20,11 +20,14 @@
     opacity: 0.4;
   }
 
+  &-level {
+    margin-bottom: $margin-sm;
+  }
+
   &-label {
     color: rgb(71, 87, 95);
     display: block;
     font-weight: 500;
-    margin-bottom: $margin-sm;
 
     &.is-required {
       &::before {
