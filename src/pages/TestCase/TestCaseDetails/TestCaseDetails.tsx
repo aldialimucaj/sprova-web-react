@@ -132,21 +132,7 @@ const TestCaseDetails: React.FunctionComponent<RouteComponentProps<Params>> = ({
             <TabPane tab="Code Generation" key="codeGeneration" />
           </Tabs>
         }
-      >
-        <Row>
-          <Col span={2}>
-            <div>
-              <strong>Created at:</strong>
-            </div>
-          </Col>
-          <Col>
-            <div>
-              {(testCase && new Date(testCase.createdAt).toDateString()) ||
-                'Date'}
-            </div>
-          </Col>
-        </Row>
-      </PageHeader>
+      />
       <PageContent>
         {!testCase ? (
           <PageLoad />
