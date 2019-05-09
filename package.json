@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@types/chai": "^4.1.7",
     "@types/chart.js": "^2.7.50",
     "@types/classnames": "^2.2.7",
     "@types/enzyme": "^3.9.0",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
     "@types/is-hotkey": "^0.1.1",
     "@types/jest": "24.0.11",
     "@types/jwt-decode": "^2.2.1",
@@ -21,7 +21,6 @@
     "antd": "^3.16.2",
     "axios": "^0.18.0",
     "babel-plugin-import": "^1.11.0",
-    "chai": "^4.2.0",
     "chart.js": "^2.8.0",
     "classnames": "^2.2.6",
     "codemirror": "^5.45.0",
@@ -68,7 +67,7 @@
     "not op_mini all"
   ],
   "jest": {
-    "setupTestFrameworkScriptFile": "./src/setupTests.js",
+    "setupTestFrameworkScriptFile": "./src/setupTests.ts",
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1"
     }

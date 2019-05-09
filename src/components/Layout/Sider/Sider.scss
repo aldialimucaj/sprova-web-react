@@ -2,7 +2,7 @@
 @import '~styles/mixins';
 
 .sprova-sider {
-  background-color: $primary-dark;
+  background-color: $primary-color-dark;
   color: $white;
   position: relative;
   grid-area: sidemenu;
@@ -16,7 +16,7 @@
 
     #sprova-logo {
       display: inline-block;
-      height: calc(#{$navbar-height} / 2);
+      height: calc(#{$sider-title-height} / 2);
       vertical-align: middle;
       user-select: none;
     }

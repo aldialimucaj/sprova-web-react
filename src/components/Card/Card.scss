@@ -2,22 +2,18 @@
 @import '~styles/mixins';
 
 .sprova-card {
-  background-color: white;
-  border-radius: 4px;
-  box-shadow: 0 0 0 1px rgba(50, 75, 95, 0.05),
-    0 2px 4px 0 rgba(50, 75, 95, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.07);
+  background-color: $white;
+  border-radius: $radius;
+  box-shadow: $box-shadow;
   display: block;
   overflow: hidden;
-
   transition: all 0.1s;
 
-  &.clickable {
+  &.is-clickable {
     &:hover {
-      // background-color: #e6f7ff;
       cursor: pointer;
       transform: translateY(-1px);
-      box-shadow: 0 0 0 1px rgba(50, 75, 95, 0.05),
-        0 3px 4px 0 rgba(50, 75, 95, 0.15), 0 1px 1px 0 rgba(0, 0, 0, 0.07);
+      box-shadow: $box-shadow-hover;
     }
   }
 
@@ -28,30 +24,26 @@
     }
 
     &.is-darker {
-      background-color: #f7fafc;
+      background-color: $background-color-darker;
     }
   }
 
   &-footer {
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: $border;
   }
 
   &-header {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: $border;
     padding: $padding-md;
-
-    &-title {
-      font-weight: 600;
-    }
   }
 
   &-status-bar {
-    height: 4px;
+    height: $status-bar-height;
   }
 
-  &.is-danger {
+  &.is-error {
     .sprova-card-status-bar {
-      background-color: rgb(190, 48, 48);
+      background-color: $status-color-error;
     }
   }
 
@@ -63,13 +55,13 @@
 
   &.is-success {
     .sprova-card-status-bar {
-      background-color: rgb(22, 179, 7);
+      background-color: $status-color-success;
     }
   }
 
   &.is-warning {
     .sprova-card-status-bar {
-      background-color: rgb(255, 189, 6);
+      background-color: $status-color-warning;
     }
   }
 }

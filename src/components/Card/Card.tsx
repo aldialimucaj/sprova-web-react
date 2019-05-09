@@ -2,6 +2,36 @@ import classnames from 'classnames';
 import React from 'react';
 import './Card.scss';
 
+interface CardProps {
+  onClick?: () => void;
+  status?: 'success' | 'error' | 'warning' | 'info' | null;
+  style?: any;
+}
+
+const Card: React.FunctionComponent<CardProps> = ({
+  children,
+  onClick,
+  status,
+  style,
+}) => {
+  return (
+    <div
+      className={classnames(
+        'sprova-card',
+        { 'is-clickable': onClick },
+        { [`is-${status}`]: status }
+      )}
+      onClick={onClick}
+      style={{ ...style }}
+    >
+      {children}
+      {status && <div className="sprova-card-status-bar" />}
+    </div>
+  );
+};
+
+export default Card;
+
 interface CardBodyProps {
   darker?: boolean;
   padded?: boolean;
@@ -51,33 +81,3 @@ export const CardFooter: React.FunctionComponent<CardFooterProps> = ({
 export const CardHeader: React.FunctionComponent = ({ children }) => {
   return <div className="sprova-card-header">{children}</div>;
 };
-
-interface CardProps {
-  onClick?: () => void;
-  status?: 'success' | 'danger' | 'warning' | 'info' | null;
-  style?: any;
-}
-
-const Card: React.FunctionComponent<CardProps> = ({
-  children,
-  onClick,
-  status,
-  style,
-}) => {
-  return (
-    <div
-      className={classnames(
-        'sprova-card',
-        { clickable: onClick },
-        { [`is-${status}`]: status }
-      )}
-      onClick={() => onClick && onClick()}
-      style={{ ...style }}
-    >
-      {children}
-      {status && <div className="sprova-card-status-bar" />}
-    </div>
-  );
-};
-
-export default Card;
