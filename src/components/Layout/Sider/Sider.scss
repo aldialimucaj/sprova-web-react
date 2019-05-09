@@ -2,17 +2,17 @@
 @import '~styles/mixins';
 
 .sprova-sider {
-  background-color: $primary-color-dark;
+  background-color: $primary-color-darker;
   color: $white;
-  position: relative;
-  grid-area: sidemenu;
-  padding-left: $padding-lg;
+  grid-area: sider;
 
   &-title {
     align-items: center;
+    background-color: $primary-color-dark;
+    box-shadow: $box-shadow;
     cursor: pointer;
     display: flex;
-    margin: $margin-md 0;
+    padding: $padding-md $padding-lg;
 
     #sprova-logo {
       display: inline-block;
@@ -22,14 +22,17 @@
     }
 
     #sprova-project-title {
-      color: $sidemenu-color-light;
+      color: $sider-color-light;
       display: inline-block;
       margin-left: $margin-md;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 
   &-menu {
-    color: $sidemenu-color;
-    padding-right: $padding-lg;
+    color: $sider-color;
+    padding: 0 $padding-lg;
   }
 }

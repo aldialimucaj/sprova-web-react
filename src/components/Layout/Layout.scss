@@ -6,8 +6,8 @@
   display: grid;
 
   @include screen-lg {
-    grid-template-columns: $sidemenu-width-default 1fr;
+    grid-template-columns: $sider-width-default 1fr;
     grid-template-rows: 1fr;
-    grid-template-areas: 'sidemenu page';
+    grid-template-areas: 'sider page';
   }
 }
