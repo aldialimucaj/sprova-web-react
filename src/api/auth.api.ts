@@ -35,6 +35,24 @@ export function authenticate(
     );
 }
 
+export function signup(username: string, password: string): Promise<boolean> {
+  return authAgent
+    .post('signup', {
+      password,
+      username,
+    })
+    .catch(axiosErrorHandler)
+    .then(
+      (response: AxiosResponse): boolean => {
+        const { data, status, statusText } = response;
+        if (status !== 200 || !data.ok) {
+          throw statusText;
+        }
+        return data.ok;
+      }
+    );
+}
+
 export function getUser(): User | null {
   const token = localStorage.getItem('token');
   return token ? (decode(token) as User) : null;
