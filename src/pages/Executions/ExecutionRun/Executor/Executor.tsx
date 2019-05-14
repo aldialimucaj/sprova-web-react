@@ -2,12 +2,15 @@ import { getExecutionSteps, updateExecutionStep } from '@/api/execution.api';
 import Level from '@/components/Level';
 import TextArea from '@/components/TextArea';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
-import { ExecutionStatus } from '@/models/Execution';
-import { ExecutionStep, ExecutionStepResult } from '@/models/ExecutionStep';
 import { Alert, Button, Icon, List, notification, Spin, Tag } from 'antd';
 import _ from 'lodash';
 import React, { Fragment, useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
+import {
+  ExecutionStatus,
+  ExecutionStep,
+  ExecutionStepResult,
+} from 'sprova-types';
 import './Executor.scss';
 
 interface Props extends RouteComponentProps {

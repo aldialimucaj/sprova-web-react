@@ -2,11 +2,11 @@ import Card, { CardBody, CardFooter, CardHeader } from '@/components/Card';
 import Level from '@/components/Level';
 import List from '@/components/List';
 import { TestCaseContext } from '@/contexts/TestCaseContext';
-import { TestCase } from '@/models/TestCase';
 import { findById } from '@/utils';
 import { Button, Select } from 'antd';
 import * as _ from 'lodash';
 import React, { useContext, useState } from 'react';
+import { TestCase } from 'sprova-types';
 import './TestCaseSelect.scss';
 
 const Option = Select.Option;

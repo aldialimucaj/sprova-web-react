@@ -1,9 +1,13 @@
 import { getExecutionSteps } from '@/api/execution.api';
 import Level from '@/components/Level';
-import { Execution, ExecutionStatus } from '@/models/Execution';
-import { ExecutionStep, ExecutionStepResult } from '@/models/ExecutionStep';
 import { Alert, Col, Icon, List, Row, Spin, Tag } from 'antd';
 import React, { Fragment, useEffect, useState } from 'react';
+import {
+  Execution,
+  ExecutionStatus,
+  ExecutionStep,
+  ExecutionStepResult,
+} from 'sprova-types';
 
 interface Props {
   executions: Execution[];

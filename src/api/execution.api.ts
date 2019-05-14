@@ -1,6 +1,5 @@
-import { Execution, ExecutionStatus } from '@/models/Execution';
-import { ExecutionStep } from '@/models/ExecutionStep';
 import { AxiosResponse } from 'axios';
+import { Execution, ExecutionStatus, ExecutionStep } from 'sprova-types';
 import agent from './agents/api.agent';
 import axiosErrorHandler from './utils/axiosErrorHandler';
 

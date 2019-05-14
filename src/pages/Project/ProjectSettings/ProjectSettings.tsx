@@ -3,7 +3,6 @@ import Card, { CardBody, CardHeader } from '@/components/Card';
 import { PageContent, PageHeader } from '@/components/Layout';
 import Level from '@/components/Level';
 import { ProjectContext } from '@/contexts/ProjectContext';
-import { Project } from '@/models/Project';
 import {
   Breadcrumb,
   Button,
@@ -19,6 +18,7 @@ import {
   RouteComponentProps,
   withRouter,
 } from 'react-router-dom';
+import { Project } from 'sprova-types';
 
 import Input from '@/components/Input';
 import { Label } from '@/components/Label';

@@ -1,6 +1,5 @@
-import { TestCase } from '@/models/TestCase';
-import { TestStep } from '@/models/TestStep';
 import { AxiosResponse } from 'axios';
+import { TestCase, TestStep } from 'sprova-types';
 import agent from './agents/api.agent';
 import axiosErrorHandler from './utils/axiosErrorHandler';
 

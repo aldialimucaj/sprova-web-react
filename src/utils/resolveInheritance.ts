@@ -1,5 +1,4 @@
-import { TestCase } from '@/models/TestCase';
-import { TestStep } from '@/models/TestStep';
+import { TestCase, TestStep } from 'sprova-types';
 import { findById } from './findById';
 
 /**

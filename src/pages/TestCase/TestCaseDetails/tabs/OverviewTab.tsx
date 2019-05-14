@@ -6,8 +6,6 @@ import List from '@/components/List';
 import Table, { TableColumn, TableRow } from '@/components/Table';
 import TextArea from '@/components/TextArea';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
-import { TestCase } from '@/models/TestCase';
-import { TestStep } from '@/models/TestStep';
 import { findById, findChildren } from '@/utils';
 import {
   Alert,
@@ -22,6 +20,7 @@ import {
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { TestCase, TestStep } from 'sprova-types';
 
 const Text = Typography.Text;
 

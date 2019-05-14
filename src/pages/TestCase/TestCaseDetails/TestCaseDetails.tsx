@@ -2,7 +2,6 @@ import { deleteTestCase } from '@/api/testcase.api';
 import { PageContent, PageHeader, PageLoad } from '@/components/Layout';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { TestCaseContext } from '@/contexts/TestCaseContext';
-import { TestCase } from '@/models/TestCase';
 import { findById } from '@/utils';
 import {
   Breadcrumb,
@@ -16,6 +15,7 @@ import {
 } from 'antd';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { TestCase } from 'sprova-types';
 import CodeGenerationTab from './tabs/CodeGenerationTab';
 import ExecutionsTab from './tabs/ExecutionsTab';
 import OverviewTab from './tabs/OverviewTab';

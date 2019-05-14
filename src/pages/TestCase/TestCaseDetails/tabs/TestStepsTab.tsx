@@ -1,8 +1,6 @@
-import { TestCase } from '@/models/TestCase';
-import { TestStep } from '@/models/TestStep';
-import { findById, resolveInheritance } from '@/utils';
-import { Button, Col, List, Row, Tag } from 'antd';
-import React, { useState } from 'react';
+import { Col, Row } from 'antd';
+import React from 'react';
+import { TestCase } from 'sprova-types';
 import './OverviewTab.scss';
 
 interface Props {

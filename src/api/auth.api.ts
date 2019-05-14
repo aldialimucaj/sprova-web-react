@@ -1,6 +1,6 @@
-import { User } from '@/models/User';
 import { AxiosResponse } from 'axios';
 import decode from 'jwt-decode';
+import { User } from 'sprova-types';
 import { setToken } from './agents/api.agent';
 import authAgent from './agents/auth.agent';
 import axiosErrorHandler from './utils/axiosErrorHandler';

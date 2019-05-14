@@ -2,10 +2,10 @@ import { getExecutionsOfTestCase } from '@/api/execution.api';
 import Card, { CardBody } from '@/components/Card';
 import Table, { TableColumn, TableRow } from '@/components/Table';
 import { useFetcher } from '@/hooks/useFetcher';
-import { Execution, ExecutionStatus } from '@/models/Execution';
 import { Icon, Spin } from 'antd';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { Execution, ExecutionStatus } from 'sprova-types';
 
 interface Params {
   pid: string;

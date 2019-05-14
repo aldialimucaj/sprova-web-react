@@ -1,8 +1,8 @@
 import { getProjects } from '@/api/project.api';
-import { Project } from '@/models/Project';
 import { findById } from '@/utils';
 import _ from 'lodash';
 import React, { useEffect, useState } from 'react';
+import { Project } from 'sprova-types';
 
 export const CURRENT_PROJECT_ID = 'currentProjectId';
 

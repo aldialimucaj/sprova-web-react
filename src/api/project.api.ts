@@ -1,5 +1,5 @@
-import { Project } from '@/models/Project';
 import { AxiosResponse } from 'axios';
+import { Project } from 'sprova-types';
 import agent from './agents/api.agent';
 import axiosErrorHandler from './utils/axiosErrorHandler';
 

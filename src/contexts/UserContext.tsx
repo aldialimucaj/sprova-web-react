@@ -1,6 +1,6 @@
 import { getUser } from '@/api/auth.api';
-import { User } from '@/models/User';
 import React, { useState } from 'react';
+import { User } from 'sprova-types';
 
 interface UserContext {
   user: User | null;

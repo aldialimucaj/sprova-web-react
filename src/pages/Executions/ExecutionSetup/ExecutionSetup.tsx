@@ -7,18 +7,19 @@ import TestCaseSelect from '@/components/TestCaseSelect/TestCaseSelect';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { TestCaseContext } from '@/contexts/TestCaseContext';
 import { UserContext } from '@/contexts/UserContext';
-import { Execution, ExecutionStatus } from '@/models/Execution';
-import {
-  ExecutionContext,
-  ExecutionContextStatus,
-  ExecutionMethod,
-  ExecutionType,
-} from '@/models/ExecutionContext';
-import { TestCase } from '@/models/TestCase';
 import { Breadcrumb, Button, Checkbox, notification, Select } from 'antd';
 import * as _ from 'lodash';
 import React, { Fragment, useContext, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import {
+  Execution,
+  ExecutionContext,
+  ExecutionContextStatus,
+  ExecutionMethod,
+  ExecutionStatus,
+  ExecutionType,
+  TestCase,
+} from 'sprova-types';
 import './ExecutionSetup.scss';
 
 const Option = Select.Option;

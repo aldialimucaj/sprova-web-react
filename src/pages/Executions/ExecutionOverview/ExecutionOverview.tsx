@@ -3,14 +3,11 @@ import { PageContent, PageHeader } from '@/components/Layout';
 import Level from '@/components/Level';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFetcher } from '@/hooks/useFetcher';
-import {
-  ExecutionContext,
-  ExecutionContextStatus,
-} from '@/models/ExecutionContext';
 import { Alert, Breadcrumb, Button, Col, Divider, Icon, List, Row } from 'antd';
 import _ from 'lodash';
 import React, { Fragment, useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { ExecutionContext, ExecutionContextStatus } from 'sprova-types';
 import './ExecutionOverview.scss';
 
 interface Params {

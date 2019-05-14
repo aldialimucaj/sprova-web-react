@@ -8,10 +8,10 @@ import { CycleContext } from '@/contexts/CycleContext';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
-import { Cycle } from '@/models/Cycle';
 import { Breadcrumb, Button, notification } from 'antd';
 import React, { Fragment, useContext, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { Cycle } from 'sprova-types';
 
 const CycleCreate: React.FunctionComponent<RouteComponentProps> = ({
   history,

@@ -4,11 +4,11 @@ import { CycleContext } from '@/contexts/CycleContext';
 import { ProjectContext } from '@/contexts/ProjectContext';
 import { UserContext } from '@/contexts/UserContext';
 import logo from '@/images/sprova.svg';
-import { Cycle } from '@/models/Cycle';
 import { findById } from '@/utils';
-import { Button, Divider, Icon, Select, Spin } from 'antd';
+import { Divider, Icon, Select, Spin } from 'antd';
 import React, { Fragment, useContext } from 'react';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Cycle } from 'sprova-types';
 import './Sider.scss';
 
 const Option = Select.Option;

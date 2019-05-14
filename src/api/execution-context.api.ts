@@ -1,8 +1,5 @@
-import {
-  ExecutionContext,
-  ExecutionContextStatus,
-} from '@/models/ExecutionContext';
 import { AxiosResponse } from 'axios';
+import { ExecutionContext, ExecutionContextStatus } from 'sprova-types';
 import agent from './agents/api.agent';
 import axiosErrorHandler from './utils/axiosErrorHandler';
 

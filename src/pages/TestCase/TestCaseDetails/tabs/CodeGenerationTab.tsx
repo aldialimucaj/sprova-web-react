@@ -1,5 +1,5 @@
-import { TestCase } from '@/models/TestCase';
 import { Tabs } from 'antd';
+import { TestCase } from 'sprova-types';
 const TabPane = Tabs.TabPane;
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';

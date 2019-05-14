@@ -1,10 +1,9 @@
-import { Execution, ExecutionStatus } from '@/models/Execution';
-import { ExecutionContext } from '@/models/ExecutionContext';
 import { formatDuration } from '@/utils/formatDuration';
 import { Card, Col, Progress, Row } from 'antd';
 import Chart from 'chart.js';
 import _ from 'lodash';
 import React, { useEffect } from 'react';
+import { Execution, ExecutionContext, ExecutionStatus } from 'sprova-types';
 import '../ExecutionDetails.scss';
 
 interface Props {

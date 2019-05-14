@@ -1,7 +1,7 @@
 import { getTestCases } from '@/api/testcase.api';
-import { TestCase } from '@/models/TestCase';
 import _ from 'lodash';
 import React, { useContext, useEffect, useState } from 'react';
+import { TestCase } from 'sprova-types';
 import { CycleContext } from './CycleContext';
 import { ProjectContext } from './ProjectContext';
 

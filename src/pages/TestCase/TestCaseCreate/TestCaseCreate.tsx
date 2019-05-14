@@ -10,8 +10,6 @@ import { ProjectContext } from '@/contexts/ProjectContext';
 import { TestCaseContext } from '@/contexts/TestCaseContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import { useFormTextArea } from '@/hooks/useFormTextArea';
-import { TestCase } from '@/models/TestCase';
-import { TestStep } from '@/models/TestStep';
 import {
   Breadcrumb,
   Button,
@@ -25,6 +23,7 @@ import {
 import * as _ from 'lodash';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { TestCase, TestStep } from 'sprova-types';
 import './TestCaseCreate.scss';
 import TestStepInput from './TestStepInput';
 

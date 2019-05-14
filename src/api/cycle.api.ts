@@ -1,5 +1,5 @@
-import { Cycle } from '@/models/Cycle';
 import { AxiosResponse } from 'axios';
+import { Cycle } from 'sprova-types';
 import agent from './agents/api.agent';
 import axiosErrorHandler from './utils/axiosErrorHandler';
 

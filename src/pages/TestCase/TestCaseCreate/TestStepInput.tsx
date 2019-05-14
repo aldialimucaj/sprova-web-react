@@ -1,8 +1,8 @@
 import Input from '@/components/Input';
 import { useFormInput } from '@/hooks/useFormInput';
-import { TestStep } from '@/models/TestStep';
 import { Button, Col, Row } from 'antd';
 import React, { useRef } from 'react';
+import { TestStep } from 'sprova-types';
 import './TestCaseCreate.scss';
 
 interface TestStepInputProps {
