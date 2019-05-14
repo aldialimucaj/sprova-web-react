@@ -85,6 +85,7 @@ const Login: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
                   onEnter={handleSubmit}
                   placeholder="Password"
                   style={{ marginBottom: 24 }}
+                  type="password"
                   value={password}
                 />
                 <Button
