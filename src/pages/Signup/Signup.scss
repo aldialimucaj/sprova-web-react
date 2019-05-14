@@ -1,17 +1,35 @@
 @import '~styles/variables';
+@import '~styles/mixins';
 
-.form-item {
-  &:not(:last-child) {
-    margin-bottom: 16px;
-  }
-}
-
-.login-card {
-  box-shadow: 0 2px 4px rgba(0, 21, 41, 0.08);
-}
-
-.login-page {
-  background-color: $background-color;
+.signup-page {
   height: 100vh;
+  display: flex;
+  justify-content: center;
   padding: 48px;
+
+  .signup-container {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+
+    @include screen-xs {
+      width: 100%;
+    }
+
+    @include screen-sm {
+      width: 55%;
+    }
+
+    @include screen-md {
+      width: 45%;
+    }
+
+    @include screen-lg {
+      width: 35%;
+    }
+
+    @include screen-xl {
+      width: 25%;
+    }
+  }
 }

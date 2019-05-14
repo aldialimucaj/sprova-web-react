@@ -1,21 +1,18 @@
-import { authenticate, signup } from '@/api/auth.api';
+import { signup } from '@/api/auth.api';
 import Card, { CardBody } from '@/components/Card';
 import Input from '@/components/Input';
 import { CURRENT_PROJECT_ID } from '@/contexts/ProjectContext';
 import { UserContext } from '@/contexts/UserContext';
 import { useFormInput } from '@/hooks/useFormInput';
 import logo from '@/images/sprova.svg';
-import { Alert, Button, Col, Divider, Form, Row, Spin } from 'antd';
-import { FormComponentProps } from 'antd/lib/form';
+import { Alert, Button, Col, Divider, Row, Spin } from 'antd';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
 import Helmet from 'react-helmet';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import './Signup.scss';
 
-interface Props extends RouteComponentProps, FormComponentProps {}
-
-const Signup: React.FunctionComponent<Props> = ({ form, history }) => {
-  const { user, onLogin } = useContext(UserContext);
+const Signup: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
+  const { user } = useContext(UserContext);
 
   const { value: username, handleChange: handleUsernameChange } = useFormInput(
     ''
@@ -72,8 +69,8 @@ const Signup: React.FunctionComponent<Props> = ({ form, history }) => {
       <Helmet>
         <title>Sprova | Sign Up</title>
       </Helmet>
-      <Row className="login-page" type="flex" justify="center">
-        <Col span={6} style={{ textAlign: 'center' }}>
+      <div className="signup-page">
+        <div className="signup-container">
           <Card>
             <CardBody>
               <img src={logo} width="64px" style={{ margin: 36 }} />
@@ -143,10 +140,10 @@ const Signup: React.FunctionComponent<Props> = ({ form, history }) => {
               <Link to="/login">Sign in with existing account</Link>
             </CardBody>
           </Card>
-        </Col>
-      </Row>
+        </div>
+      </div>
     </Fragment>
   );
 };
 
-export default withRouter(Form.create({})(Signup));
+export default withRouter(Signup);

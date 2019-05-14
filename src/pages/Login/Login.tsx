@@ -57,8 +57,8 @@ const Login: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
       <Helmet>
         <title>Sprova | Login</title>
       </Helmet>
-      <Row className="login-page" type="flex" justify="center">
-        <Col span={6} style={{ textAlign: 'center' }}>
+      <div className="login-page">
+        <div className="login-container">
           <Card>
             <CardBody>
               <img src={logo} width="64px" style={{ margin: 36 }} />
@@ -66,11 +66,11 @@ const Login: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
               <Spin spinning={isLoading}>
                 {error ? (
                   <Alert
-                    className="form-item"
-                    type="error"
-                    message={error}
                     closable={true}
+                    message={error}
                     onClose={() => setError('')}
+                    style={{ marginBottom: 24 }}
+                    type="error"
                   />
                 ) : null}
                 <Input
@@ -103,8 +103,8 @@ const Login: React.FunctionComponent<RouteComponentProps> = ({ history }) => {
               <Link to="/signup">Request new account</Link>
             </CardBody>
           </Card>
-        </Col>
-      </Row>
+        </div>
+      </div>
     </Fragment>
   );
 };
